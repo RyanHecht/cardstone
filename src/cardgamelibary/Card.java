@@ -16,7 +16,9 @@ public interface Card {
 	String getName();
 	
 	//Must be unique. We should register all cards somehow and assign ids as we do to prevent conflicting ids
-	int getId();
+	//We should just have all classes that implement Card use the static
+	//UUID method randomUUID() to get a UUID in those classes' constructors.
+	UUID getId();
 	
 	//can return an empty string, doesn't hafta be unique.
 	String getText();

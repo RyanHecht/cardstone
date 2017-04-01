@@ -22,6 +22,8 @@ public class Board {
 	private void handleState(){
 		while(eventQueue.size() > 1 || effectQueue.size() > 1){
 			if(eventQueue.size() > 1){
+				// when we handle an event we want to put
+				// all effects it produces onto the queue.
 				handleEvent(eventQueue.poll());
 			}
 			else{
@@ -48,10 +50,17 @@ public class Board {
 	}
 
 	private void handleEvent(Event event) {
-		// TODO Auto-generated method stub
-		
+		List<Card> affected = event.getAffected(this);
+		for(Card c : affected){
+			for(EventHandler eh : c.getHandlers()){
+				if(eh.handles(event)){
+					effectQueue.addAll(eh.handle(event));
+					
+				}
+				
+			}
+		}	
 	}
 	
-	
-	
 }
+
