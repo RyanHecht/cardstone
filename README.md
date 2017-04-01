@@ -45,7 +45,11 @@ Control flow requirements were sourced from our combined years of experience pla
 
 
 ## Project Specs and Mockup
-_A link to your specifications document and your mockup will go here!_
+https://docs.google.com/a/brown.edu/document/d/1xQXIpBMozzv3iitiQWFQKrZzZy74x-2DrMD3RI9Evj8/edit?usp=sharing
+
+Mockup:
+
+https://xd.adobe.com/view/31887873-4f11-46d0-9159-c05904adf2e5/
 
 ## Project Design Presentation
 _A link to your design presentation/document will go here!_
