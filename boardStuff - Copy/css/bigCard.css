@@ -1,0 +1,27 @@
+.bigCard .name{
+	width:99%;
+	height:5%;
+}
+
+.bigCard .cost{
+	width:99%;
+	height:5%;
+}
+
+.bigCard .imageArea{
+	width:100%;
+	height:35%;
+	overflow:hidden;
+}
+
+
+.bigCard .cardText{
+	width:100%;
+	height:40%;
+}
+
+/* we color this area based on.smallCard type, and we put stats here if relevant */
+.bigCard .statArea{
+	width:99%;
+	height:5%;
+}

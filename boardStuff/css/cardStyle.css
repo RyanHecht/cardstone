@@ -1,0 +1,54 @@
+.cardBox{
+	height: 100%;
+	display:inline-block;
+	padding-left:3px;
+	padding-right:3px;
+	font-size:14px;
+}
+
+
+
+.card{
+	border: 1px solid black;
+	display: inline-block;
+	position: relative;
+	height:96%;
+	width:100%;
+
+}
+
+.card .health{
+	position:absolute;
+	right:0%;
+	height:100%;
+	width:50%;
+	text-align:center;
+}
+
+.card .attack{
+	position:absolute;
+	left:0%;
+	height:100%;
+	width:50%;
+	text-align:center;
+}
+
+.statArea{
+	width:100%;
+}
+
+.cardpart{
+	display: inline-block;
+	text-align: center;
+}
+
+.cardPartZone{
+	display: inline-block;
+	text-align: center;
+}
+
+.imageArea img{
+	object-fit: cover;
+	width: 100%;
+	height:100%;
+}
