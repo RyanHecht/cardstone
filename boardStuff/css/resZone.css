@@ -32,7 +32,7 @@ td{
 }
 
 .deckTd{
-	background-image:url("images/cardBack.jpg");
+	background-image:url("../images/cardBack.jpg");
 	background-size:contain;
 	background-repeat:no-repeat;
 }

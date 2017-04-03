@@ -1,0 +1,82 @@
+To receive board information I expect:
+
+board{
+
+	hand1{
+		card,card,card
+	}
+	hand2{
+		card,card,card
+	}
+	aura1{
+		card,card,card
+	}
+	aura2{
+		card,card,card
+	}
+	creature1{
+		card,card,card
+	}
+	creature2{
+		card,card,card
+	}
+	health1:
+	health2:
+	res1:
+	res2:
+	deck1:
+	deck2:
+	manaPool1{
+		mana,mana,mana
+	}
+	manaPool2{
+		mana,mana,mana
+	}
+	
+	
+}
+
+
+card looks like:
+card{
+	IID:
+	TID:
+	cost:
+	health:
+	attack:
+	text:
+	name:
+	image:
+	type:
+}
+
+IID is the Individual ID of a card. Each card in a game has a unique one.
+They allow animating to a card. For example, if the host tells me that 
+IID 5 attacks IID 6, I can find both and draw that occurring.
+
+TID is the Type ID of a card. It specifies the "type" of a card. This tells me
+where to find the default cost, stats, name, text, and image for it. This is unique
+for each card type, and we will need to bwild and a shared registry of them.
+
+The stat slots and TID slot are always optional. If I have seen an IID before and do not
+recieve new information, I will assume the information from the last time I saw that IID.
+If I get a TID for a card whose IID is new to me, I will assume the default info for it.
+
+So I only need stats information when it is different from the TID default / different
+from last time I saw the card.
+
+
+mana looks like:
+1 or 2 or 3 or 4 or 5 
+where
+1 represents "air" 
+and 2 represents "water" 
+and 3 represents "fire" 
+and 4 represents "earth" 
+and 5 represents "balance"
+
+health, res, and deck look like:
+an integer, representing their value.
+
+
+

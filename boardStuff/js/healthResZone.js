@@ -14,19 +14,19 @@ class healthResZone extends drawableZone{
 		this.resDiv.text(this.res);
 		let $this = this;
 		this.deckDiv.qtip(
-		{content: {
-					text: $this.deck + " cards left",
-				},
-				style: {
-					classes: 'qtip-bootstrap ',
-				},
-				position: { 
-					viewport: $(window),
-					adjust: {
-						method: 'flipinvert shift'
-					}
-					
-		}}
+		{
+			content: {
+				text: $this.deck + " cards left",
+			},
+			style: {
+				classes: 'qtip-bootstrap ',
+			},
+			position: { 
+				my: 'top right',
+				at: 'bottom left',
+				target: this,
+			}
+		}
 		);
 		console.log(this.deckDiv,this.healthDiv,this.resDiv);
 	}

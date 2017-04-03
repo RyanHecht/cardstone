@@ -1,0 +1,57 @@
+When I want to inform the host of user input, I will send it in the following form:
+
+	userevent{
+
+		name:
+		
+		IID1:
+		
+		IID2:
+
+	}
+
+		Event name specifies one of several event types, ie "activated", "played", "attacked".
+
+		IID1 specifies the first card. In the case of certain events, like "endturn", there
+		may be no IID1.
+
+		IID2 specifies the second card. In the case of certain events, like "activated", there
+		may be no IID2.
+
+When I send an event, I will expect a response of the form:
+
+	userresponse{
+
+		status:
+
+	}
+
+		status will take the form of either 0 or 1, where 0 means the 
+		action was denied and 1 means it was allowed.
+
+When the host needs user input, it may send a message of the form:
+
+	inputrequest{
+	
+		name:
+		
+		options{
+			option,option
+		}
+		
+		cards{
+			card,card,card
+		}
+	
+	}
+	
+		name will represent one of several possible names for the event, such as
+		"choosefrom" or "selecttarget"
+		
+		options will represent specific information about the event. This
+		may represent valid zones for targeting in the event of a target request,
+		etc.
+		
+		cards will represent the affected cards. This may represent cards
+		to choose from in the event of choosing from among several options,
+		etc.

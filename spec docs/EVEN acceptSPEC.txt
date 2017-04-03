@@ -1,0 +1,113 @@
+To receive event information I expect:
+
+	animation{
+
+		start:
+		
+		end:
+		
+		details:
+		
+	}
+
+or:
+
+	event{
+
+		type:
+		
+		details:
+
+	}
+
+	I receive events in one of two ways. We will agree on a set of events that 
+	I support by name (ie cards attacking eachother, etc). For those, I will expect
+	the relevant cards IIDs and the name of the event. If the event involves things 
+	other than cards (ie card attacking a player), I will expect one of several
+	agreed upon "names" instead of an IID (ie if a card attacks a player, I would expect 
+	the IID of the card and "player1" or "player2").
+
+	I can also receive events in the form of a specified animation. I will support several
+	forms of animation, which may be specified explicitly rather than in the form of
+	an event tag, to allow for finetuned control / creating unqiue animations for cards / 
+	dynamic creation of animations at runtime.
+
+Supported animations currently:
+
+	List of IID parts:
+		health
+		attack
+		cost
+		name
+	If more are needed, they can be added.
+
+	universal options:
+		
+		random(default: false):
+			global option for an animation which specifies whether elements should
+			be random or not. Currently there is only one flag which affects all 
+			options. If there is need flags can be created for seperate options.
+		
+		color(default: 100,100,100,1.0): 
+			may be passed as either a string of the form "rgba(r,g,b,a)"
+			or a set of 4 numbers r,g,b, and a
+			or a set of 8 numbers r1,r2,g1,g2,b1,b2,a1,a2.
+			Given a set of 8 numbers, colors for individual elements of an
+			animation are chosen randomly with that range.
+			
+		colorset(default: nullish):
+			accepts a list of colors instead of a single one.
+			if random is true, colors will be chose randomly from the pool.
+			if it is not, they will be chose in order.
+			Note that these colors may be specified in any of the 3
+			acceptable color formats.
+			
+		radius(default: 10):
+			may be passed as either a single number of 2 numbers.
+			sets the radius of all elements. If 2 numbers are given, radiuses
+			will be set from somewhere within the given range rather than 
+			as a single global value.
+			
+		shape(default: circle):
+			set the shape of all elements of an animation. 
+			Current options:
+				circle
+			If more options are needed, they can be added.
+
+	Single Radial Implosion and Explosion:
+		A single shape either moves out to a given radius or moves in from a
+		given radius.
+		options:
+			center(default: null):
+				accepts two numbers, or an IID. The circle will center on those
+				numbers as an x,y, or will center on the centerpoint of the element
+				represents by that IID.
+				Additionally, given an IID, can accept a string specifying the part of that
+				IID to consider. If it cannot find such a part, considers the center
+				of the whole IID.
+			
+	Linear Point Cloud:
+		A cloud of shapes moves from a given IID to another IID.
+		options:
+			start(default: null):
+				accepts two numbers, or an IID. The shapes will start on those
+				numbers as an x,y, or will start on the centerpoint of the element
+				represents by that IID.
+				Additionally, given an IID, can accept a string specifying the part of that
+				IID to consider. If it cannot find such a part, considers the center
+				of the whole IID.
+				
+				
+			end(default: null):
+				accepts two numbers, or an IID. The shapes will end on those
+				numbers as an x,y, or will end on the centerpoint of the element
+				represents by that IID.
+				Additionally, given an IID, can accept a string specifying the part of that
+				IID to consider. If it cannot find such a part, considers the center
+				of the whole IID.
+				
+			count(default: 5):
+				the number of elements to include in the cloud of shapes.
+				accepts a single number, the number of elements to include.
+		
+		

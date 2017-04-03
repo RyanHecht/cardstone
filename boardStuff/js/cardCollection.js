@@ -115,7 +115,7 @@ class cardCollection extends drawableZone{
 			height = maxHeight * .8;
 			$(".bigCardBox").css({
 				fontSize : "10px",
-				lineheight : "10px"
+				lineHeight : "90%"
 			});
 		}
 		let width = height * WIDTH_RATIO;

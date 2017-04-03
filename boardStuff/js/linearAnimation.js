@@ -46,12 +46,29 @@ class linearAnimation extends animation{
 	}
 	
 	setStartDiv(divElem){
-		this.setStartRange(divElem.offsetLeft,divElem.offsetTop,divElem.offsetLeft + divElem.offsetWidth, divElem.offsetTop + divElem.offsetHeight);
+		let left = divElem.offsetLeft;
+		let top = divElem.offsetTop;
+		let width = divElem.offsetWidth;
+		let height = divElem.offsetHeight;
+		while(divElem.offsetParent != null){
+			divElem = divElem.offsetParent;
+			left += divElem.offsetLeft;
+			top += divElem.offsetTop;
+		}
+		this.setStartRange(left,top,left + width, top + height);
 	}
 	
 	setEndDiv(divElem){
-		console.log(divElem);
-		this.setEndRange(divElem.offsetLeft,divElem.offsetTop,divElem.offsetLeft + divElem.offsetWidth, divElem.offsetTop + divElem.offsetHeight);
+		let left = divElem.offsetLeft;
+		let top = divElem.offsetTop;
+		let width = divElem.offsetWidth;
+		let height = divElem.offsetHeight;
+		while(divElem.offsetParent != null){
+			divElem = divElem.offsetParent;
+			left += divElem.offsetLeft;
+			top += divElem.offsetTop;
+		}
+		this.setEndRange(left,top,left + width, top + height);
 	}
 	
 	setStartRange(x1,y1,x2,y2){

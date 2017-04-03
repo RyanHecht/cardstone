@@ -1,5 +1,5 @@
 html{
-	background-image: url("images/boardBackground.jpg");
+	background-image: url("../images/boardBackground.jpg");
 	width:98%;
 	height:98%;
 }
@@ -140,7 +140,7 @@ body{
 	height:50%;
 	width:100%;
 	text-align: center;
-	background-image: url("images/boardBackground.jpg");
+	background-image: url("../images/boardBackground.jpg");
 }
 
 
