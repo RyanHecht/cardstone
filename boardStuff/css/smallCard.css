@@ -3,12 +3,14 @@
 	top:0%;
 	left:0%;
 	width:100%;
-	height:10%;
+	height:13%;
+	line-height:90%;
+
 }
 
 .smallCard .cost{
 	position:absolute;
-	top:10%;
+	top:13%;
 	left:0%;
 	width:100%;
 	height:12%;
@@ -16,19 +18,11 @@
 
 .smallCard .imageArea{
 	position:absolute;
-	top:22%;
+	top:25%;
 	left:0%;
 	width:100%;
-	height:61%;
+	height:58%;
 }
-
-.smallCard .imageArea .image{
-	object-fit: cover;
-	min-width: 100%;
-	min-height:100%;
-}
-
-
 
 .smallCard .statArea{
 	position:absolute;
@@ -37,6 +31,12 @@
 	left:0%;
 	width:100%;
 	height:17%;
+}
+
+.smallCard .imageArea .image{
+	object-fit: cover;
+	min-width: 100%;
+	min-height:100%;
 }
 
 .smallCard .resDisplay img{

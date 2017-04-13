@@ -28,12 +28,21 @@ class cardCollection extends drawableZone{
 			$this.expandInto.empty();
 			expandedInUse = false;
 			$this.expandInto.hide();
+			$('div.qtip:visible').qtip('hide');
 		});
 	}
 	
 	setCards(cards){
 		this.cards = cards;
 		this.changed = true;
+	}
+	
+	setCardsFromCache(cardIDs, cache){
+		let cards = [];
+		for(let x = 0; x < cardIDs.length; x++){
+			cards.push(cache.getByIID(cardIds[x]));
+		}
+		this.cards = cards;
 	}
 	
 	forceRedraw(){
@@ -63,12 +72,12 @@ class cardCollection extends drawableZone{
 		for(let x = 1; x <= rows; x++){
 			curDiv.append('<div class="cardRow"></div');
 			let curChild = curDiv.children().last();
-			curChild.css('height', curDiv.height() / rows + "px");
+			curChild.css('height', (curDiv.height() / rows) + "px");
 			while(total < x * maxInRow && total < this.cards.length){
 				//space to mekkit mejor
 				curChild.append('<div class="cardBox"></div>');
 				let cur = curChild.children().last();
-				cur.css('height', curDiv.height() / rows + "px");
+				cur.css('height', (curDiv.height() / rows) + "px");
 				$this.cards[total].setDiv(cur);
 				$this.cards[total].drawGivenSpace(cur);
 				total++;
@@ -123,6 +132,7 @@ class cardCollection extends drawableZone{
 			height -= 10;
 			width = height * WIDTH_RATIO;
 		}
+		console.log(height,width);
 		div.find('.hasTooltip').each(function() {
 			$(this).qtip({
 				content: {

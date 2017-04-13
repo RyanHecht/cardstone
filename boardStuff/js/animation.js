@@ -3,9 +3,32 @@ class animation{
 		this.random = false;
 	}
 	
+	create(){
+		console.log("Cannot create basic animation type. Use a subclass!");
+	}
+	
 	setColor(color){
 		this.ranged = false;
 		this.color = color;
+	}
+	
+	buildFromOptions(options){
+		let colorType = options.colorType;
+		this.setColorFromData(colorType,options);
+		this.setShape(options.shape);
+		this.setRadius(options.radis);
+		this.setSpeed(options.speed);
+	}
+	
+	setColorFromData(type,data){
+		switch(colorType){
+		case ColorEnum.DEFAULT:
+			this.setColor(DEFAULT_ANIM_COLOR);
+		case ColorEnum.MONO:
+			this.setColor(data.color);
+		case ColorEnum.RANGED:
+			this.setColorRange(data.r1,data.r2,data.g1,data.g2,data.b1,data.b2,data.a);
+		}
 	}
 	
 	setColorRange(r1,r2,g1,g2,b1,b2,a){
@@ -20,15 +43,21 @@ class animation{
 	}
 	
 	setShape(shape){
-		this.shape = shape;
+		if(shape != null){
+			this.shape = shape;
+		}
 	}
 	
 	setRadius(radius){
-		this.radius = radius;
+		if(radius != null){
+			this.radius = radius;
+		}
 	}
 
 	setCount(count){
-		this.count = count;
+		if(count != null){
+			this.count = count;
+		}
 	}
 	
 	setRandom(random){
@@ -36,10 +65,9 @@ class animation{
 	}
 	
 	setSpeed(speed){
-		this.speed = speed;
-	}setColor(color){
-		this.ranged = false;
-		this.color = color;
+		if(speed != null){
+			this.speed = speed;
+		}
 	}
 	
 	setColorRange(r1,r2,g1,g2,b1,b2,a){

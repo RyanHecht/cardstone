@@ -1,65 +1,94 @@
-var ZoneEnum = {
-  HAND: 1,
-  AURA: 2,
-  CREATURE: 3
-};
+const HAND_1_DIV = "#hand1";
+const HAND_2_DIV = "#hand2";
+const AURA_1_DIV = "#aura1";
+const AURA_2_DIV = "#aura2";
+const CREATURE_1_DIV = "#creature1";
+const CREATURE_2_DIV = "#creature2";
+const BASE_1_DIV = "#baseRes1";
+const BASE_2_DIV = "#baseRes2";
+const MANA_1_DIV = "#mana1";
+const MANA_2_DIV = "#mana2";
+const EXPAND_1_DIV = "#onTop1";
+const EXPAND_2_DIV = "#onTop2";
+
+
+
 
 class board{	
 	constructor(hand1, hand2, aura1, aura2, creature1, creature2, p1Health, p2Health, p1RegRes, p2RegRes,p1Mana,p2Mana,deck1,deck2){
-		this.hand1 = new cardCollection($('#hand1'),hand1,$('#onTop1'));
-		this.hand2 = new cardCollection($('#hand2'),hand2,$('#onTop2'));
-		this.aura1 = new cardCollection($('#aura1'),aura1,$('#onTop1'));
-		this.aura2 = new cardCollection($('#aura2'),aura2,$('#onTop2'));
-		this.creature1 = new cardCollection($('#creature1'),creature1,$('#onTop1'));
-		this.creature2 = new cardCollection($('#creature2'),creature2,$('#onTop2'));
-		this.p2Health = p2Health;
-		this.p1Health = p1Health;
-		this.p1RegRes = p1RegRes;
-		this.p2RegRes = p2RegRes;
-		this.healthRes1 = new healthResZone($('#baseRes1'),p1Health,p1RegRes,deck1);
-		this.healthRes2 = new healthResZone($('#baseRes2'),p2Health,p2RegRes,deck2);
-		this.p1Mana = new manaZone($('#mana1'),p1Mana);
-		this.p2Mana = new manaZone($('#mana2'),p2Mana);
-		this.allZones = [this.hand1,this.hand2,this.aura1,this.aura2,this.creature1,this.creature2, this.healthRes1, this.healthRes2, this.p1Mana, this.p2Mana];
+		this.allZones = new Map();
+		this.allZones.set("hand1",new cardCollection($(HAND_1_DIV),hand1,$(EXPAND_1_DIV)));
+		this.allZones.set("hand2",new cardCollection($(HAND_2_DIV),hand2,$(EXPAND_2_DIV)));
+		this.allZones.set("aura1",new cardCollection($(AURA_1_DIV),aura1,$(EXPAND_1_DIV)));
+		this.allZones.set("aura2",new cardCollection($(AURA_2_DIV),aura2,$(EXPAND_2_DIV)));
+		this.allZones.set("creature1", new cardCollection($(CREATURE_1_DIV),creature1,$(EXPAND_1_DIV)));
+		this.allZones.set("creature2", new cardCollection($(CREATURE_2_DIV),creature2,$(EXPAND_2_DIV)));
+		this.features = new Map();
+		this.features.set("p2Health",p2Health);
+		this.features.set("p1Health",p1Health);
+		this.features.set("p2Deck",deck2);
+		this.features.set("p1Deck",deck1);
+		this.features.set("p2Mana",p2Mana);
+		this.features.set("p1Mana",p1Mana);
+		this.features.set("p1RegRes",p1RegRes);
+		this.features.set("p2RegRes",p2RegRes);
+		this.buildResZones();
 	}
 
+	buildResZones(){
+		this.healthRes1 = new healthResZone($(BASE_1_DIV),this.features.get("p1Health"),this.features.get("p1RegRes"),this.features.get("p1Deck"));
+		this.healthRes2 = new healthResZone($(BASE_2_DIV),this.features.get("p2Health"),this.features.get("p2RegRes"),this.features.get("p2Deck"));
+		this.p1Mana = new manaZone($(MANA_1_DIV),this.features.get("p1Mana"));
+		this.p2Mana = new manaZone($(MANA_2_DIV),this.features.get("p2Mana"));
+		this.allZones.set("healthRes1",new healthResZone($(BASE_1_DIV),this.features.get("p1Health"),this.features.get("p1RegRes"),this.features.get("p1Deck")));
+		this.allZones.set("healthRes2",new healthResZone($(BASE_2_DIV),this.features.get("p2Health"),this.features.get("p2RegRes"),this.features.get("p2Deck")));
+		this.allZones.set("p1Mana",new manaZone($(MANA_1_DIV),this.features.get("p1Mana")));
+		this.allZones.set("p2Mana",new manaZone($(MANA_2_DIV),this.features.get("p2Mana")));
+	}
+	
+	changeZone(name,val){
+		this.allZones.get(name).setCardsFromCache(val,this.cache);
+	}
+	
 	draw(){
-		for(let x = 0; x < this.allZones.length; x++){
-			this.allZones[x].draw();
+		for(let zone of this.allZones.values()){
+			zone.draw();
 		}
 	}
 	
 	forceRedraw(){
-		for(let x = 0; x < this.allZones.length; x++){
-			this.allZones[x].forceRedraw();
+		for(let zone of this.allZones.values()){
+			zone.forceRedraw();
 		}
 		
 	}
+
+
 	
 	pushCard(card, zone, owner){
 		switch(zone) {
 			case ZoneEnum.HAND:
 				if(owner == 1){
-					this.hand1.pushCard(card);
+					this.allZones.get("hand1").pushCard(card);
 				}
 				else{
-					this.hand2.pushCard(card);
+					this.allZones.get("hand2").pushCard(card);
 				}
 				break;
 			case ZoneEnum.AURA:
 				if(owner == 1){
-					this.aura1.pushCard(card);
+					this.allZones.get("aura1").pushCard(card);
 				}
 				else{
-					this.aura2.pushCard(card);
+					this.allZones.get("aura2").pushCard(card);
 				}
 				break;
 			case ZoneEnum.CREATURE:
 				if(owner == 1){
-					this.creature1.pushCard(card);
+					this.allZones.get("creature1").pushCard(card);
 				}
 				else{
-					this.creature2.pushCard(card);
+					this.allZones.get("creature2").pushCard(card);
 				}
 				break;
 			default:
