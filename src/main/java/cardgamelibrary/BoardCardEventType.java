@@ -1,4 +1,4 @@
-package cardgamelibary;
+package cardgamelibrary;
 
 /**
  * A type of event which can occur to a card currently on the board

@@ -1,42 +1,47 @@
-package cardgamelibary;
+package cardgamelibrary;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import game.Player;
+
 /**
  * A collection of cards. Note that a collection of cards is also a Zone
+ * 
  * @author 42jpa
  *
  */
-public class OrderedCardCollection implements CardCollection{
+public class OrderedCardCollection implements CardCollection {
 
-	private List<Card> cards;
-	private Zone zone;
-	
-	public OrderedCardCollection(Zone zone){
+	private List<Card>	cards;
+	private Zone				zone;
+
+	// every OCC is owned by a player.
+	private Player			player;
+
+	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
+		this.player = p;
 	}
-	
-	public Zone getZone(){
+
+	public Zone getZone() {
 		return zone;
 	}
-	
-	public List<Effect> handleCardBoardEvent(Event event){
+
+	public List<Effect> handleCardBoardEvent(Event event) {
 		List<Effect> results = new ArrayList<>();
-		for(Card c : cards){
-			for(EventHandler eh : c.getHandlers()){
-				if(eh.handles(event)){
+		for (Card c : cards) {
+			for (EventHandler eh : c.getHandlers()) {
+				if (eh.handles(event)) {
 					results.addAll(eh.handle(event));
 				}
 			}
 		}
 		return results;
 	}
-		
-	
-	
+
 	@Override
 	public boolean add(Card e) {
 		return cards.add(e);

@@ -1,4 +1,4 @@
-package cardgamelibary;
+package cardgamelibrary;
 
 /**
  * An effect which can be added to the queue, and executed when appropriate. Changes the board state in some way.

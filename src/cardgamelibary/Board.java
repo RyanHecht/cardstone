@@ -16,6 +16,32 @@ public class Board {
 	Queue<Effect> effectQueue;
 	private List<Creature> onBoard;
 	
+	// player one stuff;
+	private OrderedCardCollection deckOne;
+	private OrderedCardCollection handOne;
+	private OrderedCardCollection auraOne;
+	private OrderedCardCollection graveOne;
+	
+	// player two stuff;
+	private OrderedCardCollection deckTwo;
+	private OrderedCardCollection handTwo;
+	private OrderedCardCollection auraTwo;
+	private OrderedCardCollection graveTwo;
+	
+	public Board(OrderedCardCollection deckOne,
+			OrderedCardCollection deckTwo){
+		// using LinkedLists but declaring using queue interface.
+		// Seems like the best way to handle the queues.
+		eventQueue = new LinkedList<Event>();
+		effectQueue = new LinkedList<Effect>();
+		onBoard = new ArrayList<Creature>();
+	}
+	// This will be used whenever a player
+	// wants to perform an event.
+	public void takeAction(Event event){
+		eventQueue.add(event);
+		handleState();
+	}
 	
 	//Basically, any time a player sends a command, events or effects will wind up in q, and then this will be called.
 	//This will handle the entire cascade of events placed in the queue, until there are none left.
@@ -60,6 +86,10 @@ public class Board {
 				
 			}
 		}	
+	}
+	
+	private void draw(int numCards, Player p){
+		
 	}
 	
 }

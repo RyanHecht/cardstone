@@ -1,4 +1,4 @@
-package cardgamelibary;
+package cardgamelibrary;
 
 import java.util.List;
 

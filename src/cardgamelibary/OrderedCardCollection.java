@@ -14,7 +14,9 @@ public class OrderedCardCollection implements CardCollection{
 
 	private List<Card> cards;
 	private Zone zone;
-	
+	// A collection of cards must be owned by a player.
+	private Player player;
+		
 	public OrderedCardCollection(Zone zone){
 		this.zone = zone;
 	}

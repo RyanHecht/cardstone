@@ -6,26 +6,46 @@
 public class Player {
 	private int life;
 	private int resources;
-	private int fire;
-	private int water;
-	private int earth;
-	private int air;
-	private int balance;
+	private Map<ElementType, Integer> elementMap;
 	public Player(int l){
 		life = l;
 		resources = 0;
-		fire = 0;
-		water = 0;
-		earth = 0;
-		air = 0;
-		balance = 0;
+		elementMap = new HashMap<ElementType, Integer>();
 	}
 	
 	public int getLife(){
 		return life;
 	}
 	
+	public void changeResources (int newCount){
+		resources = newCount;
+	}
+	
+	public void setElement(ElementType type, int elem){
+		elementMap.put(type, elem);
+	}
+	
+	public int getResources(){
+		return resources;
+	}
+	
+	public int getElem(ElementType type){
+		int elemCount = elementMap.get(type);
+		if(elemCount == null){
+			return 0;
+		}
+		return elemCount;
+	}
+	
 	protected void setLife(int newLife){
 		life = newLife
+	}
+	
+	protected void takeDamage(int damage){
+		life -= damage;
+	}
+	
+	protected void healDamage(int heal){
+		life += heal;
 	}
 }
