@@ -11,6 +11,28 @@ body{
 	overflow:hidden;
 }
 
+.targetCursor{
+	background-image: url("../images/targetCursor.png");
+	height:50px;
+	width:50px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:right bottom;
+}
+
+.expandButton{
+	background-image: url("../images/expandButton.png");
+	position:absolute;
+	z-index:100;
+	bottom:3px;
+	right:3px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:right bottom;
+	height:10%;
+	width:5%;
+}
+
 .board{
 	height:100%;
 	width:100%;
@@ -129,13 +151,13 @@ body{
 .boardOverlay{
 	height:100%;
 	width:100%;
-	z-index: 100;
+	z-index: 300;
 }
 
 
 .onTop{
 	position:absolute;
-	z-index: 10;
+	z-index: 200;
 	display: none;
 	height:50%;
 	width:100%;

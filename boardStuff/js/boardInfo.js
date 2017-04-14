@@ -26,6 +26,7 @@ class boardInfo{
 			}
 			board.changeZone(entry[0],entry[1]);
 		}
+		board.setZones();
 	}
 	
 	

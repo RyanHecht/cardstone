@@ -28,7 +28,6 @@ class healthResZone extends drawableZone{
 			}
 		}
 		);
-		console.log(this.deckDiv,this.healthDiv,this.resDiv);
 	}
 	
 	forceRedraw(){

@@ -8,16 +8,23 @@ class cardCollection extends drawableZone{
 		this.changed = true;
 		this.prepareForExpand();
 		this.expandInto = expandInto;
+		this.zone = div.attr("id");
 	}
 	
 	prepareForExpand(){
 		let $this = this;
-		this.div.click(function(){
+		this.div.children(".expandButton").click(function(){
 			if(!expandedInUse){
 				expandedInUse = true;
 				$this.expand();
 			}
 		});
+	}
+	
+	setZones(){
+		for(let card of this.cards){
+			card.setZone(this.zone);
+		}
 	}
 	
 	expand(){
@@ -101,7 +108,20 @@ class cardCollection extends drawableZone{
 			this.fillDiv(div);
 			this.prepareToolTips(div);
 			this.sizeCards(div);
+			this.div.append('<div class="expandButton"></div>');
+			this.prepareForExpand();
+			this.prepareDraggables();
 		}
+	}
+	
+	prepareDraggables(){
+		this.div.find(".card").draggable({ 
+			revert: true, 
+			helper: function(){
+				return "<div class='targetCursor'></div>";
+			},
+			cursorAt: { bottom: 25, right: 25}
+		});
 	}
 	
 	sizeCards(div){
@@ -132,7 +152,6 @@ class cardCollection extends drawableZone{
 			height -= 10;
 			width = height * WIDTH_RATIO;
 		}
-		console.log(height,width);
 		div.find('.hasTooltip').each(function() {
 			$(this).qtip({
 				content: {

@@ -18,6 +18,14 @@ class Card{
 		div.attr("id",this.IID);
 	}
 	
+	getZone(){
+		return this.zone;
+	}
+	
+	setZone(zone){
+		this.zone = zone;
+	}
+	
 }
 
 class creatureCard extends Card {
@@ -114,7 +122,6 @@ class creatureCard extends Card {
 			this.drawForTip();
 		}
 		else{
-			
 			this.drawTinyForTip();
 		}
 		super.addIID(div);

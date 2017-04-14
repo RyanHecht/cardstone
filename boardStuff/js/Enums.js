@@ -13,13 +13,19 @@ const TypeEnum = {
 
 };
 
-const ColorEnum{
+const ColorEnum = {
 	DEFAULT:0,
 	RANGED:1,
 	MONO:2
 };
 
-const AnimationEnum{
+const AnimationEnum = {
 	RADIAL:0,
 	CLOUD:1
 };
+
+const StateEnum = {
+	IDLE:0,
+	TARGET_NEEDED:1,
+	CHOICE_NEEDED:2  
+}

@@ -33,8 +33,18 @@ class board{
 		this.features.set("p1RegRes",p1RegRes);
 		this.features.set("p2RegRes",p2RegRes);
 		this.buildResZones();
+		this.setZones();
 	}
 
+	setZones(){
+		for(let zone of this.allZones.values()){
+			//So dirty bos
+			if(zone instanceof cardCollection){
+				zone.setZones();
+			}
+		}
+	}
+	
 	buildResZones(){
 		this.healthRes1 = new healthResZone($(BASE_1_DIV),this.features.get("p1Health"),this.features.get("p1RegRes"),this.features.get("p1Deck"));
 		this.healthRes2 = new healthResZone($(BASE_2_DIV),this.features.get("p2Health"),this.features.get("p2RegRes"),this.features.get("p2Deck"));
@@ -46,6 +56,10 @@ class board{
 		this.allZones.set("p2Mana",new manaZone($(MANA_2_DIV),this.features.get("p2Mana")));
 	}
 	
+	changeFeature(key,val){
+		this.features.set(key,val);
+	}
+	
 	changeZone(name,val){
 		this.allZones.get(name).setCardsFromCache(val,this.cache);
 	}
@@ -54,13 +68,14 @@ class board{
 		for(let zone of this.allZones.values()){
 			zone.draw();
 		}
+		setupCardClick();
 	}
 	
 	forceRedraw(){
 		for(let zone of this.allZones.values()){
 			zone.forceRedraw();
 		}
-		
+		setupCardClick();
 	}
 
 

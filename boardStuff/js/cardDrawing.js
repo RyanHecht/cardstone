@@ -21,6 +21,10 @@ let expandedInUse = false;
 let wholeBoard;
 let time;
 let date;
+let isTurn = true;
+let inputState = StateEnum.IDLE;
+let selectedCard;
+let josh;
 
 /**
 Fill a div with a list of cards, if they can fit.
@@ -72,6 +76,7 @@ function setupCanvas(){
     canvas.width = htmlBoard.width();
     canvas.height = htmlBoard.height();
 	$(".boardOverlay").attr('width',canvas.width);
+	canvasQuery.hide();
 };
 
 function setupBoard(){
@@ -96,7 +101,7 @@ function setupBoard(){
 	let whaleCost = new cost(30, bigWhalePool);
 
 	
-	let josh = new creatureCard(1,joshCost, "Josh Pattiz", "Perform a long sequence of actions." + 
+	josh = new creatureCard(1,joshCost, "Josh Pattiz", "Perform a long sequence of actions." + 
 		" These may include dancing, singing, or just generally having a good time." + 
 		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
 	let skyWhale = new creatureCard(2,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
@@ -131,7 +136,7 @@ function setupBoard(){
 	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
 }
 
-parseAnimation(data){
+function parseAnimation(data){
 	let animationType = data.animationType;
 	let animation;
 	switch(animationType){
@@ -148,7 +153,7 @@ parseAnimation(data){
 
 
 
-parseEvent(data){
+function parseEvent(data){
 	
 }
 
@@ -166,11 +171,68 @@ function buildCloud(options){
 	return cloud;
 }
 	
-$('document').ready(function(){	
+function setupCardClick(){
+	$(".card").on("click", function(){
+		console.log("clickt");
+		cardClicked($(this));
+	});
+}	
+
+function cardSelected(cardDiv){
+	console.log(cardDiv);
+	$(".card").removeClass("cardSelected");
+	cardDiv.addClass("cardSelected");
+	selectedCard = cardDiv.attr("id");
+}
+
+function targetChosen(cardDiv){
+	let response = sendTargetResponse(cardDiv.getId);
+	if(response.valid){
+		inputState = IDLE;
+	}
+	else{
+		actionFailed(response.message);
+	}
+}
+
+function choiceMade(cardDiv){
+	let response = sendChoiceResponse(cardDiv.getID);
+	if(response.valid){
+		inputState = IDLE;
+	}
+	else{
+		actionFailed(response.message);
+	}
+}
+
+function cardClicked(cardDiv){
+	console.log(cardDiv);
+	if(isTurn){
+		switch(inputState){
+			case StateEnum.IDLE:
+				cardSelected(cardDiv);
+				break;
+			case StateEnum.TARGET_NEEDED:
+				targetChosen(cardDiv);
+				break;
+			case StateEnum.CHOICE_NEEDED:
+				choiceMade(cardDiv);
+				break;
+			default:
+				actionFailed();
+		}
+	}
+	else{
+		actionFailed();
+	}
+}
+	
+$(document).ready(function(){	
 	setupCanvas();
 	setupBoard();
 	
 	$(document).keypress(function(e) {
+		console.log("aqui");
 		if(e.which == 13) {
 			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,2);
 			wholeBoard.draw();
@@ -184,4 +246,5 @@ $('document').ready(function(){
 		redrawAll();
 	});
 	wholeBoard.draw();
+	setupCardClick();
 });
