@@ -30,9 +30,13 @@ public class OrderedCardCollection implements CardCollection {
 	// every OCC is owned by a player.
 	private Player			player;
 
+	// keep track of changes in OCC
+	private boolean			changed;
+
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
 		this.player = p;
+		this.changed = false;
 	}
 
 	public Zone getZone() {
@@ -200,4 +204,7 @@ public class OrderedCardCollection implements CardCollection {
 		return result;
 	}
 
+	public boolean hasChanged() {
+		return changed;
+	}
 }
