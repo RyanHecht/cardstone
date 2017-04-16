@@ -1,5 +1,6 @@
 package cardgamelibrary;
 
+import effects.EmptyEffect;
 import game.Player;
 
 /**
@@ -31,26 +32,45 @@ public interface Card {
 	 */
 	CardType getType();
 
-	public Effect onPlayerDamage(Player p, Card src);
+	default public Effect onPlayerDamage(Player p, Card src, int dmg) {
+		return EmptyEffect.create();
+	}
 
-	public Effect onPlayerHeal(Player p, Card src);
+	default public Effect onPlayerHeal(Player p, Card src, int heal) {
+		return EmptyEffect.create();
+	}
 
-	public Effect onTurnEnd();
+	default public Effect onTurnEnd() {
+		return EmptyEffect.create();
+	}
 
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
-	public Effect onDamage(Creature target, Card src);
+	default public Effect onDamage(Creature target, Card src, int dmg) {
+		return EmptyEffect.create();
+	}
 
-	public Effect onHeal(Creature target, Card src);
+	default public Effect onHeal(Creature target, Card src, int heal) {
+		return EmptyEffect.create();
+	}
 
 	// specific behaviors based on when certain cards are played
-	public Effect cardPlayed(Card c);
+	default public Effect cardPlayed(Card c) {
+		return EmptyEffect.create();
+	}
 
 	// when a card is drawn. We can also use this to perform some behavior if
 	// THIS card is drawn (i.e. some card auto summons when it's drawn or
 	// something.
-	public Effect cardDrawn(Card drawn);
+	default public Effect cardDrawn(Card drawn) {
+		return EmptyEffect.create();
+	}
 
-	public Effect creatureDied(Creature cr);
+	default public Effect creatureDied(Creature cr) {
+		return EmptyEffect.create();
+	}
 
+	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest) {
+		return EmptyEffect.create();
+	}
 }

@@ -4,13 +4,17 @@ import cardgamelibrary.Board;
 import cardgamelibrary.Effect;
 
 /**
- * Class to represent an effect that does nothing.
+ * Class to represent an effect that does nothing. It's final so people can't
+ * subclass it and screw around b/c that could cause major issues.
  *
  * @author Raghu
  *
  */
-public class EmptyEffect implements Effect {
+public final class EmptyEffect implements Effect {
 
+	/*
+	 * no instantiation allowed.
+	 */
 	private EmptyEffect() {
 
 	}

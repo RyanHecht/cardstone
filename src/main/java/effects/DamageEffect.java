@@ -22,7 +22,7 @@ public class DamageEffect implements Effect {
 		// TODO Auto-generated method stub
 		for (Creature cr : board.getOnBoard()) {
 			if (cr.equals(cardDamaged)) {
-				cr.setHealth(cr.getHealth() - dmg);
+				cr.takeDamage(dmg, source);
 			}
 
 		}
