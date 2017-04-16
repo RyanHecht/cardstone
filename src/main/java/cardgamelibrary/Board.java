@@ -6,7 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.google.gson.JsonObject;
+
 import game.Player;
+import server.MessageTypeEnum;
 
 /**
  * Contains the entire state of a given game
@@ -98,6 +101,10 @@ public class Board {
 
 	private void draw(int numCards, Player p) {
 
+	}
+	
+	public JsonObject jsonifySelf(){
+		JsonObject result = new JsonObject();
 	}
 
 }
