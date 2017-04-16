@@ -1,6 +1,6 @@
 package cardgamelibrary;
 
-import java.util.List;
+import game.Player;
 
 /**
  * A card in the game.
@@ -31,6 +31,26 @@ public interface Card {
 	 */
 	CardType getType();
 
-	List<EventHandler> getHandlers();
+	public Effect onPlayerDamage(Player p, Card src);
+
+	public Effect onPlayerHeal(Player p, Card src);
+
+	public Effect onTurnEnd();
+
+	// when something else is damaged. Creatures have a
+	// takeDamage method that specifies that they are the thing taking damage.
+	public Effect onDamage(Creature target, Card src);
+
+	public Effect onHeal(Creature target, Card src);
+
+	// specific behaviors based on when certain cards are played
+	public Effect cardPlayed(Card c);
+
+	// when a card is drawn. We can also use this to perform some behavior if
+	// THIS card is drawn (i.e. some card auto summons when it's drawn or
+	// something.
+	public Effect cardDrawn(Card drawn);
+
+	public Effect creatureDied(Creature cr);
 
 }

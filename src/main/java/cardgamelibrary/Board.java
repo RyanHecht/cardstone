@@ -53,8 +53,8 @@ public class Board {
 	// This will handle the entire cascade of events placed in the queue, until
 	// there are none left.
 	private void handleState() {
-		while (eventQueue.size() > 1 || effectQueue.size() > 1) {
-			if (eventQueue.size() > 1) {
+		while (eventQueue.size() >= 1 || effectQueue.size() >= 1) {
+			if (eventQueue.size() >= 1) {
 				// when we handle an event we want to put
 				// all effects it produces onto the queue.
 				handleEvent(eventQueue.poll());
@@ -96,8 +96,16 @@ public class Board {
 		}
 	}
 
+	private void creatureDies(Creature c) {
+		// TODO: figure out this method!
+	}
+
 	private void draw(int numCards, Player p) {
 
+	}
+
+	public List<Creature> getOnBoard() {
+		return onBoard;
 	}
 
 }
