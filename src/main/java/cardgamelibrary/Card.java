@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import com.google.gson.JsonObject;
+
 import effects.EmptyEffect;
 import game.Player;
 
@@ -74,5 +76,14 @@ public interface Card {
 
 	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest) {
 		return EmptyEffect.create();
+	}
+
+	default JsonObject jsonifySelf(){
+		JsonObject result = new JsonObject();
+		result.addProperty("text", this.getText());
+		result.addProperty("id",this.getId());
+		result.addProperty("name",this.getName());
+		result.addProperty("image", this.getImage());
+		result.addProperty("cost",this.getCost());
 	}
 }

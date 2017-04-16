@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
 import events.CardZoneChangeEvent;
@@ -188,6 +191,17 @@ public class OrderedCardCollection implements CardCollection {
 	@Override
 	public <T> T[] toArray(T[] a) {
 		return cards.toArray(a);
+	}
+	
+	public JsonObject jsonifySelf(){
+		JsonObject result = new JsonObject();
+		List<JsonObject> cardObjects = new ArrayList<>();
+		for(Card c : cards){
+			cardObjects.add(c.jsonifySelf());
+		}
+		Gson gson = new Gson();
+		return gson.toJson(cardObjects);
+		return result;
 	}
 
 	public boolean hasChanged() {
