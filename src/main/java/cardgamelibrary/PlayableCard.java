@@ -14,4 +14,6 @@ public interface PlayableCard extends Card {
 	public boolean hasChanged();
 
 	public PlayerType getOwner();
+	
+	
 }

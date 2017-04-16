@@ -3,6 +3,8 @@ package cardgamelibrary;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+
 /**
  * Class to represent the cost of playing a card.
  *
@@ -43,5 +45,16 @@ public class Cost {
 	 */
 	public int getElement(ElementType elem) {
 		return elementMap.get(elem);
+	}
+	
+	public JsonObject jsonifySelf(){
+		JsonObject result = new JsonObject();
+		result.addProperty("resources", resources);
+		result.addProperty("fire", elementMap.get(ElementType.FIRE));
+		result.addProperty("air", elementMap.get(ElementType.AIR));
+		result.addProperty("water", elementMap.get(ElementType.WATER));
+		result.addProperty("balance", elementMap.get(ElementType.BALANCE));
+		result.addProperty("earth", elementMap.get(ElementType.EARTH));
+		return result;
 	}
 }

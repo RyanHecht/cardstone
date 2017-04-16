@@ -63,7 +63,7 @@ public class Player {
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("health", life);
-		result.addProperty("resources", resources);
+		result.addProperty("pool", resources);
 		JsonObject elementObject = new JsonObject();
 		elementObject.addProperty("fire", elementMap.get(ElementType.FIRE));
 		elementObject.addProperty("water", elementMap.get(ElementType.WATER));

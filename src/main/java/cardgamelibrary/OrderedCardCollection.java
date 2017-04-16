@@ -30,13 +30,9 @@ public class OrderedCardCollection implements CardCollection {
 	// every OCC is owned by a player.
 	private Player			player;
 
-	// keep track of changes in OCC
-	private boolean			changed;
-
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
 		this.player = p;
-		this.changed = false;
 	}
 
 	public Zone getZone() {
@@ -193,7 +189,7 @@ public class OrderedCardCollection implements CardCollection {
 		return cards.toArray(a);
 	}
 	
-	public JsonObject jsonifySelf(){
+	public String jsonifySelf(){
 		JsonObject result = new JsonObject();
 		List<JsonObject> cardObjects = new ArrayList<>();
 		for(Card c : cards){
@@ -201,10 +197,6 @@ public class OrderedCardCollection implements CardCollection {
 		}
 		Gson gson = new Gson();
 		return gson.toJson(cardObjects);
-		return result;
 	}
 
-	public boolean hasChanged() {
-		return changed;
-	}
 }

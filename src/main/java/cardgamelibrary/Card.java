@@ -84,6 +84,9 @@ public interface Card {
 		result.addProperty("id",this.getId());
 		result.addProperty("name",this.getName());
 		result.addProperty("image", this.getImage());
-		result.addProperty("cost",this.getCost());
+		result.add("cost",this.getCost().jsonifySelf());
+		return result;
 	}
+	
+	JsonObject jsonifySelfChanged();
 }
