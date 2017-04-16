@@ -1,22 +1,41 @@
 package cardgamelibrary;
 
-public interface Creature extends Card {
+public class Creature extends PlayableCard {
 
-	public int getHealth();
+	private int	maxHealth;
+	private int	health;
+	private int	attack;
 
-	public int getMaxHealth();
+	public Creature(int health, int attack) {
+		maxHealth = health;
+		this.health = health;
+		this.attack = attack;
+	}
 
-	public int getAttack();
+	public int getHealth() {
+		return health;
+	}
 
-	default public void takeDamage(int damage, Card src) {
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public int getAttack() {
+		return attack;
+	}
+
+	public void takeDamage(int damage, Card src) {
 		setHealth(getHealth() - damage);
 	}
 
-	default public void heal(int heal, Card src) {
+	public void heal(int heal, Card src) {
 		setHealth(getHealth() + heal);
 	}
 
-	public void setHealth(int newHealth);
+	public void setHealth(int newHealth) {
+		maxHealth = newHealth;
+		health = newHealth;
+	}
 
 	/**
 	 * gets whether the creature is dead. By default just returns if health < 0,
@@ -24,7 +43,7 @@ public interface Creature extends Card {
 	 *
 	 * @return
 	 */
-	default public boolean isDead() {
+	public boolean isDead() {
 		return getHealth() <= 0;
 	}
 

@@ -1,27 +1,29 @@
 package game;
 
+<<<<<<<HEAD=======
+
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
 
+>>>>>>>594232f c939973c742f35e1dd720dc1ef2fa674f
 import cardgamelibrary.ElementType;
+import cardgamelibrary.ManaPool;
 
 /**
  * Class to represent a player in the game.
- * 
+ *
  * @author Raghu
  *
  */
 public class Player {
-	private int												life;
-	private int												resources;
-	private Map<ElementType, Integer>	elementMap;
+	private int				life;
+	private ManaPool	manaPool;
 
 	public Player(int l) {
 		life = l;
-		resources = 0;
-		elementMap = new HashMap<ElementType, Integer>();
+		manaPool = new ManaPool(0, 0, 0, 0, 0, 0);
 	}
 
 	public int getLife() {
@@ -29,23 +31,19 @@ public class Player {
 	}
 
 	public void changeResources(int newCount) {
-		resources = newCount;
+		manaPool.setResources(newCount);
 	}
 
 	public void setElement(ElementType type, int elem) {
-		elementMap.put(type, elem);
+		manaPool.setElement(type, elem);
 	}
 
 	public int getResources() {
-		return resources;
+		return manaPool.getResources();
 	}
 
 	public int getElem(ElementType type) {
-		Integer elemCount = elementMap.get(type);
-		if (elemCount == null) {
-			return 0;
-		}
-		return elemCount;
+		return manaPool.getElement(type);
 	}
 
 	protected void setLife(int newLife) {
@@ -60,7 +58,9 @@ public class Player {
 		life += heal;
 	}
 
-	public JsonObject jsonifySelf() {
+	public boolean validateCost(ManaPool cost) {
+		return manaPool.canPay(cost);
+}	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("health", life);
 		result.addProperty("pool", resources);
