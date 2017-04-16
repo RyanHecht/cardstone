@@ -189,14 +189,28 @@ public class OrderedCardCollection implements CardCollection {
 		return cards.toArray(a);
 	}
 	
-	public String jsonifySelf(){
+	
+	
+	public JsonObject jsonifySelf(){
 		JsonObject result = new JsonObject();
+		result.addProperty("changed", hasChanged());
 		List<JsonObject> cardObjects = new ArrayList<>();
 		for(Card c : cards){
 			cardObjects.add(c.jsonifySelf());
 		}
 		Gson gson = new Gson();
-		return gson.toJson(cardObjects);
+		result.add("cards", gson.toJsonTree(cardObjects));
+	}
+	
+	public JsonObject jsonifySelfChanged(){
+		if(hasChanged()){
+			return jsonifySelf();
+		}
+		else{
+			JsonObject result = new JsonObject();
+			result.addProperty("changed", hasChanged());
+			return result;
+		}
 	}
 
 }

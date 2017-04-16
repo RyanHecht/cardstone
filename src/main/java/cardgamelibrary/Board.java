@@ -21,19 +21,20 @@ public class Board {
 
 	Queue<Event>									eventQueue;
 	Queue<Effect>									effectQueue;
-	private List<Creature>				onBoard;
 
 	// player one stuff;
 	private OrderedCardCollection	deckOne;
 	private OrderedCardCollection	handOne;
 	private OrderedCardCollection	auraOne;
 	private OrderedCardCollection	graveOne;
+	private OrderedCardCollection creatureOne;
 
 	// player two stuff;
 	private OrderedCardCollection	deckTwo;
 	private OrderedCardCollection	handTwo;
 	private OrderedCardCollection	auraTwo;
 	private OrderedCardCollection	graveTwo;
+	private OrderedCardCollection creatureTwo;
 
 	// everything in the game;
 	List<OrderedCardCollection>		cardsInGame	= new ArrayList<>();
@@ -43,7 +44,6 @@ public class Board {
 		// Seems like the best way to handle the queues.
 		eventQueue = new LinkedList<Event>();
 		effectQueue = new LinkedList<Effect>();
-		onBoard = new ArrayList<Creature>();
 
 		this.deckOne = deckOne;
 		this.deckTwo = deckTwo;
@@ -59,6 +59,8 @@ public class Board {
 		cardsInGame.add(auraTwo);
 		cardsInGame.add(graveOne);
 		cardsInGame.add(graveTwo);
+		cardsInGame.add(creatureOne);
+		cardsInGame.add(creatureTwo);
 	}
 
 	// This will be used whenever a player
@@ -126,22 +128,26 @@ public class Board {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
 		result.addProperty("deckTwo", deckTwo.size());
-		result.addProperty("hand1", handOne.jsonifySelf());
-		result.addProperty("hand2", handTwo.jsonifySelf());
-		result.addProperty("aura1", auraOne.jsonifySelf());
+		result.add("hand1", handOne.jsonifySelf());
+		result.add("hand2", handTwo.jsonifySelf());
+		result.add("aura1", auraOne.jsonifySelf());
 		result.add("aura2", auraTwo.jsonifySelf());
 		result.add("creature1", creatureOne.jsonifySelf());
 		result.add("creature2", creatureTwo.jsonifySelf());
-		
-		
+		return result;
 	}
 	
 	public JsonObject jsonifySelfChanged(){
-		
-	}
-
-	public List<Creature> getOnBoard() {
-		return onBoard;
+		JsonObject result = new JsonObject();
+		result.addProperty("deckOne", deckOne.size());
+		result.addProperty("deckTwo", deckTwo.size());
+		result.add("hand1", handOne.jsonifySelfChanged());
+		result.add("hand2", handTwo.jsonifySelfChanged());
+		result.add("aura1", auraOne.jsonifySelfChanged());
+		result.add("aura2", auraTwo.jsonifySelfChanged());
+		result.add("creature1", creatureOne.jsonifySelfChanged());
+		result.add("creature2", creatureTwo.jsonifySelfChanged());
+		return result;
 	}
 
 }

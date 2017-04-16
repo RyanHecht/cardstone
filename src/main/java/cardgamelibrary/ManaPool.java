@@ -3,6 +3,8 @@ package cardgamelibrary;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+
 public class ManaPool {
 	private int												resources;
 	private Map<ElementType, Integer>	elementMap;
@@ -75,5 +77,16 @@ public class ManaPool {
 			}
 		}
 		return (this.getResources() >= expense.getResources());
+	}
+	
+	public JsonObject jsonifySelf(){
+		JsonObject result = new JsonObject();
+		result.addProperty("resources", resources);
+		result.addProperty("fire", elementMap.get(ElementType.FIRE));
+		result.addProperty("air", elementMap.get(ElementType.AIR));
+		result.addProperty("water", elementMap.get(ElementType.WATER));
+		result.addProperty("balance", elementMap.get(ElementType.BALANCE));
+		result.addProperty("earth", elementMap.get(ElementType.EARTH));
+		return result;
 	}
 }

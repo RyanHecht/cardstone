@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import com.google.gson.JsonObject;
+
 import game.Player;
 
 /**
@@ -19,7 +21,6 @@ public class PlayableCard implements Card {
 	private CardType	type;
 	private int				id;
 
-	public PlayableCard() {
 
 
 	// tells us if the card has changed since the last time we sent it to the
@@ -77,5 +78,18 @@ public class PlayableCard implements Card {
 	public CardType getType() {
 		// TODO Auto-generated method stub
 		return type;
+	}
+
+	@Override
+	public JsonObject jsonifySelfChanged() {
+		if(hasChanged()){
+			return jsonifySelf();
+		}
+		else{
+			JsonObject result = new JsonObject();
+			result.addProperty("changed", hasChanged());
+			result.addProperty("id", getId());
+			return result;
+		}
 	}
 }
