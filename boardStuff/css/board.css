@@ -11,6 +11,70 @@ body{
 	overflow:hidden;
 }
 
+.targetCursor{
+	background-image: url("../images/targetCursor.png");
+	height:50px;
+	width:50px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:right bottom;
+	z-index:500;
+}
+
+/* .endTurn{
+	position:absolute;
+	left:0%;
+	top:0%;
+	width:100%;
+	height:50%;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	background-image: url("../images/endTurnButton.png");
+} */
+
+body .bigModal .modal-dialog {
+    width:80%;
+	max-width:80%;
+	height:80%;
+}
+
+.bigModal .modal-content {
+	background:rgba(0,0,0,0);
+	width:100%;
+	height:100%;
+	max-height:300px;
+	text-align: center;
+	border:none;
+}
+
+.bigModal .cardBox{
+	opacity:1.0;
+	margin-left:8px;
+	margin-right:8px;
+}
+
+.infoZone{
+	position:absolute;
+	left:0%;
+	top:0%;
+	height:100%;
+	width:10%;
+}
+
+.expandButton{
+	background-image: url("../images/expandButton.png");
+	position:absolute;
+	z-index:100;
+	bottom:3px;
+	right:3px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:right bottom;
+	height:10%;
+	width:5%;
+}
+
 .board{
 	height:100%;
 	width:100%;
@@ -92,14 +156,12 @@ body{
 	width:100%;
 }
 
-
-
 .board .edge .hand{
 	position:absolute;
 	top:0%;
-	left:0%;
+	left:10%;
 	height: 100%;
-	width:73%;
+	width:63%;
 }
 
 .board .edge .aura{
@@ -129,13 +191,13 @@ body{
 .boardOverlay{
 	height:100%;
 	width:100%;
-	z-index: 100;
+	z-index: 300;
 }
 
 
 .onTop{
 	position:absolute;
-	z-index: 10;
+	z-index: 200;
 	display: none;
 	height:50%;
 	width:100%;

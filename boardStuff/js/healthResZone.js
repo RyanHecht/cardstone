@@ -1,8 +1,8 @@
 class healthResZone extends drawableZone{
 	constructor(div,health,res,deck){
 		super();
-		this.healthDiv = div.children().children().children().children().children('.health');
-		this.resDiv = div.children().children().children().children().children('.regRes');
+		this.healthDiv = div.children().children().children().children('.health');
+		this.resDiv = div.children().children().children().children('.regRes');
 		this.deckDiv = div.children().children().children().children(".deckTd");
 		this.health = health;
 		this.res = res;
@@ -28,7 +28,6 @@ class healthResZone extends drawableZone{
 			}
 		}
 		);
-		console.log(this.deckDiv,this.healthDiv,this.resDiv);
 	}
 	
 	forceRedraw(){

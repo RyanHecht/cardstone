@@ -11,7 +11,8 @@ const fireText = "rgba(200,15,0," + STAT_ALPHA  + ")";
 const waterText = "rgba(42,143,189," + STAT_ALPHA + ")";
 const earthText = "rgba(168,120,72," + (STAT_ALPHA + .2) + ")";
 const airText = "rgba(201,255,227," + STAT_ALPHA + ")";
-const balanceText = "rgba(30,30,30," + (STAT_ALPHA + .3) +  ")";
+const balanceText = "rgba(30,30,30," + (STAT_ALPHA) +  ")";
+const DEFAULT_ANIM_COLOR = "rgba(100,100,100,1.0)"
 let animations = [];
 let canvasCtx;
 let canvas;
@@ -20,6 +21,11 @@ let expandedInUse = false;
 let wholeBoard;
 let time;
 let date;
+let isTurn = true;
+let inputState = StateEnum.IDLE;
+let selectedCard;
+let josh;
+let server;
 
 /**
 Fill a div with a list of cards, if they can fit.
@@ -57,29 +63,27 @@ function updateAndDrawAnimations(){
 	}
 	window.setTimeout(updateAndDrawAnimations, UPDATE_RATE);
 }	
+
+function clearAnimations(){
+	animations = [];
+}
 	
-$('document').ready(function(){	
+function setupCanvas(){
 	canvas = $(".boardOverlay")[0];
 	canvasQuery = $(".boardOverlay");
 	let htmlBoard = $('.board');
 	animations = [];
 	canvasCtx = canvas.getContext('2d');
-
-	
-	let circlesAnimation = new linearAnimation();
-	circlesAnimation.setColorRange(150,255,70,70,30,50,1.0);
-	circlesAnimation.setShape("circle");
-	circlesAnimation.setRadius(2);
-	circlesAnimation.setRandom(true);
-	circlesAnimation.setCount(250);
-	circlesAnimation.setSpeed(.6);
     canvas.width = htmlBoard.width();
     canvas.height = htmlBoard.height();
 	$(".boardOverlay").attr('width',canvas.width);
-	
+	canvasQuery.hide();
+};
+
+function setupBoard(){
 	let joshPool = new manaPool(10,'');
 	joshPool.setFire(5);
-	joshPool.setAir(6);
+	joshPool.setAir(5);
 	joshPool.setWater(3);
 	joshPool.setEarth(6);
 	joshPool.setBalance(4);
@@ -96,13 +100,21 @@ $('document').ready(function(){
 	let skyCost = new cost(20,smallSkyWhalePool);
 	let joshCost = new cost(10,smallJoshPool);
 	let whaleCost = new cost(30, bigWhalePool);
+
 	
-	let josh = new card(joshCost, "Josh Pattiz", "Perform a long sequence of actions." + 
+	josh = new creatureCard(1,joshCost, "Josh Pattiz", "Perform a long sequence of actions." + 
 		" These may include dancing, singing, or just generally having a good time." + 
-		"At the end of this sequence, win the game.", 5, "images/creature.jpg", 5,6,1);
-	let skyWhale = new card(skyCost, "Sky Whale", "Deal 3 damage", 4, "images/magicSkyWhale.jpg", 2, 10,2);
-	let whale = new card(whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack", 3, 
-	"images/giantWhale.png",5,12,3);
+		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
+	let skyWhale = new creatureCard(2,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
+	let whale = new creatureCard(3,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack", 
+	"images/giantWhale.png",5,12);
+	
+	let purgePool = new manaPool(3,'&nbsp;');
+	purgePool.setBalance(2);
+	let purgeCost = new cost(30,purgePool);
+	
+	let purge = new spellCard(4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
+	"images/purge.jpg");
 	
 	let water = new elementCard(14,"water");
 	let balance = new elementCard(15,"balance");
@@ -110,12 +122,12 @@ $('document').ready(function(){
 	let fire = new elementCard(17,"fire");
 	let air = new elementCard(18,"air");
 	
+	josh.setState("cardCanAttack");
+	fire.setState("cardCanPlay");
+	let back = new cardBack(1);
 	
-	let back = new cardBack(whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack", 3, 
-	"images/giantWhale.png",5,12,3);
-	
-	let hand1Joshs = [fire, water, earth, air, balance];
-	let hand2Joshs = [skyWhale,back,skyWhale,back,skyWhale];
+	let hand1Joshs = [fire, water, earth, air, balance, purge];
+	let hand2Joshs = [back,back,back,back,back];
 
 	let aura1Joshs = [whale, skyWhale, skyWhale, skyWhale, skyWhale];
 	let aura2Joshs = [whale, whale, whale, whale, skyWhale];
@@ -124,35 +136,61 @@ $('document').ready(function(){
 	let creature2Joshs = [whale, whale, skyWhale, skyWhale, whale];
 	
 	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
+}
+
+
+
+
+
+function buildRadial(options){
+	let radial = new RadialAnimation();
+	radial.buildFromOptions(options);
+	return radial;
+}
+
+function buildCloud(options){
+	let cloud = new linearAnimation();
+	cloud.buildFromOptions(options);
+	return cloud;
+}
+
+
+
+function setupServer(){
+	server = new Server();
+}	
+
+function setupCardClick(){
+	$(".card").on("click", function(){
+		server.cardClicked($(this));
+	});
+}	
 	
-	
-	
+$(document).ready(function(){	
+	setupCanvas();
+	setupBoard();
+	setupServer();
 	$(document).keypress(function(e) {
+		console.log("aqui");
 		if(e.which == 13) {
-			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,2);
-			wholeBoard.draw();
+			server.chooseFrom([josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
+			josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
+			josh, josh, josh]);
 		}
 		else if(e.which == 32) {
 			$('#endTurnAsk').modal('show');
 		}
+		else if(e.which == 122){
+			console.log("dong");
+			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,1);
+			redrawAll();
+		}
+		console.log(e.which);
 	});
 	 $(window).resize(function() {
+		clearAnimations();
 		redrawAll();
 	});
-
-	let collapsingSun = new singleRadial();
-	collapsingSun.setRadius(150);
-	collapsingSun.setColor("rgba(220,100,30,1.0)");
-	collapsingSun.setSpeed(.1);
-	collapsingSun.setShape("circle");
-	collapsingSun.setCenter(100,100);
-	collapsingSun.setImploding(false);
-	animations.push(collapsingSun.create());
-	
 	wholeBoard.draw();
-	console.log($(".tinyCard"));
-	circlesAnimation.setStartDiv($(".smallCard")[10]);
-	circlesAnimation.setEndDiv($(".tinyCard")[2]);
-	animations.push(circlesAnimation.create());
-	window.setTimeout(updateAndDrawAnimations,1000);
+	setupCardClick();
 });

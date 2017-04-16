@@ -45,6 +45,21 @@ class linearAnimation extends animation{
 		return drawables;
 	}
 	
+	buildFromOptions(options){
+		super.buildFromOptions(options);
+		this.setStartDivById(options.start);
+		this.setEndDivById(options.end);
+		this.count = options.count;
+	}
+	
+	setStartDivById(id){
+		this.setStartDiv($("#" + id)[0]);
+	}
+	
+	setEndDivById(id){
+		this.setEndDiv($("#" + id)[0]);
+	}
+	
 	setStartDiv(divElem){
 		let left = divElem.offsetLeft;
 		let top = divElem.offsetTop;

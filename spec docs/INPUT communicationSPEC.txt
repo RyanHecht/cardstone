@@ -17,6 +17,22 @@ When I want to inform the host of user input, I will send it in the following fo
 
 		IID2 specifies the second card. In the case of certain events, like "activated", there
 		may be no IID2.
+		
+	LIST of events:
+		"targeted": this represents board attacking primarily. It can also be used in the case that a user
+		wants to play a card with a targeted ability: if a targeted from hand to a board card comes in
+		(I can make this a different event if wanted), there probably ought to be that card played
+		with that as the target if valid. Will always be the tag, and two IIDS. I can send the zones 
+		theyre in too if wanted.
+		
+		"played": this represents cards trying to be played. Will always be the card IID and the 
+		zone it is trying to be played to. I think if the zone is not literally hand it should be played:
+		this just means they dragged it somewhere other than the board, but I think it still should be played
+		as long as they dragged it out of the hand.
+		
+		"turnend":the player tried to end their turn.
+		
+		
 
 When I send an event, I will expect a response of the form:
 

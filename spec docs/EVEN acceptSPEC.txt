@@ -55,13 +55,6 @@ Supported animations currently:
 			Given a set of 8 numbers, colors for individual elements of an
 			animation are chosen randomly with that range.
 			
-		colorset(default: nullish):
-			accepts a list of colors instead of a single one.
-			if random is true, colors will be chose randomly from the pool.
-			if it is not, they will be chose in order.
-			Note that these colors may be specified in any of the 3
-			acceptable color formats.
-			
 		radius(default: 10):
 			may be passed as either a single number of 2 numbers.
 			sets the radius of all elements. If 2 numbers are given, radiuses
@@ -85,6 +78,9 @@ Supported animations currently:
 				Additionally, given an IID, can accept a string specifying the part of that
 				IID to consider. If it cannot find such a part, considers the center
 				of the whole IID.
+				
+			imploding(default:true):
+				accepts a boolean. The circle will implode if true and explode if false.
 			
 	Linear Point Cloud:
 		A cloud of shapes moves from a given IID to another IID.

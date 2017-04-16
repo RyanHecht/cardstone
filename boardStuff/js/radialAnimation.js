@@ -4,7 +4,23 @@ class radialAnimation extends animation{
 		super();
 		this.imploding = true;
 	}
-
+	
+	setCenterDiv(divID){
+		let $divElem = $("#divID");
+		let divElem = $divElem[0];
+		let left = divElem.offsetLeft;
+		let top = divElem.offsetTop;
+		let centerX = left + (divElem.offsetWidth / 2);
+		let centerY = top + (divElem.offsetHeight / 2);
+		this.setCenter(centerX,centerY);
+	}
+	
+	buildFromOptions(options){
+		super.buildFromOptions(options);
+		this.setCenterDiv(options.start);
+		this.setImploding(options.imploding);
+	}
+	
 	setCenter(x,y){
 		this.x = x;
 		this.y =y;

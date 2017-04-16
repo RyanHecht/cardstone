@@ -48,6 +48,7 @@ card{
 	name:
 	image:
 	type:
+	state:
 }
 
 IID is the Individual ID of a card. Each card in a game has a unique one.
@@ -57,6 +58,9 @@ IID 5 attacks IID 6, I can find both and draw that occurring.
 TID is the Type ID of a card. It specifies the "type" of a card. This tells me
 where to find the default cost, stats, name, text, and image for it. This is unique
 for each card type, and we will need to bwild and a shared registry of them.
+
+state represents one of canattack, canplay, etc (we can define more).
+I will border them based on their state (ie canattack might be a light blue border or smth).
 
 The stat slots and TID slot are always optional. If I have seen an IID before and do not
 recieve new information, I will assume the information from the last time I saw that IID.
