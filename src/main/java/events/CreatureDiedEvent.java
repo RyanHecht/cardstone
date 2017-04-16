@@ -3,20 +3,22 @@ package events;
 import java.util.List;
 
 import cardgamelibrary.Card;
+import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class CardDrawnEvent implements Event {
+public class CreatureDiedEvent implements Event {
 
-	private List<Card> drawn;
+	private Creature creature;
 
-	public CardDrawnEvent(List<Card> drawn) {
-		this.drawn = drawn;
+	public CreatureDiedEvent(Creature cr) {
+		creature = cr;
 	}
 
 	@Override
 	public EventType getType() {
-		return EventType.CARD_DRAWN;
+		// TODO Auto-generated method stub
+		return EventType.CREATURE_DIED;
 	}
 
 	@Override
@@ -25,8 +27,8 @@ public class CardDrawnEvent implements Event {
 		return null;
 	}
 
-	public List<Card> getDrawn() {
-		return drawn;
+	public Creature getCreature() {
+		return creature;
 	}
 
 }

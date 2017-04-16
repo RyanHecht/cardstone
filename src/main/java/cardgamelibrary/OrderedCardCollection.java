@@ -5,11 +5,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import events.CardDamagedEvent;
+import events.CardDrawnEvent;
+import events.CardZoneChangeEvent;
+import events.CreatureDiedEvent;
+import events.PlayerDamagedEvent;
+import events.TurnEndEvent;
 import game.Player;
 
 /**
  * A collection of cards. Note that a collection of cards is also a Zone
- * 
+ *
  * @author 42jpa
  *
  */
@@ -32,12 +38,85 @@ public class OrderedCardCollection implements CardCollection {
 
 	public List<Effect> handleCardBoardEvent(Event event) {
 		List<Effect> results = new ArrayList<>();
+		switch (event.getType()) {
+		case CARD_DAMAGED:
+			results = handleCardDamaged(((CardDamagedEvent) event));
+			break;
+		case CARD_DRAWN:
+			results = handleDraw((CardDrawnEvent) event);
+			break;
+		case CARD_PLAYED:
+			results = handleCardZoneChange((CardZoneChangeEvent) event);
+			break;
+		case CREATURE_DIED:
+			results = handleCreatureDied((CreatureDiedEvent) event);
+			break;
+		case PLAYER_DAMAGED:
+			results = handlePlayerDamaged((PlayerDamagedEvent) event);
+			break;
+		case TURN_END:
+			results = handleTurnEnd((TurnEndEvent) event);
+			break;
+		default:
+			throw new RuntimeException("ERROR: Invalid event type.");
+		}
+
+		return results;
+	}
+
+	/**
+	 * Used to handle CardDrawnEvents.
+	 *
+	 * @param cDrawn
+	 *          the cardDraw event in question.
+	 * @return a list of effects produced by the OCC due to the event.
+	 */
+	private List<Effect> handleDraw(CardDrawnEvent cDrawn) {
+		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			for (EventHandler eh : c.getHandlers()) {
-				if (eh.handles(event)) {
-					results.addAll(eh.handle(event));
-				}
+			for (Card drawn : cDrawn.getDrawn()) {
+				results.add(c.cardDrawn(drawn));
 			}
+		}
+		return results;
+	}
+
+	private List<Effect> handleTurnEnd(TurnEndEvent endTurn) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onTurnEnd());
+		}
+		return results;
+	}
+
+	private List<Effect> handleCardDamaged(CardDamagedEvent cDamaged) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg()));
+		}
+		return results;
+	}
+
+	private List<Effect> handlePlayerDamaged(PlayerDamagedEvent pDamaged) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onPlayerDamage(pDamaged.getPlayer(), pDamaged.getSrc(), pDamaged.getDmg()));
+		}
+		return results;
+	}
+
+	private List<Effect> handleCreatureDied(CreatureDiedEvent cDeath) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.creatureDied(cDeath.getCreature()));
+		}
+		return results;
+	}
+
+	private List<Effect> handleCardZoneChange(CardZoneChangeEvent change) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd()));
 		}
 		return results;
 	}

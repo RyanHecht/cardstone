@@ -7,19 +7,34 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class AttackEvent implements Event {
-	private Creature	attacker;
-	private Creature	target;
+public class CardDamagedEvent implements Event {
 
-	public AttackEvent(Creature attacker, Creature target) {
-		this.attacker = attacker;
+	private Creature	target;
+	private Card			src;
+	private int				dmg;
+
+	public CardDamagedEvent(Creature target, Card src, int dmg) {
 		this.target = target;
+		this.src = src;
+		this.dmg = dmg;
+	}
+
+	public Creature getTarget() {
+		return target;
+	}
+
+	public Card getSrc() {
+		return src;
+	}
+
+	public int getDmg() {
+		return dmg;
 	}
 
 	@Override
 	public EventType getType() {
 		// TODO Auto-generated method stub
-		return null;
+		return EventType.CARD_DAMAGED;
 	}
 
 	@Override

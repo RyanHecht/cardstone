@@ -1,6 +1,7 @@
 package cardgamelibrary;
 
-import java.util.List;
+import effects.EmptyEffect;
+import game.Player;
 
 /**
  * A card in the game.
@@ -31,6 +32,45 @@ public interface Card {
 	 */
 	CardType getType();
 
-	List<EventHandler> getHandlers();
+	default public Effect onPlayerDamage(Player p, Card src, int dmg) {
+		return EmptyEffect.create();
+	}
 
+	default public Effect onPlayerHeal(Player p, Card src, int heal) {
+		return EmptyEffect.create();
+	}
+
+	default public Effect onTurnEnd() {
+		return EmptyEffect.create();
+	}
+
+	// when something else is damaged. Creatures have a
+	// takeDamage method that specifies that they are the thing taking damage.
+	default public Effect onDamage(Creature target, Card src, int dmg) {
+		return EmptyEffect.create();
+	}
+
+	default public Effect onHeal(Creature target, Card src, int heal) {
+		return EmptyEffect.create();
+	}
+
+	// specific behaviors based on when certain cards are played
+	default public Effect cardPlayed(Card c) {
+		return EmptyEffect.create();
+	}
+
+	// when a card is drawn. We can also use this to perform some behavior if
+	// THIS card is drawn (i.e. some card auto summons when it's drawn or
+	// something.
+	default public Effect cardDrawn(Card drawn) {
+		return EmptyEffect.create();
+	}
+
+	default public Effect creatureDied(Creature cr) {
+		return EmptyEffect.create();
+	}
+
+	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest) {
+		return EmptyEffect.create();
+	}
 }

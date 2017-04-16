@@ -19,7 +19,6 @@ import server.MessageTypeEnum;
  */
 public class Board {
 
-	List<OrderedCardCollection>		cardsInGame;
 	Queue<Event>									eventQueue;
 	Queue<Effect>									effectQueue;
 	private List<Creature>				onBoard;
@@ -36,12 +35,30 @@ public class Board {
 	private OrderedCardCollection	auraTwo;
 	private OrderedCardCollection	graveTwo;
 
+	// everything in the game;
+	List<OrderedCardCollection>		cardsInGame	= new ArrayList<>();
+
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
 		// using LinkedLists but declaring using queue interface.
 		// Seems like the best way to handle the queues.
 		eventQueue = new LinkedList<Event>();
 		effectQueue = new LinkedList<Effect>();
 		onBoard = new ArrayList<Creature>();
+
+		this.deckOne = deckOne;
+		this.deckTwo = deckTwo;
+
+		// initialize all other fields here.
+
+		// load all fields into cardsInGame
+		cardsInGame.add(this.deckOne);
+		cardsInGame.add(this.deckTwo);
+		cardsInGame.add(handOne);
+		cardsInGame.add(handTwo);
+		cardsInGame.add(auraOne);
+		cardsInGame.add(auraTwo);
+		cardsInGame.add(graveOne);
+		cardsInGame.add(graveTwo);
 	}
 
 	// This will be used whenever a player
@@ -56,8 +73,8 @@ public class Board {
 	// This will handle the entire cascade of events placed in the queue, until
 	// there are none left.
 	private void handleState() {
-		while (eventQueue.size() > 1 || effectQueue.size() > 1) {
-			if (eventQueue.size() > 1) {
+		while (eventQueue.size() >= 1 || effectQueue.size() >= 1) {
+			if (eventQueue.size() >= 1) {
 				// when we handle an event we want to put
 				// all effects it produces onto the queue.
 				handleEvent(eventQueue.poll());
@@ -87,16 +104,18 @@ public class Board {
 	}
 
 	private void handleEvent(Event event) {
-		List<Card> affected = event.getAffected();
-		for (Card c : affected) {
-			for (EventHandler eh : c.getHandlers()) {
-				if (eh.handles(event)) {
-					effectQueue.addAll(eh.handle(event));
-
-				}
-
+		for (OrderedCardCollection occ : cardsInGame) {
+			// collect effects from all cards in game!
+			for (Effect e : occ.handleCardBoardEvent(event)) {
+				// iterate through all cards in a collection and add their effects to
+				// the queue.
+				effectQueue.add(e);
 			}
 		}
+	}
+
+	private void creatureDies(Creature c) {
+		// TODO: figure out this method!
 	}
 
 	private void draw(int numCards, Player p) {
@@ -105,6 +124,10 @@ public class Board {
 	
 	public JsonObject jsonifySelf(){
 		JsonObject result = new JsonObject();
+	}
+
+	public List<Creature> getOnBoard() {
+		return onBoard;
 	}
 
 }
