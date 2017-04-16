@@ -10,6 +10,11 @@ class cardInfo{
 		this.modded = true;
 	}
 	
+	setState(state){
+		this.state = state;
+		this.modded = true;
+	}
+	
 	setAttack(attack){
 		this.attack = attack;
 		this.modded = true;

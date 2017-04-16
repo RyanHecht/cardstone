@@ -25,6 +25,7 @@ let isTurn = true;
 let inputState = StateEnum.IDLE;
 let selectedCard;
 let josh;
+let server;
 
 /**
 Fill a div with a list of cards, if they can fit.
@@ -82,7 +83,7 @@ function setupCanvas(){
 function setupBoard(){
 	let joshPool = new manaPool(10,'');
 	joshPool.setFire(5);
-	joshPool.setAir(6);
+	joshPool.setAir(5);
 	joshPool.setWater(3);
 	joshPool.setEarth(6);
 	joshPool.setBalance(4);
@@ -121,7 +122,8 @@ function setupBoard(){
 	let fire = new elementCard(17,"fire");
 	let air = new elementCard(18,"air");
 	
-	
+	josh.setState("cardCanAttack");
+	fire.setState("cardCanPlay");
 	let back = new cardBack(1);
 	
 	let hand1Joshs = [fire, water, earth, air, balance, purge];
@@ -136,26 +138,7 @@ function setupBoard(){
 	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
 }
 
-function parseAnimation(data){
-	let animationType = data.animationType;
-	let animation;
-	switch(animationType){
-		case AnimationEnum.RADIAL:
-			animation = buildRadial(data);
-			break;
-		case AnimationEnum.CLOUD:
-			animation = buildCloud(data);
-			break;
-	}
-	animations.push(animation.create());
-	updateAndDrawAnimations();
-}
 
-
-
-function parseEvent(data){
-	
-}
 
 
 
@@ -170,76 +153,39 @@ function buildCloud(options){
 	cloud.buildFromOptions(options);
 	return cloud;
 }
-	
-function setupCardClick(){
-	$(".card").on("click", function(){
-		console.log("clickt");
-		cardClicked($(this));
-	});
+
+
+
+function setupServer(){
+	server = new Server();
 }	
 
-function cardSelected(cardDiv){
-	console.log(cardDiv);
-	$(".card").removeClass("cardSelected");
-	cardDiv.addClass("cardSelected");
-	selectedCard = cardDiv.attr("id");
-}
-
-function targetChosen(cardDiv){
-	let response = sendTargetResponse(cardDiv.getId);
-	if(response.valid){
-		inputState = IDLE;
-	}
-	else{
-		actionFailed(response.message);
-	}
-}
-
-function choiceMade(cardDiv){
-	let response = sendChoiceResponse(cardDiv.getID);
-	if(response.valid){
-		inputState = IDLE;
-	}
-	else{
-		actionFailed(response.message);
-	}
-}
-
-function cardClicked(cardDiv){
-	console.log(cardDiv);
-	if(isTurn){
-		switch(inputState){
-			case StateEnum.IDLE:
-				cardSelected(cardDiv);
-				break;
-			case StateEnum.TARGET_NEEDED:
-				targetChosen(cardDiv);
-				break;
-			case StateEnum.CHOICE_NEEDED:
-				choiceMade(cardDiv);
-				break;
-			default:
-				actionFailed();
-		}
-	}
-	else{
-		actionFailed();
-	}
-}
+function setupCardClick(){
+	$(".card").on("click", function(){
+		server.cardClicked($(this));
+	});
+}	
 	
 $(document).ready(function(){	
 	setupCanvas();
 	setupBoard();
-	
+	setupServer();
 	$(document).keypress(function(e) {
 		console.log("aqui");
 		if(e.which == 13) {
-			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,2);
-			wholeBoard.draw();
+			server.chooseFrom([josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
+			josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
+			josh, josh, josh]);
 		}
 		else if(e.which == 32) {
 			$('#endTurnAsk').modal('show');
 		}
+		else if(e.which == 122){
+			console.log("dong");
+			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,1);
+			redrawAll();
+		}
+		console.log(e.which);
 	});
 	 $(window).resize(function() {
 		clearAnimations();

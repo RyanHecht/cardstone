@@ -1,55 +1,11 @@
-class cardCollection extends drawableZone{
+class chooseZone extends drawableZone{
 	
-	
-	constructor(div,cards,expandInto){
+	constructor(div,cards){
 		super();
 		this.div = div;
 		this.cards = cards;
 		this.changed = true;
-		this.prepareForExpand();
-		this.expandInto = expandInto;
-		this.zone = div.attr("id");
-	}
-	
-	prepareForExpand(){
-		let $this = this;
-		this.div.children(".expandButton").click(function(){
-			if(!expandedInUse){
-				expandedInUse = true;
-				$this.expand();
-			}
-		});
-	}
-	
-	setZones(){
-		for(let card of this.cards){
-			card.setZone(this.zone);
-		}
-	}
-	
-	expand(){
-		let $this = this;
-		$this.expandInto.toggle();
-		$this.forceDrawInDiv($this.expandInto);
-		$this.expandInto.click(function(){
-			$this.expandInto.empty();
-			expandedInUse = false;
-			$this.expandInto.hide();
-			$('div.qtip:visible').qtip('hide');
-		});
-	}
-	
-	setCards(cards){
-		this.cards = cards;
-		this.changed = true;
-	}
-	
-	setCardsFromCache(cardIDs, cache){
-		let cards = [];
-		for(let x = 0; x < cardIDs.length; x++){
-			cards.push(cache.getByIID(cardIds[x]));
-		}
-		this.cards = cards;
+		console.log(div,cards.length);
 	}
 	
 	forceRedraw(){
@@ -57,15 +13,16 @@ class cardCollection extends drawableZone{
 		this.draw();
 	}
 	
-	pushCard(card){
-		this.cards.push(card);
+	forceRedrawLater(wait){
 		this.changed = true;
+		let $this = this;
+		window.setTimeout(function(){$this.draw()}, wait);
 	}
 	
 	fillDiv(div){
 		let curDiv = div;
 		let $this = this;
-		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 6;
+		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 15;
 		let rows = 1;
 		while(baseWidth * ($this.cards.length / rows) >= curDiv.width() * .85){
 			rows++;
@@ -81,6 +38,7 @@ class cardCollection extends drawableZone{
 			let curChild = curDiv.children().last();
 			curChild.css('height', (curDiv.height() / rows) + "px");
 			while(total < x * maxInRow && total < this.cards.length){
+				console.log(this.cards[total]);
 				//space to mekkit mejor
 				curChild.append('<div class="cardBox"></div>');
 				let cur = curChild.children().last();
@@ -108,39 +66,13 @@ class cardCollection extends drawableZone{
 			this.fillDiv(div);
 			this.prepareToolTips(div);
 			this.sizeCards(div);
-			this.div.append('<div class="expandButton"></div>');
-			this.prepareForExpand();
-			this.prepareDraggables();
-			this.prepareDroppables();
+			this.prepareChoosing(div);
 		}
 	}
 	
-	prepareDraggables(){
-		this.div.find(".card").draggable({ 
-			revert: false, 
-			helper: function(){
-				return "<div class='targetCursor'></div>";
-			},
-			cursorAt: { bottom: 25, right: 25}
-		});
-	}
-	
-	prepareDroppables(){
-		this.div.find(".card").droppable({
-			drop: function( event, ui ) {
-				$( this )
-				  .addClass( "cardSelected" );
-				  server.cardTargeted(ui.draggable,$(this));
-			},
-			greedy:true
-		})
-	}
-	
-	prepareDroppableZone(){
-		this.div.droppable({
-			drop: function( event, ui ) {
-				  server.cardPlayed(ui.draggable,$(this));
-			}
+	prepareChoosing(div){
+		div.children().children('.cardBox').click(function(){
+			server.sendChosen($(this).children('.card').attr('id'));
 		})
 	}
 	
@@ -152,7 +84,6 @@ class cardCollection extends drawableZone{
 		});
 	}
 
-	
 	prepareToolTips(div){
 		let maxHeight = $(document).height();
 		let maxWidth = $(document).width();
@@ -193,3 +124,5 @@ class cardCollection extends drawableZone{
 		});
 	}
 }
+	
+	

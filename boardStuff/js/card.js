@@ -4,9 +4,13 @@ class Card{
 	
 	constructor(IID){
 		this.IID = IID;
+		this.state = "";
 	}
 	
 	modifyWith(card){
+		if(info.state != null){
+			this.state = info.state;
+		}
 		return this;
 	}
 	
@@ -14,8 +18,9 @@ class Card{
 		this.div = div;
 	}
 	
-	addIID(div){
-		div.attr("id",this.IID);
+	addIdAndState(div){
+		div.children(".card").attr("id",this.IID);
+		div.children(".card").addClass(this.state);
 	}
 	
 	getZone(){
@@ -24,6 +29,10 @@ class Card{
 	
 	setZone(zone){
 		this.zone = zone;
+	}
+	
+	setState(state){
+		this.state = state;
 	}
 	
 }
@@ -40,6 +49,7 @@ class creatureCard extends Card {
 		this.IID = IID;
 	}
 	modifyWith(info){
+		super.modifyWith(info);
 		if(info.name != null){
 			this.name = info.name;
 		}
@@ -124,7 +134,7 @@ class creatureCard extends Card {
 		else{
 			this.drawTinyForTip();
 		}
-		super.addIID(div);
+		super.addIdAndState(this.div);
 	}
 	
 	drawForTip(){
@@ -217,7 +227,7 @@ class spellCard extends Card{
 		else{
 			this.drawTinyForTip();
 		}
-		super.addIID(div);
+		super.addIdAndState(this.div);
 	}
 	
 	drawForTip(){
@@ -238,7 +248,7 @@ class cardBack extends Card{
 	drawGivenSpace(){
 		let div = this.div;
 		this.drawSmallAndBig(div);
-		super.addIID(div);
+		super.addIdAndState(this.div);
 	}
 	
 	modifyWith(info){
@@ -301,7 +311,7 @@ class elementCard extends Card{
 	
 	drawGivenSpace(){
 		this.drawSmallAndBig(this.div);
-		super.addIID(this.div);
+		super.addIdAndState(this.div);
 	}
 	
 	drawSmallAndBig(div){
