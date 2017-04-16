@@ -14,7 +14,7 @@ public interface Card {
 	// Doesn't have to be unique
 	String getName();
 
-	Cost getCost();
+	ManaPool getCost();
 
 	// Must be unique. We should register all cards somehow and assign ids as we
 	// do to prevent conflicting ids
