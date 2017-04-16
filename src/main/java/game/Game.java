@@ -43,7 +43,8 @@ public class Game {
 		JsonObject result = new JsonObject();
 		result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
 		JsonObject payload = new JsonObject();
-		payload.addProperty("p1Health", );
+		payload.add("player1", playerOne.jsonifySelf());
+		payload.add("player2", playerTwo.jsonifySelf());
 		payload.add("board", board.jsonifySelf());
 		return result;
 	}

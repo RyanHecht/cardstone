@@ -124,6 +124,20 @@ public class Board {
 	
 	public JsonObject jsonifySelf(){
 		JsonObject result = new JsonObject();
+		result.addProperty("deckOne", deckOne.size());
+		result.addProperty("deckTwo", deckTwo.size());
+		result.addProperty("hand1", handOne.jsonifySelf());
+		result.addProperty("hand2", handTwo.jsonifySelf());
+		result.addProperty("aura1", auraOne.jsonifySelf());
+		result.add("aura2", auraTwo.jsonifySelf());
+		result.add("creature1", creatureOne.jsonifySelf());
+		result.add("creature2", creatureTwo.jsonifySelf());
+		
+		
+	}
+	
+	public JsonObject jsonifySelfChanged(){
+		
 	}
 
 	public List<Creature> getOnBoard() {

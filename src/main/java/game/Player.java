@@ -3,6 +3,8 @@ package game;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+
 import cardgamelibrary.ElementType;
 
 /**
@@ -56,5 +58,19 @@ public class Player {
 
 	protected void healDamage(int heal) {
 		life += heal;
+	}
+
+	public JsonObject jsonifySelf() {
+		JsonObject result = new JsonObject();
+		result.addProperty("health", life);
+		result.addProperty("resources", resources);
+		JsonObject elementObject = new JsonObject();
+		elementObject.addProperty("fire", elementMap.get(ElementType.FIRE));
+		elementObject.addProperty("water", elementMap.get(ElementType.WATER));
+		elementObject.addProperty("air", elementMap.get(ElementType.AIR));
+		elementObject.addProperty("earth", elementMap.get(ElementType.EARTH));
+		elementObject.addProperty("balance", elementMap.get(ElementType.BALANCE));
+		result.add("element", elementObject);
+		return result;
 	}
 }
