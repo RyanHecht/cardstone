@@ -1,6 +1,9 @@
 package game;
 
+import com.google.gson.JsonObject;
+
 import cardgamelibrary.Board;
+import server.MessageTypeEnum;
 
 /**
  * Class to represent a game.
@@ -34,5 +37,14 @@ public class Game {
 		} else {
 			System.out.println("Game is drawn.");
 		}
+	}
+	
+	public JsonObject jsonifySelf(){
+		JsonObject result = new JsonObject();
+		result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
+		JsonObject payload = new JsonObject();
+		payload.addProperty("p1Health", );
+		payload.add("board", board.jsonifySelf());
+		return result;
 	}
 }
