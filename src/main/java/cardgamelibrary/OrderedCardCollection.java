@@ -83,7 +83,7 @@ public class OrderedCardCollection implements CardCollection {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			for (Card drawn : cDrawn.getDrawn()) {
-				results.add(c.cardDrawn(drawn));
+				results.add(c.cardDrawn(drawn, getZone()));
 			}
 		}
 		return results;
@@ -92,7 +92,7 @@ public class OrderedCardCollection implements CardCollection {
 	private List<Effect> handleTurnEnd(TurnEndEvent endTurn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onTurnEnd());
+			results.add(c.onTurnEnd(getZone()));
 		}
 		return results;
 	}
@@ -100,7 +100,7 @@ public class OrderedCardCollection implements CardCollection {
 	private List<Effect> handleCardDamaged(CardDamagedEvent cDamaged) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg()));
+			results.add(c.onDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg(), getZone()));
 		}
 		return results;
 	}
@@ -108,7 +108,7 @@ public class OrderedCardCollection implements CardCollection {
 	private List<Effect> handlePlayerDamaged(PlayerDamagedEvent pDamaged) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onPlayerDamage(pDamaged.getPlayer(), pDamaged.getSrc(), pDamaged.getDmg()));
+			results.add(c.onPlayerDamage(pDamaged.getPlayer(), pDamaged.getSrc(), pDamaged.getDmg(), getZone()));
 		}
 		return results;
 	}
@@ -116,7 +116,7 @@ public class OrderedCardCollection implements CardCollection {
 	private List<Effect> handleCreatureDied(CreatureDiedEvent cDeath) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.creatureDied(cDeath.getCreature()));
+			results.add(c.creatureDied(cDeath.getCreature(), getZone()));
 		}
 		return results;
 	}
@@ -124,7 +124,7 @@ public class OrderedCardCollection implements CardCollection {
 	private List<Effect> handleCardZoneChange(CardZoneChangeEvent change) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd()));
+			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd(), getZone()));
 		}
 		return results;
 	}

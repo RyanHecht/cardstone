@@ -38,45 +38,52 @@ public interface Card {
 	 */
 	CardType getType();
 
-	default public Effect onPlayerDamage(Player p, Card src, int dmg) {
+	/*
+	 * Note: In all the default effect producing methods, the zone represents the
+	 * zone THIS CARD is in. Some cards will have different behaviors based on
+	 * where they are currently. This param will be passed in the OCC method to
+	 * generate effects.
+	 */
+
+	default public Effect onPlayerDamage(Player p, Card src, int dmg, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onPlayerHeal(Player p, Card src, int heal) {
+	default public Effect onPlayerHeal(Player p, Card src, int heal, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onTurnEnd() {
+	default public Effect onTurnEnd(Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
-	default public Effect onDamage(Creature target, Card src, int dmg) {
+	default public Effect onDamage(Creature target, Card src, int dmg, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onHeal(Creature target, Card src, int heal) {
+	default public Effect onHeal(Creature target, Card src, int heal, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// specific behaviors based on when certain cards are played
-	default public Effect cardPlayed(Card c) {
+	default public Effect cardPlayed(Card c, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// when a card is drawn. We can also use this to perform some behavior if
 	// THIS card is drawn (i.e. some card auto summons when it's drawn or
 	// something.
-	default public Effect cardDrawn(Card drawn) {
+	default public Effect cardDrawn(Card drawn, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect creatureDied(Creature cr) {
+	default public Effect creatureDied(Creature cr, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest) {
+	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest, Zone z) {
 		return EmptyEffect.create();
 	}
 

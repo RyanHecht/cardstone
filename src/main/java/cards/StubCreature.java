@@ -5,6 +5,7 @@ import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
+import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
 import game.Player;
@@ -29,7 +30,11 @@ public class StubCreature extends Creature {
 	}
 
 	@Override
-	public Effect onPlayerDamage(Player p, Card src, int dmg) {
+	public Effect onPlayerDamage(Player p, Card src, int dmg, Zone z) {
+		if (z != Zone.CREATURE_BOARD) {
+			// only want effect to occur if the creature is on the board.
+			return EmptyEffect.create();
+		}
 		if (p.getPlayerType() != getOwner().getPlayerType()) {
 			// if the player that took damage isn't the owner of this card, deal
 			// damage to them.

@@ -24,7 +24,7 @@ public class Main {
 		Player pTwo = new Player(30, PlayerType.PLAYER_TWO);
 		OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, pOne);
 		OrderedCardCollection deckTwo = new OrderedCardCollection(Zone.DECK, pTwo);
-		Board b = new Board(deckOne, deckTwo);
+		Board b1 = new Board(deckOne, deckTwo);
 		StubCreature c1 = new StubCreature(pOne);
 		StubCreature c2 = new StubCreature(pTwo);
 		SkyWhaleCreature c3 = new SkyWhaleCreature(pOne);
@@ -35,7 +35,7 @@ public class Main {
 		playerOneCreatures.add(c3);
 		playerTwoCreatures.add(c2);
 
-		b.setOcc(playerOneCreatures);
-		b.setOcc(playerTwoCreatures);
+		b1.setOcc(playerOneCreatures);
+		b1.setOcc(playerTwoCreatures);
 	}
 }
