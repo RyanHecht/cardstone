@@ -37,5 +37,14 @@ public class Main {
 
 		b1.setOcc(playerOneCreatures);
 		b1.setOcc(playerTwoCreatures);
+
+		SkyWhaleCreature c4 = new SkyWhaleCreature(pTwo);
+		OrderedCardCollection playerOneCreatures2 = new OrderedCardCollection(Zone.CREATURE_BOARD, pOne);
+		OrderedCardCollection playerTwoCreatures2 = new OrderedCardCollection(Zone.CREATURE_BOARD, pTwo);
+
+		playerOneCreatures2.add(c1);
+		playerOneCreatures2.add(c3);
+		playerTwoCreatures2.add(c2);
+		playerTwoCreatures2.add(c4);
 	}
 }
