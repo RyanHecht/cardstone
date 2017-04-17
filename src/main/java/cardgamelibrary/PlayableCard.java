@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.google.gson.JsonObject;
 
 import game.Player;
@@ -8,23 +10,35 @@ import game.Player;
  * A card that can actually be played. Probably all cards subclass this but they
  * don't technically have to.
  *
- * @author 42jpa
+ * @author Raghu
  *
  */
 public class PlayableCard implements Card {
-	private ManaPool	cost;
-	private String		image;
-	private Player		owner;
-	private String		name;
-	private String		text;
-	private boolean		changed;
-	private CardType	type;
-	private int				id;
+	private ManaPool							cost;
+	private String								image;
+	private Player								owner;
+	private String								name;
+	private String								text;
+	private boolean								changed;
+	private CardType							type;
+	private int										id;
+	private static AtomicInteger	idGenerator	= new AtomicInteger(0);
 
-
+	public PlayableCard(ManaPool cost, String image, Player owner, String name, String text, CardType type) {
+		this.cost = cost;
+		this.image = image;
+		this.owner = owner;
+		this.name = name;
+		this.text = text;
+		this.type = type;
+		// should cards be initialized with a changed of true?
+		this.changed = false;
+		this.id = idGenerator.incrementAndGet();
+	}
 
 	// tells us if the card has changed since the last time we sent it to the
 	// front end.
+	@Override
 	public boolean hasChanged() {
 		return changed;
 	}
@@ -82,10 +96,9 @@ public class PlayableCard implements Card {
 
 	@Override
 	public JsonObject jsonifySelfChanged() {
-		if(hasChanged()){
+		if (hasChanged()) {
 			return jsonifySelf();
-		}
-		else{
+		} else {
 			JsonObject result = new JsonObject();
 			result.addProperty("changed", hasChanged());
 			result.addProperty("id", getId());

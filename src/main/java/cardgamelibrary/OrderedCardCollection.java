@@ -33,10 +33,15 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
 		this.player = p;
+		this.cards = new ArrayList<>();
 	}
 
 	public Zone getZone() {
 		return zone;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public List<Effect> handleCardBoardEvent(Event event) {
@@ -78,7 +83,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			for (Card drawn : cDrawn.getDrawn()) {
-				results.add(c.cardDrawn(drawn));
+				results.add(c.cardDrawn(drawn, getZone()));
 			}
 		}
 		return results;
@@ -87,7 +92,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleTurnEnd(TurnEndEvent endTurn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onTurnEnd());
+			results.add(c.onTurnEnd(getZone()));
 		}
 		return results;
 	}
@@ -95,7 +100,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCardDamaged(CardDamagedEvent cDamaged) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg()));
+			results.add(c.onDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg(), getZone()));
 		}
 		return results;
 	}
@@ -103,7 +108,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handlePlayerDamaged(PlayerDamagedEvent pDamaged) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onPlayerDamage(pDamaged.getPlayer(), pDamaged.getSrc(), pDamaged.getDmg()));
+			results.add(c.onPlayerDamage(pDamaged.getPlayer(), pDamaged.getSrc(), pDamaged.getDmg(), getZone()));
 		}
 		return results;
 	}
@@ -111,7 +116,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCreatureDied(CreatureDiedEvent cDeath) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.creatureDied(cDeath.getCreature()));
+			results.add(c.creatureDied(cDeath.getCreature(), getZone()));
 		}
 		return results;
 	}
@@ -119,7 +124,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCardZoneChange(CardZoneChangeEvent change) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd()));
+			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd(), getZone()));
 		}
 		return results;
 	}
@@ -188,25 +193,33 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	public <T> T[] toArray(T[] a) {
 		return cards.toArray(a);
 	}
-	
-	
-	
-	public JsonObject jsonifySelf(){
+
+	/**
+	 * Checks to see if the orderedCardCollection has changed.
+	 *
+	 * @return a boolean representing whether the OCC has changed.
+	 */
+	private boolean hasChanged() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
 		List<JsonObject> cardObjects = new ArrayList<>();
-		for(Card c : cards){
+		for (Card c : cards) {
 			cardObjects.add(c.jsonifySelf());
 		}
 		Gson gson = new Gson();
 		result.add("cards", gson.toJsonTree(cardObjects));
+		return result;
 	}
-	
-	public JsonObject jsonifySelfChanged(){
-		if(hasChanged()){
+
+	public JsonObject jsonifySelfChanged() {
+		if (hasChanged()) {
 			return jsonifySelf();
-		}
-		else{
+		} else {
 			JsonObject result = new JsonObject();
 			result.addProperty("changed", hasChanged());
 			return result;
