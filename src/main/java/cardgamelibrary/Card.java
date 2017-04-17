@@ -29,7 +29,7 @@ public interface Card {
 	// flyweight getting thing for all the image for the given name by ID
 
 	boolean hasChanged();
-	
+
 	/**
 	 * Get the type of the card. Basically will be used instead of putting
 	 * instanceof all over the place.
@@ -80,16 +80,16 @@ public interface Card {
 		return EmptyEffect.create();
 	}
 
-	default JsonObject jsonifySelf(){
+	default JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("text", this.getText());
-		result.addProperty("id",this.getId());
-		result.addProperty("name",this.getName());
+		result.addProperty("id", this.getId());
+		result.addProperty("name", this.getName());
 		result.addProperty("image", this.getImage());
 		result.addProperty("changed", hasChanged());
-		result.add("cost",this.getCost().jsonifySelf());
+		result.add("cost", this.getCost().jsonifySelf());
 		return result;
 	}
-	
+
 	JsonObject jsonifySelfChanged();
 }

@@ -33,10 +33,15 @@ public class OrderedCardCollection implements CardCollection {
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
 		this.player = p;
+		this.cards = new ArrayList<>();
 	}
 
 	public Zone getZone() {
 		return zone;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public List<Effect> handleCardBoardEvent(Event event) {
@@ -188,25 +193,33 @@ public class OrderedCardCollection implements CardCollection {
 	public <T> T[] toArray(T[] a) {
 		return cards.toArray(a);
 	}
-	
-	
-	
-	public JsonObject jsonifySelf(){
+
+	/**
+	 * Checks to see if the orderedCardCollection has changed.
+	 *
+	 * @return a boolean representing whether the OCC has changed.
+	 */
+	private boolean hasChanged() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
 		List<JsonObject> cardObjects = new ArrayList<>();
-		for(Card c : cards){
+		for (Card c : cards) {
 			cardObjects.add(c.jsonifySelf());
 		}
 		Gson gson = new Gson();
 		result.add("cards", gson.toJsonTree(cardObjects));
+		return result;
 	}
-	
-	public JsonObject jsonifySelfChanged(){
-		if(hasChanged()){
+
+	public JsonObject jsonifySelfChanged() {
+		if (hasChanged()) {
 			return jsonifySelf();
-		}
-		else{
+		} else {
 			JsonObject result = new JsonObject();
 			result.addProperty("changed", hasChanged());
 			return result;

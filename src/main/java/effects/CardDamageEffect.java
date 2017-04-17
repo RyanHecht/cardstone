@@ -5,13 +5,13 @@ import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 
-public class DamageEffect implements Effect {
+public class CardDamageEffect implements Effect {
 
 	private Card			source;
 	private Creature	cardDamaged;
 	private int				dmg;
 
-	public DamageEffect(Card c, Creature target, int dmg) {
+	public CardDamageEffect(Card c, Creature target, int dmg) {
 		source = c;
 		cardDamaged = target;
 		this.dmg = dmg;
@@ -20,11 +20,17 @@ public class DamageEffect implements Effect {
 	@Override
 	public void apply(Board board) {
 		// TODO Auto-generated method stub
-		for (Creature cr : board.getOnBoard()) {
+		for (Card c : board.getPlayerOneCreatures()) {
+			Creature cr = (Creature) c;
 			if (cr.equals(cardDamaged)) {
 				cr.takeDamage(dmg, source);
 			}
-
+		}
+		for (Card c : board.getPlayerTwoCreatures()) {
+			Creature cr = (Creature) c;
+			if (cr.equals(cardDamaged)) {
+				cr.takeDamage(dmg, source);
+			}
 		}
 	}
 

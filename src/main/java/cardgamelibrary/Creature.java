@@ -1,14 +1,19 @@
 package cardgamelibrary;
 
+import game.Player;
+
 public class Creature extends PlayableCard {
 
 	private int	maxHealth;
 	private int	health;
 	private int	attack;
 
-	public Creature(int health, int attack) {
-		maxHealth = health;
-		this.health = health;
+	public Creature(int maxHealth, int attack, ManaPool cost, String image, Player owner, String name, String text,
+			CardType type) {
+		super(cost, image, owner, name, text, type);
+		// initialize starting health at maxHealth.
+		this.maxHealth = maxHealth;
+		this.health = maxHealth;
 		this.attack = attack;
 	}
 
@@ -30,6 +35,10 @@ public class Creature extends PlayableCard {
 
 	public void heal(int heal, Card src) {
 		setHealth(getHealth() + heal);
+		if (health > maxHealth) {
+			// can't heal over max health
+			health = maxHealth;
+		}
 	}
 
 	public void setHealth(int newHealth) {
@@ -41,7 +50,7 @@ public class Creature extends PlayableCard {
 	 * gets whether the creature is dead. By default just returns if health < 0,
 	 * but of course can be overridden.
 	 *
-	 * @return
+	 * @return a boolean representing whether the creature is dead or not.
 	 */
 	public boolean isDead() {
 		return getHealth() <= 0;
