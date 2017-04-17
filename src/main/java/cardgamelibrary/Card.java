@@ -11,7 +11,7 @@ import game.Player;
  * @author 42jpa
  *
  */
-public interface Card {
+public interface Card extends Jsonifiable {
 
 	// Doesn't have to be unique
 	String getName();

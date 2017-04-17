@@ -22,7 +22,7 @@ import game.Player;
  * @author 42jpa
  *
  */
-public class OrderedCardCollection implements CardCollection {
+public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	private List<Card>	cards;
 	private Zone				zone;

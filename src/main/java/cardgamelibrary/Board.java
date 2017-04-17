@@ -17,7 +17,7 @@ import server.MessageTypeEnum;
  * @author Kaushik Raghu Nimmagadda
  *
  */
-public class Board {
+public class Board implements Jsonifiable {
 
 	Queue<Event>									eventQueue;
 	Queue<Effect>									effectQueue;
@@ -49,7 +49,8 @@ public class Board {
 		this.deckTwo = deckTwo;
 
 		// initialize all other fields here.
-
+		
+		
 		// load all fields into cardsInGame
 		cardsInGame.add(this.deckOne);
 		cardsInGame.add(this.deckTwo);
