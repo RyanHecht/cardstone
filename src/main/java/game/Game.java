@@ -3,6 +3,7 @@ package game;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Jsonifiable;
 import server.MessageTypeEnum;
 
 /**
@@ -11,7 +12,7 @@ import server.MessageTypeEnum;
  * @author Raghu
  *
  */
-public class Game {
+public class Game implements Jsonifiable{
 	private Board		board;
 	private Player	playerOne;
 	private Player	playerTwo;
@@ -46,6 +47,16 @@ public class Game {
 		payload.add("player1", playerOne.jsonifySelf());
 		payload.add("player2", playerTwo.jsonifySelf());
 		payload.add("board", board.jsonifySelf());
+		return result;
+	}
+	
+	public JsonObject jsonifySelfChanged(){
+		JsonObject result = new JsonObject();
+		result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
+		JsonObject payload = new JsonObject();
+		payload.add("player1", playerOne.jsonifySelf());
+		payload.add("player2", playerTwo.jsonifySelf());
+		payload.add("board", board.jsonifySelfChanged());
 		return result;
 	}
 }

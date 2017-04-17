@@ -16,7 +16,7 @@ import events.CreatureDiedEvent;
  * @author Kaushik Raghu Nimmagadda
  *
  */
-public class Board {
+public class Board implements Jsonifiable {
 
 	Queue<Event>									eventQueue;
 	Queue<Effect>									effectQueue;

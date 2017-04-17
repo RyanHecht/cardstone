@@ -1,6 +1,9 @@
 package cardgamelibrary;
 
+import com.google.gson.JsonObject;
+
 import game.Player;
+
 
 public class Creature extends PlayableCard {
 
@@ -54,6 +57,14 @@ public class Creature extends PlayableCard {
 	 */
 	public boolean isDead() {
 		return getHealth() <= 0;
+	}
+	
+	public JsonObject jsonifySelf(){
+		JsonObject result = super.jsonifySelf();
+		result.addProperty("attack", getAttack());
+		result.addProperty("health",getHealth());
+		result.addProperty("damaged",getMaxHealth() > getHealth());
+		return result;
 	}
 
 }
