@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.google.gson.JsonObject;
 
 import events.CreatureDiedEvent;
-import game.Player;
 
 /**
  * Contains the entire state of a given game
@@ -210,10 +209,6 @@ public class Board {
 
 	public OrderedCardCollection getPlayerTwoCreatures() {
 		return creatureTwo;
-	}
-
-	private void draw(int numCards, Player p) {
-
 	}
 
 	public JsonObject jsonifySelf() {

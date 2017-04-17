@@ -7,7 +7,7 @@ import server.MessageTypeEnum;
 
 /**
  * Class to represent a game.
- * 
+ *
  * @author Raghu
  *
  */
@@ -18,11 +18,11 @@ public class Game {
 
 	public Game() {
 		// Initialize both players @30 life.
-		playerOne = new Player(30);
-		playerTwo = new Player(30);
+		playerOne = new Player(30, PlayerType.PLAYER_ONE);
+		playerTwo = new Player(30, PlayerType.PLAYER_TWO);
 
 		// Some sort of board constructor goes here.
-		board = new Board();
+		// board = new Board();
 	}
 
 	public void startGame() {
@@ -38,8 +38,8 @@ public class Game {
 			System.out.println("Game is drawn.");
 		}
 	}
-	
-	public JsonObject jsonifySelf(){
+
+	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
 		JsonObject payload = new JsonObject();
