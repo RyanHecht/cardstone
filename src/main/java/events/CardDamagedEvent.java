@@ -1,7 +1,5 @@
 package events;
 
-import java.util.List;
-
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
@@ -35,12 +33,6 @@ public class CardDamagedEvent implements Event {
 	public EventType getType() {
 		// TODO Auto-generated method stub
 		return EventType.CARD_DAMAGED;
-	}
-
-	@Override
-	public List<Card> getAffected() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

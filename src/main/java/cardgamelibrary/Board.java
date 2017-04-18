@@ -90,8 +90,11 @@ public class Board implements Jsonifiable {
 				handleEvent(eventQueue.poll());
 			} else {
 				// dead creatures are cleaned up after all events have processed.
+				// should we handle all effects from an event immediately?
 				handleDead();
-				handleEffect(effectQueue.poll());
+				while (effectQueue.size() != 0) {
+					handleEffect(effectQueue.poll());
+				}
 			}
 		}
 	}
@@ -211,6 +214,7 @@ public class Board implements Jsonifiable {
 		return creatureTwo;
 	}
 
+	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
@@ -224,6 +228,7 @@ public class Board implements Jsonifiable {
 		return result;
 	}
 
+	@Override
 	public JsonObject jsonifySelfChanged() {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
