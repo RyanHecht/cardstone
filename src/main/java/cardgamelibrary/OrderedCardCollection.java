@@ -1,7 +1,10 @@
 package cardgamelibrary;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -201,6 +204,16 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private boolean hasChanged() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/**
+	 * Used to shuffle a deck, will throw error if called on something that isn't
+	 * a deck.
+	 */
+	public void shuffle() {
+		// should only shuffle decks.
+		assertTrue(zone == Zone.DECK);
+		Collections.shuffle(cards);
 	}
 
 	@Override

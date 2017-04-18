@@ -5,12 +5,15 @@ import cardgamelibrary.Effect;
 
 /**
  * Class to represent an effect that does nothing. It's final so people can't
- * subclass it and screw around b/c that could cause major issues.
+ * subclass it and screw around b/c that could cause major issues. Get instances
+ * by using the "create" method that will return an effect. It's a singleton
+ * since we don't need multiple copies of this.
  *
  * @author Raghu
  *
  */
 public final class EmptyEffect implements Effect {
+	private static final EmptyEffect effect = new EmptyEffect();
 
 	/*
 	 * no instantiation allowed.
@@ -30,7 +33,7 @@ public final class EmptyEffect implements Effect {
 	 * @return an empty effect.
 	 */
 	public static EmptyEffect create() {
-		return new EmptyEffect();
+		return effect;
 	}
 
 }

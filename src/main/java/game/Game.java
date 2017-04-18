@@ -1,6 +1,7 @@
 package game;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.JsonObject;
 
@@ -18,14 +19,19 @@ import server.MessageTypeEnum;
  *
  */
 public class Game implements Jsonifiable {
-	private Board		board;
-	private Player	playerOne;
-	private Player	playerTwo;
+	private Board									board;
+	private Player								playerOne;
+	private Player								playerTwo;
+	private int										id;
+	private static AtomicInteger	idGenerator	= new AtomicInteger(0);
 
 	public Game(List<Card> firstPlayerCards, List<Card> secondPlayerCards) {
 		// Initialize both players @30 life.
 		playerOne = new Player(30, PlayerType.PLAYER_ONE);
 		playerTwo = new Player(30, PlayerType.PLAYER_TWO);
+
+		// set id.
+		this.id = idGenerator.incrementAndGet();
 
 		// build decks from the lists of cards.
 		OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, playerOne);
@@ -34,6 +40,10 @@ public class Game implements Jsonifiable {
 		deckTwo.addAll(secondPlayerCards);
 
 		// but how do we register players for all the cards?
+
+		// shuffle decks.
+		deckOne.shuffle();
+		deckTwo.shuffle();
 
 		// Some sort of board constructor goes here.
 		board = new Board(deckOne, deckTwo);
@@ -51,6 +61,10 @@ public class Game implements Jsonifiable {
 		} else {
 			System.out.println("Game is drawn.");
 		}
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	@Override
