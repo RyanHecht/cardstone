@@ -133,6 +133,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	@Override
 	public boolean add(Card e) {
+		System.out.println(cards);
 		return cards.add(e);
 	}
 
@@ -221,7 +222,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
 		List<JsonObject> cardObjects = new ArrayList<>();
+		System.out.println(cards + " "  + cards.size());
 		for (Card c : cards) {
+			System.out.println("card checked");
 			cardObjects.add(c.jsonifySelf());
 		}
 		Gson gson = new Gson();

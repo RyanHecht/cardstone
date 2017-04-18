@@ -15,9 +15,9 @@ public class SkyWhaleCreature extends Creature {
 	private static int			maxHealth	= 30;
 	private static int			attack		= 5;
 	private static ManaPool	cost			= new ManaPool(30, 0, 2, 0, 1, 0);
-	private static String		image			= "boardstuff/images/magicSkyWhale.jpg";
+	private static String		image			= "images/magicSkyWhale.jpg";
 	private static String		name			= "Sky Whale";
-	private static String		text			= "I'm flying!";
+	private static String		text			= "Im flying!";
 
 	public SkyWhaleCreature(Player owner) {
 		super(maxHealth, attack, cost, image, owner, name, text, CardType.CREATURE);

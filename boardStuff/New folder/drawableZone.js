@@ -1,0 +1,9 @@
+class drawableZone{
+	draw(){
+		
+	}
+	
+	forceRedraw(){
+		
+	}
+}

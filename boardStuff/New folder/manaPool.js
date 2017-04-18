@@ -59,7 +59,10 @@ class manaPool{
 	getColor(){
 		let x = this.getTotalColors();
 		if(x == 0){
-			return "lightgray";
+			return "white";
+		}
+		else if(x >= 3){
+			return "white";
 		}
 		else if(x == 1){
 			if(this.fire > 0){
@@ -78,32 +81,9 @@ class manaPool{
 				return balanceText;
 			}
 		}
-		else if(x >= 2){
+		else if(x == 2){
 			return this.getColorGradient();
 		}
-	}
-	
-	getColors(){
-		let colors = [];
-		if(this.fire > 0){
-			colors.push(fireText);
-		}
-		if(this.earth > 0){
-			colors.push(earthText);
-		}
-		if(this.water > 0){
-			colors.push(waterText);
-		}
-		if(this.air > 0){
-			colors.push(airText);
-		}
-		if(this.balance > 0){
-			colors.push(balanceText);
-		}
-		if (colors.length == 0){
-			colors.push("rgba(211,211,211,1.0)")
-		}
-		return colors;
 	}
 	
 	getColorGradient(){

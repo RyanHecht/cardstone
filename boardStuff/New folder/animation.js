@@ -10,7 +10,6 @@ class animation{
 	setColor(color){
 		this.ranged = false;
 		this.color = color;
-		this.colorSet = null;
 	}
 	
 	buildFromOptions(options){
@@ -41,11 +40,6 @@ class animation{
 		this.b1 = b1;
 		this.b2 = b2;
 		this.a = a;
-		this.colorSet = null;
-	}
-	
-	setColorSet(colorSet){
-		this.colorSet = colorSet;
 	}
 	
 	setShape(shape){

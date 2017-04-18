@@ -5,6 +5,7 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
 import cards.SkyWhaleCreature;
 import cards.StubCreature;
+import game.Game;
 import game.Player;
 import game.PlayerType;
 
@@ -46,5 +47,12 @@ public class Main {
 		playerOneCreatures2.add(c3);
 		playerTwoCreatures2.add(c2);
 		playerTwoCreatures2.add(c4);
+		playerOneCreatures2.add(c3);
+		playerOneCreatures2.add(c3);
+		b1.setOcc(playerOneCreatures2);
+		b1.setOcc(playerTwoCreatures2);
+		Game g1 = new Game();
+		g1.setBoard(b1);
+		System.out.println(g1.jsonifySelf());
 	}
 }
