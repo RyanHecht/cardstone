@@ -34,7 +34,7 @@ public interface Card extends Jsonifiable {
 	 * Get the type of the card. Basically will be used instead of putting
 	 * instanceof all over the place.
 	 *
-	 * @return
+	 * @return the type of the card.
 	 */
 	CardType getType();
 
@@ -79,14 +79,27 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// creature dies
 	default public Effect creatureDied(Creature cr, Zone z) {
 		return EmptyEffect.create();
 	}
 
+	// card changes zones
 	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest, Zone z) {
 		return EmptyEffect.create();
 	}
 
+	// creature attacks another creature
+	default public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// creature attacks player
+	default public Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	@Override
 	default JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("text", this.getText());
@@ -99,5 +112,6 @@ public interface Card extends Jsonifiable {
 		return result;
 	}
 
+	@Override
 	JsonObject jsonifySelfChanged();
 }

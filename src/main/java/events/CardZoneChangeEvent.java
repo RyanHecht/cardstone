@@ -1,7 +1,5 @@
 package events;
 
-import java.util.List;
-
 import cardgamelibrary.Card;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
@@ -23,12 +21,6 @@ public class CardZoneChangeEvent implements Event {
 	public EventType getType() {
 		// TODO Auto-generated method stub
 		return EventType.CARD_PLAYED;
-	}
-
-	@Override
-	public List<Card> getAffected() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Card getCard() {
