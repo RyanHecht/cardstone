@@ -1,9 +1,14 @@
 package game;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.Jsonifiable;
+import cardgamelibrary.OrderedCardCollection;
+import cardgamelibrary.Zone;
 import server.MessageTypeEnum;
 
 /**
@@ -12,18 +17,26 @@ import server.MessageTypeEnum;
  * @author Raghu
  *
  */
-public class Game implements Jsonifiable{
+public class Game implements Jsonifiable {
 	private Board		board;
 	private Player	playerOne;
 	private Player	playerTwo;
 
-	public Game() {
+	public Game(List<Card> firstPlayerCards, List<Card> secondPlayerCards) {
 		// Initialize both players @30 life.
 		playerOne = new Player(30, PlayerType.PLAYER_ONE);
 		playerTwo = new Player(30, PlayerType.PLAYER_TWO);
 
+		// build decks from the lists of cards.
+		OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, playerOne);
+		OrderedCardCollection deckTwo = new OrderedCardCollection(Zone.DECK, playerTwo);
+		deckOne.addAll(firstPlayerCards);
+		deckTwo.addAll(secondPlayerCards);
+
+		// but how do we register players for all the cards?
+
 		// Some sort of board constructor goes here.
-		// board = new Board();
+		board = new Board(deckOne, deckTwo);
 	}
 
 	public void startGame() {
@@ -40,6 +53,7 @@ public class Game implements Jsonifiable{
 		}
 	}
 
+	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
@@ -49,8 +63,9 @@ public class Game implements Jsonifiable{
 		payload.add("board", board.jsonifySelf());
 		return result;
 	}
-	
-	public JsonObject jsonifySelfChanged(){
+
+	@Override
+	public JsonObject jsonifySelfChanged() {
 		JsonObject result = new JsonObject();
 		result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
 		JsonObject payload = new JsonObject();

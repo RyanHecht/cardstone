@@ -19,19 +19,8 @@ public class CardDamageEffect implements Effect {
 
 	@Override
 	public void apply(Board board) {
-		// TODO Auto-generated method stub
-		for (Card c : board.getPlayerOneCreatures()) {
-			Creature cr = (Creature) c;
-			if (cr.equals(cardDamaged)) {
-				cr.takeDamage(dmg, source);
-			}
-		}
-		for (Card c : board.getPlayerTwoCreatures()) {
-			Creature cr = (Creature) c;
-			if (cr.equals(cardDamaged)) {
-				cr.takeDamage(dmg, source);
-			}
-		}
+		// do we even have to search for the creature?
+		cardDamaged.takeDamage(dmg, source);
 	}
 
 }

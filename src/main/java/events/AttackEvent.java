@@ -1,8 +1,5 @@
 package events;
 
-import java.util.List;
-
-import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
@@ -16,16 +13,18 @@ public class AttackEvent implements Event {
 		this.target = target;
 	}
 
-	@Override
-	public EventType getType() {
-		// TODO Auto-generated method stub
-		return null;
+	public Creature getAttacker() {
+		return attacker;
+	}
+
+	public Creature getTarget() {
+		return target;
 	}
 
 	@Override
-	public List<Card> getAffected() {
+	public EventType getType() {
 		// TODO Auto-generated method stub
-		return null;
+		return EventType.ATTACK;
 	}
 
 }

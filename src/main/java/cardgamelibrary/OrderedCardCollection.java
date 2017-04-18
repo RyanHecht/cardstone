@@ -3,6 +3,7 @@ package cardgamelibrary;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
 		this.player = p;
-		this.cards = new ArrayList<>();
+		this.cards = new LinkedList<>();
 	}
 
 	public Zone getZone() {
@@ -82,9 +83,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleDraw(CardDrawnEvent cDrawn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			for (Card drawn : cDrawn.getDrawn()) {
-				results.add(c.cardDrawn(drawn, getZone()));
-			}
+			results.add(c.cardDrawn(cDrawn.getDrawn(), getZone()));
 		}
 		return results;
 	}
@@ -204,6 +203,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return false;
 	}
 
+	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
@@ -216,6 +216,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return result;
 	}
 
+	@Override
 	public JsonObject jsonifySelfChanged() {
 		if (hasChanged()) {
 			return jsonifySelf();
