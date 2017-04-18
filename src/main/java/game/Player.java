@@ -65,13 +65,13 @@ public class Player {
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("health", life);
-		result.addProperty("pool", resources);
+		result.addProperty("resources", manaPool.getResources());
 		JsonObject elementObject = new JsonObject();
-		elementObject.addProperty("fire", elementMap.get(ElementType.FIRE));
-		elementObject.addProperty("water", elementMap.get(ElementType.WATER));
-		elementObject.addProperty("air", elementMap.get(ElementType.AIR));
-		elementObject.addProperty("earth", elementMap.get(ElementType.EARTH));
-		elementObject.addProperty("balance", elementMap.get(ElementType.BALANCE));
+		elementObject.addProperty("fire", manaPool.getElement(ElementType.FIRE));
+		elementObject.addProperty("water", manaPool.getElement(ElementType.WATER));
+		elementObject.addProperty("air", manaPool.getElement(ElementType.AIR));
+		elementObject.addProperty("earth", manaPool.getElement(ElementType.EARTH));
+		elementObject.addProperty("balance", manaPool.getElement(ElementType.BALANCE));
 		result.add("element", elementObject);
 		return result;
 	}

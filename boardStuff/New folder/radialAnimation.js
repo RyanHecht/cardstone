@@ -5,21 +5,13 @@ class radialAnimation extends animation{
 		this.imploding = true;
 	}
 	
-	setCenterDivById(divID){
-		let $divElem = $("#"+divID);
+	setCenterDiv(divID){
+		let $divElem = $("#divID");
 		let divElem = $divElem[0];
-		console.log(divElem);
 		let left = divElem.offsetLeft;
 		let top = divElem.offsetTop;
-		let height = divElem.offsetHeight;
-		let width = divElem.offsetWidth;
-		while(divElem.offsetParent != null){
-			divElem = divElem.offsetParent;
-			left += divElem.offsetLeft;
-			top += divElem.offsetTop;
-		}
-		let centerX = left + (width / 2);
-		let centerY = top + (height / 2);
+		let centerX = left + (divElem.offsetWidth / 2);
+		let centerY = top + (divElem.offsetHeight / 2);
 		this.setCenter(centerX,centerY);
 	}
 	
@@ -31,7 +23,7 @@ class radialAnimation extends animation{
 	
 	setCenter(x,y){
 		this.x = x;
-		this.y = y;
+		this.y =y;
 	}
 	
 	setImploding(imploding){
@@ -55,14 +47,10 @@ class singleRadial extends radialAnimation{
 			color = this.color;
 		}
 		if(this.imploding){
-			for(let x = 0; x < this.count; x ++){
-				drawables.push(new collapsingSingleRadialDrawable(this.x, this.y, color,this.shape,this.speed,this.radius - x));
-			}
+			drawables.push(new collapsingSingleRadialDrawable(this.x, this.y, color,this.shape,this.speed,this.radius));
 		}
 		else{
-			for(let x = 0; x < this.count; x++){
-				drawables.push(new explodingSingleRadialDrawable(this.x, this.y, color,this.shape,this.speed,this.radius + x));
-			}
+			drawables.push(new explodingSingleRadialDrawable(this.x, this.y, color,this.shape,this.speed,this.radius));
 		}
 		return drawables;
 	}

@@ -25,6 +25,10 @@ public class Game implements Jsonifiable{
 		// Some sort of board constructor goes here.
 		// board = new Board();
 	}
+	
+	public void setBoard(Board board){
+		this.board = board;
+	}
 
 	public void startGame() {
 		while (playerOne.getLife() > 0 && playerTwo.getLife() > 0) {
@@ -47,6 +51,7 @@ public class Game implements Jsonifiable{
 		payload.add("player1", playerOne.jsonifySelf());
 		payload.add("player2", playerTwo.jsonifySelf());
 		payload.add("board", board.jsonifySelf());
+		result.add("payload", payload);
 		return result;
 	}
 	

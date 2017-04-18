@@ -20,10 +20,10 @@ import game.Player;
 public class StubCreature extends Creature {
 	private static int			maxHealth	= 20;
 	private static int			attack		= 10;
-	private static ManaPool	cost			= new ManaPool(10, 1, 1, 1, 1, 1);
-	private static String		image			= "boardstuff/images/creature.jpg";
+	private static ManaPool	cost			= new ManaPool(10, 1, 1, 0, 0 , 0);
+	private static String		image			= "images/creature.jpg";
 	private static String		name			= "Stub McStubbington";
-	private static String		text			= "I'm the coolest creature around.";
+	private static String		text			= "Im the coolest creature around.";
 
 	public StubCreature(Player owner) {
 		super(maxHealth, attack, cost, image, owner, name, text, CardType.CREATURE);

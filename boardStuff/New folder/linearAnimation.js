@@ -1,11 +1,3 @@
-//Pulled from internet
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-//
-
 class linearAnimation extends animation{
 	
 	create(){
@@ -17,14 +9,12 @@ class linearAnimation extends animation{
 			let edY = ((this.endY2 - this.endY1) / this.count);
 			for(let i = 0; i < this.count; i++){
 				let color;
-				if(this.colorSet != null){
-					color = this.colorSet[getRandomInt(0,this.colorSet.length)];
-				}
-				else if(this.ranged){
+				if(this.ranged){
 					let r = Math.floor((Math.random() * (this.r2 - this.r1))) + this.r1;
 					let g = Math.floor((Math.random() * (this.g2 - this.g1))) + this.g1;
 					let b = Math.floor((Math.random() * (this.b2 - this.b1))) + this.b1;
 					color = "rgba(" + r + "," + g + "," + b + "," + this.a + ")";
+					
 				}
 				else{
 					color = this.color;
@@ -35,10 +25,7 @@ class linearAnimation extends animation{
 		else{
 			for(let i = 0; i < this.count; i++){
 				let color;
-				if(this.colorSet != null){
-					color = this.colorSet[getRandomInt(0,this.colorSet.length)];
-				}
-				else if(this.ranged){
+				if(this.ranged){
 					let r = Math.floor((Math.random() * (this.r2 - this.r1))) + this.r1;
 					let g = Math.floor((Math.random() * (this.g2 - this.g1))) + this.g1;
 					let b = Math.floor((Math.random() * (this.b2 - this.b1))) + this.b1;
@@ -96,7 +83,7 @@ class linearAnimation extends animation{
 			left += divElem.offsetLeft;
 			top += divElem.offsetTop;
 		}
-		this.setEndRange(left + width / 3,top + width / 3,left  + (2*(width / 3)), top  + (2*(height / 3 )));
+		this.setEndRange(left,top,left + width, top + height);
 	}
 	
 	setStartRange(x1,y1,x2,y2){

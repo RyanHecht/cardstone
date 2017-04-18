@@ -135,6 +135,7 @@ public class Board implements Jsonifiable {
 	}
 
 	public void setOcc(OrderedCardCollection cards) {
+		System.out.println(cards.getPlayer().getPlayerType().ordinal());
 		switch (cards.getPlayer().getPlayerType()) {
 		case PLAYER_ONE:
 			switch (cards.getZone()) {
@@ -167,20 +168,20 @@ public class Board implements Jsonifiable {
 				// TODO enfore some sort of check here to ensure
 				// everything is a creature? I mean we're not gonna
 				// use this in the logic, it's only for testing...
-				creatureOne = cards;
+				creatureTwo = cards;
 				break;
 			case AURA_BOARD:
 				// again, some sort of check here.
-				auraOne = cards;
+				auraTwo = cards;
 				break;
 			case HAND:
-				handOne = cards;
+				handTwo = cards;
 				break;
 			case DECK:
-				deckOne = cards;
+				deckTwo = cards;
 				break;
 			case GRAVE:
-				graveOne = cards;
+				graveTwo = cards;
 				break;
 			default:
 				throw new RuntimeException("ERROR: Illegal Zone in setOcc (Board.java)");

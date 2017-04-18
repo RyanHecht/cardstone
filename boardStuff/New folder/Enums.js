@@ -10,6 +10,7 @@ const TypeEnum = {
 	SPELL: 2,
 	BACK: 3,
 	ELEMENT: 4,
+
 };
 
 const ColorEnum = {
