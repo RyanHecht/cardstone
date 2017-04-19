@@ -21,17 +21,24 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import server.MessageTypeEnum;
 
+/**
+ * Spark WebSocket for sending data between server and client
+ * @author Ryan
+ *
+ */
 @WebSocket
 public class CommsWebSocket {
   private static final Gson GSON = new Gson();
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
 
+
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
     // On a new connection, we should send them an ID_REQUEST.
 
   }
+
 
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
@@ -83,6 +90,12 @@ public class CommsWebSocket {
 
   }
 
+  /**
+   * Update the user given by userId on changes in the board state.
+   * @param toSend
+   * @param userId
+   * @throws IOException
+   */
   public static void sendChangedBoardSate(Board toSend, int userId)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
@@ -96,6 +109,12 @@ public class CommsWebSocket {
     }
   }
 
+  /**
+   * Send the entire game state to the user given by userId.
+   * @param toSend
+   * @param userId
+   * @throws IOException
+   */
   public static void sendWholeBoardSate(Game toSend, int userId)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
@@ -107,6 +126,30 @@ public class CommsWebSocket {
 
       session.getRemote().sendString(GSON.toJson(obj));
     }
+  }
+
+  public static void sendAnimation(int userId) {
+
+  }
+
+  public static void sendExplicitAnimation(int userId) {
+
+  }
+
+  public static void sendChooseRequest(int userId) {
+
+  }
+
+  public static void sendTargetRequest(int userId) {
+
+  }
+
+  public static void sendActionOk(int userId) {
+
+  }
+
+  public static void sendActionBad(int uderId) {
+
   }
 
   public static void closeSession(int userId) {
