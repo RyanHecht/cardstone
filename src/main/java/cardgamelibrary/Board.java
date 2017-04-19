@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import com.google.gson.JsonObject;
 
+import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
 
 /**
@@ -241,6 +242,28 @@ public class Board implements Jsonifiable {
 		result.add("creature1", creatureOne.jsonifySelfChanged());
 		result.add("creature2", creatureTwo.jsonifySelfChanged());
 		return result;
+	}
+	
+	public void transformCard(Card target, Card result, Zone targetZone){
+		CardZoneCreatedEvent event = new CardZoneCreatedEvent(result,targetZone);
+		for(OrderedCardCollection occ : cardsInGame){
+			occ.remove(target);
+			if(occ.getZone() == targetZone && occ.getPlayer() == result.getOwner()){
+				occ.add(result);
+			}
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+		
+	}
+
+	public void summonCard(Card summon, Zone targetZone) {
+		CardZoneCreatedEvent event = new CardZoneCreatedEvent(summon,targetZone);
+		for(OrderedCardCollection occ : cardsInGame){
+			if(occ.getZone() == targetZone && occ.getPlayer() == summon.getOwner()){
+				occ.add(summon);
+			}
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
 	}
 
 }

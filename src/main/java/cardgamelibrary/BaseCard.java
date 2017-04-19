@@ -85,4 +85,10 @@ public class BaseCard implements Card {
 		return null;
 	}
 
+	@Override
+	public Player getOwner() {	
+		System.err.println("BaseCards don't have an owner!");
+		return null;
+	}
+
 }

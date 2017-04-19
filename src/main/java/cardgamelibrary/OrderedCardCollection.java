@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
 import events.CardZoneChangeEvent;
+import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
 import events.PlayerDamagedEvent;
 import events.TurnEndEvent;
@@ -68,6 +69,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			break;
 		case TURN_END:
 			results = handleTurnEnd((TurnEndEvent) event);
+			break;
+		case CARD_CREATED:
+			results = handleCardZoneCreated((CardZoneCreatedEvent) event);
 			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type.");
@@ -127,6 +131,15 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd(), getZone()));
+		}
+		return results;
+	}
+	
+	//When a card is created on the fly and put into a zone instead of going there from somewhere else
+	private List<Effect> handleCardZoneCreated(CardZoneCreatedEvent created){
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onCardZoneCreated(created.getCard(), created.getLocation(), getZone()));
 		}
 		return results;
 	}

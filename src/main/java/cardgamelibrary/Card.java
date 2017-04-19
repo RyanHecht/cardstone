@@ -37,6 +37,8 @@ public interface Card extends Jsonifiable {
 	 * @return the type of the card.
 	 */
 	CardType getType();
+	
+	Player getOwner();
 
 	/*
 	 * Note: In all the default effect producing methods, the zone represents the
@@ -118,4 +120,8 @@ public interface Card extends Jsonifiable {
 
 	@Override
 	JsonObject jsonifySelfChanged();
+
+	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone){
+		return EmptyEffect.create();
+	}
 }
