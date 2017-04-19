@@ -1,5 +1,8 @@
 package server.websocket;
 
+import cardgamelibrary.Board;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,11 +11,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import cardgamelibrary.Board;
 import server.MessageTypeEnum;
 
 @WebSocket
@@ -31,7 +29,8 @@ public class CommsWebSocket {
   public void closed(Session session, int statusCode, String reason) {
     int id = sessions.get(session);
 
-    // TODO: get player associated with this Id and terminate the game associated with that player.
+    // TODO: get player associated with this Id and terminate the game
+    // associated with that player.
 
     sessions.remove(session);
     idToSessions.remove(id);
@@ -46,11 +45,22 @@ public class CommsWebSocket {
 
     // These types of messages can only be operated on fully added sessions
     if (sessions.containsKey(session)) {
-      if (type == MessageTypeEnum.USER_INPUT.ordinal()) {
+      if (type == MessageTypeEnum.UNDERSTOOD_BOARD_STATE.ordinal()) {
+
+      } else if (type == MessageTypeEnum.TARGETED_CARD.ordinal()) {
+
+      } else if (type == MessageTypeEnum.TARGETED_PLAYER.ordinal()) {
+
+      } else if (type == MessageTypeEnum.ATTEMPTED_TO_PLAY.ordinal()) {
+
+      } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {
+
+      } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
 
       }
-    } else  {
-      // ID_RESPONSE is the only thing that the client should send it if it isn't in the map yet.
+    } else {
+      // ID_RESPONSE is the only thing that the client should send it if it
+      // isn't in the map yet.
       if (type == MessageTypeEnum.ID_RESPONSE.ordinal()) {
         // Let's get the Id and put it in the map!
         int id = payload.get("id").getAsInt();
@@ -59,15 +69,14 @@ public class CommsWebSocket {
       }
     }
 
-
   }
 
-
-  public static void sendBoardSate(Board toSend, int userId) throws IOException {
+  public static void sendChangedBoardSate(Board toSend, int userId)
+      throws IOException {
     if (idToSessions.containsKey(userId)) {
       Session session = idToSessions.get(userId);
       JsonObject obj = new JsonObject();
-      JsonObject payload = toSend.jsonifySelf();
+      JsonObject payload = toSend.jsonifySelfChanged();
       obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
       obj.add("payload", payload);
 
@@ -77,7 +86,7 @@ public class CommsWebSocket {
 
   private JsonObject getIdRequest() {
     JsonObject obj = new JsonObject();
-    JsonObject payload=  new JsonObject();
+    JsonObject payload = new JsonObject();
     obj.addProperty("type", MessageTypeEnum.ID_REQUEST.ordinal());
     obj.add("payload", payload);
 
@@ -85,4 +94,3 @@ public class CommsWebSocket {
   }
 
 }
-

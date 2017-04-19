@@ -86,7 +86,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleDraw(CardDrawnEvent cDrawn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.cardDrawn(cDrawn.getDrawn(), getZone()));
+			results.add(c.onCardDrawn(cDrawn.getDrawn(), getZone()));
 		}
 		return results;
 	}
@@ -94,7 +94,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleTurnEnd(TurnEndEvent endTurn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onTurnEnd(getZone()));
+			results.add(c.onTurnEnd(endTurn.getPlayer(), getZone()));
 		}
 		return results;
 	}
@@ -118,7 +118,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCreatureDied(CreatureDiedEvent cDeath) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.creatureDied(cDeath.getCreature(), getZone()));
+			results.add(c.onCreatureDeath(cDeath.getCreature(), getZone()));
 		}
 		return results;
 	}
@@ -222,7 +222,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
 		List<JsonObject> cardObjects = new ArrayList<>();
-		System.out.println(cards + " "  + cards.size());
+		System.out.println(cards + " " + cards.size());
 		for (Card c : cards) {
 			System.out.println("card checked");
 			cardObjects.add(c.jsonifySelf());
