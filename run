@@ -36,4 +36,4 @@ PROJECT=$(basename $(pwd))
 # The funny symbol: "$@" passes the command-line arguments on from
 # this script to your Java program.
 
-java -cp $TARGET:$CP edu.brown.cs.jpattiz.boggle.Main "$@"
+java -cp $TARGET:$CP main.Main "$@"
