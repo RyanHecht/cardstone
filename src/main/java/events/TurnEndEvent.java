@@ -2,8 +2,19 @@ package events;
 
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
+import game.Player;
 
 public class TurnEndEvent implements Event {
+
+	private Player finished;
+
+	public TurnEndEvent(Player p) {
+		finished = p;
+	}
+
+	public Player getPlayer() {
+		return finished;
+	}
 
 	@Override
 	public EventType getType() {

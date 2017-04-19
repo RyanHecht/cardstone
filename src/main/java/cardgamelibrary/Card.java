@@ -53,7 +53,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onTurnEnd(Zone z) {
+	default public Effect onTurnStart(Player p, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	default public Effect onTurnEnd(Player p, Zone z) {
 		return EmptyEffect.create();
 	}
 
