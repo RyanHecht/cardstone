@@ -66,6 +66,7 @@ public class Game implements Jsonifiable {
 				fCards.add(p);
 			}
 
+			// repeat process with player two's deck.
 			for (String formattedName : secondPlayerCards) {
 				PlayableCard p = (PlayableCard) Class.forName(formattedName).getConstructor(Player.class)
 						.newInstance(playerTwo);

@@ -86,7 +86,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleDraw(CardDrawnEvent cDrawn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.cardDrawn(cDrawn.getDrawn(), getZone()));
+			results.add(c.onCardDrawn(cDrawn.getDrawn(), getZone()));
 		}
 		return results;
 	}
@@ -118,7 +118,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCreatureDied(CreatureDiedEvent cDeath) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.creatureDied(cDeath.getCreature(), getZone()));
+			results.add(c.onCreatureDeath(cDeath.getCreature(), getZone()));
 		}
 		return results;
 	}
