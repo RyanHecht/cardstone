@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import server.MessageTypeEnum;
 
 /**
  * Class to represent a game.
@@ -155,24 +154,19 @@ public class Game implements Jsonifiable {
 
   @Override
   public JsonObject jsonifySelf() {
-    JsonObject result = new JsonObject();
-    result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
     JsonObject payload = new JsonObject();
     payload.add("player1", playerOne.jsonifySelf());
     payload.add("player2", playerTwo.jsonifySelf());
     payload.add("board", board.jsonifySelf());
-    result.add("payload", payload);
-    return result;
+    return payload;
   }
 
   @Override
   public JsonObject jsonifySelfChanged() {
-    JsonObject result = new JsonObject();
-    result.addProperty("type", String.valueOf(MessageTypeEnum.BOARD_STATE));
     JsonObject payload = new JsonObject();
     payload.add("player1", playerOne.jsonifySelf());
     payload.add("player2", playerTwo.jsonifySelf());
     payload.add("board", board.jsonifySelfChanged());
-    return result;
+    return payload;
   }
 }

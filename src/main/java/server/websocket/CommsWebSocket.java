@@ -7,9 +7,11 @@ import cards.SkyWhaleCreature;
 import cards.StubCreature;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import game.Game;
 import game.Player;
 import game.PlayerType;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.jetty.websocket.api.Session;
@@ -94,7 +96,7 @@ public class CommsWebSocket {
     }
   }
 
-  public static void sendWholeBoardSate(Board toSend, int userId)
+  public static void sendWholeBoardSate(Game toSend, int userId)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
       Session session = idToSessions.get(userId);
@@ -111,7 +113,7 @@ public class CommsWebSocket {
 
   }
 
-  private static Board testBoard() {
+  private static Game testBoard() {
     Player pOne = new Player(30, PlayerType.PLAYER_ONE);
     Player pTwo = new Player(30, PlayerType.PLAYER_TWO);
     OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, pOne);
@@ -146,7 +148,10 @@ public class CommsWebSocket {
     playerOneCreatures2.add(c3);
     b1.setOcc(playerOneCreatures2);
     b1.setOcc(playerTwoCreatures2);
-    return b1;
+
+    Game game = new Game(new ArrayList<String>(), new ArrayList<String>());
+    game.setBoard(b1);
+    return game;
   }
 
 }

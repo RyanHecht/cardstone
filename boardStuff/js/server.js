@@ -110,7 +110,7 @@ class Server{
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
-				console.log("received board")
+				console.log("received board: " + JSON.stringify(message.payload))
 				this.boardReceived(message.payload);
 		}
 	}
@@ -140,11 +140,12 @@ class Server{
 	}
 
 	boardReceived(data){
-		//this.setPlayers(data.player1,data.player2);
-		wholeBoard.changeFeature("p1Deck",data.deckOne);
-		wholeBoard.changeFeature("p2Deck",data.deckTwo);
-		cardCache.repairFrom(data);
-		wholeBoard.getFromCache(data);
+		console.log(data)
+		this.setPlayers(data.player1,data.player2);
+		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
+		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
+		cardCache.repairFrom(data.board);
+		wholeBoard.getFromCache(data.board);
 		redrawAll();
 	}
 
