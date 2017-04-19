@@ -38,12 +38,12 @@ Adds rows as needed up to max row count.
 
 
 
-	
+
 function redrawAll(){
 	wholeBoard.forceRedraw();
 	setupCanvas();
-}	
-	
+}
+
 //I don't know how to kill elements from an array
 function updateAndDrawAnimations(){
 	if(animations.length > 0){
@@ -55,7 +55,7 @@ function updateAndDrawAnimations(){
 			animations.splice(x,1);
 			continue;
 		}
-		
+
 		for(let y = 0; y < animations[x].length; y++){
 			animations[x][y].draw(canvasCtx);
 			if(animations[x][y].update(animations[x][y],UPDATE_RATE)){
@@ -73,12 +73,12 @@ function updateAndDrawAnimations(){
 	if(animations.length <= 0){
 		canvasQuery.hide();
 	}
-}	
+}
 
 function clearAnimations(){
 	animations = [];
 }
-	
+
 function setupCanvas(){
 	canvas = $(".boardOverlay")[0];
 	canvasQuery = $(".boardOverlay");
@@ -101,10 +101,10 @@ function setupBoard(){
 	let smallJoshPool = new manaPool(3,'&nbsp;');
 	smallJoshPool.setEarth(1);
 	smallJoshPool.setBalance(1);
-	
+
 	let smallSkyWhalePool = new manaPool(3,'&nbsp;');
 	let bigWhalePool = new manaPool(3,'&nbsp;');
-	
+
 	smallSkyWhalePool.setWater(1);
 	smallSkyWhalePool.setAir(1);
 	bigWhalePool.setWater(4);
@@ -112,40 +112,40 @@ function setupBoard(){
 	let joshCost = new cost(10,smallJoshPool);
 	let whaleCost = new cost(30, bigWhalePool);
 
-	
-	josh = new creatureCard(12,joshCost, "Josh Pattiz", "Perform a long sequence of actions." + 
-		" These may include dancing, singing, or just generally having a good time." + 
+
+	josh = new creatureCard(12,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
+		" These may include dancing, singing, or just generally having a good time." +
 		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
 	let skyWhale = new creatureCard(2,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
-	let whale = new creatureCard(3,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack", 
+	let whale = new creatureCard(3,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
 	"images/giantWhale.png",5,12);
-	
+
 	let purgePool = new manaPool(3,'&nbsp;');
 	purgePool.setBalance(2);
 	let purgeCost = new cost(30,purgePool);
-	
+
 	let purge = new spellCard(4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
 	"images/purge.jpg");
-	
+
 	let water = new elementCard(14,"water");
 	let balance = new elementCard(15,"balance");
 	let earth = new elementCard(16,"earth");
 	let fire = new elementCard(17,"fire");
 	let air = new elementCard(18,"air");
-	
+
 	josh.setState("cardCanAttack");
 	fire.setState("cardCanPlay");
 	let back = new cardBack(1);
-	
+
 	let hand1Joshs = [fire, water, earth, air, balance, purge];
 	let hand2Joshs = [back,back,back,back,back];
 
 	let aura1Joshs = [whale, skyWhale, skyWhale, skyWhale, skyWhale];
 	let aura2Joshs = [whale, whale, whale, whale, skyWhale];
-	
+
 	let creature1Joshs = [josh, whale, skyWhale, skyWhale, whale];
 	let creature2Joshs = [whale, whale, skyWhale, skyWhale, whale];
-	
+
 	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
 }
 
@@ -169,15 +169,15 @@ function buildCloud(options){
 
 function setupServer(){
 	server = new Server();
-}	
+}
 
 function setupCardClick(){
 	$(".card").on("click", function(){
 		server.cardClicked($(this));
 	});
-}	
-	
-$(document).ready(function(){	
+}
+
+$(document).ready(function(){
 	setupCanvas();
 	setupBoard();
 	setupServer();

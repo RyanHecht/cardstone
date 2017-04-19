@@ -30,8 +30,10 @@ public class Main {
     StubCreature c1 = new StubCreature(pOne);
     StubCreature c2 = new StubCreature(pTwo);
     SkyWhaleCreature c3 = new SkyWhaleCreature(pOne);
-    OrderedCardCollection playerOneCreatures = new OrderedCardCollection(Zone.CREATURE_BOARD, pOne);
-    OrderedCardCollection playerTwoCreatures = new OrderedCardCollection(Zone.CREATURE_BOARD, pTwo);
+    OrderedCardCollection playerOneCreatures = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pOne);
+    OrderedCardCollection playerTwoCreatures = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pTwo);
 
     playerOneCreatures.add(c1);
     playerOneCreatures.add(c3);
@@ -41,8 +43,10 @@ public class Main {
     b1.setOcc(playerTwoCreatures);
 
     SkyWhaleCreature c4 = new SkyWhaleCreature(pTwo);
-    OrderedCardCollection playerOneCreatures2 = new OrderedCardCollection(Zone.CREATURE_BOARD, pOne);
-    OrderedCardCollection playerTwoCreatures2 = new OrderedCardCollection(Zone.CREATURE_BOARD, pTwo);
+    OrderedCardCollection playerOneCreatures2 = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pOne);
+    OrderedCardCollection playerTwoCreatures2 = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pTwo);
 
     playerOneCreatures2.add(c1);
     playerOneCreatures2.add(c3);
@@ -53,8 +57,8 @@ public class Main {
     b1.setOcc(playerOneCreatures2);
     b1.setOcc(playerTwoCreatures2);
     // this was throwing errors, there is no constructor Game()
-    //Game g1 = new Game();
-    //g1.setBoard(b1);
-    //System.out.println(g1.jsonifySelf());
+    // Game g1 = new Game();
+    // g1.setBoard(b1);
+    // System.out.println(g1.jsonifySelf());
   }
 }

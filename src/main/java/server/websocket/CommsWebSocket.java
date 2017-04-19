@@ -1,9 +1,17 @@
 package server.websocket;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.OrderedCardCollection;
+import cardgamelibrary.Zone;
+import cards.SkyWhaleCreature;
+import cards.StubCreature;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import game.Game;
+import game.Player;
+import game.PlayerType;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.jetty.websocket.api.Session;
@@ -13,17 +21,24 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import server.MessageTypeEnum;
 
+/**
+ * Spark WebSocket for sending data between server and client
+ * @author Ryan
+ *
+ */
 @WebSocket
 public class CommsWebSocket {
   private static final Gson GSON = new Gson();
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
 
+
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
     // On a new connection, we should send them an ID_REQUEST.
-    session.getRemote().sendString(GSON.toJson(getIdRequest()));
+
   }
+
 
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
@@ -39,12 +54,15 @@ public class CommsWebSocket {
   @OnWebSocketMessage
   public void message(Session session, String message) throws IOException {
     // Get the object received, the message type, and the payload
+    System.out.println(message);
     JsonObject received = GSON.fromJson(message, JsonObject.class);
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
-
     // These types of messages can only be operated on fully added sessions
     if (sessions.containsKey(session)) {
+
+      int id = sessions.get(session);
+
       if (type == MessageTypeEnum.UNDERSTOOD_BOARD_STATE.ordinal()) {
 
       } else if (type == MessageTypeEnum.TARGETED_CARD.ordinal()) {
@@ -66,11 +84,18 @@ public class CommsWebSocket {
         int id = payload.get("id").getAsInt();
         sessions.put(session, id);
         idToSessions.put(id, session);
+        CommsWebSocket.sendWholeBoardSate(testBoard(), id);
       }
     }
 
   }
 
+  /**
+   * Update the user given by userId on changes in the board state.
+   * @param toSend
+   * @param userId
+   * @throws IOException
+   */
   public static void sendChangedBoardSate(Board toSend, int userId)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
@@ -84,13 +109,92 @@ public class CommsWebSocket {
     }
   }
 
-  private JsonObject getIdRequest() {
-    JsonObject obj = new JsonObject();
-    JsonObject payload = new JsonObject();
-    obj.addProperty("type", MessageTypeEnum.ID_REQUEST.ordinal());
-    obj.add("payload", payload);
+  /**
+   * Send the entire game state to the user given by userId.
+   * @param toSend
+   * @param userId
+   * @throws IOException
+   */
+  public static void sendWholeBoardSate(Game toSend, int userId)
+      throws IOException {
+    if (idToSessions.containsKey(userId)) {
+      Session session = idToSessions.get(userId);
+      JsonObject obj = new JsonObject();
+      JsonObject payload = toSend.jsonifySelf();
+      obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
+      obj.add("payload", payload);
 
-    return obj;
+      session.getRemote().sendString(GSON.toJson(obj));
+    }
+  }
+
+  public static void sendAnimation(int userId) {
+
+  }
+
+  public static void sendExplicitAnimation(int userId) {
+
+  }
+
+  public static void sendChooseRequest(int userId) {
+
+  }
+
+  public static void sendTargetRequest(int userId) {
+
+  }
+
+  public static void sendActionOk(int userId) {
+
+  }
+
+  public static void sendActionBad(int uderId) {
+
+  }
+
+  public static void closeSession(int userId) {
+
+  }
+
+  private static Game testBoard() {
+    Player pOne = new Player(30, PlayerType.PLAYER_ONE);
+    Player pTwo = new Player(30, PlayerType.PLAYER_TWO);
+    OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, pOne);
+    OrderedCardCollection deckTwo = new OrderedCardCollection(Zone.DECK, pTwo);
+    Board b1 = new Board(deckOne, deckTwo);
+    StubCreature c1 = new StubCreature(pOne);
+    StubCreature c2 = new StubCreature(pTwo);
+    SkyWhaleCreature c3 = new SkyWhaleCreature(pOne);
+    OrderedCardCollection playerOneCreatures = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pOne);
+    OrderedCardCollection playerTwoCreatures = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pTwo);
+
+    playerOneCreatures.add(c1);
+    playerOneCreatures.add(c3);
+    playerTwoCreatures.add(c2);
+
+    b1.setOcc(playerOneCreatures);
+    b1.setOcc(playerTwoCreatures);
+
+    SkyWhaleCreature c4 = new SkyWhaleCreature(pTwo);
+    OrderedCardCollection playerOneCreatures2 = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pOne);
+    OrderedCardCollection playerTwoCreatures2 = new OrderedCardCollection(
+        Zone.CREATURE_BOARD, pTwo);
+
+    playerOneCreatures2.add(c1);
+    playerOneCreatures2.add(c3);
+    playerTwoCreatures2.add(c2);
+    playerTwoCreatures2.add(c4);
+    playerOneCreatures2.add(c3);
+    playerOneCreatures2.add(c3);
+    b1.setOcc(playerOneCreatures2);
+    b1.setOcc(playerTwoCreatures2);
+
+    Game game = new Game(new ArrayList<String>(), new ArrayList<String>());
+    game.setBoard(b1);
+    return game;
   }
 
 }
