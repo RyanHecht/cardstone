@@ -36,6 +36,7 @@ class cardCollection extends drawableZone{
 			expandedInUse = false;
 			$this.expandInto.hide();
 			$('div.qtip:visible').qtip('hide');
+            $this.forceRedraw();
 		});
 	}
 	
