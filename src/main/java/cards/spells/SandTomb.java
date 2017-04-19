@@ -36,7 +36,7 @@ public class SandTomb extends SpellCard{
 	
 	public Effect onTargetedPlay(Card target){
 		assert isValidTarget(target);
-		Creature tomb = new Tomb(target);
+		Creature tomb = new Tomb(target,getOwner());
 		return (Board board) -> {
 			board.transformCard(target, tomb, Zone.BOARD);
 		};
