@@ -1,7 +1,5 @@
 package events;
 
-import java.util.List;
-
 import cardgamelibrary.Card;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;

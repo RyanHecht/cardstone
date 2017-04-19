@@ -53,7 +53,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onTurnEnd(Zone z) {
+	default public Effect onTurnStart(Player p, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	default public Effect onTurnEnd(Player p, Zone z) {
 		return EmptyEffect.create();
 	}
 
@@ -68,19 +72,19 @@ public interface Card extends Jsonifiable {
 	}
 
 	// specific behaviors based on when certain cards are played
-	default public Effect cardPlayed(Card c, Zone z) {
+	default public Effect onCardPlayed(Card c, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// when a card is drawn. We can also use this to perform some behavior if
 	// THIS card is drawn (i.e. some card auto summons when it's drawn or
 	// something.
-	default public Effect cardDrawn(Card drawn, Zone z) {
+	default public Effect onCardDrawn(Card drawn, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// creature dies
-	default public Effect creatureDied(Creature cr, Zone z) {
+	default public Effect onCreatureDeath(Creature cr, Zone z) {
 		return EmptyEffect.create();
 	}
 

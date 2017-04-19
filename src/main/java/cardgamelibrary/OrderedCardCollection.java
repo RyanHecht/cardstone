@@ -1,7 +1,10 @@
 package cardgamelibrary;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +86,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleDraw(CardDrawnEvent cDrawn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.cardDrawn(cDrawn.getDrawn(), getZone()));
+			results.add(c.onCardDrawn(cDrawn.getDrawn(), getZone()));
 		}
 		return results;
 	}
@@ -91,7 +94,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleTurnEnd(TurnEndEvent endTurn) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onTurnEnd(getZone()));
+			results.add(c.onTurnEnd(endTurn.getPlayer(), getZone()));
 		}
 		return results;
 	}
@@ -115,7 +118,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCreatureDied(CreatureDiedEvent cDeath) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.creatureDied(cDeath.getCreature(), getZone()));
+			results.add(c.onCreatureDeath(cDeath.getCreature(), getZone()));
 		}
 		return results;
 	}
@@ -204,12 +207,22 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return false;
 	}
 
+	/**
+	 * Used to shuffle a deck, will throw error if called on something that isn't
+	 * a deck.
+	 */
+	public void shuffle() {
+		// should only shuffle decks.
+		assertTrue(zone == Zone.DECK);
+		Collections.shuffle(cards);
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
 		List<JsonObject> cardObjects = new ArrayList<>();
-		System.out.println(cards + " "  + cards.size());
+		System.out.println(cards + " " + cards.size());
 		for (Card c : cards) {
 			System.out.println("card checked");
 			cardObjects.add(c.jsonifySelf());

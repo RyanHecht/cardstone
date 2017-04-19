@@ -12,9 +12,15 @@ import cardgamelibrary.ManaPool;
  *
  */
 public class Player {
-	private PlayerType	playerType;
-	private int					life;
-	private ManaPool		manaPool;
+	private PlayerType				playerType;
+	private int								life;
+	private ManaPool					manaPool;
+
+	// keeps track of amount of resources to gain at start of a turn.
+	private int								maxResources	= 0;
+
+	// how much the amount of resources you gain per turn increments.
+	private static final int	RESOURCE_GAIN	= 10;
 
 	public Player(int l, PlayerType p) {
 		playerType = p;
@@ -32,6 +38,17 @@ public class Player {
 
 	public void changeResources(int newCount) {
 		manaPool.setResources(newCount);
+	}
+
+	/**
+	 * Increases the resources of the player by the appropriate amount for the
+	 * start of a turn.
+	 */
+	public void startTurn() {
+		// Increment by fixed amount.
+		maxResources += RESOURCE_GAIN;
+		// update manapool
+		manaPool.setResources(manaPool.getResources() + maxResources);
 	}
 
 	public void setElement(ElementType type, int elem) {

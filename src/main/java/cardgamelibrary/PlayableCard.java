@@ -48,9 +48,9 @@ public class PlayableCard implements Card {
 		return owner;
 	}
 
-	// resets hasChanged.
-	public void resetChange() {
-		changed = false;
+	// sets hasChanged.
+	public void setChange(boolean b) {
+		changed = b;
 	}
 
 	// changes who owns a card, used for players "taking control" of other cards.
