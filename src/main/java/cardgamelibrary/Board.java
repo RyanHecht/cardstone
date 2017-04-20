@@ -244,23 +244,23 @@ public class Board implements Jsonifiable {
 		result.add("creature2", creatureTwo.jsonifySelfChanged());
 		return result;
 	}
-	
-	public void transformCard(Card target, Card result, Zone targetZone){
-		CardZoneCreatedEvent event = new CardZoneCreatedEvent(result,targetZone);
-		for(OrderedCardCollection occ : cardsInGame){
+
+	public void transformCard(Card target, Card result, Zone targetZone) {
+		CardZoneCreatedEvent event = new CardZoneCreatedEvent(result, targetZone);
+		for (OrderedCardCollection occ : cardsInGame) {
 			occ.remove(target);
-			if(occ.getZone() == targetZone && occ.getPlayer() == result.getOwner()){
+			if (occ.getZone() == targetZone && occ.getPlayer() == result.getOwner()) {
 				occ.add(result);
 			}
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
-		
+
 	}
 
 	public void summonCard(Card summon, Zone targetZone) {
-		CardZoneCreatedEvent event = new CardZoneCreatedEvent(summon,targetZone);
-		for(OrderedCardCollection occ : cardsInGame){
-			if(occ.getZone() == targetZone && occ.getPlayer() == summon.getOwner()){
+		CardZoneCreatedEvent event = new CardZoneCreatedEvent(summon, targetZone);
+		for (OrderedCardCollection occ : cardsInGame) {
+			if (occ.getZone() == targetZone && occ.getPlayer() == summon.getOwner()) {
 				occ.add(summon);
 			}
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
@@ -268,12 +268,11 @@ public class Board implements Jsonifiable {
 	}
 
 	public void changeCreatureHealth(Creature target, int amount) {
-		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE,target,amount);
+		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE, target, amount);
 		target.changeMaxHealthBy(amount);
-		for(OrderedCardCollection occ : cardsInGame){
+		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
 	}
-
 
 }
