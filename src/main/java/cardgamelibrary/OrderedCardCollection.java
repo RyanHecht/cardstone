@@ -217,7 +217,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	 */
 	private boolean hasChanged() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	/**

@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
+import events.StatChangeEvent;
 
 /**
  * Contains the entire state of a given game
@@ -265,5 +266,14 @@ public class Board implements Jsonifiable {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
 	}
+
+	public void changeCreatureHealth(Creature target, int amount) {
+		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE,target,amount);
+		target.changeMaxHealthBy(amount);
+		for(OrderedCardCollection occ : cardsInGame){
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
 
 }

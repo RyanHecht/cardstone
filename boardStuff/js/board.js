@@ -90,7 +90,6 @@ class board{
 	loadZoneFromCache(zone,data){
 		let ids = [];
 		for(let card of data){
-			console.log(card);
 			ids.push(card.id);
 		}
 		zone.setCardsFromCache(ids,cardCache);

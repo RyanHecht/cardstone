@@ -18,8 +18,6 @@ ID_RESPONSE: 13
 class Server{
 
 	constructor() {
-
-
 		this.websocket = new WebSocket("ws://localhost:8080/socket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
@@ -30,7 +28,7 @@ class Server{
 
 	onWebSocketOpen() {
 		const payload = {"id": 1};
-    const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
+        const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened')
 	}

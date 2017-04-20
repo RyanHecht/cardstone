@@ -70,6 +70,10 @@ class cardCacher{
 		this.setByIID(card.id,newCard);
 	}
 	
+    
+    addNewParsedCard(card){
+        this.setByIID(card.IID,card);
+    }
 	
 
 }

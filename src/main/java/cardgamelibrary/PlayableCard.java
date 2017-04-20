@@ -31,8 +31,8 @@ public class PlayableCard implements Card {
 		this.name = name;
 		this.text = text;
 		this.type = type;
-		// should cards be initialized with a changed of true?
-		this.changed = false;
+		// should cards be initialized with a changed of true? YEEN ::: )D
+		this.changed = true;
 		this.id = idGenerator.incrementAndGet();
 	}
 

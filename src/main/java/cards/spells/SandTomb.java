@@ -8,6 +8,7 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import cards.templates.OnOwnDeathCard;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -19,7 +20,7 @@ public class SandTomb extends SpellCard{
 	}
 
 	private static final ManaPool defaultCost = new ManaPool(25,0,0,1,0,0);
-	private static final String defaultImage = "images/sandTomb.jpg";
+	private static final String defaultImage = "images/SandTomb.jpg";
 	private static final String defaultName = "Sand Tomb";
 	private static final String defaultText = "Imprison an enemy minion in a 0/8 Tomb with taunt on your side of the board. When the Tomb is destroyed, return the minion.";
 	private static final CardType defaultType = CardType.SPELL;
@@ -42,7 +43,7 @@ public class SandTomb extends SpellCard{
 		};
 	}
 	
-	private static class Tomb extends Creature{
+	private static class Tomb extends Creature implements OnOwnDeathCard{
 		private static final ManaPool defaultCost = new ManaPool(0,0,0,1,0,0);
 		private static final String defaultImage = "images/Tomb.jpg";
 		private static final String defaultName = "Tomb";
@@ -57,15 +58,10 @@ public class SandTomb extends SpellCard{
 			this.resummon = resummon;
 		}
 		@Override
-		public Effect onCreatureDeath(Creature cr, Zone z) {
-			if(cr != this){
-				return EmptyEffect.create();
-			}
-			else{
-				return(Board board) ->{
-					board.summonCard(resummon,Zone.CREATURE_BOARD);
-				};
-			}
+		public Effect onDeathEffect(Zone z) {
+			return(Board board) ->{
+				board.summonCard(resummon,Zone.CREATURE_BOARD);
+			};
 		}
 		
 		

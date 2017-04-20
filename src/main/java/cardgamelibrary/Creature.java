@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import effects.EmptyEffect;
 import game.Player;
 
 
@@ -10,7 +11,7 @@ public class Creature extends PlayableCard {
 	private int	maxHealth;
 	private int	health;
 	private int	attack;
-
+	private int attacks;
 	public Creature(int maxHealth, int attack, ManaPool cost, String image, Player owner, String name, String text,
 			CardType type) {
 		super(cost, image, owner, name, text, type);
@@ -18,6 +19,7 @@ public class Creature extends PlayableCard {
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;
 		this.attack = attack;
+		this.attacks = 0;
 	}
 
 	public int getHealth() {
@@ -65,6 +67,19 @@ public class Creature extends PlayableCard {
 		result.addProperty("health",getHealth());
 		result.addProperty("damaged",getMaxHealth() > getHealth());
 		return result;
+	}
+	
+	@Override
+	public Effect onTurnStart(Player p, Zone z){
+		if(p == this.getOwner()){
+			this.attacks = 1;
+		}
+		return super.onTurnStart(p, z);
+	}
+
+	public void changeMaxHealthBy(int amount) {
+		this.maxHealth += amount;
+		this.health += amount;
 	}
 
 }

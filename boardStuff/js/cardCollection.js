@@ -70,7 +70,6 @@ class cardCollection extends drawableZone{
 			return;
 		}
 		else{
-			console.log(this.cards);
 		}
 		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 6;
 		let rows = 1;

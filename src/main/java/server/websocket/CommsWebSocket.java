@@ -187,8 +187,6 @@ public class CommsWebSocket {
     playerOneCreatures2.add(c3);
     playerTwoCreatures2.add(c2);
     playerTwoCreatures2.add(c4);
-    playerOneCreatures2.add(c3);
-    playerOneCreatures2.add(c3);
     b1.setOcc(playerOneCreatures2);
     b1.setOcc(playerTwoCreatures2);
 

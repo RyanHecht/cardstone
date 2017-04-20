@@ -113,11 +113,11 @@ function setupBoard(){
 	let whaleCost = new cost(30, bigWhalePool);
 
 
-	josh = new creatureCard(12,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
+	josh = new creatureCard(6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
 		" These may include dancing, singing, or just generally having a good time." +
 		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
-	let skyWhale = new creatureCard(2,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
-	let whale = new creatureCard(3,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
+	let skyWhale = new creatureCard(5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
+	let whale = new creatureCard(20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
 	"images/giantWhale.png",5,12);
 
 	let purgePool = new manaPool(3,'&nbsp;');
@@ -127,7 +127,7 @@ function setupBoard(){
 	let purge = new spellCard(4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
 	"images/purge.jpg");
 
-	let water = new elementCard(14,"water");
+	let water = new elementCard(5,"water");
 	let balance = new elementCard(15,"balance");
 	let earth = new elementCard(16,"earth");
 	let fire = new elementCard(17,"fire");
@@ -141,10 +141,20 @@ function setupBoard(){
 	let hand2Joshs = [back,back,back,back,back];
 
 	let aura1Joshs = [whale, skyWhale, skyWhale, skyWhale, skyWhale];
-	let aura2Joshs = [whale, whale, whale, whale, skyWhale];
+	let aura2Joshs = [whale, whale, whale, whale, whale];
 
 	let creature1Joshs = [josh, whale, skyWhale, skyWhale, whale];
 	let creature2Joshs = [whale, whale, skyWhale, skyWhale, whale];
+    cardCache.addNewParsedCard(josh);
+    cardCache.addNewParsedCard(whale);
+    cardCache.addNewParsedCard(skyWhale);
+    cardCache.addNewParsedCard(back);
+    cardCache.addNewParsedCard(fire);
+    cardCache.addNewParsedCard(water);
+    cardCache.addNewParsedCard(earth);
+    cardCache.addNewParsedCard(air);
+    cardCache.addNewParsedCard(balance);
+    cardCache.addNewParsedCard(purge);
 
 	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
 }
@@ -179,10 +189,9 @@ function setupCardClick(){
 
 $(document).ready(function(){
 	setupCanvas();
+    cardCache = new cardCacher();
 	setupBoard();
-	setupServer();
-	cardCache = new cardCacher();
-	server.messageReceived(JSON.parse(board1));
+	//server.messageReceived(JSON.parse(board1));
 	$(document).keypress(function(e) {
 		console.log("aqui");
 		if(e.which == 13) {
@@ -199,7 +208,7 @@ $(document).ready(function(){
 			redrawAll();
 		}
 		else if(e.which == 120){
-			animations.push(animationsMaker.getAttackAnimation(4,5).create());
+			animations.push(animationsMaker.getAttackAnimation(6,5).create());
 			quedAnims.push(animationsMaker.getDamagedAnimation(5).create());
 		}
 		console.log(e.which);
@@ -211,4 +220,5 @@ $(document).ready(function(){
 	updateAndDrawAnimations();
 	wholeBoard.draw();
 	setupCardClick();
+    setupServer();
 });
