@@ -23,11 +23,13 @@ import server.MessageTypeEnum;
 
 /**
  * Spark WebSocket for sending data between server and client
+ *
  * @author Ryan
  *
  */
 @WebSocket
 public class CommsWebSocket {
+
   private static final Gson GSON = new Gson();
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
@@ -41,9 +43,6 @@ public class CommsWebSocket {
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
     int id = sessions.get(session);
-
-    // TODO: get player associated with this Id and terminate the game
-    // associated with that player.
 
     sessions.remove(session);
     idToSessions.remove(id);
@@ -90,6 +89,7 @@ public class CommsWebSocket {
 
   /**
    * Update the user given by userId on changes in the board state.
+   *
    * @param toSend
    * @param userId
    * @throws IOException
@@ -109,6 +109,7 @@ public class CommsWebSocket {
 
   /**
    * Send the entire game state to the user given by userId.
+   *
    * @param toSend
    * @param userId
    * @throws IOException
@@ -124,6 +125,18 @@ public class CommsWebSocket {
 
       session.getRemote().sendString(GSON.toJson(obj));
     }
+  }
+
+  public static void sendAnimation(int userId) {
+
+  }
+
+  public static void sendExplicitAnimation(int userId) {
+
+  }
+
+  public static void sendChooseRequest(int userId) {
+
   }
 
   public static void sendAnimation(int userId, JsonObject message) {

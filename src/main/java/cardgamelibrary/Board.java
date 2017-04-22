@@ -8,9 +8,11 @@ import java.util.Queue;
 
 import com.google.gson.JsonObject;
 
+import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
 import events.StatChangeEvent;
+import game.Player;
 
 /**
  * Contains the entire state of a given game
@@ -136,6 +138,52 @@ public class Board implements Jsonifiable {
 				// the queue.
 				effectQueue.add(e);
 			}
+		}
+	}
+
+	/**
+	 * Given some specifications finds an orderedCardCollection on the board.
+	 *
+	 * @param p
+	 *          the player who the OCC we are looking for belongs to.
+	 * @param z
+	 *          the zone of the OCC we are looking for.
+	 * @return the OCC we are looking for (in zone z, owned by player p).
+	 */
+	public OrderedCardCollection getOcc(Player p, Zone z) {
+		switch (p.getPlayerType()) {
+		case PLAYER_ONE:
+			switch (z) {
+			case CREATURE_BOARD:
+				return creatureOne;
+			case AURA_BOARD:
+				return auraOne;
+			case HAND:
+				return handOne;
+			case DECK:
+				return deckOne;
+			case GRAVE:
+				return graveOne;
+			default:
+				throw new RuntimeException("ERROR: Illegal Zone in getOcc (Board.java)");
+			}
+		case PLAYER_TWO:
+			switch (z) {
+			case CREATURE_BOARD:
+				return creatureTwo;
+			case AURA_BOARD:
+				return auraTwo;
+			case HAND:
+				return handTwo;
+			case DECK:
+				return deckTwo;
+			case GRAVE:
+				return graveTwo;
+			default:
+				throw new RuntimeException("ERROR: Illegal Zone in getOcc (Board.java)");
+			}
+		default:
+			throw new RuntimeException("ERROR: Illegal player enum in getOcc (Board.java)");
 		}
 	}
 
@@ -275,4 +323,12 @@ public class Board implements Jsonifiable {
 		}
 	}
 
+	public void addCardToOcc(Card c, OrderedCardCollection start, OrderedCardCollection end) {
+		CardZoneChangeEvent event = new CardZoneChangeEvent(c, start, end);
+		start.add(c);
+		end.remove(c);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
 }

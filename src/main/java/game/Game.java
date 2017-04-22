@@ -31,10 +31,10 @@ public class Game implements Jsonifiable {
 	private int										id;
 	private static AtomicInteger	idGenerator				= new AtomicInteger(0);
 
-	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards) {
+	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId) {
 		// Initialize both players with starting life.
-		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE);
-		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO);
+		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
+		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
 
 		// set game id.
 		this.id = idGenerator.incrementAndGet();
@@ -116,7 +116,6 @@ public class Game implements Jsonifiable {
 			e.printStackTrace();
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
 		}
 
 		// add cards to decks.
@@ -171,6 +170,18 @@ public class Game implements Jsonifiable {
 	 */
 	public int getId() {
 		return id;
+	}
+
+	/**
+	 * Checks to see if a player with a certain Id is in the game.
+	 * 
+	 * @param playerId
+	 *          the id of the player we are looking for.
+	 * @return a boolean that represents whether a player with the input id is in
+	 *         the game.
+	 */
+	public boolean inGame(int playerId) {
+		return (playerOne.getId() == playerId) || (playerTwo.getId() == playerId);
 	}
 
 	@Override
