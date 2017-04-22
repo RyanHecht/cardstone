@@ -32,13 +32,11 @@ public class CommsWebSocket {
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
 
-
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
     // On a new connection, we should send them an ID_REQUEST.
 
   }
-
 
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
@@ -128,15 +126,15 @@ public class CommsWebSocket {
     }
   }
 
-  public static void sendAnimation(int userId) {
+  public static void sendAnimation(int userId, JsonObject message) {
 
   }
 
-  public static void sendExplicitAnimation(int userId) {
+  public static void sendExplicitAnimation(int userId, JsonObject message) {
 
   }
 
-  public static void sendChooseRequest(int userId) {
+  public static void sendChooseRequest(int userId, JsonObject message) {
 
   }
 

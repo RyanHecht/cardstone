@@ -56,6 +56,18 @@ public enum MessageTypeEnum {
 
   // Response containing the user's Id (Client -> Server)
   // 13
-  ID_RESPONSE
+  ID_RESPONSE,
+
+  // These might be changed later TODO: talk to Will
+
+  //
+  // 14
+  SELF_ENTERED_LOBBY,
+
+  //
+  // 15
+  OPPONENT_ENTERED_LOBBY,
+
+  //
 
 }
