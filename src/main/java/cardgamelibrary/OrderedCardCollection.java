@@ -134,9 +134,10 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		}
 		return results;
 	}
-	
-	//When a card is created on the fly and put into a zone instead of going there from somewhere else
-	private List<Effect> handleCardZoneCreated(CardZoneCreatedEvent created){
+
+	// When a card is created on the fly and put into a zone instead of going
+	// there from somewhere else
+	private List<Effect> handleCardZoneCreated(CardZoneCreatedEvent created) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			results.add(c.onCardZoneCreated(created.getCard(), created.getLocation(), getZone()));
