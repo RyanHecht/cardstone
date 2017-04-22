@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import com.google.gson.JsonObject;
 
+import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
 import events.StatChangeEvent;
@@ -322,8 +323,12 @@ public class Board implements Jsonifiable {
 		}
 	}
 
-	public void addCardToOcc(Card c, OrderedCardCollection occ) {
-
-		occ.add(c);
+	public void addCardToOcc(Card c, OrderedCardCollection start, OrderedCardCollection end) {
+		CardZoneChangeEvent event = new CardZoneChangeEvent(c, start, end);
+		start.add(c);
+		end.remove(c);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
 	}
 }

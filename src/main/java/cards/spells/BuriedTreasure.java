@@ -44,10 +44,9 @@ public class BuriedTreasure extends SpellCard {
 						}
 					}
 				}
-				// need to remove card from deck and add to hand.
 
-				// add card to hand.
-				board.addCardToOcc(maxCostCard, board.getOcc(getOwner(), Zone.HAND));
+				// add card to hand and remove from deck.
+				board.addCardToOcc(maxCostCard, board.getOcc(getOwner(), Zone.HAND), board.getOcc(getOwner(), Zone.DECK));
 			}
 		};
 	}

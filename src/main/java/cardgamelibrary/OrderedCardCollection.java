@@ -35,6 +35,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	// every OCC is owned by a player.
 	private Player			player;
 
+	// keeps track of change.
+	private boolean			changed	= true;
+
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
 		this.player = p;
@@ -80,7 +83,12 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return results;
 	}
 
+	public boolean getChanged() {
+		return changed;
+	}
+
 	/**
+	 *
 	 * Used to handle CardDrawnEvents.
 	 *
 	 * @param cDrawn
