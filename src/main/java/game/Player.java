@@ -38,6 +38,10 @@ public class Player {
 		return life;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public void changeResources(int newCount) {
 		manaPool.setResources(newCount);
 	}

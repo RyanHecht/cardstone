@@ -172,6 +172,18 @@ public class Game implements Jsonifiable {
 		return id;
 	}
 
+	/**
+	 * Checks to see if a player with a certain Id is in the game.
+	 * 
+	 * @param playerId
+	 *          the id of the player we are looking for.
+	 * @return a boolean that represents whether a player with the input id is in
+	 *         the game.
+	 */
+	public boolean inGame(int playerId) {
+		return (playerOne.getId() == playerId) || (playerTwo.getId() == playerId);
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject payload = new JsonObject();
