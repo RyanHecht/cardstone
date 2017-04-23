@@ -270,8 +270,8 @@ public class Board implements Jsonifiable {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
 		result.addProperty("deckTwo", deckTwo.size());
-		result.add("hand1", handOne.jsonifySelf());
-		result.add("hand2", handTwo.jsonifySelf());
+		result.add("hand1", handOne.jsonifySelfWithBack());
+		result.add("hand2", handTwo.jsonifySelfWithBack());
 		result.add("aura1", auraOne.jsonifySelf());
 		result.add("aura2", auraTwo.jsonifySelf());
 		result.add("creature1", creatureOne.jsonifySelf());

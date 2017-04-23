@@ -91,4 +91,10 @@ public class BaseCard implements Card {
 		return null;
 	}
 
+	@Override
+	public JsonObject jsonifySelfBack() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
