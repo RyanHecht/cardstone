@@ -12,7 +12,9 @@ import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
 import events.StatChangeEvent;
+import events.TurnStartEvent;
 import game.Player;
+import game.PlayerType;
 
 /**
  * Contains the entire state of a given game
@@ -41,6 +43,9 @@ public class Board implements Jsonifiable {
 
 	// everything in the game;
 	List<OrderedCardCollection>		cardsInGame	= new ArrayList<>();
+
+	// currently active player.
+	private Player								activePlayer;
 
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
 		// using LinkedLists but declaring using queue interface.
@@ -73,6 +78,17 @@ public class Board implements Jsonifiable {
 		cardsInGame.add(graveTwo);
 		cardsInGame.add(creatureOne);
 		cardsInGame.add(creatureTwo);
+
+		// decide starting player
+		if (Math.random() > 0.5) {
+			activePlayer = deckOne.getPlayer();
+		} else {
+			activePlayer = deckTwo.getPlayer();
+		}
+	}
+
+	public Player getActivePlayer() {
+		return activePlayer;
 	}
 
 	// This will be used whenever a player
@@ -91,7 +107,21 @@ public class Board implements Jsonifiable {
 			if (eventQueue.size() >= 1) {
 				// when we handle an event we want to put
 				// all effects it produces onto the queue.
-				handleEvent(eventQueue.poll());
+				Event e = eventQueue.poll();
+				handleEvent(e);
+				if (e.getType() == EventType.TURN_END) {
+					// switch the active player.
+					if (activePlayer.getPlayerType() == PlayerType.PLAYER_ONE) {
+						activePlayer = deckTwo.getPlayer();
+					} else {
+						activePlayer = deckOne.getPlayer();
+					}
+					eventQueue.add(new TurnStartEvent(activePlayer));
+				}
+				if (e.getType() == EventType.TURN_START) {
+					// give player who is starting turn their resources!
+					activePlayer.startTurn();
+				}
 			} else {
 				// dead creatures are cleaned up after all events have processed.
 				// should we handle all effects from an event immediately?
@@ -101,6 +131,7 @@ public class Board implements Jsonifiable {
 				}
 			}
 		}
+		// send board state here b/c things are done processing.
 	}
 
 	private void handleDead() {
@@ -265,6 +296,17 @@ public class Board implements Jsonifiable {
 		return creatureTwo;
 	}
 
+	public Card getCardById(int id) {
+		for (OrderedCardCollection occ : cardsInGame) {
+			for (Card c : occ) {
+				if (c.getId() == id) {
+					return c;
+				}
+			}
+		}
+		throw new IllegalArgumentException("ERROR: No card with id" + id + " found.");
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
@@ -323,10 +365,20 @@ public class Board implements Jsonifiable {
 		}
 	}
 
-	public void addCardToOcc(Card c, OrderedCardCollection start, OrderedCardCollection end) {
-		CardZoneChangeEvent event = new CardZoneChangeEvent(c, start, end);
-		start.add(c);
-		end.remove(c);
+	/**
+	 * Used to transfer a card from one OCC to another.
+	 *
+	 * @param c
+	 *          the card that is moving.
+	 * @param destination
+	 *          the OCC the card c is going to.
+	 * @param start
+	 *          the OCC the card c is starting in.
+	 */
+	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
+		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
+		destination.add(c);
+		start.remove(c);
 		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}

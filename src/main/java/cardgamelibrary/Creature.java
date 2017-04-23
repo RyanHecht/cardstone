@@ -2,16 +2,15 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
-import effects.EmptyEffect;
 import game.Player;
-
 
 public class Creature extends PlayableCard {
 
 	private int	maxHealth;
 	private int	health;
 	private int	attack;
-	private int attacks;
+	private int	attacks;
+
 	public Creature(int maxHealth, int attack, ManaPool cost, String image, Player owner, String name, String text,
 			CardType type) {
 		super(cost, image, owner, name, text, type);
@@ -32,6 +31,10 @@ public class Creature extends PlayableCard {
 
 	public int getAttack() {
 		return attack;
+	}
+
+	public int getNumAttacks() {
+		return attacks;
 	}
 
 	public void takeDamage(int damage, Card src) {
@@ -60,18 +63,19 @@ public class Creature extends PlayableCard {
 	public boolean isDead() {
 		return getHealth() <= 0;
 	}
-	
-	public JsonObject jsonifySelf(){
+
+	@Override
+	public JsonObject jsonifySelf() {
 		JsonObject result = super.jsonifySelf();
 		result.addProperty("attack", getAttack());
-		result.addProperty("health",getHealth());
-		result.addProperty("damaged",getMaxHealth() > getHealth());
+		result.addProperty("health", getHealth());
+		result.addProperty("damaged", getMaxHealth() > getHealth());
 		return result;
 	}
-	
+
 	@Override
-	public Effect onTurnStart(Player p, Zone z){
-		if(p == this.getOwner()){
+	public Effect onTurnStart(Player p, Zone z) {
+		if (p == this.getOwner()) {
 			this.attacks = 1;
 		}
 		return super.onTurnStart(p, z);

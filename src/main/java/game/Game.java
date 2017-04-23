@@ -10,12 +10,17 @@ import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Jsonifiable;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import cards.templates.TargetsOtherCard;
+import events.CreatureAttackEvent;
+import events.TurnEndEvent;
+import server.websocket.CommsWebSocket;
 
 /**
  * Class to represent a game.
@@ -174,7 +179,7 @@ public class Game implements Jsonifiable {
 
 	/**
 	 * Checks to see if a player with a certain Id is in the game.
-	 * 
+	 *
 	 * @param playerId
 	 *          the id of the player we are looking for.
 	 * @return a boolean that represents whether a player with the input id is in
@@ -182,6 +187,77 @@ public class Game implements Jsonifiable {
 	 */
 	public boolean inGame(int playerId) {
 		return (playerOne.getId() == playerId) || (playerTwo.getId() == playerId);
+	}
+
+	/**
+	 * Checks to see if user input is a valid action on the board. If so, we
+	 * perform the user input.
+	 *
+	 * @param userInput
+	 *          a JsonObject formatted according to the spec for user input.
+	 */
+	public void handleUserInput(JsonObject userInput) {
+		int playerId = userInput.get("player").getAsInt();
+		if (playerId != board.getActivePlayer().getId()) {
+			// player acting out of turn.
+			CommsWebSocket.sendActionBad(playerId);
+			return;
+		}
+		Card card = board.getCardById(userInput.get("IID1").getAsInt());
+		// if user can't pay the card cost the action is bad.
+		if (!(card.getOwner().validateCost(card.getCost()))) {
+			CommsWebSocket.sendActionBad(playerId);
+			return;
+		}
+		String action = userInput.get("name").getAsString();
+		// at this point we know the correct user is playing the card
+		// and that they have the resources to use it.
+		switch (action) {
+		case "attacked":
+			Card target = board.getCardById(userInput.get("IID2").getAsInt());
+			if (target.getOwner().getId() == playerId) {
+				// can't attack own card.
+				CommsWebSocket.sendActionBad(playerId);
+				return;
+			}
+			if (card instanceof Creature && target instanceof Creature) {
+				Creature attacker = (Creature) card;
+				Creature victim = (Creature) target;
+				if (attacker.getNumAttacks() <= 0) {
+					// the attacking creature can no longer attack.
+					CommsWebSocket.sendActionBad(playerId);
+					return;
+				}
+				CreatureAttackEvent event = new CreatureAttackEvent(attacker, victim);
+				CommsWebSocket.sendActionOk(playerId);
+				board.takeAction(event);
+				return;
+			} else {
+				// if one of the cards isn't a creature it doesn't work.
+				CommsWebSocket.sendActionBad(playerId);
+				return;
+			}
+		case "targeted":
+			break;
+		case "played":
+			// in this case the owner can indeed pay the card's cost.
+			if (card instanceof TargetsOtherCard) {
+				// in this case the user needed to select a target but they didn't.
+				JsonObject inputRequest = new JsonObject();
+
+			} else {
+				// if they can indeed play the card we should play it!
+			}
+
+			break;
+		case "turnend":
+			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
+			CommsWebSocket.sendActionOk(playerId);
+			board.takeAction(event);
+			break;
+		}
+		throw new IllegalArgumentException("ERROR: invalid name " + "passed from user to verifyUserInput");
+
 	}
 
 	@Override
