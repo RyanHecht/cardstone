@@ -168,8 +168,8 @@ public class CommsWebSocket {
   }
 
   private static Game testBoard() {
-    Player pOne = new Player(30, PlayerType.PLAYER_ONE);
-    Player pTwo = new Player(30, PlayerType.PLAYER_TWO);
+    Player pOne = new Player(30, PlayerType.PLAYER_ONE, 0);
+    Player pTwo = new Player(30, PlayerType.PLAYER_TWO, 1);
     OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, pOne);
     OrderedCardCollection deckTwo = new OrderedCardCollection(Zone.DECK, pTwo);
     Board b1 = new Board(deckOne, deckTwo);
@@ -201,7 +201,7 @@ public class CommsWebSocket {
     b1.setOcc(playerOneCreatures2);
     b1.setOcc(playerTwoCreatures2);
 
-    Game game = new Game(new ArrayList<String>(), new ArrayList<String>());
+    Game game = new Game(new ArrayList<String>(), new ArrayList<String>(),0,1);
     game.setBoard(b1);
     return game;
   }

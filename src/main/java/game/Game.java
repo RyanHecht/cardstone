@@ -277,4 +277,16 @@ public class Game implements Jsonifiable {
 		payload.add("board", board.jsonifySelfChanged());
 		return payload;
 	}
+	
+	
+	//Modify them so that the players can't see eachothers hands
+	public JsonObject playerOneJsonify(JsonObject toMod){
+		toMod.get("board").getAsJsonObject().get("hand2").getAsJsonObject().remove("cards");
+		return toMod;
+	}
+	
+	public JsonObject playerTwoJsonify(JsonObject toMod){
+		toMod.get("board").getAsJsonObject().get("hand1").getAsJsonObject().remove("cards");
+		return toMod;
+	}
 }

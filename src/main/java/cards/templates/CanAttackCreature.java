@@ -6,11 +6,9 @@ import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 import game.Player;
 
-public interface CantAttackCreature extends Card {
+public interface CanAttackCreature extends Card{
 
-	@Override
-	default public Effect onTurnStart(Player p, Zone z) {
+	default public Effect onTurnStart(){
 		return EmptyEffect.create();
 	}
-
 }

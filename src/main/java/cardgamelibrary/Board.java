@@ -312,8 +312,8 @@ public class Board implements Jsonifiable {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
 		result.addProperty("deckTwo", deckTwo.size());
-		result.add("hand1", handOne.jsonifySelf());
-		result.add("hand2", handTwo.jsonifySelf());
+		result.add("hand1", handOne.jsonifySelfWithBack());
+		result.add("hand2", handTwo.jsonifySelfWithBack());
 		result.add("aura1", auraOne.jsonifySelf());
 		result.add("aura2", auraTwo.jsonifySelf());
 		result.add("creature1", creatureOne.jsonifySelf());
@@ -326,8 +326,8 @@ public class Board implements Jsonifiable {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
 		result.addProperty("deckTwo", deckTwo.size());
-		result.add("hand1", handOne.jsonifySelfChanged());
-		result.add("hand2", handTwo.jsonifySelfChanged());
+		result.add("hand1", handOne.jsonifySelfWithBack());
+		result.add("hand2", handTwo.jsonifySelfWithBack());
 		result.add("aura1", auraOne.jsonifySelfChanged());
 		result.add("aura2", auraTwo.jsonifySelfChanged());
 		result.add("creature1", creatureOne.jsonifySelfChanged());
@@ -357,7 +357,7 @@ public class Board implements Jsonifiable {
 		}
 	}
 
-	public void changeCreatureHealth(Creature target, int amount) {
+	public void changeCreatureHealth(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE, target, amount);
 		target.changeMaxHealthBy(amount);
 		for (OrderedCardCollection occ : cardsInGame) {
@@ -375,12 +375,21 @@ public class Board implements Jsonifiable {
 	 * @param start
 	 *          the OCC the card c is starting in.
 	 */
-	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
-		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
-		destination.add(c);
-		start.remove(c);
+	public void addCardToOcc(Card c, OrderedCardCollection start, OrderedCardCollection end) {
+		CardZoneChangeEvent event = new CardZoneChangeEvent(c, start, end);
+		start.add(c);
+		end.remove(c);
 		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
 	}
+
+	public void changeCreatureAttack(Creature target, int amount, Zone z) {
+		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
+		target.changeAttackBy(amount);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
 }

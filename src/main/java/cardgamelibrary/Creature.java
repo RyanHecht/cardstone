@@ -81,9 +81,17 @@ public class Creature extends PlayableCard {
 		return super.onTurnStart(p, z);
 	}
 
+	public void setAttacks(int attacks) {
+		this.attacks = attacks;
+	}
+
 	public void changeMaxHealthBy(int amount) {
 		this.maxHealth += amount;
 		this.health += amount;
+	}
+
+	public void changeAttackBy(int amount) {
+		this.attack += amount;
 	}
 
 }

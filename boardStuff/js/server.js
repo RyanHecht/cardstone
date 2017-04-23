@@ -146,5 +146,70 @@ class Server{
 		wholeBoard.getFromCache(data.board);
 		redrawAll();
 	}
+    
+    replayRequestStepBack(){
+        
+    }
+    
+    replayRequestStepForward(){
+        
+    }
+    
+    requestCardCollection(){
+        let joshPool = new manaPool(10,'');
+        joshPool.setFire(5);
+        joshPool.setAir(5);
+        joshPool.setWater(3);
+        joshPool.setEarth(6);
+        joshPool.setBalance(4);
+        let smallJoshPool = new manaPool(3,'&nbsp;');
+        smallJoshPool.setEarth(1);
+        smallJoshPool.setBalance(1);
+
+        let smallSkyWhalePool = new manaPool(3,'&nbsp;');
+        let bigWhalePool = new manaPool(3,'&nbsp;');
+
+        smallSkyWhalePool.setWater(1);
+        smallSkyWhalePool.setAir(1);
+        bigWhalePool.setWater(4);
+        let skyCost = new cost(20,smallSkyWhalePool);
+        let joshCost = new cost(10,smallJoshPool);
+        let whaleCost = new cost(30, bigWhalePool);
+
+
+        josh = new creatureCard(6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
+            " These may include dancing, singing, or just generally having a good time." +
+            "At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
+        let skyWhale = new creatureCard(8,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
+        let whale = new creatureCard(7,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
+        "images/giantWhale.png",5,12);
+
+        let purgePool = new manaPool(3,'&nbsp;');
+        purgePool.setBalance(2);
+        let purgeCost = new cost(30,purgePool);
+
+        let purge = new spellCard(4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
+        "images/purge.jpg");
+
+        let water = new elementCard(5,"water");
+        let balance = new elementCard(15,"balance");
+        let earth = new elementCard(16,"earth");
+        let fire = new elementCard(17,"fire");
+        let air = new elementCard(18,"air");
+
+        josh.setState("cardCanAttack");
+        fire.setState("cardCanPlay");
+        let collection = [];
+        for(let x = 0; x < 20; x++){
+            collection.push(josh);
+            collection.push(skyWhale);
+            collection.push(whale);
+            collection.push(purge);
+            collection.push(water);
+            collection.push(balance);
+            collection.push(air);
+        }
+        return collection;
+    }
 
 }
