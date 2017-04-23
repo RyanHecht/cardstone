@@ -105,4 +105,12 @@ public class PlayableCard implements Card {
 			return result;
 		}
 	}
+
+	@Override
+	public JsonObject jsonifySelfBack() {
+		JsonObject result = new JsonObject();
+		result.addProperty("id", getId());
+		result.addProperty("type","back");
+		return result;
+	}
 }

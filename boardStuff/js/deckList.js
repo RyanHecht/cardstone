@@ -23,7 +23,7 @@ class deckList extends drawableZone{
     addCardByIID(IID){
         console.log(IID);
         for(let card of allCards){
-            if(card.IID = IID){
+            if(card.IID == IID){
                 this.addCard(card);
                 return;
             }

@@ -124,4 +124,6 @@ public interface Card extends Jsonifiable {
 	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone){
 		return EmptyEffect.create();
 	}
+
+	JsonObject jsonifySelfBack();
 }

@@ -243,6 +243,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
+		result.addProperty("size", this.size());
 		List<JsonObject> cardObjects = new ArrayList<>();
 		System.out.println(cards + " " + cards.size());
 		for (Card c : cards) {
@@ -263,6 +264,22 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			result.addProperty("changed", hasChanged());
 			return result;
 		}
+	}
+	
+	public JsonObject jsonifySelfWithBack(){
+		JsonObject result = new JsonObject();
+		result.addProperty("changed", hasChanged());
+		result.addProperty("size", this.size());
+		List<JsonObject> cardObjects = new ArrayList<>();
+		List<JsonObject> cardBacks = new ArrayList<>();
+		for (Card c : cards) {
+			cardObjects.add(c.jsonifySelf());
+			cardBacks.add(c.jsonifySelfBack());
+		}
+		Gson gson = new Gson();
+		result.add("cards", gson.toJsonTree(cardObjects));
+		result.add("backs", gson.toJsonTree(cardBacks));
+		return result;
 	}
 
 }
