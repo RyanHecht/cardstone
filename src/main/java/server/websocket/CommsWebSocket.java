@@ -23,15 +23,16 @@ import server.MessageTypeEnum;
 
 /**
  * Spark WebSocket for sending data between server and client
+ *
  * @author Ryan
  *
  */
 @WebSocket
 public class CommsWebSocket {
+
   private static final Gson GSON = new Gson();
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
-
 
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
@@ -39,13 +40,9 @@ public class CommsWebSocket {
 
   }
 
-
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
     int id = sessions.get(session);
-
-    // TODO: get player associated with this Id and terminate the game
-    // associated with that player.
 
     sessions.remove(session);
     idToSessions.remove(id);
@@ -92,6 +89,7 @@ public class CommsWebSocket {
 
   /**
    * Update the user given by userId on changes in the board state.
+   *
    * @param toSend
    * @param userId
    * @throws IOException
@@ -111,6 +109,7 @@ public class CommsWebSocket {
 
   /**
    * Send the entire game state to the user given by userId.
+   *
    * @param toSend
    * @param userId
    * @throws IOException
@@ -140,6 +139,18 @@ public class CommsWebSocket {
 
   }
 
+  public static void sendAnimation(int userId, JsonObject message) {
+
+  }
+
+  public static void sendExplicitAnimation(int userId, JsonObject message) {
+
+  }
+
+  public static void sendChooseRequest(int userId, JsonObject message) {
+
+  }
+
   public static void sendTargetRequest(int userId) {
 
   }
@@ -157,8 +168,8 @@ public class CommsWebSocket {
   }
 
   private static Game testBoard() {
-    Player pOne = new Player(30, PlayerType.PLAYER_ONE);
-    Player pTwo = new Player(30, PlayerType.PLAYER_TWO);
+    Player pOne = new Player(30, PlayerType.PLAYER_ONE, 0);
+    Player pTwo = new Player(30, PlayerType.PLAYER_TWO, 1);
     OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, pOne);
     OrderedCardCollection deckTwo = new OrderedCardCollection(Zone.DECK, pTwo);
     Board b1 = new Board(deckOne, deckTwo);
@@ -190,7 +201,7 @@ public class CommsWebSocket {
     b1.setOcc(playerOneCreatures2);
     b1.setOcc(playerTwoCreatures2);
 
-    Game game = new Game(new ArrayList<String>(), new ArrayList<String>());
+    Game game = new Game(new ArrayList<String>(), new ArrayList<String>(),0,1);
     game.setBoard(b1);
     return game;
   }

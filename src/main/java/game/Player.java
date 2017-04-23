@@ -15,6 +15,7 @@ public class Player {
 	private PlayerType				playerType;
 	private int								life;
 	private ManaPool					manaPool;
+	private int								id;
 
 	// keeps track of amount of resources to gain at start of a turn.
 	private int								maxResources	= 0;
@@ -22,10 +23,11 @@ public class Player {
 	// how much the amount of resources you gain per turn increments.
 	private static final int	RESOURCE_GAIN	= 10;
 
-	public Player(int l, PlayerType p) {
+	public Player(int l, PlayerType p, int id) {
 		playerType = p;
 		life = l;
 		manaPool = new ManaPool(0, 0, 0, 0, 0, 0);
+		this.id = id;
 	}
 
 	public PlayerType getPlayerType() {
@@ -34,6 +36,10 @@ public class Player {
 
 	public int getLife() {
 		return life;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public void changeResources(int newCount) {

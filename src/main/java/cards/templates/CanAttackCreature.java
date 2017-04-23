@@ -1,13 +1,14 @@
 package cards.templates;
 
+import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
+import cardgamelibrary.Zone;
 import effects.EmptyEffect;
+import game.Player;
 
-public interface CanAttackCreature {
+public interface CanAttackCreature extends Card{
 
 	default public Effect onTurnStart(){
-		this.setAttacks(1);
-		return super.onTurnStart();
+		return EmptyEffect.create();
 	}
-	
 }

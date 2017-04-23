@@ -1,7 +1,6 @@
 package cards.creatures;
 
 import cardgamelibrary.Board;
-import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
@@ -25,11 +24,11 @@ public class EarthswornObserver extends Creature implements CanAttackCreature{
 		super(defaultAttack,defaultHealth,defaultCost, defaultImage, owner, defaultName,
 				defaultText, defaultType);
 	}
-	
+
 	@Override
-	public Effect onCreatureDeath(Creature cr, Zone z){
-		if(z == Zone.CREATURE_BOARD){
-			if(cr.getCost().getElement(ElementType.EARTH) > 0){
+	public Effect onCreatureDeath(Creature cr, Zone z) {
+		if (z == Zone.CREATURE_BOARD) {
+			if (cr.getCost().getElement(ElementType.EARTH) > 0) {
 				return (Board board) -> {
 					board.changeCreatureHealth(this,2,z);
 				};
@@ -37,6 +36,5 @@ public class EarthswornObserver extends Creature implements CanAttackCreature{
 		}
 		return super.onCreatureDeath(cr, z);
 	}
-	
-	
+
 }
