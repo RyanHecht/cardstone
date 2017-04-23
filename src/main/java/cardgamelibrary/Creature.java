@@ -75,7 +75,7 @@ public class Creature extends PlayableCard {
 
 	@Override
 	public Effect onTurnStart(Player p, Zone z) {
-		if (p == this.getOwner()) {
+		if (p == this.getOwner() && z == Zone.CREATURE_BOARD) {
 			this.attacks = 1;
 		}
 		return super.onTurnStart(p, z);
