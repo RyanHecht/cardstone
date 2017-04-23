@@ -3,10 +3,11 @@ package cards.templates;
 import cardgamelibrary.Effect;
 import effects.EmptyEffect;
 
-public interface CantAttackCreature {
+public interface CanAttackCreature {
 
 	default public Effect onTurnStart(){
-		return EmptyEffect.create();
+		this.setAttacks(1);
+		return super.onTurnStart();
 	}
 	
 }

@@ -8,14 +8,12 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
-import cards.templates.CantAttackCreature;
+import cards.templates.CanAttackCreature;
 import effects.EmptyEffect;
 import game.Player;
 
-public class EarthswornObserver extends Creature implements CantAttackCreature{
+public class EarthswornObserver extends Creature implements CanAttackCreature{
 
-	
-	//Is it gonna attack or not?
 	private static final ManaPool defaultCost = new ManaPool(25,0,0,1,0,0);
 	private static final String defaultImage = "images/EarthswornObserver.png";
 	private static final String defaultName = "Earthsworn Observer";
@@ -33,7 +31,7 @@ public class EarthswornObserver extends Creature implements CantAttackCreature{
 		if(z == Zone.CREATURE_BOARD){
 			if(cr.getCost().getElement(ElementType.EARTH) > 0){
 				return (Board board) -> {
-					board.changeCreatureHealth(this,2);
+					board.changeCreatureHealth(this,2,z);
 				};
 			}
 		}

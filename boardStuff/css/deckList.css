@@ -1,0 +1,29 @@
+.deckListRow{
+    display:inline-block;
+    border: 1px solid grey;
+    width:100%;
+    height:1.5em;
+    text-align:center;
+}
+
+.incrementer{
+    width:20px;
+    height:100%;
+    display:inline-block;
+    background-image: url("../images/plusBox.png");
+    background-size:cover;
+    float:right;
+}
+
+.decrementer{
+    width: 20px;
+    height:100%;
+    background-image: url("../images/minusBox.png");
+    display:inline-block;
+    background-size:cover;
+    float:left;
+}
+
+.deck_card_name{
+    display:inline-block;
+}

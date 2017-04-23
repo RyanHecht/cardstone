@@ -287,21 +287,27 @@ class elementCard extends Card{
 		switch(elementType){
 			case("water"):
 				this.color = waterText;
+                this.name = "Saphire";
 				break;
 			case("fire"):
 				this.color = fireText;
+                this.name = "Ruby";
 				break;
 			case("air"):
 				this.color = airText;
+                this.name = "Diamond";
 				break;
 			case("earth"):
 				this.color = earthText;
+                this.name = "Onyx";
 				break;
 			case("balance"):
 				this.color = balanceText;
+                this.name = "Quartz";
 				break;
 		}
-		
+        this.name = elementType + " element";
+		this.cost.regRes = -1;
 	}
 	
 	modifyWith(info){

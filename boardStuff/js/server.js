@@ -146,5 +146,21 @@ class Server{
 		wholeBoard.getFromCache(data.board);
 		redrawAll();
 	}
+    
+    replayRequestStepBack(){
+        
+    }
+    
+    replayRequestStepForward(){
+        
+    }
+    
+    requestCardCollection(){
+        let collection = [];
+        for(let x = 0; x < 100; x++){
+            collection.push(josh);
+        }
+        return collection;
+    }
 
 }

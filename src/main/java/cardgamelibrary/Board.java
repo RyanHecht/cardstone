@@ -267,9 +267,17 @@ public class Board implements Jsonifiable {
 		}
 	}
 
-	public void changeCreatureHealth(Creature target, int amount) {
+	public void changeCreatureHealth(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE,target,amount);
 		target.changeMaxHealthBy(amount);
+		for(OrderedCardCollection occ : cardsInGame){
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void changeCreatureAttack(Creature target, int amount, Zone z) {
+		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE,target,amount);
+		target.changeAttackBy(amount);
 		for(OrderedCardCollection occ : cardsInGame){
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}

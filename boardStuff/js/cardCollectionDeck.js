@@ -1,43 +1,11 @@
-class cardCollection extends drawableZone{
+class cardCollectionDeck extends drawableZone{
 	
 	
-	constructor(div,cards,expandInto){
+	constructor(div,cards){
 		super();
 		this.div = div;
 		this.cards = cards;
 		this.changed = true;
-		this.prepareForExpand();
-		this.expandInto = expandInto;
-		this.zone = div.attr("id");
-	}
-	
-	prepareForExpand(){
-		let $this = this;
-		this.div.children(".expandButton").click(function(){
-			if(!expandedInUse){
-				expandedInUse = true;
-				$this.expand();
-			}
-		});
-	}
-	
-	setZones(){
-		for(let card of this.cards){
-			card.setZone(this.zone);
-		}
-	}
-	
-	expand(){
-		let $this = this;
-		$this.expandInto.toggle();
-		$this.forceDrawInDiv($this.expandInto);
-		$this.expandInto.click(function(){
-			$this.expandInto.empty();
-			expandedInUse = false;
-			$this.expandInto.hide();
-			$('div.qtip:visible').qtip('hide');
-            $this.forceRedraw();
-		});
 	}
 	
 	setCards(cards){
@@ -114,46 +82,16 @@ class cardCollection extends drawableZone{
 			this.fillDiv(div);
 			this.prepareToolTips(div);
 			this.sizeCards(div);
-            if(this.expandInto != null){
-                this.div.append('<div class="expandButton"></div>');
-                this.prepareForExpand();
-            }
-            if(!isReplayMode){
-                this.prepareDraggables();
-                this.prepareDroppables();
-                this.prepareDroppableZone();
-            }
+            this.prepClicking();
 		}
 	}
-	
-	prepareDraggables(){
-		this.div.find(".card").draggable({ 
-			revert: false, 
-			helper: function(){
-				return "<div class='targetCursor'></div>";
-			},
-			cursorAt: { bottom: 25, right: 25}
-		});
-	}
-	
-	prepareDroppables(){
-		this.div.find(".card").droppable({
-			drop: function( event, ui ) {
-				$( this )
-				  .addClass( "cardSelected" );
-				  server.cardTargeted(ui.draggable,$(this));
-			},
-			greedy:true
-		})
-	}
-	
-	prepareDroppableZone(){
-		this.div.droppable({
-			drop: function( event, ui ) {
-				  server.cardPlayed(ui.draggable,$(this));
-			}
-		})
-	}
+    
+    prepClicking(){
+        $(".card").click(function(){
+            list.addCardByIID($(this).attr("id"));
+            redrawAll();
+        });
+    }
 	
 	sizeCards(div){
 		div.children().children('.cardBox').css({
