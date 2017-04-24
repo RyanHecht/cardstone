@@ -11,10 +11,10 @@ import cardgamelibrary.Zone;
 import cards.SkyWhaleCreature;
 import cards.StubCreature;
 import logins.Gui;
+import server.CommsWebSocket;
 import freemarker.template.Configuration;
 import game.Player;
 import game.PlayerType;
-import server.WebSocketTester;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -30,7 +30,7 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    new WebSocketTester();
+    //new WebSocketTester();
     new Main(args).run();
   }
 
@@ -75,37 +75,38 @@ public class Main {
     gui = new Gui(f);
     gui.init();
   }
-  
-	private static FreeMarkerEngine createEngine() {
-		Configuration config = new Configuration();
-		File templates = new File("src/main/resources/spark/template/freemarker");
-		try {
-		  config.setDirectoryForTemplateLoading(templates);
-		} catch (IOException ioe) {
-		  System.out.printf("ERROR: Unable use %s for template loading.%n",
-		          templates);
-		  System.exit(1);
-		}
-		return new FreeMarkerEngine(config);
-	}
-	
-	private void runSparkServer(int port, FreeMarkerEngine freeMarker) {
-		Spark.port(port);
-		Spark.externalStaticFileLocation("src/main/resources/static");
-		Spark.exception(Exception.class, new ExceptionPrinter());
-	}
 
-	private static class ExceptionPrinter implements ExceptionHandler {
-		@Override
-		public void handle(Exception e, Request req, Response res) {
-		  res.status(500);
-		  StringWriter stacktrace = new StringWriter();
-		  try (PrintWriter pw = new PrintWriter(stacktrace)) {
-		    pw.println("<pre>");
-		    e.printStackTrace(pw);
-		    pw.println("</pre>");
-		  }
-		    res.body(stacktrace.toString());
-		  }
-	}
+  private static FreeMarkerEngine createEngine() {
+    Configuration config = new Configuration();
+    File templates = new File("src/main/resources/spark/template/freemarker");
+    try {
+      config.setDirectoryForTemplateLoading(templates);
+    } catch (IOException ioe) {
+      System.out.printf("ERROR: Unable use %s for template loading.%n",
+          templates);
+      System.exit(1);
+    }
+    return new FreeMarkerEngine(config);
+  }
+
+  private void runSparkServer(int port, FreeMarkerEngine freeMarker) {
+    Spark.port(port);
+    Spark.externalStaticFileLocation("src/main/resources/static");
+    Spark.exception(Exception.class, new ExceptionPrinter());
+    Spark.webSocket("/socket", CommsWebSocket.class);
+  }
+
+  private static class ExceptionPrinter implements ExceptionHandler {
+    @Override
+    public void handle(Exception e, Request req, Response res) {
+      res.status(500);
+      StringWriter stacktrace = new StringWriter();
+      try (PrintWriter pw = new PrintWriter(stacktrace)) {
+        pw.println("<pre>");
+        e.printStackTrace(pw);
+        pw.println("</pre>");
+      }
+      res.body(stacktrace.toString());
+    }
+  }
 }

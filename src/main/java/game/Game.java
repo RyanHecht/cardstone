@@ -1,5 +1,6 @@
 package game;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -200,13 +201,23 @@ public class Game implements Jsonifiable {
     int playerId = userInput.get("player").getAsInt();
     if (playerId != board.getActivePlayer().getId()) {
       // player acting out of turn.
-      CommsWebSocket.sendActionBad(playerId);
+      try {
+        CommsWebSocket.sendActionBad(playerId, "It is not your turn!");
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       return;
     }
     Card card = board.getCardById(userInput.get("IID1").getAsInt());
     // if user can't pay the card cost the action is bad.
     if (!(card.getOwner().validateCost(card.getCost()))) {
-      CommsWebSocket.sendActionBad(playerId);
+      try {
+        CommsWebSocket.sendActionBad(playerId, "That's too expensive!");
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       return;
     }
     String action = userInput.get("name").getAsString();
@@ -217,7 +228,12 @@ public class Game implements Jsonifiable {
         Card target = board.getCardById(userInput.get("IID2").getAsInt());
         if (target.getOwner().getId() == playerId) {
           // can't attack own card.
-          CommsWebSocket.sendActionBad(playerId);
+          try {
+            CommsWebSocket.sendActionBad(playerId, "You can't attack your own card!");
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
           return;
         }
         if (card instanceof Creature && target instanceof Creature) {
@@ -225,16 +241,31 @@ public class Game implements Jsonifiable {
           Creature victim = (Creature) target;
           if (attacker.getNumAttacks() <= 0) {
             // the attacking creature can no longer attack.
-            CommsWebSocket.sendActionBad(playerId);
+            try {
+              CommsWebSocket.sendActionBad(playerId, "That creature can no longer attack.");
+            } catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
             return;
           }
           CreatureAttackEvent event = new CreatureAttackEvent(attacker, victim);
-          CommsWebSocket.sendActionOk(playerId);
+          try {
+            CommsWebSocket.sendActionOk(playerId);
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
           board.takeAction(event);
           return;
         } else {
           // if one of the cards isn't a creature it doesn't work.
-          CommsWebSocket.sendActionBad(playerId);
+          try {
+            CommsWebSocket.sendActionBad(playerId, "One of those cards is not a creature!");
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
           return;
         }
       case "targeted":
@@ -252,7 +283,12 @@ public class Game implements Jsonifiable {
         break;
       case "turnend":
         TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
-        CommsWebSocket.sendActionOk(playerId);
+        try {
+          CommsWebSocket.sendActionOk(playerId);
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
         board.takeAction(event);
         break;
     }

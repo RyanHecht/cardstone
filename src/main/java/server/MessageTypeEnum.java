@@ -58,22 +58,24 @@ public enum MessageTypeEnum {
   // 13
   ID_RESPONSE,
 
-  // These might be changed later TODO: talk to Will
-
-  //
+  // Client request to enter a lobby (Client -> Server)
   // 14
+  ENTER_LOBBY_REQUEST,
+
+  // Client request to create a lobby (Client -> Server)
+  // 15
+  CREATE_LOBBY_REQUEST,
+
+  // Alert the client that they have entered a lobby (Server -> Client)
+  // 16
   SELF_ENTERED_LOBBY,
 
-  //
-  // 15
+  // Alert the client that someone else has entered their lobby (Server -> Client)
+  // 17
   OPPONENT_ENTERED_LOBBY,
 
-  //
-  // 16
-  LOBBY_PASSWORD_REQUEST,
-
-  //
-  // 17
-  LOBBY_PASSWORD_RESPONSE
+  // Ask the client for a password to a lobby (Server -> Client)
+  // 18
+  LOBBY_PASSWORD_REQUEST
 
 }
