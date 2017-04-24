@@ -19,8 +19,7 @@ public class CardDamageEffect implements Effect {
 
 	@Override
 	public void apply(Board board) {
-		// do we even have to search for the creature?
-		cardDamaged.takeDamage(dmg, source);
+		board.damageCard(cardDamaged, source, dmg);
 	}
 
 }

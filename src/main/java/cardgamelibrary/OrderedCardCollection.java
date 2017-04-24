@@ -16,7 +16,9 @@ import events.CardDamagedEvent;
 import events.CardDrawnEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
+import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
+import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.TurnEndEvent;
 import game.Player;
@@ -75,6 +77,12 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			break;
 		case CARD_CREATED:
 			results = handleCardZoneCreated((CardZoneCreatedEvent) event);
+			break;
+		case CREATURE_ATTACKED:
+			results = handleCreatureAttacked((CreatureAttackEvent) event);
+			break;
+		case PLAYER_ATTACKED:
+			results = handlePlayerAttacked((PlayerAttackEvent) event);
 			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type.");
@@ -149,6 +157,22 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			results.add(c.onCardZoneCreated(created.getCard(), created.getLocation(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handleCreatureAttacked(CreatureAttackEvent cAttack) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onCreatureAttack(cAttack.getAttacker(), cAttack.getTarget(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handlePlayerAttacked(PlayerAttackEvent pAttack) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onPlayerAttack(pAttack.getAttacker(), pAttack.getTarget(), getZone()));
 		}
 		return results;
 	}
@@ -265,8 +289,8 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			return result;
 		}
 	}
-	
-	public JsonObject jsonifySelfWithBack(){
+
+	public JsonObject jsonifySelfWithBack() {
 		JsonObject result = new JsonObject();
 		result.addProperty("changed", hasChanged());
 		result.addProperty("size", this.size());

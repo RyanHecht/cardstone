@@ -24,7 +24,7 @@ public class CreatureAttackEvent implements Event {
 	@Override
 	public EventType getType() {
 		// TODO Auto-generated method stub
-		return EventType.ATTACK;
+		return EventType.CREATURE_ATTACKED;
 	}
 
 }

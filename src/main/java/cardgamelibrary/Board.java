@@ -8,9 +8,11 @@ import java.util.Queue;
 
 import com.google.gson.JsonObject;
 
+import events.CardDamagedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
+import events.PlayerDamagedEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.Player;
@@ -355,6 +357,18 @@ public class Board implements Jsonifiable {
 			}
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
+	}
+
+	public void damageCard(Creature target, Card src, int dmg) {
+		CardDamagedEvent event = new CardDamagedEvent(target, src, dmg);
+		target.takeDamage(dmg, src);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void damagePlayer(Player target, Card src, int dmg) {
+		PlayerDamagedEvent event = new PlayerDamagedEvent(src, target, dmg);
 	}
 
 	public void changeCreatureHealth(Creature target, int amount, Zone z) {

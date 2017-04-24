@@ -203,15 +203,24 @@ public class Game implements Jsonifiable {
 			CommsWebSocket.sendActionBad(playerId);
 			return;
 		}
+		String action = userInput.get("name").getAsString();
+
+		// if it's a turnend action end the turn.
+		if (action.equals("turnend")) {
+			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
+			CommsWebSocket.sendActionOk(playerId);
+			board.takeAction(event);
+			return;
+		}
+
+		// since it's not a turnend they must have sent us a card.
 		Card card = board.getCardById(userInput.get("IID1").getAsInt());
 		// if user can't pay the card cost the action is bad.
 		if (!(card.getOwner().validateCost(card.getCost()))) {
 			CommsWebSocket.sendActionBad(playerId);
 			return;
 		}
-		String action = userInput.get("name").getAsString();
-		// at this point we know the correct user is playing the card
-		// and that they have the resources to use it.
+
 		switch (action) {
 		case "attacked":
 			Card target = board.getCardById(userInput.get("IID2").getAsInt());
@@ -248,12 +257,6 @@ public class Game implements Jsonifiable {
 			} else {
 				// if they can indeed play the card we should play it!
 			}
-
-			break;
-		case "turnend":
-			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
-			CommsWebSocket.sendActionOk(playerId);
-			board.takeAction(event);
 			break;
 		}
 		throw new IllegalArgumentException("ERROR: invalid name " + "passed from user to verifyUserInput");
@@ -277,15 +280,14 @@ public class Game implements Jsonifiable {
 		payload.add("board", board.jsonifySelfChanged());
 		return payload;
 	}
-	
-	
-	//Modify them so that the players can't see eachothers hands
-	public JsonObject playerOneJsonify(JsonObject toMod){
+
+	// Modify them so that the players can't see eachothers hands
+	public JsonObject playerOneJsonify(JsonObject toMod) {
 		toMod.get("board").getAsJsonObject().get("hand2").getAsJsonObject().remove("cards");
 		return toMod;
 	}
-	
-	public JsonObject playerTwoJsonify(JsonObject toMod){
+
+	public JsonObject playerTwoJsonify(JsonObject toMod) {
 		toMod.get("board").getAsJsonObject().get("hand1").getAsJsonObject().remove("cards");
 		return toMod;
 	}
