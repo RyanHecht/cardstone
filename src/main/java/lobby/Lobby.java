@@ -8,7 +8,15 @@ public class Lobby {
   private Integer uId2;
 
   public Lobby(String name, boolean priv, String password, int hostUId) {
+    this.name = name;
+    this.priv = priv;
+  }
 
+  public Lobby(String name, int hostUId) {
+    this.name = name;
+    priv = false;
+    password = null;
+    this.uId1 = hostUId;
   }
 
   public boolean isPrivate() {

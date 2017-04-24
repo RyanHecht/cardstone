@@ -76,6 +76,10 @@ public enum MessageTypeEnum {
 
   // Ask the client for a password to a lobby (Server -> Client)
   // 18
-  LOBBY_PASSWORD_REQUEST
+  LOBBY_PASSWORD_REQUEST,
+
+  // Lobby host performing Lobby action (cancel, start game) (Client -> Server)
+  // 19
+  LOBBY_ACTION
 
 }
