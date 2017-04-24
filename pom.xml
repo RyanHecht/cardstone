@@ -90,6 +90,12 @@
       <artifactId>websocket-servlet</artifactId>
       <version>9.4.0.v20161208</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>3.16.1</version>
+    </dependency>
   </dependencies>
 
   <build>

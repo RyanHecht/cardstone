@@ -18,13 +18,6 @@ public class WebSocketTester {
     Spark.get("/", (Request req, Response res) -> "hello");
   }
 
-
-
-
-
-
-
-
   private static final int INTERNAL_SERVER_ERROR = 500;
 
   /**
