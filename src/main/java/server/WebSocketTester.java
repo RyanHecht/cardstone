@@ -1,4 +1,4 @@
-package server.websocket;
+package server;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

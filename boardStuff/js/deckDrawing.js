@@ -1,6 +1,6 @@
 let allCards;
 let josh;
-const CARDS_PER_PAGE = 24;
+const CARDS_PER_PAGE = 12;
 let pages;
 let curPage;
 let server;
@@ -8,16 +8,8 @@ let isReplayMode = false;
 let collect;
 let list;
 
-function setupJosh(){
-    let smallJoshPool = new manaPool(3,'&nbsp;');
-	smallJoshPool.setEarth(1);
-	smallJoshPool.setBalance(1);
-    let joshCost = new cost(10,smallJoshPool);
-    josh = new creatureCard(6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
-		" These may include dancing, singing, or just generally having a good time." +
-		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
-    josh.setState("cardCanAttack");
-}
+
+
 
 function redrawAll(){
     collect.forceRedraw();
@@ -53,28 +45,44 @@ function setupPaging(){
     })
 }
 
-$('document').ready(function(){
-    setupJosh();
-    allCards = [];
-    server = new Server();
-    allCards = server.requestCardCollection();
+function buildPages(cards){
     pages = new Map();
-    for(let x = 0; x * CARDS_PER_PAGE < allCards.length; x++){
+    for(let x = 0; x * CARDS_PER_PAGE < cards.length; x++){
         let mod = x * CARDS_PER_PAGE;
         let page = [];
-        for(let y = 0; y + x*CARDS_PER_PAGE < allCards.length && y < CARDS_PER_PAGE; y++){
-            page.push(allCards[mod + y]);
+        for(let y = 0; y + x*CARDS_PER_PAGE < cards.length && y < CARDS_PER_PAGE; y++){
+            page.push(cards[mod + y]);
         }
         pages.set(x,page);
     }
+}
+
+function filterCollection(filterText){
+    let filteredCards = filter(allCards,filterText);
+    buildPages(filteredCards);
     curPage = 0;
-    collect = new cardCollectionDeck($('.collectionDisplay'),pages.get(curPage),allCards);
-    collect.forceRedraw();
-    list = new deckList($(".deckList"));
-    $(window).resize(function() {
-         redrawAll();
-        
-	});
+    collect.setCards(pages.get(curPage));
+    redrawAll();
+}
+
+function filter(cards,filterBy){
+    let result = [];
+    filterBy = filterBy.toLowerCase();
+    for(let card of cards){
+        if(card.name.toLowerCase().includes(filterBy)){
+            result.push(card);
+            continue;
+        }
+        if(card.text != null){
+            if(card.text.toLowerCase().includes(filterBy)){
+                result.push(card);
+            }
+        }
+    }
+    return result;
+}
+
+function setupInput(){
     $(document).keypress(function(e) {
         console.log(e.which);
         if(e.which == 122){
@@ -88,5 +96,25 @@ $('document').ready(function(){
             pageRight();
         }
     });
+    $("#filterSubmit").click(function(){
+       filterCollection($("#filterText").val()); 
+    });
+}
+
+$('document').ready(function(){
+    allCards = [];
+    server = new Server();
+    allCards = server.requestCardCollection();
+    buildPages(allCards);
+    curPage = 0;
+    collect = new cardCollectionDeck($('.collectionDisplay'),pages.get(curPage),allCards);
+    collect.forceRedraw();
+    list = new deckList($(".deckList"));
+    $(window).resize(function() {
+         redrawAll();
+        
+	});
+    
     setupPaging();
+    setupInput();
 })

@@ -34,6 +34,10 @@ class cardCollectionDeck extends drawableZone{
 	fillDiv(div){
 		let curDiv = div;
 		let $this = this;
+        div.empty();
+        if($this.cards == null){
+            return;
+        }
 		if($this.cards.length < 1){
 			return;
 		}
@@ -88,6 +92,7 @@ class cardCollectionDeck extends drawableZone{
     
     prepClicking(){
         $(".card").click(function(){
+            console.log($(this).attr("id"));
             list.addCardByIID($(this).attr("id"));
             redrawAll();
         });

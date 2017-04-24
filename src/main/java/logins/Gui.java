@@ -63,7 +63,8 @@ public class Gui {
     @Override
     public String handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
-
+      
+//      String username = req.cookie("username");
       String file = qm.value("upload");
       System.out.println("Uploading muh file " + file);
 

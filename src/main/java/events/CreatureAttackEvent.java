@@ -4,11 +4,11 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class AttackEvent implements Event {
+public class CreatureAttackEvent implements Event {
 	private Creature	attacker;
 	private Creature	target;
 
-	public AttackEvent(Creature attacker, Creature target) {
+	public CreatureAttackEvent(Creature attacker, Creature target) {
 		this.attacker = attacker;
 		this.target = target;
 	}
