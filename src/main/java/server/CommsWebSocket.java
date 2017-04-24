@@ -1,4 +1,4 @@
-package server.websocket;
+package server;
 
 import cardgamelibrary.Board;
 import cardgamelibrary.OrderedCardCollection;

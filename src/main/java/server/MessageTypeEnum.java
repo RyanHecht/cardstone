@@ -69,5 +69,11 @@ public enum MessageTypeEnum {
   OPPONENT_ENTERED_LOBBY,
 
   //
+  // 16
+  LOBBY_PASSWORD_REQUEST,
+
+  //
+  // 17
+  LOBBY_PASSWORD_RESPONSE
 
 }
