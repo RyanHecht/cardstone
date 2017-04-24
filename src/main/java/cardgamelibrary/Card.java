@@ -65,11 +65,11 @@ public interface Card extends Jsonifiable {
 
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
-	default public Effect onDamage(Creature target, Card src, int dmg, Zone z) {
+	default public Effect onCreatureDamage(Creature target, Card src, int dmg, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onHeal(Creature target, Card src, int heal, Zone z) {
+	default public Effect onCreatureHeal(Creature target, Card src, int heal, Zone z) {
 		return EmptyEffect.create();
 	}
 

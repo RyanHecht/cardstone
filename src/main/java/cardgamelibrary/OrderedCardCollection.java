@@ -14,12 +14,14 @@ import com.google.gson.JsonObject;
 
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
+import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
+import events.PlayerHealedEvent;
 import events.TurnEndEvent;
 import game.Player;
 
@@ -58,8 +60,10 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new ArrayList<>();
 		switch (event.getType()) {
 		case CARD_DAMAGED:
-			results = handleCardDamaged(((CardDamagedEvent) event));
+			results = handleCardDamaged((CardDamagedEvent) event);
 			break;
+		case CARD_HEALED:
+			results = handleCardHealed((CardHealedEvent) event);
 		case CARD_DRAWN:
 			results = handleDraw((CardDrawnEvent) event);
 			break;
@@ -72,6 +76,8 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case PLAYER_DAMAGED:
 			results = handlePlayerDamaged((PlayerDamagedEvent) event);
 			break;
+		case PLAYER_HEALED:
+			results = handlePlayerHealed((PlayerHealedEvent) event);
 		case TURN_END:
 			results = handleTurnEnd((TurnEndEvent) event);
 			break;
@@ -85,7 +91,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			results = handlePlayerAttacked((PlayerAttackEvent) event);
 			break;
 		default:
-			throw new RuntimeException("ERROR: Invalid event type.");
+			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
 		}
 
 		return results;
@@ -122,7 +128,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCardDamaged(CardDamagedEvent cDamaged) {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
-			results.add(c.onDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg(), getZone()));
+			results.add(c.onCreatureDamage(cDamaged.getTarget(), cDamaged.getSrc(), cDamaged.getDmg(), getZone()));
 		}
 		return results;
 	}
@@ -131,6 +137,22 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			results.add(c.onPlayerDamage(pDamaged.getPlayer(), pDamaged.getSrc(), pDamaged.getDmg(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handleCardHealed(CardHealedEvent cHealed) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onCreatureHeal(cHealed.getTarget(), cHealed.getSrc(), cHealed.getHeal(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handlePlayerHealed(PlayerHealedEvent pHealed) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onPlayerHeal(pHealed.getTarget(), pHealed.getSrc(), pHealed.getHeal(), getZone()));
 		}
 		return results;
 	}
