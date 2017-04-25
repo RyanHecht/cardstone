@@ -1,4 +1,4 @@
-package server.websocket;
+package server;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -17,13 +17,6 @@ public class WebSocketTester {
     Spark.webSocket("/socket", CommsWebSocket.class);
     Spark.get("/", (Request req, Response res) -> "hello");
   }
-
-
-
-
-
-
-
 
   private static final int INTERNAL_SERVER_ERROR = 500;
 

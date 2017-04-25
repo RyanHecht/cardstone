@@ -1,5 +1,6 @@
 package game;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +11,17 @@ import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Jsonifiable;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import cards.templates.TargetsOtherCard;
+import events.CreatureAttackEvent;
+import events.TurnEndEvent;
+import server.CommsWebSocket;
 
 /**
  * Class to represent a game.
@@ -174,7 +180,7 @@ public class Game implements Jsonifiable {
 
 	/**
 	 * Checks to see if a player with a certain Id is in the game.
-	 * 
+	 *
 	 * @param playerId
 	 *          the id of the player we are looking for.
 	 * @return a boolean that represents whether a player with the input id is in
@@ -182,6 +188,114 @@ public class Game implements Jsonifiable {
 	 */
 	public boolean inGame(int playerId) {
 		return (playerOne.getId() == playerId) || (playerTwo.getId() == playerId);
+	}
+
+	/**
+	 * Checks to see if user input is a valid action on the board. If so, we
+	 * perform the user input.
+	 *
+	 * @param userInput
+	 *          a JsonObject formatted according to the spec for user input.
+	 */
+	public void handleUserInput(JsonObject userInput) {
+		int playerId = userInput.get("player").getAsInt();
+		if (playerId != board.getActivePlayer().getId()) {
+			// player acting out of turn.
+			try {
+				CommsWebSocket.sendActionBad(playerId, "Acting out of turn.");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		String action = userInput.get("name").getAsString();
+
+		// if it's a turnend action end the turn.
+		if (action.equals("turnend")) {
+			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
+			try {
+				CommsWebSocket.sendActionOk(playerId);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			board.takeAction(event);
+			return;
+		}
+
+		// since it's not a turnend they must have sent us a card.
+		Card card = board.getCardById(userInput.get("IID1").getAsInt());
+		// if user can't pay the card cost the action is bad.
+		if (!(card.getOwner().validateCost(card.getCost()))) {
+			try {
+				CommsWebSocket.sendActionBad(playerId, "Can't pay card cost");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+
+		switch (action) {
+		case "attackedcreature":
+			Card target = board.getCardById(userInput.get("IID2").getAsInt());
+			if (target.getOwner().getId() == playerId) {
+				// can't attack own card.
+				try {
+					CommsWebSocket.sendActionBad(playerId, "Can't attack own creature.");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+			}
+			if (card instanceof Creature && target instanceof Creature) {
+				Creature attacker = (Creature) card;
+				Creature victim = (Creature) target;
+				if (attacker.getNumAttacks() <= 0) {
+					// the attacking creature can no longer attack.
+					try {
+						CommsWebSocket.sendActionBad(playerId, "Attacking creature can no longer attack.");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return;
+				}
+				CreatureAttackEvent event = new CreatureAttackEvent(attacker, victim);
+				try {
+					CommsWebSocket.sendActionOk(playerId);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				board.takeAction(event);
+				return;
+			} else {
+				// if one of the cards isn't a creature it doesn't work.
+				try {
+					CommsWebSocket.sendActionBad(playerId, "Attempted to perform attack involving non creature card.");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+			}
+		case "targeted":
+			break;
+		case "played":
+			// in this case the owner can indeed pay the card's cost.
+			if (card instanceof TargetsOtherCard) {
+				// in this case the user needed to select a target but they didn't.
+				JsonObject inputRequest = new JsonObject();
+
+			} else {
+				// if they can indeed play the card we should play it!
+			}
+			break;
+		}
+		throw new IllegalArgumentException("ERROR: invalid name " + "passed from user to verifyUserInput");
 	}
 
 	@Override
@@ -201,15 +315,14 @@ public class Game implements Jsonifiable {
 		payload.add("board", board.jsonifySelfChanged());
 		return payload;
 	}
-	
-	
-	//Modify them so that the players can't see eachothers hands
-	public JsonObject playerOneJsonify(JsonObject toMod){
+
+	// Modify them so that the players can't see eachothers hands
+	public JsonObject playerOneJsonify(JsonObject toMod) {
 		toMod.get("board").getAsJsonObject().get("hand2").getAsJsonObject().remove("cards");
 		return toMod;
 	}
-	
-	public JsonObject playerTwoJsonify(JsonObject toMod){
+
+	public JsonObject playerTwoJsonify(JsonObject toMod) {
 		toMod.get("board").getAsJsonObject().get("hand1").getAsJsonObject().remove("cards");
 		return toMod;
 	}

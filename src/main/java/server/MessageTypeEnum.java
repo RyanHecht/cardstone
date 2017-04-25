@@ -58,16 +58,8 @@ public enum MessageTypeEnum {
   // 13
   ID_RESPONSE,
 
-  // These might be changed later TODO: talk to Will
-
-  //
-  // 14
-  SELF_ENTERED_LOBBY,
-
-  //
-  // 15
-  OPPONENT_ENTERED_LOBBY,
-
-  //
+  // Player has ended their turn (Client -> Server)
+  // 20
+  TURN_END
 
 }
