@@ -114,7 +114,7 @@ public interface Card extends Jsonifiable {
 		result.addProperty("image", this.getImage());
 		result.addProperty("changed", hasChanged());
 		result.add("cost", this.getCost().jsonifySelf());
-		result.addProperty("type", "creature");
+		result.addProperty("type", "none");
 		return result;
 	}
 
