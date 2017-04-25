@@ -111,6 +111,18 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when a creature's attack is changed.
+	// note that amtChange can be negative or positive.
+	default public Effect onAttackChange(Creature changed, int amtChange, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when a creature's health is changed.
+	// note that amtChange can be negative or positive.
+	default public Effect onHealthChange(Creature changed, int amtChange, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	@Override
 	default JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();

@@ -20,7 +20,7 @@ public class PlayerDamageEffect implements Effect {
 	@Override
 	public void apply(Board board) {
 		// TODO Auto-generated method stub
-		playerDamaged.takeDamage(dmg);
+		board.damagePlayer(playerDamaged, source, dmg);
 	}
 
 }
