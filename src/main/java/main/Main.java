@@ -30,7 +30,7 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    new WebSocketTester();
+    //new WebSocketTester();
     new Main(args).run();
   }
 
