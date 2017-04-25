@@ -55,6 +55,13 @@ class cardCacher{
 			case "creature":
 				this.addNewCreature(card);
 				break;
+            case "spell":
+                this.addNewSpell(card);
+                break;
+            case "element":
+                this.addNewElement(card);
+            case "back":
+                this.addNewBack(card);
 			default:
 				console.log("unknown card type at cache card builder");
 				this.addNewCreature(card);
@@ -62,13 +69,28 @@ class cardCacher{
 	}
 	
 	addNewCreature(card){
-		console.log(card);
 		let pool = manaPool.buildPool(3,"&nbsp;",card.cost);
 		let cardCost = new cost(card.cost.resources,pool);
 		let newCard = new creatureCard(card.id,cardCost,card.name,card.text,card.image,card.attack,card.health);
-		console.log(newCard);
 		this.setByIID(card.id,newCard);
 	}
+    
+    addNewSpell(card){
+        let pool = manaPool.buildPool(3,"&nbsp;",card.cost);
+        let cardCost = new cost(card.cost.resources,pool);
+        let newCard = new spellCard(card.id,cardCost,card.name,card.text,card.image);
+        this.setByIID(card.id,newCard);
+    }
+    
+    addNewElement(card){
+        let newCard = new elementCard(card.ID,card.elementType);
+        this.setByIID(card.id,newCard);
+    }
+    
+    addNewBack(card){
+        let newCard = new cardBack(card.id);
+        this.setByIID(card.id,newCard);
+    }
 	
     
     addNewParsedCard(card){
