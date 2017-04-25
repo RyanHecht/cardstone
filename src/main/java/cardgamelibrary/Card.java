@@ -37,7 +37,7 @@ public interface Card extends Jsonifiable {
 	 * @return the type of the card.
 	 */
 	CardType getType();
-	
+
 	Player getOwner();
 
 	/*
@@ -65,11 +65,11 @@ public interface Card extends Jsonifiable {
 
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
-	default public Effect onDamage(Creature target, Card src, int dmg, Zone z) {
+	default public Effect onCreatureDamage(Creature target, Card src, int dmg, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onHeal(Creature target, Card src, int heal, Zone z) {
+	default public Effect onCreatureHeal(Creature target, Card src, int heal, Zone z) {
 		return EmptyEffect.create();
 	}
 
@@ -114,14 +114,14 @@ public interface Card extends Jsonifiable {
 		result.addProperty("image", this.getImage());
 		result.addProperty("changed", hasChanged());
 		result.add("cost", this.getCost().jsonifySelf());
-		result.addProperty("type", "creature");
+		result.addProperty("type", "none");
 		return result;
 	}
 
 	@Override
 	JsonObject jsonifySelfChanged();
 
-	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone){
+	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone) {
 		return EmptyEffect.create();
 	}
 

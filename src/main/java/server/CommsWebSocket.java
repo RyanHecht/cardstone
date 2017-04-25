@@ -19,7 +19,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import server.MessageTypeEnum;
 
 /**
  * Spark WebSocket for sending data between server and client
@@ -43,6 +42,9 @@ public class CommsWebSocket {
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
     int id = sessions.get(session);
+
+    // TODO: Check if player is in game or in lobby, terminate game or update
+    // lobby.
 
     sessions.remove(session);
     idToSessions.remove(id);
@@ -71,6 +73,8 @@ public class CommsWebSocket {
       } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {
 
       } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
+
+      } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
 
       }
     } else {
@@ -127,44 +131,69 @@ public class CommsWebSocket {
     }
   }
 
-  public static void sendAnimation(int userId) {
-
+  public static void sendAnimation(int userId, JsonObject message)
+      throws IOException {
+    sendMessage(userId, MessageTypeEnum.ANIMATION, message);
   }
 
-  public static void sendExplicitAnimation(int userId) {
-
+  public static void sendExplicitAnimation(int userId, JsonObject message)
+      throws IOException {
+    sendMessage(userId, MessageTypeEnum.EXPLICIT_ANIMATION, message);
   }
 
-  public static void sendChooseRequest(int userId) {
-
+  public static void sendChooseRequest(int userId, JsonObject message)
+      throws IOException {
+    sendMessage(userId, MessageTypeEnum.CHOOSE_REQUEST, message);
   }
 
-  public static void sendAnimation(int userId, JsonObject message) {
-
-  }
-
-  public static void sendExplicitAnimation(int userId, JsonObject message) {
-
-  }
-
-  public static void sendChooseRequest(int userId, JsonObject message) {
-
-  }
-
+  /**
+   * Ask the user to target something.
+   * @param userId The id of the recipient user.
+   */
   public static void sendTargetRequest(int userId) {
 
   }
 
-  public static void sendActionOk(int userId) {
+  /**
+   * Inform the user that their action was correct.
+   * @param userId The id of the recipient user.
+   * @throws IOException .
+   */
+  public static void sendActionOk(int userId) throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("status", "ok");
 
+    sendMessage(userId, MessageTypeEnum.ACTION_OK, obj);
   }
 
-  public static void sendActionBad(int uderId) {
+  /**
+   * Inform the user that their action was incorrect.
+   * @param uderId The id of the recipient user.
+   * @param message The message of why the action was bad.
+   * @throws IOException
+   */
+  public static void sendActionBad(int userId, String message)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("message", message);
 
+    sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
   }
 
   public static void closeSession(int userId) {
 
+  }
+
+  private static void sendMessage(int userId, MessageTypeEnum type,
+      JsonObject payload) throws IOException {
+    if (idToSessions.containsKey(userId)) {
+      Session session = idToSessions.get(userId);
+      JsonObject obj = new JsonObject();
+      obj.addProperty("type", type.ordinal());
+      obj.add("payload", payload);
+
+      session.getRemote().sendString(GSON.toJson(obj));
+    }
   }
 
   private static Game testBoard() {
@@ -201,7 +230,8 @@ public class CommsWebSocket {
     b1.setOcc(playerOneCreatures2);
     b1.setOcc(playerTwoCreatures2);
 
-    Game game = new Game(new ArrayList<String>(), new ArrayList<String>(),0,1);
+    Game game = new Game(new ArrayList<String>(), new ArrayList<String>(), 0,
+        1);
     game.setBoard(b1);
     return game;
   }

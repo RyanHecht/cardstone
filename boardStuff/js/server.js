@@ -105,13 +105,42 @@ class Server{
 		// }
 	}
 
+    
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
-				console.log("received board: " + JSON.stringify(message.payload))
 				this.boardReceived(message.payload);
+                break;
+            case ACTION_BAD:
+                this.badMessage(message.payload);
+                break;
+            case ANIMATION:
+                this.animationEventReceived(message.payload);
+                break;
+            case CHOOSE_REQUEST:
+                this.chooseFrom(message.payload);
+                break;
+            default:
+                console.log("Unknown message type!");
 		}
 	}
+    
+    badMessage(message){
+        alert(message.errorMessage);
+    }
+    
+    animationEventReceived(message){
+        switch(message.eventType){
+            case "attacked":
+                quedAnims.push(animationMaker.getAttackAnimation(message.id1, message.id2).create());
+                break;
+            case "damaged":
+                quedAnims.push(animationMaker.getDamagedAnimation(message.id1).create());
+                break;
+            default:
+                console.log("unknown animation type");
+        }
+    }
 
 	chooseFrom(cards){
 		$("#chooseOneAsk").modal('show');
@@ -120,7 +149,7 @@ class Server{
 	}
 
 	cardTargeted(cardID,targetID){
-		//
+        
 	}
 
 	cardPlayed(cardID,zoneID){

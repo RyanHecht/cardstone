@@ -8,9 +8,13 @@ import java.util.Queue;
 
 import com.google.gson.JsonObject;
 
+import events.CardDamagedEvent;
+import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
+import events.PlayerDamagedEvent;
+import events.PlayerHealedEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.Player;
@@ -353,6 +357,38 @@ public class Board implements Jsonifiable {
 			if (occ.getZone() == targetZone && occ.getPlayer() == summon.getOwner()) {
 				occ.add(summon);
 			}
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void damageCard(Creature target, Card src, int dmg) {
+		CardDamagedEvent event = new CardDamagedEvent(target, src, dmg);
+		target.takeDamage(dmg, src);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void damagePlayer(Player target, Card src, int dmg) {
+		PlayerDamagedEvent event = new PlayerDamagedEvent(src, target, dmg);
+		target.takeDamage(dmg);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void healCard(Creature target, Card src, int heal) {
+		CardHealedEvent event = new CardHealedEvent(target, src, heal);
+		target.heal(heal, src);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void healPlayer(Player target, Card src, int heal) {
+		PlayerHealedEvent event = new PlayerHealedEvent(target, src, heal);
+		target.healDamage(heal);
+		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
 	}
