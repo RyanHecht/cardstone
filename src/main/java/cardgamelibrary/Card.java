@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import cards.templates.TargetsOtherCard;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -92,6 +93,11 @@ public interface Card extends Jsonifiable {
 
 	// card changes zones
 	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when a card targets another card
+	default public Effect onCardTarget(TargetsOtherCard targetter, Card target, Zone z) {
 		return EmptyEffect.create();
 	}
 

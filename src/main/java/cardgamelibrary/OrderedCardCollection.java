@@ -23,6 +23,7 @@ import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.TurnEndEvent;
+import events.TurnStartEvent;
 import game.Player;
 
 /**
@@ -78,6 +79,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			break;
 		case PLAYER_HEALED:
 			results = handlePlayerHealed((PlayerHealedEvent) event);
+		case TURN_START:
+			results = handleTurnStart((TurnStartEvent) event);
+			break;
 		case TURN_END:
 			results = handleTurnEnd((TurnEndEvent) event);
 			break;
@@ -113,6 +117,14 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new ArrayList<>();
 		for (Card c : cards) {
 			results.add(c.onCardDrawn(cDrawn.getDrawn(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handleTurnStart(TurnStartEvent start) {
+		List<Effect> results = new ArrayList<>();
+		for (Card c : cards) {
+			results.add(c.onTurnEnd(start.getPlayer(), getZone()));
 		}
 		return results;
 	}

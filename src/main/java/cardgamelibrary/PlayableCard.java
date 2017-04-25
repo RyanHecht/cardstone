@@ -44,6 +44,7 @@ public class PlayableCard implements Card {
 	}
 
 	// gives us the owner of the card.
+	@Override
 	public Player getOwner() {
 		return owner;
 	}
@@ -95,6 +96,15 @@ public class PlayableCard implements Card {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this != null && o != null && o instanceof PlayableCard) {
+			PlayableCard c = (PlayableCard) o;
+			return c.getId() == this.getId();
+		}
+		return false;
+	}
+
+	@Override
 	public JsonObject jsonifySelfChanged() {
 		if (hasChanged()) {
 			return jsonifySelf();
@@ -110,7 +120,7 @@ public class PlayableCard implements Card {
 	public JsonObject jsonifySelfBack() {
 		JsonObject result = new JsonObject();
 		result.addProperty("id", getId());
-		result.addProperty("type","back");
+		result.addProperty("type", "back");
 		return result;
 	}
 }
