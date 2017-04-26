@@ -1,4 +1,4 @@
-package cards.spells;
+package cards;
 
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
