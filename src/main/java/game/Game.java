@@ -328,14 +328,35 @@ public class Game implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Handles players being targeted.
+	 *
+	 * @param userInput
+	 *          a JsonObject representing the user's input.
+	 * @param playerId
+	 *          the player who submitted the action.
+	 */
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+			// this is true if the target player is the player who is acting and
+			// false if the target player is the player who is not acting.
+			boolean target = userInput.get("self").getAsBoolean();
 
+			// get the card.
+			Card card = board.getCardById(userInput.get("IID1").getAsInt());
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
 	}
 
+	/**
+	 * Handles a card being played.
+	 *
+	 * @param userInput
+	 *          a JSON representing the user's input.
+	 * @param playerId
+	 *          the player who submitted the action.
+	 */
 	public void handleCardPlayed(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 			// grab relevant card.
@@ -343,6 +364,12 @@ public class Game implements Jsonifiable {
 			if (!(board.getActivePlayer().validateCost(card.getCost()))) {
 				// in this case they can't play the card.
 				sendPlayerActionBad(playerId, "Cannot pay card's cost.");
+				return;
+			}
+
+			if (card instanceof TargetsOtherCard) {
+				// send player a target request b/c their card requires a target.
+				CommsWebSocket.sendTargetRequest(playerId);
 				return;
 			}
 			Zone z;
@@ -366,114 +393,6 @@ public class Game implements Jsonifiable {
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
-	}
-
-	/**
-	 * Checks to see if user input is a valid action on the board. If so, we
-	 * perform the user input.
-	 *
-	 * @param userInput
-	 *          a JsonObject formatted according to the spec for user input.
-	 */
-	public void handleUserInput(JsonObject userInput) {
-		int playerId = userInput.get("player").getAsInt();
-		if (playerId != board.getActivePlayer().getId()) {
-			// player acting out of turn.
-			try {
-				CommsWebSocket.sendActionBad(playerId, "Acting out of turn.");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return;
-		}
-		String action = userInput.get("name").getAsString();
-
-		// if it's a turnend action end the turn.
-		if (action.equals("turnend")) {
-			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
-			try {
-				CommsWebSocket.sendActionOk(playerId);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			board.takeAction(event);
-			return;
-		}
-
-		// since it's not a turnend they must have sent us a card.
-		Card card = board.getCardById(userInput.get("IID1").getAsInt());
-		// if user can't pay the card cost the action is bad.
-		if (!(card.getOwner().validateCost(card.getCost()))) {
-			try {
-				CommsWebSocket.sendActionBad(playerId, "Can't pay card cost");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return;
-		}
-
-		switch (action) {
-		case "attackedcreature":
-			Card target = board.getCardById(userInput.get("IID2").getAsInt());
-			if (target.getOwner().getId() == playerId) {
-				// can't attack own card.
-				try {
-					CommsWebSocket.sendActionBad(playerId, "Can't attack own creature.");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return;
-			}
-			if (card instanceof Creature && target instanceof Creature) {
-				Creature attacker = (Creature) card;
-				Creature victim = (Creature) target;
-				if (attacker.getNumAttacks() <= 0) {
-					// the attacking creature can no longer attack.
-					try {
-						CommsWebSocket.sendActionBad(playerId, "Attacking creature can no longer attack.");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					return;
-				}
-				CreatureAttackEvent event = new CreatureAttackEvent(attacker, victim);
-				try {
-					CommsWebSocket.sendActionOk(playerId);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				board.takeAction(event);
-				return;
-			} else {
-				// if one of the cards isn't a creature it doesn't work.
-				try {
-					CommsWebSocket.sendActionBad(playerId, "Attempted to perform attack involving non creature card.");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return;
-			}
-		case "targeted":
-			break;
-		case "played":
-			// in this case the owner can indeed pay the card's cost.
-			if (card instanceof TargetsOtherCard) {
-				// in this case the user needed to select a target but they didn't.
-				JsonObject inputRequest = new JsonObject();
-
-			} else {
-				// if they can indeed play the card we should play it!
-			}
-			break;
-		}
-		throw new IllegalArgumentException("ERROR: invalid name " + "passed from user to verifyUserInput");
 	}
 
 	@Override
