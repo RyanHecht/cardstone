@@ -1,6 +1,8 @@
 package game;
 
 import com.google.gson.JsonObject;
+import java.io.IOException;
+import server.CommsWebSocket;
 
 /**
  * Class to keep track of all games currently running and handle playing them.
@@ -12,8 +14,9 @@ public class GameManager {
   private static GamePool games = new GamePool();
 
   // some sort of method to add games.
-  public static void addGame() {
-
+  public static void addGame(int uId1, int uId2, Game game) {
+    games.addGame(uId1, uId2, game);
+    game.startGame();
   }
 
   // remove games when they complete.
@@ -22,11 +25,11 @@ public class GameManager {
   }
 
   public static boolean playerIsInGame(int playerId) {
-    return false;
+    return games.getGameByPlayerId(playerId) != null;
   }
 
   public static Game getGameByPlayerId(int playerId) {
-    return null;
+    return games.getGameByPlayerId(playerId);
   }
 
   public static Game getGameById(int gameId) {
@@ -35,7 +38,10 @@ public class GameManager {
 
   public static void receiveUnderstoodBoardState(int playerId,
       JsonObject message) {
-
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      // game.h
+    }
   }
 
   public static void recieveTargetedCard(int playerId, JsonObject message) {
@@ -66,7 +72,13 @@ public class GameManager {
     }
   }
 
-  // create a different method for each message I can receive (see
-  // messageTypeEnum). They should all take some playerId and
-  // a JSON object (the payload).
+  public static void playerIsReady(int uId) {
+    try {
+      CommsWebSocket
+          .sendWholeBoardSate(games.getGameByPlayerId(uId), uId);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 }

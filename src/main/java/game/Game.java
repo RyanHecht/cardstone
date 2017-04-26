@@ -19,6 +19,7 @@ import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import cards.templates.TargetsOtherCard;
+import cards.templates.TargetsPlayer;
 import events.CardPlayedEvent;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
@@ -38,6 +39,7 @@ public class Game implements Jsonifiable {
 	private Player								playerTwo;
 	private int										id;
 	private static AtomicInteger	idGenerator				= new AtomicInteger(0);
+	private static final String		PACKAGE_PATH			= "cards";
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId) {
 		// Initialize both players with starting life.
@@ -71,7 +73,7 @@ public class Game implements Jsonifiable {
 			// invoking constructors as we go and adding to new list before adding all
 			// to the OrderedCardCollections?
 			for (String formattedName : firstPlayerCards) {
-				Object p = Class.forName(formattedName).getConstructor(Player.class).newInstance(playerOne);
+				Object p = Class.forName(PACKAGE_PATH + formattedName).getConstructor(Player.class).newInstance(playerOne);
 				if (p instanceof Creature) {
 					fCards.add((Creature) p);
 				} else if (p instanceof AuraCard) {
@@ -87,7 +89,7 @@ public class Game implements Jsonifiable {
 
 			// repeat process with player two's deck.
 			for (String formattedName : secondPlayerCards) {
-				Object p = Class.forName(formattedName).getConstructor(Player.class).newInstance(playerTwo);
+				Object p = Class.forName(PACKAGE_PATH + formattedName).getConstructor(Player.class).newInstance(playerTwo);
 				if (p instanceof Creature) {
 					sCards.add((Creature) p);
 				} else if (p instanceof AuraCard) {
@@ -347,7 +349,7 @@ public class Game implements Jsonifiable {
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
 
 			if (target) {
-				// targeted self.
+				// TODO targeted self.
 			} else {
 				// targeted opponent.
 				if (card instanceof Creature) {
@@ -368,6 +370,8 @@ public class Game implements Jsonifiable {
 
 					// execute event on board.
 					board.takeAction(event);
+				} else if (card instanceof TargetsPlayer) {
+					// TODO Targeted opposing player.
 				}
 			}
 		} else {

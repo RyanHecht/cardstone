@@ -100,6 +100,7 @@ public class Main {
     Spark.get("/listLobbies", new LobbyHandlers.ListLobbies());
     Spark.post("/joinLobby", new LobbyHandlers.JoinLobby());
     Spark.post("/makeLobby", new LobbyHandlers.MakeLobby());
+    Spark.get("/makeLobbyTest", new LobbyHandlers.LobbyTesting());
   }
 
   private static class ExceptionPrinter implements ExceptionHandler {

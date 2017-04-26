@@ -1,4 +1,4 @@
-package cards.creatures;
+package cards;
 
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;

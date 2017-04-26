@@ -10,8 +10,14 @@ public class GamePool {
 
   }
 
-  public void addGame() {
-    // if (playerIdsToGames.containsKey(key))
+  public void addGame(int uId1, int uId2, Game game) {
+    if (playerIdsToGames.containsKey(uId1)
+        || playerIdsToGames.containsKey(uId2)) {
+
+    } else {
+      playerIdsToGames.put(uId1, game);
+      playerIdsToGames.put(uId2, game);
+    }
   }
 
   public Game getGameByPlayerId(int id) {
