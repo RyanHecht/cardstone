@@ -354,7 +354,20 @@ public class Game implements Jsonifiable {
 					// we have an attack going down.
 					Creature attacker = (Creature) card;
 
-					PlayerAttackEvent event = new PlayerAttackEvent(, attacker);
+					if (!(attacker.canAttack())) {
+						sendPlayerActionBad(playerId, "That creature can no longer attack.");
+						return;
+					}
+
+					// creature can attack, so let's attack!
+
+					PlayerAttackEvent event = new PlayerAttackEvent(board.getInactivePlayer(), attacker);
+
+					// tell player their action is valid.
+					sendPlayerActionGood(playerId);
+
+					// execute event on board.
+					board.takeAction(event);
 				}
 			}
 		} else {
