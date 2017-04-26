@@ -182,7 +182,11 @@ function setupCardClick(){
 				  server.playerTargeted(ui.draggable.attr("id"),false);
 			}
 		});
+        $("#endTurnButton").click(function(){
+            server.endTurn();
+        });
     }
+    
 }
 
 $(document).ready(function(){

@@ -25,6 +25,10 @@ class Server{
     console.log("sent choose reponse");
 	}
 
+    endTurn(){
+        
+    }
+    
     // cardSelected(cardDiv){
 		// console.log(cardDiv);
 		// // $(".card").removeClass("cardSelected");
@@ -150,7 +154,7 @@ class Server{
 	}
 
     badMessage(message){
-        alert(message.errorMessage);
+        alert(message.message);
     }
 
     animationEventReceived(message){
