@@ -15,7 +15,7 @@ public class Player {
 	private PlayerType				playerType;
 	private int								life;
 	private ManaPool					manaPool;
-	private int								id;
+	private final int					id;
 
 	// keeps track of amount of resources to gain at start of a turn.
 	private int								maxResources	= 0;
