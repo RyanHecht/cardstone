@@ -12,13 +12,14 @@ TARGET_REQUEST: 9,
 TARGET_RESPONSE: 10,
 ACTION_OK: 11,
 ACTION_BAD: 12,
-ID_RESPONSE: 13
+ID_RESPONSE: 13,
+TURN_END: 14
 };
 
 class Server{
 
   sendChosen(id){
-	 const payload = {"iid": id};
+	 const payload = {"IID": id};
      console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.socket.send(JSON.stringify(obj));
@@ -26,9 +27,12 @@ class Server{
 	}
 
     endTurn(){
-        
+      const payload = {};
+      const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
+    	 this.socket.send(JSON.stringify(obj));
+       console.log("sent turn end");
     }
-    
+
     // cardSelected(cardDiv){
 		// console.log(cardDiv);
 		// // $(".card").removeClass("cardSelected");
@@ -47,14 +51,14 @@ class Server{
 	// }
 
   cardTargeted(cardID,targetID){
-   const payload = {"iid1": cardID, "iid2": targetID};
+   const payload = {"IID1": cardID, "IID2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
 	 this.websocket.send(JSON.stringify(obj));
    console.log("sent card targeted");
 	}
 
 	cardPlayed(cardID,zoneID){
-		const payload = {"iid": cardID, "zoneID": zoneID};
+		const payload = {"IID1": cardID, "zoneID": zoneID};
  	 const obj = {"type": MESSAGE_TYPE.ATTEMPTED_TO_PLAY, "payload": payload};
  	 this.websocket.send(JSON.stringify(obj));
    console.log("sent card played");
@@ -62,7 +66,7 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {"iid": cardID, "self": isSelf};
+			const payload = {"IID": cardID, "self": isSelf};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
 		 this.websocket.send(JSON.stringify(obj));
      console.log("sent player targeted");
@@ -186,12 +190,19 @@ class Server{
 	}
 
 	boardReceived(data){
+        if(data.player1.playerId != $.cookie("id")){
+            wholeBoard.flipAndFlipNow();
+        }
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
+        console.log(data.player1, $.cookie("id"));
+        if(data.player1.playerId == $.cookie("id")){
+            wholeBoard.flipAndFlipNow();
+        }
 		redrawAll();
 	}
 
