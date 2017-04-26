@@ -516,41 +516,31 @@ public class Board implements Jsonifiable {
 	public void damageCard(Creature target, Card src, int dmg) {
 		CardDamagedEvent event = new CardDamagedEvent(target, src, dmg);
 		target.takeDamage(dmg, src);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void damagePlayer(Player target, Card src, int dmg) {
 		PlayerDamagedEvent event = new PlayerDamagedEvent(src, target, dmg);
 		target.takeDamage(dmg);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void healCard(Creature target, Card src, int heal) {
 		CardHealedEvent event = new CardHealedEvent(target, src, heal);
 		target.heal(heal, src);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void healPlayer(Player target, Card src, int heal) {
 		PlayerHealedEvent event = new PlayerHealedEvent(target, src, heal);
 		target.healDamage(heal);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void changeCreatureHealth(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE, target, amount);
 		target.changeMaxHealthBy(amount);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	/**
@@ -567,9 +557,7 @@ public class Board implements Jsonifiable {
 		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
 		destination.add(c);
 		start.remove(c);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	/**
@@ -585,9 +573,8 @@ public class Board implements Jsonifiable {
 	public void changeCreatureAttack(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
+
 	}
 
 	public void givePlayerElement(Player p, ElementType type, int amount) {
@@ -595,9 +582,8 @@ public class Board implements Jsonifiable {
 		// increase element for player p.
 		int curElem = p.getElem(type);
 		p.setElement(type, curElem + amount);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
+
 	}
 
 }
