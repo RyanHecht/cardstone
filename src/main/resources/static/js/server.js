@@ -22,14 +22,14 @@ class Server{
 	 const payload = {"IID": id};
      console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
- 	 this.socket.send(JSON.stringify(obj));
+ 	 this.websocket.send(JSON.stringify(obj));
     console.log("sent choose reponse");
 	}
 
     endTurn(){
       const payload = {};
       const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
-    	 this.socket.send(JSON.stringify(obj));
+    	 this.websocket.send(JSON.stringify(obj));
        console.log("sent turn end");
     }
 
