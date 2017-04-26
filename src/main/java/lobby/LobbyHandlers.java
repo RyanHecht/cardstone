@@ -108,10 +108,10 @@ public class LobbyHandlers {
         LobbyManager.playerJoinLobby(4, "test", "");
         LobbyManager.getLobbyByName("test").setDeck(2,
             Arrays.asList("EarthswornObserver",
-                "BuriedTreasure"));
+                "BuriedTreasure", "EarthElement", "EarthElement"));
         LobbyManager.getLobbyByName("test").setDeck(4,
             Arrays.asList("EarthswornObserver",
-                "EarthswornObserver"));
+                "EarthswornObserver", "EarthElement", "EarthElement"));
         LobbyManager.getLobbyByName("test").beginGame();
         System.out.println("made lobby");
       }

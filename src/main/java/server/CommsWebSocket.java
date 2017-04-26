@@ -128,7 +128,7 @@ public class CommsWebSocket {
       JsonObject payload = toSend.jsonifySelf();
       obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
       obj.add("payload", payload);
-
+      System.out.println("Sending board: " + payload.toString());
       session.getRemote().sendString(GSON.toJson(obj));
     }
   }

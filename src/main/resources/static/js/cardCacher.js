@@ -55,6 +55,7 @@ class cardCacher{
 	}
 	
 	addNewCard(card){
+        console.log(card.type);
         console.log(card);
 		switch(card.type){
 			case "creature":
@@ -65,8 +66,10 @@ class cardCacher{
                 break;
             case "element":
                 this.addNewElement(card);
+                break;
             case "back":
                 this.addNewBack(card);
+                break;
 			default:
 				console.log("unknown card type at cache card builder");
 				this.addNewCreature(card);
