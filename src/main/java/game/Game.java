@@ -12,6 +12,7 @@ import cardgamelibrary.AuraCard;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
+import cardgamelibrary.Element;
 import cardgamelibrary.Jsonifiable;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
@@ -84,6 +85,8 @@ public class Game implements Jsonifiable {
 					fCards.add((AuraCard) p);
 				} else if (p instanceof SpellCard) {
 					fCards.add((SpellCard) p);
+				} else if (p instanceof Element) {
+					fCards.add((Element) p);
 				} else {
 					throw new RuntimeException(
 							"ERROR: Some sort of invalid card was trying to be added to Player One's deck. Name is : "
@@ -100,6 +103,8 @@ public class Game implements Jsonifiable {
 					sCards.add((AuraCard) p);
 				} else if (p instanceof SpellCard) {
 					sCards.add((SpellCard) p);
+				} else if (p instanceof Element) {
+					sCards.add((Element) p);
 				} else {
 					throw new RuntimeException(
 							"ERROR: Some sort of invalid card was trying to be added to Player Two's deck. Name is : "

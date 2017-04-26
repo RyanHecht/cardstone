@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 public class ManaPool {
 	private int												resources;
 	private Map<ElementType, Integer>	elementMap;
+	private static final ManaPool			empty	= new ManaPool(0, 0, 0, 0, 0, 0);
 
 	public ManaPool(int resources, int fire, int water, int earth, int air, int balance) {
 		this.resources = resources;
@@ -95,6 +96,15 @@ public class ManaPool {
 		}
 		// decrement resources.
 		this.setResources(this.getResources() - cost.getResources());
+	}
+
+	/**
+	 * Static method to generate empty manapools.
+	 *
+	 * @return the empty ManaPool.
+	 */
+	public static ManaPool emptyPool() {
+		return empty;
 	}
 
 	public JsonObject jsonifySelf() {
