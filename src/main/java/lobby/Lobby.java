@@ -53,7 +53,13 @@ public class Lobby implements Jsonifiable {
     }
   }
 
-  public void join(int uId) {
+  public void join(int uId, String password) {
+    if (priv) {
+      if (!(this.password == password)) {
+        throw new IllegalArgumentException("Incorrect password.");
+      }
+    }
+
     if (!isFull()) {
       uId2 = uId;
     } else {
@@ -96,7 +102,7 @@ public class Lobby implements Jsonifiable {
     obj.addProperty("name", this.name);
     obj.addProperty("count", getCount());
     obj.addProperty("isPrivate", priv);
-
+    obj.addProperty("hostId", uId1);
     return obj;
   }
 

@@ -13,6 +13,7 @@ import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
+import events.GainElementEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.StatChangeEvent;
@@ -513,6 +514,15 @@ public class Board implements Jsonifiable {
 	public void changeCreatureAttack(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void givePlayerElement(Player p, ElementType type, int amount) {
+		GainElementEvent event = new GainElementEvent(p, type, amount);
+		// increase element for player p.
+		p.setElement(type, p.getElem(type) + amount);
 		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}
