@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lobby.LobbyManager;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -45,9 +46,9 @@ public class LobbyWebSocket {
       int id = sessions.get(session);
 
       if (type == LobbyMessageTypeEnum.SELF_SET_DECK.ordinal()) {
-
+        LobbyManager.handleSelfSetDeck(id, payload);
       } else if (type == LobbyMessageTypeEnum.START_GAME_REQUEST.ordinal()) {
-
+        LobbyManager.handleStartGameRequest(id, payload);
       }
 
     } else {
@@ -57,7 +58,7 @@ public class LobbyWebSocket {
         int id = payload.get("id").getAsInt();
         sessions.put(session, id);
         idToSessions.put(id, session);
-        // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
+
       } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
 
       }
@@ -70,23 +71,50 @@ public class LobbyWebSocket {
   }
 
   public static void sendOppenentEnteredLobby(int uId, int oppUId) {
-
+    try {
+      sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_ENTERED_LOBBY,
+          new JsonObject());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void sendOppenentLeftLobby(int uId) {
-
+    try {
+      sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_LEFT_LOBBY,
+          new JsonObject());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void sendOppenentSetDeck(int uId, String deckName) {
-
+    JsonObject payload = new JsonObject();
+    payload.addProperty("name", deckName);
+    try {
+      sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_SET_DECK, payload);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void sendGameIsStarting(int uId, int oppUId) {
-
+    JsonObject payload = new JsonObject();
+    payload.addProperty("opponentId", oppUId);
+    try {
+      sendMessage(uId, LobbyMessageTypeEnum.GAME_IS_STARTING, payload);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void sendLobbyCancelled(int uId) {
-
+    try {
+      sendMessage(uId, LobbyMessageTypeEnum.LOBBY_CANCELLED,
+          new JsonObject());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private static void sendMessage(int userId, LobbyMessageTypeEnum type,
