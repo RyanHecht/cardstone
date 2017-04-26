@@ -163,7 +163,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleTurnStart(TurnStartEvent start) {
 		List<Effect> results = new LinkedList<>();
 		for (Card c : cards) {
-			results.add(c.onTurnEnd(start.getPlayer(), getZone()));
+			results.add(c.onTurnStart(start.getPlayer(), getZone()));
 		}
 		return results;
 	}
