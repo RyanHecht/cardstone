@@ -9,12 +9,12 @@ public class CardZoneChangeEvent implements Event {
 
 	private Card									card;
 	private OrderedCardCollection	start;
-	private OrderedCardCollection	end;
+	private OrderedCardCollection	destination;
 
-	public CardZoneChangeEvent(Card card, OrderedCardCollection start, OrderedCardCollection end) {
+	public CardZoneChangeEvent(Card card, OrderedCardCollection destination, OrderedCardCollection start) {
 		this.card = card;
 		this.start = start;
-		this.end = end;
+		this.destination = destination;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class CardZoneChangeEvent implements Event {
 	}
 
 	public OrderedCardCollection getEnd() {
-		return end;
+		return destination;
 	}
 
 }

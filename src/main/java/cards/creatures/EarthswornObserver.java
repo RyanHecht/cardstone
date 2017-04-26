@@ -1,6 +1,7 @@
 package cards.creatures;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
@@ -34,6 +35,15 @@ public class EarthswornObserver extends Creature implements CantAttackCreature {
 			}
 		}
 		return super.onCreatureDeath(cr, z);
+	}
+
+	@Override
+	public Effect onThisPlayed(Card c, Zone z) {
+		return (Board board) -> {
+			// play the creature onto the board!
+			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD),
+					board.getOcc(getOwner(), Zone.CREATURE_BOARD));
+		};
 	}
 
 }

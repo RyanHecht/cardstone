@@ -417,10 +417,10 @@ public class Board implements Jsonifiable {
 	 * @param start
 	 *          the OCC the card c is starting in.
 	 */
-	public void addCardToOcc(Card c, OrderedCardCollection start, OrderedCardCollection end) {
-		CardZoneChangeEvent event = new CardZoneChangeEvent(c, start, end);
-		start.add(c);
-		end.remove(c);
+	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
+		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
+		destination.add(c);
+		start.remove(c);
 		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}

@@ -8,7 +8,6 @@ import cardgamelibrary.ManaPool;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import effects.EmptyEffect;
 import game.Player;
 
 public class BuriedTreasure extends SpellCard {
@@ -24,11 +23,9 @@ public class BuriedTreasure extends SpellCard {
 	}
 
 	@Override
-	public Effect onCardPlayed(Card c, Zone z) {
-		// choose randomly from cards w/max cost.
-		if (!(c.equals(this))) {
-			return EmptyEffect.create();
-		}
+	public Effect onThisPlayed(Card c, Zone z) {
+		// check card is indeed this card.
+		assert (c.equals(this));
 		return (Board board) -> {
 			// get deck of player who played the card.
 			OrderedCardCollection deck = board.getOcc(getOwner(), Zone.DECK);
@@ -47,6 +44,9 @@ public class BuriedTreasure extends SpellCard {
 
 				// add card to hand and remove from deck.
 				board.addCardToOcc(maxCostCard, board.getOcc(getOwner(), Zone.HAND), board.getOcc(getOwner(), Zone.DECK));
+
+				// send this card from hand to the graveyard.
+				board.addCardToOcc(this, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
 			}
 		};
 	}
