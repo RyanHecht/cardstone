@@ -99,6 +99,18 @@ function setupInput(){
     $("#filterSubmit").click(function(){
        filterCollection($("#filterText").val()); 
     });
+    $("#deckSubmit").click(function(){
+        submitDeck();
+    })
+}
+
+function submitDeck(){
+    const post_param = {
+        name:$("#deckName").val(),
+        deck:collect.
+    }
+    $.post("/deck_upload");
+    window.location.replace("/decks");
 }
 
 $('document').ready(function(){

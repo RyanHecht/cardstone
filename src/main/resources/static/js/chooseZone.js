@@ -5,7 +5,6 @@ class chooseZone extends drawableZone{
 		this.div = div;
 		this.cards = cardCache.getCardList(cards);
 		this.changed = true;
-		console.log(div,cards.length);
 	}
 	
 	forceRedraw(){
@@ -74,6 +73,7 @@ class chooseZone extends drawableZone{
 		div.children().children('.cardBox').click(function(){
 			server.sendChosen($(this).children('.card').attr('id'));
 		})
+        $("#chooseOneAsk").modal('hide');
 	}
 	
 	sizeCards(div){
