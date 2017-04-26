@@ -51,9 +51,9 @@ function updateAndDrawAnimations(){
 	}
 	if(animations.length <= 0){
 		if(quedAnims.length > 0){
-            console.log(animations);
+            console.log(quedAnims);
 			animations.push(quedAnims.pop());
-			console.log(animations);
+			console.log(quedAnims);
 		}
 	}
 	window.setTimeout(updateAndDrawAnimations, UPDATE_RATE);
