@@ -425,6 +425,7 @@ public class Game implements Jsonifiable {
 			} else if (card instanceof AuraCard) {
 				z = Zone.AURA_BOARD;
 			} else {
+				// spell or element.
 				z = Zone.GRAVE;
 			}
 

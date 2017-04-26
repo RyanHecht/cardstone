@@ -6,7 +6,7 @@ import game.Player;
 
 public class Element extends PlayableCard {
 
-	public static final int DEFAULT_ELEMENT_GAIN = 4;
+	public static final int DEFAULT_ELEMENT_GAIN = 3;
 
 	public Element(ManaPool cost, String image, Player owner, String name, String text, CardType type) {
 		super(cost, image, owner, name, text, type);
