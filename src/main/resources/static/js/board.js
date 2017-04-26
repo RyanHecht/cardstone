@@ -85,10 +85,10 @@ class board{
         zoneTrans = this.allZones.get("creature1");
         this.allZones.set("creature1",this.allZones.get("creature2"));
         this.allZones.set("creature2",zoneTrans);
-        let zoneTrans = this.allZones.get("healthRes1");
+        zoneTrans = this.allZones.get("healthRes1");
         this.allZones.set("healthRes1",this.allZones.get("healthRes2"));
         this.allZones.set("healthRes2",zoneTrans);
-        let zoneTrans = this.allZones.get("p1Mana");
+        zoneTrans = this.allZones.get("p1Mana");
         this.allZones.set("p1Mana",this.allZones.get("p2Mana"));
         this.allZones.set("p2Mana",zoneTrans);
     }
