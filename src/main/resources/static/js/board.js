@@ -37,11 +37,6 @@ class board{
         this.isFlipped = false;
 	}
     
-    flip(){
-        this.flipFeatures();
-
-    }
-    
     flipNow(){
         this.flipZones();
         this.isFlipped = true;
@@ -49,26 +44,30 @@ class board{
     
     flipTry(){
         if(!this.isFlipped){
-            this.flipZones();
-            this.isFlipped = true;
+            this.flipNow();
         }
-        this.flipFeatures();
     }
     
     flipAndFlipNow(){
         if(!this.isFlipped){
-            this.flipNow();
+            this.flipTry();
         }
-        this.flip();
+        this.flipFeatures();
     }
     
     flipFeatures(){
-        let zoneTrans = this.allZones.get("healthRes1");
-        this.allZones.set("healthRes1",this.allZones.get("healthRes2"));
-        this.allZones.set("healthRes2",zoneTrans);
-        zoneTrans = this.allZones.get("p1Mana");
-        this.allZones.set("p1Mana",this.allZones.get("p2Mana"));
-        this.allZones.set("p2Mana",zoneTrans);
+        let featTrans = this.features.get("p1Health");
+        this.features.set("p1Health",this.features.get("p2Health"));
+        this.features.set("p2Health",featTrans);
+        featTrans = this.features.get("p1Deck");
+        this.features.set("p1Deck",this.features.get("p2Deck"));
+        this.features.set("p2Deck",featTrans);
+        featTrans = this.features.get("p1Mana");
+        this.features.set("p1Mana",this.features.get("p2Mana"));
+        this.features.set("p2Mana",featTrans);
+        featTrans = this.features.get("p1RegRes");
+        this.features.set("p1RegRes",this.features.get("p2RegRes"));
+        this.features.set("p2RegRes",featTrans);
     }
     
     flipZones(){
@@ -81,7 +80,6 @@ class board{
         zoneTrans = this.allZones.get("creature1");
         this.allZones.set("creature1",this.allZones.get("creature2"));
         this.allZones.set("creature2",zoneTrans);
-       
     }
 
 	setZones(){
