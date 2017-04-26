@@ -149,6 +149,7 @@ public class Gui {
 		  List<String> decks = new ArrayList<>();
 		  try (ResultSet rs = Db.query("select name from deck where user=?;", userId)) {
 			while (rs.next()) {
+				System.out.println("Adding " + rs.getString(1) + " to deck list");
 				decks.add(rs.getString(1));
 			}
 		  } catch (NullPointerException | SQLException e) {
@@ -174,8 +175,9 @@ public class Gui {
 		  
 		  String deckQuery = "select cards from deck where user=? and name=?;";
 		  try (ResultSet rs = Db.query(deckQuery, userId, deckName)) {
-			rs.next();
-			cards = rs.getString(1);
+			if (rs.next()) {
+				cards = rs.getString(1);
+			}
 			
 			assert !rs.next();
 		  } catch (NullPointerException | SQLException e) {

@@ -105,6 +105,7 @@ function setupInput(){
 }
 
 function submitDeck(){
+	console.log($("#deckName").val());
     const post_params = {
         name:$("#deckName").val(),
         deck: JSON.stringify(list.getCardArray())
