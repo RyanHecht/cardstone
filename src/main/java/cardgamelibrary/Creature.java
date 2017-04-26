@@ -81,9 +81,8 @@ public class Creature extends PlayableCard {
 	public Effect onThisPlayed(Card c, Zone z) {
 		return (Board board) -> {
 			// play the creature onto the board!
-			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD),
-					board.getOcc(getOwner(), Zone.CREATURE_BOARD));
-			                                                                                                                           
+			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
+
 		};
 	}
 
