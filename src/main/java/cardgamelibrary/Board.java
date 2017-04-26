@@ -95,6 +95,10 @@ public class Board implements Jsonifiable {
 
 		// set up starting hands.
 		assignStartingHands();
+
+		// create turn start event for starting player (active player)
+		TurnStartEvent event = new TurnStartEvent(activePlayer);
+		takeAction(event);
 	}
 
 	/**
