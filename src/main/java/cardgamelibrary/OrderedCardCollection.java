@@ -215,7 +215,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCardZoneChange(CardZoneChangeEvent change) {
 		List<Effect> results = new LinkedList<>();
 		for (Card c : cards) {
-			results.add(c.onZoneChange(change.getCard(), change.getStart(), change.getEnd(), getZone()));
+			results.add(c.onZoneChange(change.getCard(), change.getEnd(), change.getStart(), getZone()));
 		}
 		return results;
 	}

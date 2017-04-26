@@ -115,7 +115,7 @@ public interface Card extends Jsonifiable {
 	}
 
 	// card changes zones
-	default public Effect onZoneChange(Card c, OrderedCardCollection start, OrderedCardCollection dest, Zone z) {
+	default public Effect onZoneChange(Card c, OrderedCardCollection dest, OrderedCardCollection start, Zone z) {
 		return EmptyEffect.create();
 	}
 
