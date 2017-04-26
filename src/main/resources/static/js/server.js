@@ -19,9 +19,10 @@ class Server{
 
   sendChosen(id){
 	 const payload = {"iid": id};
+     console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.socket.send(JSON.stringify(obj));
-   console.log("sent choose reponse");
+    console.log("sent choose reponse");
 	}
 
     // cardSelected(cardDiv){
@@ -57,7 +58,7 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {};
+			const payload = {"iid": cardID, "self": isSelf};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
 		 this.websocket.send(JSON.stringify(obj));
      console.log("sent player targeted");
@@ -73,7 +74,7 @@ class Server{
 	}
 
 	onWebSocketOpen() {
-		const payload = {"id": 1};
+		const payload = {"id": $.cookie("id")};
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened')
@@ -93,10 +94,10 @@ class Server{
 		if(isTurn){
 			switch(inputState){
 				case StateEnum.IDLE:
-					cardSelected(cardDiv);
+					//cardSelected(cardDiv);
 					break;
 				case StateEnum.TARGET_NEEDED:
-					targetChosen(cardDiv);
+					//targetChosen(cardDiv);
 					break;
 				default:
 					actionFailed();
