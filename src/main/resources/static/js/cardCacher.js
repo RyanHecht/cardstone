@@ -55,6 +55,7 @@ class cardCacher{
 	}
 	
 	addNewCard(card){
+        console.log(card);
 		switch(card.type){
 			case "creature":
 				this.addNewCreature(card);
