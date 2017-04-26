@@ -2,6 +2,7 @@ class animationsMaker{
 	static getAttackAnimation(attacker,defender){
 		let anim = new linearAnimation();
 		let attackerCard = cardCache.getByIID(attacker);
+        console.log(attacker);
 		anim.setColorSet(attackerCard.cost.manaPool.getColors());
 		anim.setShape("circle");
 		anim.setRadius(2);
