@@ -91,8 +91,29 @@ public class Board implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Gets the active player.
+	 *
+	 * @return the active player.
+	 */
 	public Player getActivePlayer() {
 		return activePlayer;
+	}
+
+	/**
+	 * Gets the inactive player.
+	 * 
+	 * @return the inactive player.
+	 */
+	public Player getInactivePlayer() {
+		Player activePlayer = getActivePlayer();
+		if (deckOne.getPlayer().equals(activePlayer)) {
+			// player one is active so we return player two.
+			return deckTwo.getPlayer();
+		} else {
+			// player two was active so we return player one.
+			return deckOne.getPlayer();
+		}
 	}
 
 	// This will be used whenever a player
@@ -293,8 +314,9 @@ public class Board implements Jsonifiable {
 	 *          the creature that died.
 	 */
 	private void creatureDies(Creature c) {
-		// TODO: figure out this method!
+		// construct creature died event.
 		CreatureDiedEvent cd = new CreatureDiedEvent(c);
+		// add to event queue.
 		eventQueue.add(cd);
 	}
 
@@ -345,6 +367,16 @@ public class Board implements Jsonifiable {
 		return result;
 	}
 
+	/**
+	 * Transforms a card from one card to another.
+	 *
+	 * @param target
+	 *          the card to transform.
+	 * @param result
+	 *          what it transforms into.
+	 * @param targetZone
+	 *          the zone to put the new card into.
+	 */
 	public void transformCard(Card target, Card result, Zone targetZone) {
 		CardZoneCreatedEvent event = new CardZoneCreatedEvent(result, targetZone);
 		for (OrderedCardCollection occ : cardsInGame) {
@@ -357,6 +389,14 @@ public class Board implements Jsonifiable {
 
 	}
 
+	/**
+	 * Summons a card to a zone.
+	 *
+	 * @param summon
+	 *          the card to summon.
+	 * @param targetZone
+	 *          the zone to summon to.
+	 */
 	public void summonCard(Card summon, Zone targetZone) {
 		CardZoneCreatedEvent event = new CardZoneCreatedEvent(summon, targetZone);
 		for (OrderedCardCollection occ : cardsInGame) {
@@ -367,6 +407,16 @@ public class Board implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Inflicts damage on a card.
+	 *
+	 * @param target
+	 *          the target card.
+	 * @param src
+	 *          the source of the damage.
+	 * @param dmg
+	 *          the amount of damage.
+	 */
 	public void damageCard(Creature target, Card src, int dmg) {
 		CardDamagedEvent event = new CardDamagedEvent(target, src, dmg);
 		target.takeDamage(dmg, src);
@@ -426,6 +476,16 @@ public class Board implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Changes a creature's attack.
+	 *
+	 * @param target
+	 *          the target creature
+	 * @param amount
+	 *          the amount to change the stat by.
+	 * @param z
+	 *          the zone the card is in.
+	 */
 	public void changeCreatureAttack(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
