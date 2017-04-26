@@ -148,7 +148,7 @@ class Server{
                 this.chooseFrom(message.payload);
                 break;
             default:
-                console.log("Unknown message type!");
+                console.log("Unknown message type: " + message.type);
 		}
 	}
 
@@ -183,10 +183,10 @@ class Server{
 		console.log(player1)
 		wholeBoard.changeFeature("p1Health",player1.health);
 		wholeBoard.changeFeature("p1RegRes",player1.resources);
-		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(10,'',player1.element));
+		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(6,'',player1.element));
 		wholeBoard.changeFeature("p2Health",player2.health);
 		wholeBoard.changeFeature("p2RegRes",player2.resources);
-		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(10,'',player2.element));
+		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(6,'',player2.element));
 	}
 
 	boardReceived(data){
@@ -194,21 +194,15 @@ class Server{
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
         if(data.player1.playerId != parseInt($.cookie("id"))){
-            console.log($.cookie("id"),data.player1.playerId);
-            wholeBoard.flipNow();
-            wholeBoard.flip();
+            wholeBoard.flipZones();
         }
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
-        if(data.player1.playerId != parseInt($.cookie("id"))){
-            console.log($.cookie("id"),data.player1.playerId);
-            wholeBoard.flip();
-            wholeBoard.flipNow();
-        }
-        
-        
+        // if(data.player1.playerId != parseInt($.cookie("id"))){
+            // wholeBoard.flipZones();
+        // }
 		redrawAll();
 	}
 
