@@ -53,7 +53,7 @@ function updateAndDrawAnimations(){
 		if(quedAnims.length > 0){
             console.log(quedAnims, quedAnims.length);
             let popped = quedAnims.pop();
-            console.log(popped);
+            console.log(popped.length);
 			animations.push(popped);
 			console.log(quedAnims);
 		}
