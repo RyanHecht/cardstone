@@ -44,28 +44,33 @@ public class GameManager {
     }
   }
 
-  public static void recieveTargetedCard(int playerId, JsonObject message) {
+  public static void recieveTargetedCard(int playerId,
+      JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handleCardTargeted(message, playerId);
     }
   }
 
-  public static void recieveTargetedPlayer(int playerId, JsonObject message) {
+  public static void recieveTargetedPlayer(int playerId,
+      JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handlePlayerTargeted(message, playerId);
     }
   }
 
-  public static void receiveAttemptedToPlay(int playerId, JsonObject message) {
+  public static void receiveAttemptedToPlay(int playerId,
+      JsonObject message) {
+    System.out.println("got attempt to play.");
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handleCardPlayed(message, playerId);
     }
   }
 
-  public static void receiveChooseResponse(int playerId, JsonObject message) {
+  public static void receiveChooseResponse(int playerId,
+      JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       // game.
@@ -76,6 +81,7 @@ public class GameManager {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handleTurnend(null, playerId);
+      System.out.println("handled turn end.");
     }
   }
 
