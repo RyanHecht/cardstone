@@ -27,7 +27,7 @@ public class AirElement extends Element {
 		assert (this.equals(c));
 		return (Board board) -> {
 			// give player element.
-			board.givePlayerElement(getOwner(), ElementType.AIR, this.DEFAULT_ELEMENT_GAIN);
+			board.givePlayerElement(getOwner(), ElementType.AIR, Element.DEFAULT_ELEMENT_GAIN);
 			// send element to grave from hand.
 			board.addCardToOcc(c, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
 		};

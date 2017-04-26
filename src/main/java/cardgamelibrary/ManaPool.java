@@ -74,9 +74,11 @@ public class ManaPool {
 	public boolean canPay(ManaPool expense) {
 		for (ElementType et : ElementType.values()) {
 			if (this.getElement(et) < expense.getElement(et)) {
+				System.out.println("it was too expecnis");
 				return false;
 			}
 		}
+		System.out.println("checking cost");
 		return (this.getResources() >= expense.getResources());
 	}
 
@@ -88,7 +90,7 @@ public class ManaPool {
 	 */
 	public void payCost(ManaPool cost) {
 		// should only call this if we can pay the cost.
-
+		System.out.println("ehbd");
 		for (ElementType et : ElementType.values()) {
 			// for a given element decrement this pool's value by the value in cost.
 			this.setElement(et, this.getElement(et) - cost.getElement(et));
