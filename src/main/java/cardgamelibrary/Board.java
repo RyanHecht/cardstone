@@ -125,6 +125,7 @@ public class Board implements Jsonifiable {
 	// This will be used whenever a player
 	// wants to perform an event.
 	public void takeAction(Event event) {
+		System.out.println("only once 123");
 		eventQueue.add(event);
 		handleState();
 	}
