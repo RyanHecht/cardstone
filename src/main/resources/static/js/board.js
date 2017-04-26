@@ -57,13 +57,13 @@ class board{
         let featTrans = this.features.get("p1Health");
         this.features.set("p1Health",this.features.get("p2Health"));
         this.features.set("p2Health",featTrans);
-        let featTrans = this.features.get("p1Deck");
+        featTrans = this.features.get("p1Deck");
         this.features.set("p1Deck",this.features.get("p2Deck"));
         this.features.set("p2Deck",featTrans);
-        let featTrans = this.features.get("p1Mana");
+        featTrans = this.features.get("p1Mana");
         this.features.set("p1Mana",this.features.get("p2Mana"));
         this.features.set("p2Mana",featTrans);
-        let featTrans = this.features.get("p1RegRes");
+        featTrans = this.features.get("p1RegRes");
         this.features.set("p1RegRes",this.features.get("p2RegRes"));
         this.features.set("p2RegRes",featTrans);
     }
@@ -72,10 +72,10 @@ class board{
         let zoneTrans = this.allZones.get("hand1");
         this.allZones.set("hand1",this.allZones.get("hand2"));
         this.allZones.set("hand2",zoneTrans);
-        let zoneTrans = this.allZones.get("aura1");
+        zoneTrans = this.allZones.get("aura1");
         this.allZones.set("aura1",this.allZones.get("aura2"));
         this.allZones.set("aura2",zoneTrans);
-        let zoneTrans = this.allZones.get("creature1");
+        zoneTrans = this.allZones.get("creature1");
         this.allZones.set("creature1",this.allZones.get("creature2"));
         this.allZones.set("creature2",zoneTrans);
     }
