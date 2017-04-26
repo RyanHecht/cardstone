@@ -51,6 +51,7 @@ class board{
             this.flip();
         }
         this.flipNow();
+        console.log("flipping");
     }
     
     flipFeatures(){
