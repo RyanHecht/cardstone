@@ -21,7 +21,7 @@ public class EarthswornObserver extends Creature implements CantAttackCreature {
 	private static final CardType	defaultType		= CardType.CREATURE;
 
 	public EarthswornObserver(Player owner) {
-		super(defaultAttack, defaultHealth, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(defaultHealth, defaultAttack, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	@Override
