@@ -230,9 +230,11 @@ public class Board implements Jsonifiable {
 		while (i < STARTING_HAND_SIZE) {
 			if (itOne.hasNext()) {
 				handOne.add(itOne.next());
+				itOne.remove();
 			}
 			if (itTwo.hasNext()) {
 				handTwo.add(itTwo.next());
+				itTwo.remove();
 			}
 			i++;
 		}
