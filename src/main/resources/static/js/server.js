@@ -129,11 +129,6 @@ class Server{
 	}
 
 
-
-
-
-
-
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
@@ -191,10 +186,10 @@ class Server{
 	}
 
 	boardReceived(data){
-		console.log(data)
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
+        wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
 		redrawAll();
