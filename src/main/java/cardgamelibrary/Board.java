@@ -150,8 +150,8 @@ public class Board implements Jsonifiable {
 					// give player who is starting turn their resources!
 					activePlayer.startTurn();
 					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
-					// addCardToOcc(activeDeck.,getOcc(activePlayer, Zone.HAND)
-					// ,activeDeck);
+					// add first card from deck to hand.
+					addCardToOcc(activeDeck.getFirstCard(), getOcc(activePlayer, Zone.HAND), activeDeck);
 				}
 
 				if (e.getType() == EventType.TURN_END) {
