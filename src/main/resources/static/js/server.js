@@ -176,7 +176,7 @@ class Server{
                     quedAnims.push(animationMaker.getAttackAnimation(message.id1,"health1"));
                 }
                 else{
-                    quedAnims.push(uedAnims.push(animationMaker.getAttackAnimation(message.id1,"health2"));
+                    quedAnims.push(quedAnims.push(animationMaker.getAttackAnimation(message.id1,"health2")));
                 }
                 break;  
             default:
