@@ -1,9 +1,14 @@
 package lobby;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import server.LobbyWebSocket;
 
 /**
  * In charge of managing Lobbies, the staging area for Games.
@@ -98,7 +103,21 @@ public class LobbyManager {
    * @param message Message that was sent.
    */
   public static void handleSelfSetDeck(int uId, JsonObject message) {
+    Lobby lobby = getLobbyByPlayerId(uId);
+    if (lobby != null) {
+      JsonObject deck = message.get("deck").getAsJsonObject();
+      String deckName = deck.get("name").getAsString();
+      JsonArray cards = deck.get("cards").getAsJsonArray();
+      List<String> cardList = new ArrayList<>();
 
+      for (JsonElement card : cards) {
+        cardList.add(card.getAsString());
+        System.out.print(card.getAsString() + ", ");
+      }
+      System.out.print("\n");
+      lobby.setDeck(uId, cardList);
+      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlater(uId), deckName);
+    }
   }
 
   /**
