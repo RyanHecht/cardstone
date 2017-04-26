@@ -117,6 +117,7 @@ public class Player {
 		JsonObject result = new JsonObject();
 		result.addProperty("health", life);
 		result.addProperty("resources", manaPool.getResources());
+		result.addProperty("playerId", getId());
 		JsonObject elementObject = new JsonObject();
 		elementObject.addProperty("fire", manaPool.getElement(ElementType.FIRE));
 		elementObject.addProperty("water", manaPool.getElement(ElementType.WATER));

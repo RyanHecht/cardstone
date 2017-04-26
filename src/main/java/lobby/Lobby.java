@@ -53,7 +53,13 @@ public class Lobby implements Jsonifiable {
     }
   }
 
-  public void join(int uId) {
+  public void join(int uId, String password) {
+    if (priv) {
+      if (!(this.password == password)) {
+        throw new IllegalArgumentException("Incorrect password.");
+      }
+    }
+
     if (!isFull()) {
       uId2 = uId;
     } else {
@@ -71,7 +77,9 @@ public class Lobby implements Jsonifiable {
 
   public void beginGame() {
     if (isFull() && decksSet()) {
+      System.out.println("making game...");
       Game game = new Game(p1deck, p2deck, uId1, uId2);
+      System.out.println("game made.");
       GameManager.addGame(uId1, uId2, game);
     }
   }
@@ -94,7 +102,7 @@ public class Lobby implements Jsonifiable {
     obj.addProperty("name", this.name);
     obj.addProperty("count", getCount());
     obj.addProperty("isPrivate", priv);
-
+    obj.addProperty("hostId", uId1);
     return obj;
   }
 

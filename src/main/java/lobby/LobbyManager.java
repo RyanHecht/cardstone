@@ -1,6 +1,7 @@
 package lobby;
 
 import com.google.gson.JsonObject;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,9 +17,11 @@ public class LobbyManager {
    * Creates a new Lobby.
    */
   public static Lobby addLobby(String name, boolean priv, String password,
-      int hostUId) {
+      int hostUId) throws IllegalArgumentException {
     if (lobbies.containsKey("name")) {
       throw new IllegalArgumentException("Lobby already exists");
+    } else if (priv && password.length() < 1) {
+      throw new IllegalArgumentException("Password must be non-empty");
     } else {
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
       return lobby;
@@ -31,6 +34,10 @@ public class LobbyManager {
    */
   public static void cancelLobby(String name) {
     lobbies.remove(name);
+  }
+
+  public static Collection<Lobby> getAllLobbies() {
+    return lobbies.values();
   }
 
   /**
@@ -47,8 +54,15 @@ public class LobbyManager {
     return false;
   }
 
-  public static void playerJoinLobby(int playerId, String lobbyName) {
-    lobbies.get(lobbyName).join(playerId);
+  public static void playerJoinLobby(int playerId, String lobbyName,
+      String password)
+      throws IllegalArgumentException {
+    try {
+      lobbies.get(lobbyName).join(playerId, password);
+    } catch (IllegalArgumentException x) {
+      throw x;
+    }
+
   }
 
   /**

@@ -34,7 +34,53 @@ class board{
 		this.features.set("p2RegRes",p2RegRes);
 		this.buildResZones();
 		this.setZones();
+        this.isFlipped = false;
 	}
+    
+    flip(){
+        this.flipFeatures();
+
+    }
+    
+    flipNow(){
+        this.flipZones();
+        this.isFlipped = true;
+    }
+    
+    flipAndFlipNow(){
+        if(!this.isFlipped){
+            this.flipNow();
+        }
+        this.flip();
+        console.log("flipping");
+    }
+    
+    flipFeatures(){
+        let featTrans = this.features.get("p1Health");
+        this.features.set("p1Health",this.features.get("p2Health"));
+        this.features.set("p2Health",featTrans);
+        featTrans = this.features.get("p1Deck");
+        this.features.set("p1Deck",this.features.get("p2Deck"));
+        this.features.set("p2Deck",featTrans);
+        featTrans = this.features.get("p1Mana");
+        this.features.set("p1Mana",this.features.get("p2Mana"));
+        this.features.set("p2Mana",featTrans);
+        featTrans = this.features.get("p1RegRes");
+        this.features.set("p1RegRes",this.features.get("p2RegRes"));
+        this.features.set("p2RegRes",featTrans);
+    }
+    
+    flipZones(){
+        let zoneTrans = this.allZones.get("hand1");
+        this.allZones.set("hand1",this.allZones.get("hand2"));
+        this.allZones.set("hand2",zoneTrans);
+        zoneTrans = this.allZones.get("aura1");
+        this.allZones.set("aura1",this.allZones.get("aura2"));
+        this.allZones.set("aura2",zoneTrans);
+        zoneTrans = this.allZones.get("creature1");
+        this.allZones.set("creature1",this.allZones.get("creature2"));
+        this.allZones.set("creature2",zoneTrans);
+    }
 
 	setZones(){
 		for(let zone of this.allZones.values()){

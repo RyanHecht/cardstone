@@ -76,7 +76,7 @@ public class CommsWebSocket {
       } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
 
       } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
-
+        GameManager.receiveTurnEnd(id);
       }
     } else {
       // ID_RESPONSE is the only thing that the client should send it if it
@@ -86,6 +86,7 @@ public class CommsWebSocket {
         int id = payload.get("id").getAsInt();
         sessions.put(session, id);
         idToSessions.put(id, session);
+        GameManager.playerIsReady(id);
         // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
       }
     }
@@ -134,16 +135,19 @@ public class CommsWebSocket {
 
   public static void sendAnimation(int userId, JsonObject message)
       throws IOException {
+    System.out.println("Sending animation " + message.getAsString());
     sendMessage(userId, MessageTypeEnum.ANIMATION, message);
   }
 
   public static void sendExplicitAnimation(int userId, JsonObject message)
       throws IOException {
+    System.out.println("Sending animation " + message.getAsString());
     sendMessage(userId, MessageTypeEnum.EXPLICIT_ANIMATION, message);
   }
 
   public static void sendChooseRequest(int userId, JsonObject message)
       throws IOException {
+    System.out.println("Sending choose request " + message.getAsString());
     sendMessage(userId, MessageTypeEnum.CHOOSE_REQUEST, message);
   }
 
@@ -163,7 +167,7 @@ public class CommsWebSocket {
   public static void sendActionOk(int userId) throws IOException {
     JsonObject obj = new JsonObject();
     obj.addProperty("status", "ok");
-
+    System.out.println("Sending action ok");
     sendMessage(userId, MessageTypeEnum.ACTION_OK, obj);
   }
 
@@ -177,7 +181,7 @@ public class CommsWebSocket {
       throws IOException {
     JsonObject obj = new JsonObject();
     obj.addProperty("message", message);
-
+    System.out.println("Sending action bad " + message);
     sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
   }
 
