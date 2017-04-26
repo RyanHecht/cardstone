@@ -146,6 +146,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when a player gains elemental resources.
+	default public Effect onElementGain(Player player, ElementType elem, int amount, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	@Override
 	default JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
