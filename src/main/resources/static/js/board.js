@@ -47,6 +47,12 @@ class board{
         this.isFlipped = true;
     }
     
+    flipTry(){
+        if(!this.flipped){
+            this.flipNow();
+        }
+    }
+    
     flipAndFlipNow(){
         if(!this.isFlipped){
             this.flipNow();
