@@ -405,6 +405,7 @@ public class Game implements Jsonifiable {
 	 *          the player who submitted the action.
 	 */
 	public void handleCardPlayed(JsonObject userInput, int playerId) {
+		System.out.println("asdiujqwiuihqwiuibuqwdqiubiua");
 		if (isTurn(playerId)) {
 			// grab relevant card.
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
