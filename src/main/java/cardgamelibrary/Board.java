@@ -132,7 +132,6 @@ public class Board implements Jsonifiable {
 	// This will be used whenever a player
 	// wants to perform an event.
 	public void takeAction(Event event) {
-		System.out.println("only once 123");
 		eventQueue.add(event);
 		handleState();
 	}
@@ -206,15 +205,16 @@ public class Board implements Jsonifiable {
 				}
 
 			} else {
-				// dead creatures are cleaned up after all events have processed.
-				// should we handle all effects from an event immediately?
 				handleDead();
 				while (effectQueue.size() != 0) {
 					handleEffect(effectQueue.poll());
 				}
 			}
 		}
-		// send board state here b/c things are done processing.
+		handleDead();
+		if(eventQueue.size() > 0 || effectQueue.size() > 0){
+			handleState();
+		}
 	}
 
 	private void handleDead() {
