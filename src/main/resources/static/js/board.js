@@ -39,18 +39,19 @@ class board{
     
     flip(){
         this.flipFeatures();
-        this.isFlipped = true;
+
     }
     
     flipNow(){
         this.flipZones();
+        this.isFlipped = true;
     }
     
     flipAndFlipNow(){
         if(!this.isFlipped){
-            this.flip();
+            this.flipNow();
         }
-        this.flipNow();
+        this.flip();
         console.log("flipping");
     }
     
