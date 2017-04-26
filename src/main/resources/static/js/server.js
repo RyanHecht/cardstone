@@ -19,9 +19,10 @@ class Server{
 
   sendChosen(id){
 	 const payload = {"iid": id};
+     console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.socket.send(JSON.stringify(obj));
-   console.log("sent choose reponse");
+    console.log("sent choose reponse");
 	}
 
     // cardSelected(cardDiv){
@@ -93,10 +94,10 @@ class Server{
 		if(isTurn){
 			switch(inputState){
 				case StateEnum.IDLE:
-					cardSelected(cardDiv);
+					//cardSelected(cardDiv);
 					break;
 				case StateEnum.TARGET_NEEDED:
-					targetChosen(cardDiv);
+					//targetChosen(cardDiv);
 					break;
 				default:
 					actionFailed();

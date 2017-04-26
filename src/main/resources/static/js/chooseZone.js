@@ -37,7 +37,6 @@ class chooseZone extends drawableZone{
 			let curChild = curDiv.children().last();
 			curChild.css('height', (curDiv.height() / rows) + "px");
 			while(total < x * maxInRow && total < this.cards.length){
-				console.log(this.cards[total]);
 				//space to mekkit mejor
 				curChild.append('<div class="cardBox"></div>');
 				let cur = curChild.children().last();
@@ -70,10 +69,11 @@ class chooseZone extends drawableZone{
 	}
 	
 	prepareChoosing(div){
-		div.children().children('.cardBox').click(function(){
-			server.sendChosen($(this).children('.card').attr('id'));
+		div.find('.card').click(function(){
+            console.log($(this))
+			server.sendChosen($(this).attr('id'));
+            $("#chooseOneAsk").modal('hide');
 		})
-        $("#chooseOneAsk").modal('hide');
 	}
 	
 	sizeCards(div){
