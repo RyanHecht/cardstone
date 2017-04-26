@@ -192,6 +192,9 @@ class Server{
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
+        if(data.player1.playerId == $.cookie("id")){
+            wholeBoard.flipAndFlipNow();
+        }
 		redrawAll();
 	}
 
