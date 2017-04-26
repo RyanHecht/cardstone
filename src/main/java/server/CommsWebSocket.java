@@ -141,19 +141,19 @@ public class CommsWebSocket {
 
   public static void sendAnimation(int userId, JsonObject message)
       throws IOException {
-    System.out.println("Sending animation " + message.getAsString());
+    System.out.println("Sending animation " + message.toString());
     sendMessage(userId, MessageTypeEnum.ANIMATION, message);
   }
 
   public static void sendExplicitAnimation(int userId, JsonObject message)
       throws IOException {
-    System.out.println("Sending animation " + message.getAsString());
+    System.out.println("Sending animation " + message.toString());
     sendMessage(userId, MessageTypeEnum.EXPLICIT_ANIMATION, message);
   }
 
   public static void sendChooseRequest(int userId, JsonObject message)
       throws IOException {
-    System.out.println("Sending choose request " + message.getAsString());
+    System.out.println("Sending choose request " + message.toString());
     sendMessage(userId, MessageTypeEnum.CHOOSE_REQUEST, message);
   }
 
