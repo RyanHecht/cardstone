@@ -328,9 +328,22 @@ public class Game implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Handles players being targeted.
+	 *
+	 * @param userInput
+	 *          a JsonObject representing the user's input.
+	 * @param playerId
+	 *          the player who submitted the action.
+	 */
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+			// this is true if the target player is the player who is acting and
+			// false if the target player is the player who is not acting.
+			boolean target = userInput.get("self").getAsBoolean();
 
+			// get the card.
+			Card card = board.getCardById(userInput.get("IID1").getAsInt());
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
@@ -355,7 +368,7 @@ public class Game implements Jsonifiable {
 			}
 
 			if (card instanceof TargetsOtherCard) {
-				// send player a target request.
+				// send player a target request b/c their card requires a target.
 				CommsWebSocket.sendTargetRequest(playerId);
 				return;
 			}
