@@ -191,8 +191,9 @@ class Server{
 
 	boardReceived(data){
         if(data.player1.playerId != $.cookie("id")){
-            wholeBoard.flipTry();
+            wholeBoard.flipAndFlipNow();
         }
+        
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);

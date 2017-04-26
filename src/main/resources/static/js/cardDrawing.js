@@ -182,9 +182,6 @@ function setupCardClick(){
 				  server.playerTargeted(ui.draggable.attr("id"),false);
 			}
 		});
-        $("#endTurnButton").click(function(){
-            server.endTurn();
-        });
     }
     
 }
@@ -227,6 +224,10 @@ $(document).ready(function(){
 		clearAnimations();
 		redrawAll();
 	});
+     $("#endTurnButton").click(function(){
+            server.endTurn();
+            $("#endTurnAsk").modal("hide");
+    });
 	updateAndDrawAnimations();
 	wholeBoard.draw();
 	setupCardClick();

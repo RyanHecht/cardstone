@@ -44,11 +44,11 @@ class board{
     
     flipNow(){
         this.flipZones();
-        this.isFlipped = true;
+        this.isFlipped = false;
     }
     
     flipTry(){
-        if(!this.flipped){
+        if(!this.isFlipped){
             this.flipNow();
         }
     }
@@ -58,7 +58,6 @@ class board{
             this.flipNow();
         }
         this.flip();
-        console.log("flipping");
     }
     
     flipFeatures(){
