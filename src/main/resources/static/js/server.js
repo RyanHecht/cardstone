@@ -12,7 +12,8 @@ TARGET_REQUEST: 9,
 TARGET_RESPONSE: 10,
 ACTION_OK: 11,
 ACTION_BAD: 12,
-ID_RESPONSE: 13
+ID_RESPONSE: 13,
+TURN_END: 14
 };
 
 class Server{
@@ -26,9 +27,12 @@ class Server{
 	}
 
     endTurn(){
-        
+      const payload = {};
+      const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
+    	 this.socket.send(JSON.stringify(obj));
+       console.log("sent turn end");
     }
-    
+
     // cardSelected(cardDiv){
 		// console.log(cardDiv);
 		// // $(".card").removeClass("cardSelected");
