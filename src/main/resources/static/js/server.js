@@ -13,13 +13,14 @@ TARGET_RESPONSE: 10,
 ACTION_OK: 11,
 ACTION_BAD: 12,
 ID_RESPONSE: 13,
-TURN_END: 14
+TURN_END: 14,
+TEXT_MESSAGE: 15
 };
 
 class Server{
 
   sendChosen(id){
-	 const payload = {"IID": id};
+	 const payload = {"IID1": id};
      console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.websocket.send(JSON.stringify(obj));
@@ -66,7 +67,7 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {"IID": cardID, "self": isSelf};
+			const payload = {"IID1": cardID, "self": isSelf};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
 		 this.websocket.send(JSON.stringify(obj));
      console.log("sent player targeted");
@@ -147,10 +148,16 @@ class Server{
             case MESSAGE_TYPE.CHOOSE_REQUEST:
                 this.chooseFrom(message.payload);
                 break;
+            case MESSAGE_TYPE.TEXT_MESSAGE:
+                this.alertMessage(message.payload);
             default:
                 console.log("Unknown message type: " + message.type);
 		}
 	}
+
+  alertMessage(message) {
+    alert(message.message);
+  }
 
     badMessage(message){
         alert(message.message);
@@ -203,7 +210,7 @@ class Server{
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
-        
+
 		redrawAll();
 	}
 

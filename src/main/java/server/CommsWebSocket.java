@@ -191,6 +191,14 @@ public class CommsWebSocket {
     sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
   }
 
+  public static void sendTextMessage(int userId, String message)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("message", message);
+    System.out.println("Sending message " + message);
+    sendMessage(userId, MessageTypeEnum.TEXT_MESSAGE, obj);
+  }
+
   public static void closeSession(int userId) {
 
   }

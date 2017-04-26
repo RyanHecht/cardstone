@@ -108,10 +108,18 @@ public class LobbyHandlers {
         LobbyManager.playerJoinLobby(4, "test", "");
         LobbyManager.getLobbyByName("test").setDeck(2,
             Arrays.asList("EarthswornObserver",
-                "BuriedTreasure", "EarthElement", "EarthElement"));
+                "BuriedTreasure", "EarthElement", "EarthElement",
+                "CheapJoshCreature", "CheapJoshCreature", "CheapJoshCreature",
+                "CheapJoshCreature",
+                "BuriedTreasure", "BuriedTreasure", "BuriedTreasure",
+                "BuriedTreasure"));
         LobbyManager.getLobbyByName("test").setDeck(4,
             Arrays.asList("EarthswornObserver",
-                "EarthswornObserver", "EarthElement", "EarthElement"));
+                "EarthswornObserver", "EarthElement", "EarthElement",
+                "CheapJoshCreature", "CheapJoshCreature", "CheapJoshCreature",
+                "CheapJoshCreature",
+                "EarthElement", "EarthElement", "EarthElement",
+                "EarthElement"));
         LobbyManager.getLobbyByName("test").beginGame();
         System.out.println("made lobby");
       }
