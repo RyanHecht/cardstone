@@ -1,5 +1,6 @@
 package cardgamelibrary;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
+import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
 import events.PlayerDamagedEvent;
@@ -20,6 +22,7 @@ import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
+import server.CommsWebSocket;
 
 /**
  * Contains the entire state of a given game
@@ -147,6 +150,39 @@ public class Board implements Jsonifiable {
 
 				handleEvent(e);
 
+				// used to send animations off to front end!
+				JsonObject animation = new JsonObject();
+				JsonObject payload = new JsonObject();
+
+				// send animation for creature combat.
+				if (e.getType() == EventType.CREATURE_ATTACKED) {
+					CreatureAttackEvent event = (CreatureAttackEvent) e;
+					animation.addProperty("eventType", "creatureAttacked");
+					payload.addProperty("id1", event.getAttacker().getId());
+					payload.addProperty("id2", event.getTarget().getId());
+					animation.add("payload", payload);
+					sendAnimation(animation);
+				}
+
+				// send animation for creature taking damage.
+				if (e.getType() == EventType.CARD_DAMAGED) {
+					CardDamagedEvent event = (CardDamagedEvent) e;
+					animation.addProperty("eventType", "creatureDamaged");
+					payload.addProperty("id1", event.getTarget().getId());
+					animation.add("payload", payload);
+					sendAnimation(animation);
+				}
+
+				// send animation for player attacked.
+				if (e.getType() == EventType.PLAYER_ATTACKED) {
+					// TODO
+				}
+
+				// if send animation for player damaged.
+				if (e.getType() == EventType.PLAYER_DAMAGED) {
+					// TODO
+				}
+
 				// TODO go over logic in how changing active player here will work with
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
@@ -225,6 +261,23 @@ public class Board implements Jsonifiable {
 				// the queue.
 				effectQueue.add(e);
 			}
+		}
+	}
+
+	/**
+	 * Sends animation to both players in a game.
+	 *
+	 * @param message
+	 *          the message being sent.
+	 */
+	private void sendAnimation(JsonObject message) {
+		try {
+			// send animation to both players.
+			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
+			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 

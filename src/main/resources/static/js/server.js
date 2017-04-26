@@ -165,12 +165,20 @@ class Server{
 
     animationEventReceived(message){
         switch(message.eventType){
-            case "attacked":
+            case "creatureAttacked":
                 quedAnims.push(animationMaker.getAttackAnimation(message.id1, message.id2).create());
                 break;
-            case "damaged":
+            case "creatureDamaged":
                 quedAnims.push(animationMaker.getDamagedAnimation(message.id1).create());
                 break;
+            case "playerAttacked":
+                if(message.playerId == $.cookie("id")){
+                    quedAnims.push(animationMaker.getAttackAnimation(message.id1,"health1"));
+                }
+                else{
+                    quedAnims.push(uedAnims.push(animationMaker.getAttackAnimation(message.id1,"health2"));
+                }
+                break;  
             default:
                 console.log("unknown animation type");
         }
