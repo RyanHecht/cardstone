@@ -99,29 +99,29 @@ function setupBoard(){
 	let whaleCost = new cost(30, bigWhalePool);
 
 
-	josh = new creatureCard(6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
+	josh = new creatureCard(-6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
 		" These may include dancing, singing, or just generally having a good time." +
 		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
-	let skyWhale = new creatureCard(5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
-	let whale = new creatureCard(20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
+	let skyWhale = new creatureCard(-5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
+	let whale = new creatureCard(-20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
 	"images/giantWhale.png",5,12);
 
 	let purgePool = new manaPool(3,'&nbsp;');
 	purgePool.setBalance(2);
 	let purgeCost = new cost(30,purgePool);
 
-	let purge = new spellCard(4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
+	let purge = new spellCard(-4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
 	"images/purge.jpg");
 
-	let water = new elementCard(5,"water");
-	let balance = new elementCard(15,"balance");
-	let earth = new elementCard(16,"earth");
-	let fire = new elementCard(17,"fire");
-	let air = new elementCard(18,"air");
+	let water = new elementCard(-55,"water");
+	let balance = new elementCard(-15,"balance");
+	let earth = new elementCard(-16,"earth");
+	let fire = new elementCard(-17,"fire");
+	let air = new elementCard(-18,"air");
 
 	josh.setState("cardCanAttack");
 	fire.setState("cardCanPlay");
-	let back = new cardBack(1);
+	let back = new cardBack(-121);
 
 	let hand1Joshs = [fire, water, earth, air, balance, purge];
 	let hand2Joshs = [back,back,back,back,back];
