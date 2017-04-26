@@ -26,7 +26,10 @@ public class WaterElement extends Element {
 	public Effect onThisPlayed(Card c, Zone z) {
 		assert (this.equals(c));
 		return (Board board) -> {
+			// give player element.
 			board.givePlayerElement(getOwner(), ElementType.WATER, this.DEFAULT_ELEMENT_GAIN);
+			// send element to grave from hand.
+			board.addCardToOcc(c, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
 		};
 	}
 
