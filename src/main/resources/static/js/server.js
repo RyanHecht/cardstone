@@ -194,9 +194,9 @@ class Server{
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
         if(data.player1.playerId != parseInt($.cookie("id"))){
-            wholeBoard.flipZones();
+            wholeBoard.flipTry();
         }
-        //wholeBoard.buildResZones();
+        wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
