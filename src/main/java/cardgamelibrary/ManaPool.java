@@ -88,7 +88,6 @@ public class ManaPool {
 	 */
 	public void payCost(ManaPool cost) {
 		// should only call this if we can pay the cost.
-		assert (this.canPay(cost));
 
 		for (ElementType et : ElementType.values()) {
 			// for a given element decrement this pool's value by the value in cost.
