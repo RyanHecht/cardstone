@@ -84,6 +84,15 @@ public class Lobby implements Jsonifiable {
     }
   }
 
+  public int getOtherPlater(int uId) {
+    if (uId == uId1) {
+      return uId2;
+    } else if (uId == uId2) {
+      return uId1;
+    }
+    return -1;
+  }
+
   public boolean containsPlayer(Integer uId) {
     return uId1 == uId || uId2 == uId;
   }

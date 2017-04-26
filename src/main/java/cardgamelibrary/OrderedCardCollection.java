@@ -12,6 +12,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import cards.FireElement;
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
 import events.CardHealedEvent;
@@ -58,6 +59,27 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public Card getFirstCard() {
+		if (cards.size() == 0) {
+			// default card to return if collection is empty, will be fatigue card
+			// soon.
+			return new FireElement(getPlayer());
+		}
+		return cards.get(0);
+	}
+
+	public List<Card> getFirstCards(int numCards) {
+		List<Card> cardsGotten = new LinkedList<Card>();
+		for (int i = 0; i < numCards; i++) {
+			if (i > cards.size()) {
+				cardsGotten.add(new FireElement(getPlayer()));
+			} else {
+				cardsGotten.add(cards.get(i));
+			}
+		}
+		return cardsGotten;
 	}
 
 	public List<Effect> handleCardBoardEvent(Event event) {

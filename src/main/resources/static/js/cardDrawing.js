@@ -51,14 +51,23 @@ function updateAndDrawAnimations(){
 	}
 	if(animations.length <= 0){
 		if(quedAnims.length > 0){
-			animations.push(quedAnims.pop());
-			console.log("poppefd");
+            console.log(quedAnims, quedAnims.length);
+            let popped = popFirst(quedAnims);
+            console.log(popped.length);
+			animations.push(popped);
+			console.log(quedAnims);
 		}
 	}
 	window.setTimeout(updateAndDrawAnimations, UPDATE_RATE);
 	if(animations.length <= 0){
 		canvasQuery.hide();
 	}
+}
+
+function popFirst(arr){
+    let result = arr[0];
+    arr.splice(0,1);
+    return result;
 }
 
 function clearAnimations(){

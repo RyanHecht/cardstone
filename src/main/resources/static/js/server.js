@@ -143,6 +143,7 @@ class Server{
                 this.badMessage(message.payload);
                 break;
             case MESSAGE_TYPE.ANIMATION:
+                console.log(message);
                 this.animationEventReceived(message.payload);
                 break;
             case MESSAGE_TYPE.CHOOSE_REQUEST:
@@ -164,13 +165,22 @@ class Server{
     }
 
     animationEventReceived(message){
+        console.log(message);
         switch(message.eventType){
-            case "attacked":
-                quedAnims.push(animationMaker.getAttackAnimation(message.id1, message.id2).create());
+            case "creatureAttacked":
+                quedAnims.push(animationsMaker.getAttackAnimation(message.id1, message.id2).create());
                 break;
-            case "damaged":
-                quedAnims.push(animationMaker.getDamagedAnimation(message.id1).create());
+            case "creatureDamaged":
+                quedAnims.push(animationsMaker.getDamagedAnimation(message.id1).create());
                 break;
+            case "playerAttacked":
+                if(message.playerId == $.cookie("id")){
+                    quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health1"));
+                }
+                else{
+                    quedAnims.push(quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health2")));
+                }
+                break;  
             default:
                 console.log("unknown animation type");
         }
@@ -197,6 +207,13 @@ class Server{
 	}
 
 	boardReceived(data){
+        if(animations.length != 0 || quedAnims.length != 0){
+            let $this = this;
+            window.setTimeout(function(){
+                $this.boardReceived(data)
+            }, UPDATE_RATE);
+            return;
+        }
         if(data.player1.playerId != parseInt($.cookie("id"))){
             wholeBoard.flipTry();
         }

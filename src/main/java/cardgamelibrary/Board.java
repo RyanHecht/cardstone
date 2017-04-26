@@ -1,5 +1,6 @@
 package cardgamelibrary;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
+import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
 import events.PlayerDamagedEvent;
@@ -20,6 +22,7 @@ import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
+import server.CommsWebSocket;
 
 /**
  * Contains the entire state of a given game
@@ -95,6 +98,10 @@ public class Board implements Jsonifiable {
 
 		// set up starting hands.
 		assignStartingHands();
+
+		// create turn start event for starting player (active player)
+		TurnStartEvent event = new TurnStartEvent(activePlayer);
+		takeAction(event);
 	}
 
 	/**
@@ -125,7 +132,6 @@ public class Board implements Jsonifiable {
 	// This will be used whenever a player
 	// wants to perform an event.
 	public void takeAction(Event event) {
-		System.out.println("only once 123");
 		eventQueue.add(event);
 		handleState();
 	}
@@ -143,6 +149,36 @@ public class Board implements Jsonifiable {
 
 				handleEvent(e);
 
+				// used to send animations off to front end!
+				JsonObject animation = new JsonObject();
+
+				// send animation for creature combat.
+				if (e.getType() == EventType.CREATURE_ATTACKED) {
+					CreatureAttackEvent event = (CreatureAttackEvent) e;
+					animation.addProperty("eventType", "creatureAttacked");
+					animation.addProperty("id1", event.getAttacker().getId());
+					animation.addProperty("id2", event.getTarget().getId());
+					sendAnimation(animation);
+				}
+
+				// send animation for creature taking damage.
+				if (e.getType() == EventType.CARD_DAMAGED) {
+					CardDamagedEvent event = (CardDamagedEvent) e;
+					animation.addProperty("eventType", "creatureDamaged");
+					animation.addProperty("id1", event.getTarget().getId());
+					sendAnimation(animation);
+				}
+
+				// send animation for player attacked.
+				if (e.getType() == EventType.PLAYER_ATTACKED) {
+					// TODO
+				}
+
+				// if send animation for player damaged.
+				if (e.getType() == EventType.PLAYER_DAMAGED) {
+					// TODO
+				}
+
 				// TODO go over logic in how changing active player here will work with
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
@@ -150,8 +186,8 @@ public class Board implements Jsonifiable {
 					// give player who is starting turn their resources!
 					activePlayer.startTurn();
 					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
-					// addCardToOcc(activeDeck.,getOcc(activePlayer, Zone.HAND)
-					// ,activeDeck);
+					// add first card from deck to hand.
+					addCardToOcc(activeDeck.getFirstCard(), getOcc(activePlayer, Zone.HAND), activeDeck);
 				}
 
 				if (e.getType() == EventType.TURN_END) {
@@ -166,15 +202,16 @@ public class Board implements Jsonifiable {
 				}
 
 			} else {
-				// dead creatures are cleaned up after all events have processed.
-				// should we handle all effects from an event immediately?
 				handleDead();
 				while (effectQueue.size() != 0) {
 					handleEffect(effectQueue.poll());
 				}
 			}
 		}
-		// send board state here b/c things are done processing.
+		handleDead();
+		if (eventQueue.size() > 0 || effectQueue.size() > 0) {
+			handleState();
+		}
 	}
 
 	private void handleDead() {
@@ -221,6 +258,23 @@ public class Board implements Jsonifiable {
 				// the queue.
 				effectQueue.add(e);
 			}
+		}
+	}
+
+	/**
+	 * Sends animation to both players in a game.
+	 *
+	 * @param message
+	 *          the message being sent.
+	 */
+	private void sendAnimation(JsonObject message) {
+		try {
+			// send animation to both players.
+			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
+			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 
@@ -462,41 +516,31 @@ public class Board implements Jsonifiable {
 	public void damageCard(Creature target, Card src, int dmg) {
 		CardDamagedEvent event = new CardDamagedEvent(target, src, dmg);
 		target.takeDamage(dmg, src);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void damagePlayer(Player target, Card src, int dmg) {
 		PlayerDamagedEvent event = new PlayerDamagedEvent(src, target, dmg);
 		target.takeDamage(dmg);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void healCard(Creature target, Card src, int heal) {
 		CardHealedEvent event = new CardHealedEvent(target, src, heal);
 		target.heal(heal, src);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void healPlayer(Player target, Card src, int heal) {
 		PlayerHealedEvent event = new PlayerHealedEvent(target, src, heal);
 		target.healDamage(heal);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	public void changeCreatureHealth(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE, target, amount);
 		target.changeMaxHealthBy(amount);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
 	}
 
 	/**
@@ -512,10 +556,10 @@ public class Board implements Jsonifiable {
 	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
 		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
 		destination.add(c);
+		System.out.println("DOG " + start.size());
 		start.remove(c);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		System.out.println("CAT " + start.size());
+		eventQueue.add(event);
 	}
 
 	/**
@@ -531,9 +575,8 @@ public class Board implements Jsonifiable {
 	public void changeCreatureAttack(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
+
 	}
 
 	public void givePlayerElement(Player p, ElementType type, int amount) {
@@ -541,9 +584,8 @@ public class Board implements Jsonifiable {
 		// increase element for player p.
 		int curElem = p.getElem(type);
 		p.setElement(type, curElem + amount);
-		for (OrderedCardCollection occ : cardsInGame) {
-			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
-		}
+		eventQueue.add(event);
+
 	}
 
 }
