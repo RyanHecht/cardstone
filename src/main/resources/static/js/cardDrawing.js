@@ -51,8 +51,9 @@ function updateAndDrawAnimations(){
 	}
 	if(animations.length <= 0){
 		if(quedAnims.length > 0){
+            console.log(animations);
 			animations.push(quedAnims.pop());
-			console.log("poppefd");
+			console.log(animations);
 		}
 	}
 	window.setTimeout(updateAndDrawAnimations, UPDATE_RATE);
