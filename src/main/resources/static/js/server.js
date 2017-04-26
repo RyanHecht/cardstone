@@ -145,7 +145,6 @@ class Server{
             case MESSAGE_TYPE.ANIMATION:
                 console.log(message);
                 this.animationEventReceived(message.payload);
-                
                 break;
             case MESSAGE_TYPE.CHOOSE_REQUEST:
                 this.chooseFrom(message.payload);
@@ -208,6 +207,13 @@ class Server{
 	}
 
 	boardReceived(data){
+        if(animations.length != 0 || quedAnims.length != 0){
+            let $this = this;
+            window.setTimeout(function(){
+                $this.boardReceived(data)
+            }, UPDATE_RATE);
+            return;
+        }
         if(data.player1.playerId != parseInt($.cookie("id"))){
             wholeBoard.flipTry();
         }
