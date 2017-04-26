@@ -150,7 +150,7 @@ class cardCollection extends drawableZone{
 	prepareDroppableZone(){
 		this.div.droppable({
 			drop: function( event, ui ) {
-				  server.cardPlayed(ui.draggable,$(this));
+				  server.cardPlayed(ui.draggable.attr("id"),$(this));
 			}
 		})
 	}
