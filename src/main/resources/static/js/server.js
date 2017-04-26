@@ -57,7 +57,7 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {};
+			const payload = {"iid": cardID, "self": isSelf};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
 		 this.websocket.send(JSON.stringify(obj));
      console.log("sent player targeted");
@@ -73,7 +73,7 @@ class Server{
 	}
 
 	onWebSocketOpen() {
-		const payload = {"id": 1};
+		const payload = {"id": $.cookie("id")};
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened')
