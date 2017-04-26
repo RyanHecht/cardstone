@@ -6,9 +6,16 @@
     <link rel="stylesheet" href="css/bootstrap.css">
   </head>
   <body>
-     <#include "user_info.ftl">
-     ${content}
-     <script src="js/jquery-2.1.1.js"></script>
-     <script src="js/bootstrap.min.js"></script>
+     <div class="container">
+       <div class="row">
+         <div class="col-sm-8">
+           <ol id="event_list">
+			<#list events as event>
+			  <li>${event}</li>
+			</#list>
+		   </ol>
+         </div>
+       </div>
+     </div>
   </body>
 </html>

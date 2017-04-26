@@ -15,12 +15,13 @@ public class LobbyManager {
   /**
    * Creates a new Lobby.
    */
-  public static void addLobby(String name, boolean priv, String password,
+  public static Lobby addLobby(String name, boolean priv, String password,
       int hostUId) {
     if (lobbies.containsKey("name")) {
       throw new IllegalArgumentException("Lobby already exists");
     } else {
-      lobbies.put(name, new Lobby(name, priv, password, hostUId));
+      Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
+      return lobby;
     }
   }
 
@@ -29,7 +30,7 @@ public class LobbyManager {
    * @param name the name of the lobby to cancel.
    */
   public static void cancelLobby(String name) {
-
+    lobbies.remove(name);
   }
 
   /**
@@ -38,6 +39,11 @@ public class LobbyManager {
    * @return True if player of id is in a lobby, false otherwise.
    */
   public static boolean playerIsInLobby(int playerId) {
+    for (Lobby l : lobbies.values()) {
+      if (l.containsPlayer(playerId)) {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -47,6 +53,11 @@ public class LobbyManager {
    * @return The Lobby the player is in (null if not in lobby).
    */
   public static Lobby getLobbyByPlayerId(int playerId) {
+    for (Lobby l : lobbies.values()) {
+      if (l.containsPlayer(playerId)) {
+        return l;
+      }
+    }
     return null;
   }
 
@@ -56,7 +67,11 @@ public class LobbyManager {
    * @return The lobby represented by the name (null if doesn't exist).
    */
   public static Lobby getLobbyByName(String lobbyName) {
-    return null;
+    if (lobbies.containsKey(lobbyName)) {
+      return lobbies.get(lobbyName);
+    } else {
+      return null;
+    }
   }
 
   /**

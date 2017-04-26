@@ -24,7 +24,7 @@ function onSubmit(event) {
 function processFile(e) {
 	let file = e.target.result, results;
 	if (file && file.length) {
-		results = file.split(/[\n,]/);
+		results = file.split(/\r\n|\n/);
 		console.log(results);
 		
 		const postParams = JSON.stringify(results);
