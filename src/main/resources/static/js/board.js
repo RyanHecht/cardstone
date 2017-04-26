@@ -49,7 +49,8 @@ class board{
     
     flipTry(){
         if(!this.isFlipped){
-            this.flipNow();
+            this.flipZones();
+            this.isFlipped = true;
         }
     }
     

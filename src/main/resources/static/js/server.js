@@ -201,7 +201,7 @@ class Server{
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
         if(data.player1.playerId != parseInt($.cookie("id"))){
-            wholeBoard.flipZones();
+            wholeBoard.flipTry();
         }
 		redrawAll();
 	}
