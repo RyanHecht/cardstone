@@ -93,20 +93,20 @@ public class LobbyManager {
   }
 
   /**
-   * Handle websocket message of type ENTER_LOBBY_REQUEST.
+   * Handle websocket message of type SELF_SET_DECK.
    * @param uId userId of person joining lobby.
    * @param message Message that was sent.
    */
-  public static void handleEnterLobbyRequest(int uId, JsonObject message) {
+  public static void handleSelfSetDeck(int uId, JsonObject message) {
 
   }
 
   /**
-   * Handle websocket message of type LOBBY_ACTION.
+   * Handle websocket message of type START_GAME_REQUEST.
    * @param uId userId of person taking action.
    * @param message Message that was sent.
    */
-  public static void handleLobbyAction(int uId, JsonObject message) {
+  public static void handleStartGameRequest(int uId, JsonObject message) {
 
   }
 

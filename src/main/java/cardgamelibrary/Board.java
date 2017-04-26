@@ -13,6 +13,7 @@ import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureDiedEvent;
+import events.GainElementEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.StatChangeEvent;
@@ -124,6 +125,7 @@ public class Board implements Jsonifiable {
 	// This will be used whenever a player
 	// wants to perform an event.
 	public void takeAction(Event event) {
+		System.out.println("only once 123");
 		eventQueue.add(event);
 		handleState();
 	}
@@ -144,6 +146,14 @@ public class Board implements Jsonifiable {
 				// TODO go over logic in how changing active player here will work with
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
+				if (e.getType() == EventType.TURN_START) {
+					// give player who is starting turn their resources!
+					activePlayer.startTurn();
+					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
+					// addCardToOcc(activeDeck.,getOcc(activePlayer, Zone.HAND)
+					// ,activeDeck);
+				}
+
 				if (e.getType() == EventType.TURN_END) {
 					// switch the active player.
 					if (activePlayer.getPlayerType() == PlayerType.PLAYER_ONE) {
@@ -152,10 +162,7 @@ public class Board implements Jsonifiable {
 						activePlayer = deckOne.getPlayer();
 					}
 					eventQueue.add(new TurnStartEvent(activePlayer));
-				}
-				if (e.getType() == EventType.TURN_START) {
-					// give player who is starting turn their resources!
-					activePlayer.startTurn();
+					System.out.println("Active Player Id: " + activePlayer.getId());
 				}
 
 			} else {
@@ -198,7 +205,16 @@ public class Board implements Jsonifiable {
 	}
 
 	private void handleEvent(Event event) {
+		List<Card> alreadyDone = new ArrayList<>();
 		for (OrderedCardCollection occ : cardsInGame) {
+			System.out.println("this shoul appear 6x");
+			System.out.println(occ.size());
+			for (Card c : occ) {
+				if (alreadyDone.contains(c)) {
+					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
+				}
+				alreadyDone.add(c);
+			}
 			// collect effects from all cards in game!
 			for (Effect e : occ.handleCardBoardEvent(event)) {
 				// iterate through all cards in a collection and add their effects to
@@ -219,9 +235,11 @@ public class Board implements Jsonifiable {
 		while (i < STARTING_HAND_SIZE) {
 			if (itOne.hasNext()) {
 				handOne.add(itOne.next());
+				itOne.remove();
 			}
 			if (itTwo.hasNext()) {
 				handTwo.add(itTwo.next());
+				itTwo.remove();
 			}
 			i++;
 		}
@@ -513,6 +531,16 @@ public class Board implements Jsonifiable {
 	public void changeCreatureAttack(Creature target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
+		for (OrderedCardCollection occ : cardsInGame) {
+			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
+		}
+	}
+
+	public void givePlayerElement(Player p, ElementType type, int amount) {
+		GainElementEvent event = new GainElementEvent(p, type, amount);
+		// increase element for player p.
+		int curElem = p.getElem(type);
+		p.setElement(type, curElem + amount);
 		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}

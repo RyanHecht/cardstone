@@ -13,23 +13,24 @@ TARGET_RESPONSE: 10,
 ACTION_OK: 11,
 ACTION_BAD: 12,
 ID_RESPONSE: 13,
-TURN_END: 14
+TURN_END: 14,
+TEXT_MESSAGE: 15
 };
 
 class Server{
 
   sendChosen(id){
-	 const payload = {"IID": id};
+	 const payload = {"IID1": id};
      console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
- 	 this.socket.send(JSON.stringify(obj));
+ 	 this.websocket.send(JSON.stringify(obj));
     console.log("sent choose reponse");
 	}
 
     endTurn(){
       const payload = {};
       const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
-    	 this.socket.send(JSON.stringify(obj));
+    	 this.websocket.send(JSON.stringify(obj));
        console.log("sent turn end");
     }
 
@@ -66,7 +67,7 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {"IID": cardID, "self": isSelf};
+			const payload = {"IID1": cardID, "self": isSelf};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
 		 this.websocket.send(JSON.stringify(obj));
      console.log("sent player targeted");
@@ -147,10 +148,16 @@ class Server{
             case MESSAGE_TYPE.CHOOSE_REQUEST:
                 this.chooseFrom(message.payload);
                 break;
+            case MESSAGE_TYPE.TEXT_MESSAGE:
+                this.alertMessage(message.payload);
             default:
-                console.log("Unknown message type!");
+                console.log("Unknown message type: " + message.type);
 		}
 	}
+
+  alertMessage(message) {
+    alert(message.message);
+  }
 
     badMessage(message){
         alert(message.message);
@@ -183,26 +190,27 @@ class Server{
 		console.log(player1)
 		wholeBoard.changeFeature("p1Health",player1.health);
 		wholeBoard.changeFeature("p1RegRes",player1.resources);
-		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(10,'',player1.element));
+		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(6,'',player1.element));
 		wholeBoard.changeFeature("p2Health",player2.health);
 		wholeBoard.changeFeature("p2RegRes",player2.resources);
-		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(10,'',player2.element));
+		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(6,'',player2.element));
 	}
 
 	boardReceived(data){
-        if(data.player1.playerId != $.cookie("id")){
-            wholeBoard.flipAndFlipNow();
+        if(data.player1.playerId != parseInt($.cookie("id"))){
+            wholeBoard.flipTry();
         }
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
+        if(data.player1.playerId != parseInt($.cookie("id"))){
+            wholeBoard.flipFeatures();
+        }
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
-        if(data.player1.playerId == $.cookie("id")){
-            wholeBoard.flipAndFlipNow();
-        }
+
 		redrawAll();
 	}
 

@@ -1,8 +1,7 @@
 package lobby;
 
 import com.google.gson.JsonArray;
-
-
+import com.google.gson.JsonObject;
 import java.util.Arrays;
 
 import spark.QueryParamsMap;
@@ -52,6 +51,7 @@ public class LobbyHandlers {
 
     @Override
     public Object handle(Request req, Response res) throws Exception {
+      JsonObject obj = new JsonObject();
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("name");
       boolean priv = Boolean.parseBoolean(qm.value("private"));
@@ -62,10 +62,13 @@ public class LobbyHandlers {
             Integer.parseInt(req.cookie("id")));
 
         // TODO: load lobby page
+        obj.addProperty("auth", true);
       } catch (IllegalArgumentException x) {
         // TODO: redirect to lobby list page, with message.
+        obj.addProperty("auth", false);
+        obj.addProperty("message", x.getMessage());
       }
-      return null;
+      return obj;
     }
 
   }
@@ -84,6 +87,7 @@ public class LobbyHandlers {
 
     @Override
     public Object handle(Request req, Response res) throws Exception {
+      JsonObject obj = new JsonObject();
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("name");
       String password = qm.value("password");
@@ -92,10 +96,13 @@ public class LobbyHandlers {
         LobbyManager.playerJoinLobby(Integer.parseInt(req.cookie("id")), name,
             password);
         // TODO: load lobby page
+        obj.addProperty("auth", true);
       } catch (IllegalArgumentException x) {
         // TODO: redirect to lobby list page, with message.
+        obj.addProperty("auth", false);
+        obj.addProperty("message", x.getMessage());
       }
-      return null;
+      return obj;
     }
 
   }
@@ -111,10 +118,18 @@ public class LobbyHandlers {
         LobbyManager.playerJoinLobby(4, "test", "");
         LobbyManager.getLobbyByName("test").setDeck(2,
             Arrays.asList("EarthswornObserver",
+                "BuriedTreasure", "EarthElement", "EarthElement",
+                "CheapJoshCreature", "CheapJoshCreature", "CheapJoshCreature",
+                "CheapJoshCreature",
+                "BuriedTreasure", "BuriedTreasure", "BuriedTreasure",
                 "BuriedTreasure"));
         LobbyManager.getLobbyByName("test").setDeck(4,
             Arrays.asList("EarthswornObserver",
-                "EarthswornObserver"));
+                "EarthswornObserver", "EarthElement", "EarthElement",
+                "CheapJoshCreature", "CheapJoshCreature", "CheapJoshCreature",
+                "CheapJoshCreature",
+                "EarthElement", "EarthElement", "EarthElement",
+                "EarthElement"));
         LobbyManager.getLobbyByName("test").beginGame();
         System.out.println("made lobby");
       }

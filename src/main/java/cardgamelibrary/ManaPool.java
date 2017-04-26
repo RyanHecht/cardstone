@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 public class ManaPool {
 	private int												resources;
 	private Map<ElementType, Integer>	elementMap;
+	private static final ManaPool			empty	= new ManaPool(0, 0, 0, 0, 0, 0);
 
 	public ManaPool(int resources, int fire, int water, int earth, int air, int balance) {
 		this.resources = resources;
@@ -73,9 +74,11 @@ public class ManaPool {
 	public boolean canPay(ManaPool expense) {
 		for (ElementType et : ElementType.values()) {
 			if (this.getElement(et) < expense.getElement(et)) {
+				System.out.println("it was too expecnis");
 				return false;
 			}
 		}
+		System.out.println("checking cost");
 		return (this.getResources() >= expense.getResources());
 	}
 
@@ -87,14 +90,22 @@ public class ManaPool {
 	 */
 	public void payCost(ManaPool cost) {
 		// should only call this if we can pay the cost.
-		assert (this.canPay(cost));
-
+		System.out.println("ehbd");
 		for (ElementType et : ElementType.values()) {
 			// for a given element decrement this pool's value by the value in cost.
 			this.setElement(et, this.getElement(et) - cost.getElement(et));
 		}
 		// decrement resources.
 		this.setResources(this.getResources() - cost.getResources());
+	}
+
+	/**
+	 * Static method to generate empty manapools.
+	 *
+	 * @return the empty ManaPool.
+	 */
+	public static ManaPool emptyPool() {
+		return empty;
 	}
 
 	public JsonObject jsonifySelf() {

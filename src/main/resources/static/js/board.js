@@ -37,22 +37,22 @@ class board{
         this.isFlipped = false;
 	}
     
-    flip(){
-        this.flipFeatures();
-
-    }
-    
     flipNow(){
         this.flipZones();
         this.isFlipped = true;
     }
     
-    flipAndFlipNow(){
+    flipTry(){
         if(!this.isFlipped){
             this.flipNow();
         }
-        this.flip();
-        console.log("flipping");
+    }
+    
+    flipAndFlipNow(){
+        if(!this.isFlipped){
+            this.flipTry();
+        }
+        this.flipFeatures();
     }
     
     flipFeatures(){

@@ -79,6 +79,7 @@ public interface Card extends Jsonifiable {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
 		if (c.equals(this)) {
+			System.out.println("mebeb asd");
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 			// return effect specific to this card being played!
@@ -143,6 +144,11 @@ public interface Card extends Jsonifiable {
 	// when a creature's health is changed.
 	// note that amtChange can be negative or positive.
 	default public Effect onHealthChange(Creature changed, int amtChange, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when a player gains elemental resources.
+	default public Effect onElementGain(Player player, ElementType elem, int amount, Zone z) {
 		return EmptyEffect.create();
 	}
 
