@@ -17,10 +17,12 @@ ID_RESPONSE: 13
 
 class Server{
 
-    sendChosen(id){
-		
+  sendChosen(id){
+	 const payload = {"iid": id};
+ 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
+ 	 this.socket.send(JSON.stringify(obj));
 	}
-    
+
     // cardSelected(cardDiv){
 		// console.log(cardDiv);
 		// // $(".card").removeClass("cardSelected");
@@ -37,18 +39,24 @@ class Server{
 			// // actionFailed(response.message);
 		// // }
 	// }
-    
-    cardTargeted(cardID,targetID){
-        
+
+  cardTargeted(cardID,targetID){
+   const payload = {"iid1": cardID, "iid2": targetID};
+	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
+	 this.socket.send(JSON.stringify(obj));
 	}
 
 	cardPlayed(cardID,zoneID){
-
+		const payload = {"iid": cardID, "zoneID": zoneID};
+ 	 const obj = {"type": MESSAGE_TYPE.ATTEMPTED_TO_PLAY, "payload": payload};
+ 	 this.socket.send(JSON.stringify(obj));
 	}
-    
+
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-        
+			const payload = {};
+		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
+		 this.socket.send(JSON.stringify(obj));
     }
 
 	constructor() {
@@ -114,9 +122,9 @@ class Server{
 
 
 
-	
 
-    
+
+
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
@@ -135,11 +143,11 @@ class Server{
                 console.log("Unknown message type!");
 		}
 	}
-    
+
     badMessage(message){
         alert(message.errorMessage);
     }
-    
+
     animationEventReceived(message){
         switch(message.eventType){
             case "attacked":
@@ -152,7 +160,7 @@ class Server{
                 console.log("unknown animation type");
         }
     }
-    
+
 
 	chooseFrom(cards){
 		$("#chooseOneAsk").modal('show');
@@ -182,15 +190,15 @@ class Server{
 		wholeBoard.getFromCache(data.board);
 		redrawAll();
 	}
-    
+
     replayRequestStepBack(){
-        
+
     }
-    
+
     replayRequestStepForward(){
-        
+
     }
-    
+
     requestCardCollection(){
         let joshPool = new manaPool(10,'');
         joshPool.setFire(5);
