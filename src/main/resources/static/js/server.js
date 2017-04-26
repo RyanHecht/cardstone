@@ -190,7 +190,7 @@ class Server{
 	}
 
 	boardReceived(data){
-        if(data.player1.playerId != $.cookie("id")){
+        if(data.player1.playerId != parseInt($.cookie("id"))){
             console.log($.cookie("id"),data.player1.playerId);
             wholeBoard.flipAndFlipNow();
         }
@@ -202,7 +202,7 @@ class Server{
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
-        if(data.player1.playerId == $.cookie("id")){
+        if(data.player1.playerId != parseInt($.cookie("id"))){
             wholeBoard.flipAndFlipNow();
         }
 		redrawAll();
