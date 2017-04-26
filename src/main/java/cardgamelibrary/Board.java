@@ -200,7 +200,14 @@ public class Board implements Jsonifiable {
 	}
 
 	private void handleEvent(Event event) {
+		List<Card> alreadyDone = new ArrayList<>();
 		for (OrderedCardCollection occ : cardsInGame) {
+			for(Card c : occ){
+				if(alreadyDone.contains(c)){
+					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
+				}
+				alreadyDone.add(c);
+			}
 			// collect effects from all cards in game!
 			for (Effect e : occ.handleCardBoardEvent(event)) {
 				// iterate through all cards in a collection and add their effects to
