@@ -191,7 +191,7 @@ class Server{
 
 	boardReceived(data){
         if(data.player1.playerId != parseInt($.cookie("id"))){
-            wholeBoard.flipAndFlipNow();
+            wholeBoard.flipTry();
         }
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
@@ -201,8 +201,8 @@ class Server{
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
-                if(data.player1.playerId != parseInt($.cookie("id"))){
-            wholeBoard.flipAndFlipNow();
+        if(data.player1.playerId != parseInt($.cookie("id"))){
+            wholeBoard.flipFeatures();
         }
 		redrawAll();
 	}
