@@ -19,8 +19,9 @@ class Server{
 
   sendChosen(id){
 	 const payload = {"iid": id};
- 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
+ 	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.socket.send(JSON.stringify(obj));
+   console.log("sent choose reponse");
 	}
 
     // cardSelected(cardDiv){
@@ -43,24 +44,27 @@ class Server{
   cardTargeted(cardID,targetID){
    const payload = {"iid1": cardID, "iid2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
-	 this.socket.send(JSON.stringify(obj));
+	 this.websocket.send(JSON.stringify(obj));
+   console.log("sent card targeted");
 	}
 
 	cardPlayed(cardID,zoneID){
 		const payload = {"iid": cardID, "zoneID": zoneID};
  	 const obj = {"type": MESSAGE_TYPE.ATTEMPTED_TO_PLAY, "payload": payload};
- 	 this.socket.send(JSON.stringify(obj));
+ 	 this.websocket.send(JSON.stringify(obj));
+   console.log("sent card played");
 	}
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
 			const payload = {};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
-		 this.socket.send(JSON.stringify(obj));
+		 this.websocket.send(JSON.stringify(obj));
+     console.log("sent player targeted");
     }
 
 	constructor() {
-		this.websocket = new WebSocket("ws://localhost:8080/socket");
+		this.websocket = new WebSocket("ws://" + window.location.host + "/socket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;

@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
  *
  */
 public class GameManager {
+  private static GamePool games = new GamePool();
 
   // some sort of method to add games.
   public static void addGame() {
@@ -38,19 +39,31 @@ public class GameManager {
   }
 
   public static void recieveTargetedCard(int playerId, JsonObject message) {
-
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      game.handleCardTargeted(message, playerId);
+    }
   }
 
   public static void recieveTargetedPlayer(int playerId, JsonObject message) {
-
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      game.handlePlayerTargeted(message, playerId);
+    }
   }
 
   public static void receiveAttemptedToPlay(int playerId, JsonObject message) {
-
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      game.handleCardPlayed(message, playerId);
+    }
   }
 
   public static void receiveChooseResponse(int playerId, JsonObject message) {
-
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      // game.
+    }
   }
 
   // create a different method for each message I can receive (see

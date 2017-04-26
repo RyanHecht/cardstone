@@ -13,7 +13,7 @@ LOBBY_CANCELLED: 8
 class LobbySocket {
 
 	constructor(userId, isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel) {
-		this.websocket = new WebSocket("ws://localhost:8080/socket");
+		this.websocket = new WebSocket("ws://" + window.location.host + "/lobbySocket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
