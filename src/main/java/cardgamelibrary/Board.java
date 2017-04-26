@@ -522,7 +522,8 @@ public class Board implements Jsonifiable {
 	public void givePlayerElement(Player p, ElementType type, int amount) {
 		GainElementEvent event = new GainElementEvent(p, type, amount);
 		// increase element for player p.
-		p.setElement(type, p.getElem(type) + amount);
+		int curElem = p.getElem(type);
+		p.setElement(type, curElem + amount);
 		for (OrderedCardCollection occ : cardsInGame) {
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
 		}

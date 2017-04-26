@@ -422,10 +422,10 @@ public class Game implements Jsonifiable {
 			Zone z;
 			if (card instanceof Creature) {
 				z = Zone.CREATURE_BOARD;
-			} else if (card instanceof SpellCard) {
-				z = Zone.GRAVE;
-			} else {
+			} else if (card instanceof AuraCard) {
 				z = Zone.AURA_BOARD;
+			} else {
+				z = Zone.GRAVE;
 			}
 
 			// create event representing CardPlayedEvent
