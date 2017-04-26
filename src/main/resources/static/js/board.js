@@ -44,7 +44,7 @@ class board{
     
     flipNow(){
         this.flipZones();
-        this.isFlipped = true;
+        this.isFlipped = false;
     }
     
     flipTry(){
