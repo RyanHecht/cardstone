@@ -202,6 +202,7 @@ public class Board implements Jsonifiable {
 	private void handleEvent(Event event) {
 		List<Card> alreadyDone = new ArrayList<>();
 		for (OrderedCardCollection occ : cardsInGame) {
+			System.out.println("this shoul appear 6x");
 			for(Card c : occ){
 				if(alreadyDone.contains(c)){
 					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
