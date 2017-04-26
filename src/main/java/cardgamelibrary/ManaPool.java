@@ -90,7 +90,7 @@ public class ManaPool {
 	 */
 	public void payCost(ManaPool cost) {
 		// should only call this if we can pay the cost.
-
+		System.out.println("ehbd");
 		for (ElementType et : ElementType.values()) {
 			// for a given element decrement this pool's value by the value in cost.
 			this.setElement(et, this.getElement(et) - cost.getElement(et));
