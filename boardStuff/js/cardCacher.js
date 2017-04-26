@@ -24,7 +24,6 @@ class cardCacher{
 	}
 	
 	repairZone(zone){
-		console.log(zone);
 		if(!zone.changed){
 			return;
 		}
@@ -32,6 +31,12 @@ class cardCacher{
 			this.repairCard(card);
 		}
 	}
+    
+    repairCardList(cards){
+        for(let card of zone.cards){
+            this.repairCard(card);
+        }
+    }
 	
 	repairCard(card){
 		console.log(card);
@@ -45,7 +50,7 @@ class cardCacher{
 			this.addNewCard(card);
 		}
 	}
-	
+
 	modifyCard(card){
 		this.cache.get(card.id).modifyWith(card);
 	}
@@ -83,7 +88,7 @@ class cardCacher{
     }
     
     addNewElement(card){
-        let newCard = new elementCard(card.ID,card.elementType);
+        let newCard = new elementCard(card.id,card.elementType);
         this.setByIID(card.id,newCard);
     }
     
@@ -91,10 +96,17 @@ class cardCacher{
         let newCard = new cardBack(card.id);
         this.setByIID(card.id,newCard);
     }
-	
     
     addNewParsedCard(card){
         this.setByIID(card.IID,card);
+    }
+    
+    getCardList(cards){
+        let result = [];
+        for(let card of cards){
+            result.push(this.getByIID(card.id));
+        }
+        return result;
     }
 	
 

@@ -17,6 +17,40 @@ ID_RESPONSE: 13
 
 class Server{
 
+    sendChosen(id){
+		
+	}
+    
+    // cardSelected(cardDiv){
+		// console.log(cardDiv);
+		// // $(".card").removeClass("cardSelected");
+		// // cardDiv.addClass("cardSelected");
+		// // selectedCard = cardDiv.attr("id");
+	// }
+
+	// targetChosen(cardDiv){
+		// let response = sendTargetResponse(cardDiv.getId);
+		// // if(response.valid){
+			// // inputState = IDLE;
+		// // }
+		// // else{
+			// // actionFailed(response.message);
+		// // }
+	// }
+    
+    cardTargeted(cardID,targetID){
+        
+	}
+
+	cardPlayed(cardID,zoneID){
+
+	}
+    
+    //isself is a boolean
+    playerTargeted(cardID,isSelf){
+        
+    }
+
 	constructor() {
 		this.websocket = new WebSocket("ws://localhost:8080/socket");
 		this.websocket.server = this;
@@ -39,9 +73,7 @@ class Server{
 
 
 
-	sendChosen(id){
-		console.log("chose" + id);
-	}
+
 
 
 	cardClicked(cardDiv){
@@ -81,29 +113,8 @@ class Server{
 
 
 
-	parseEvent(data){
 
-	}
-
-
-
-
-	cardSelected(cardDiv){
-		console.log(cardDiv);
-		// $(".card").removeClass("cardSelected");
-		// cardDiv.addClass("cardSelected");
-		// selectedCard = cardDiv.attr("id");
-	}
-
-	targetChosen(cardDiv){
-		let response = sendTargetResponse(cardDiv.getId);
-		// if(response.valid){
-			// inputState = IDLE;
-		// }
-		// else{
-			// actionFailed(response.message);
-		// }
-	}
+	
 
     
 	messageReceived(message){
@@ -141,20 +152,16 @@ class Server{
                 console.log("unknown animation type");
         }
     }
+    
 
 	chooseFrom(cards){
 		$("#chooseOneAsk").modal('show');
+        cardCache.repairCardList(cards);
 		let collection = new chooseZone($("#chooseZoneDisplay"),cards);
-		collection.forceRedrawLater(2500);
+		collection.forceRedrawLater(500);
 	}
 
-	cardTargeted(cardID,targetID){
-        
-	}
 
-	cardPlayed(cardID,zoneID){
-
-	}
 
 	setPlayers(player1,player2){
 		console.log(player1)
