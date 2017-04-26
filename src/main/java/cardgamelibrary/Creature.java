@@ -128,8 +128,10 @@ public class Creature extends PlayableCard {
 
 	@Override
 	public Effect onTurnStart(Player p, Zone z) {
-		if (p == this.getOwner() && z == Zone.CREATURE_BOARD) {
+		System.out.println(getId() + " has received turn start event.");
+		if (p.equals(this.getOwner()) && z == Zone.CREATURE_BOARD) {
 			this.attacks = 1;
+			System.out.println(getId() + " has updated their attack count.");
 		}
 		return super.onTurnStart(p, z);
 	}
