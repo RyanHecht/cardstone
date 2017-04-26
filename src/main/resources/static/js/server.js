@@ -143,7 +143,9 @@ class Server{
                 this.badMessage(message.payload);
                 break;
             case MESSAGE_TYPE.ANIMATION:
+                console.log(message);
                 this.animationEventReceived(message.payload);
+                
                 break;
             case MESSAGE_TYPE.CHOOSE_REQUEST:
                 this.chooseFrom(message.payload);
@@ -164,6 +166,7 @@ class Server{
     }
 
     animationEventReceived(message){
+        console.log(message);
         switch(message.eventType){
             case "creatureAttacked":
                 quedAnims.push(animationsMaker.getAttackAnimation(message.id1, message.id2).create());
