@@ -79,6 +79,7 @@ public interface Card extends Jsonifiable {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
 		if (c.equals(this)) {
+			System.out.println("mebeb asd");
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 			// return effect specific to this card being played!
