@@ -152,7 +152,7 @@ class cardCollection extends drawableZone{
 			drop: function( event, ui ) {
 				  server.cardPlayed(ui.draggable.attr("id"),$(this));
 			}
-		})
+		});
 	}
 	
 	sizeCards(div){
