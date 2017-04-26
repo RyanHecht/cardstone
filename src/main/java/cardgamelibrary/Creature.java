@@ -80,9 +80,11 @@ public class Creature extends PlayableCard {
 	@Override
 	public Effect onThisPlayed(Card c, Zone z) {
 		return (Board board) -> {
+			// note that cost payment is handled in default onCardPlayed so no need to
+			// do it here!
+
 			// play the creature onto the board!
 			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
-
 		};
 	}
 

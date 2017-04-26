@@ -146,6 +146,14 @@ public class Board implements Jsonifiable {
 				// TODO go over logic in how changing active player here will work with
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
+				if (e.getType() == EventType.TURN_START) {
+					// give player who is starting turn their resources!
+					activePlayer.startTurn();
+					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
+					// addCardToOcc(activeDeck.,getOcc(activePlayer, Zone.HAND)
+					// ,activeDeck);
+				}
+
 				if (e.getType() == EventType.TURN_END) {
 					// switch the active player.
 					if (activePlayer.getPlayerType() == PlayerType.PLAYER_ONE) {
@@ -154,10 +162,7 @@ public class Board implements Jsonifiable {
 						activePlayer = deckOne.getPlayer();
 					}
 					eventQueue.add(new TurnStartEvent(activePlayer));
-				}
-				if (e.getType() == EventType.TURN_START) {
-					// give player who is starting turn their resources!
-					activePlayer.startTurn();
+					System.out.println("Active Player Id: " + activePlayer.getId());
 				}
 
 			} else {
@@ -204,8 +209,8 @@ public class Board implements Jsonifiable {
 		for (OrderedCardCollection occ : cardsInGame) {
 			System.out.println("this shoul appear 6x");
 			System.out.println(occ.size());
-			for(Card c : occ){
-				if(alreadyDone.contains(c)){
+			for (Card c : occ) {
+				if (alreadyDone.contains(c)) {
 					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
 				}
 				alreadyDone.add(c);
