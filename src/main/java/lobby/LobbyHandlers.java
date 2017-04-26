@@ -1,5 +1,6 @@
 package lobby;
 
+import java.util.Arrays;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -64,6 +65,28 @@ public class LobbyHandlers {
     @Override
     public Object handle(Request req, Response res) throws Exception {
       // TODO Auto-generated method stub
+      return null;
+    }
+
+  }
+
+  public static class LobbyTesting implements Route {
+
+    @Override
+    public Object handle(Request req, Response res) throws Exception {
+      if (LobbyManager.playerIsInLobby(2)) {
+        System.out.println("will's in a lobby.");
+      } else {
+        LobbyManager.addLobby("test", false, "", 2);
+        LobbyManager.playerJoinLobby(4, "test");
+        LobbyManager.getLobbyByName("test").setDeck(2,
+            Arrays.asList("EarthswornObserver", "BuriedTreasure"));
+        LobbyManager.getLobbyByName("test").setDeck(4,
+            Arrays.asList("EarthswornObserver", "EarthswornObserver"));
+        LobbyManager.getLobbyByName("test").beginGame();
+      }
+
+      res.redirect("/boardDraw.html");
       return null;
     }
 
