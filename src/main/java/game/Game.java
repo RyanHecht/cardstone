@@ -232,6 +232,22 @@ public class Game implements Jsonifiable {
 		}
 	}
 
+	private void sendWholeBoardToBoth() {
+		try {
+			CommsWebSocket.sendWholeBoardSate(this, playerOne.getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			CommsWebSocket.sendWholeBoardSate(this, playerTwo.getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Handles receiving turn end inputs from front end.
 	 *
@@ -248,6 +264,8 @@ public class Game implements Jsonifiable {
 			sendPlayerActionGood(playerId);
 			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
 			board.takeAction(event);
+			// send board to both players.
+			sendWholeBoardToBoth();
 		}
 	}
 
@@ -305,6 +323,8 @@ public class Game implements Jsonifiable {
 				// execute action on the board.
 				board.takeAction(event);
 
+				// send board to both players.
+				sendWholeBoardToBoth();
 			} else if (targetter instanceof TargetsOtherCard) {
 				// we have some sort of card on card action here son.
 
@@ -364,6 +384,9 @@ public class Game implements Jsonifiable {
 
 					// execute event on board.
 					board.takeAction(event);
+
+					// send board to both players.
+					sendWholeBoardToBoth();
 				} else if (card instanceof TargetsPlayer) {
 					// TODO Targeted opposing player.
 				}
@@ -414,6 +437,9 @@ public class Game implements Jsonifiable {
 
 			// execute event on board.
 			board.takeAction(event);
+
+			// send board to both players.
+			sendWholeBoardToBoth();
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}

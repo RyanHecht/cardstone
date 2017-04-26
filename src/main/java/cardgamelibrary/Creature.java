@@ -78,6 +78,15 @@ public class Creature extends PlayableCard {
 	}
 
 	@Override
+	public Effect onThisPlayed(Card c, Zone z) {
+		return (Board board) -> {
+			// play the creature onto the board!
+			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD),
+					board.getOcc(getOwner(), Zone.CREATURE_BOARD));
+		};
+	}
+
+	@Override
 	public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
 		if (attacker.equals(this)) {
 			// assert we can still attack.
