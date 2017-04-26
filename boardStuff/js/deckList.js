@@ -75,6 +75,15 @@ class deckList extends drawableZone{
           return 0;
         })
     }
+    
+    getCardArray(){
+        let result = [];
+        for(let wrapper of this.deck){
+            for(let x = 0; x < wrapper.count; x++){
+                result.push(wrapper.card.name);
+            }
+        }
+    }
 }
 
 class cardWrapper{

@@ -122,13 +122,13 @@ class Server{
 			case MESSAGE_TYPE.BOARD_STATE:
 				this.boardReceived(message.payload);
                 break;
-            case ACTION_BAD:
+            case MESSAGE_TYPE.ACTION_BAD:
                 this.badMessage(message.payload);
                 break;
-            case ANIMATION:
+            case MESSAGE_TYPE.ANIMATION:
                 this.animationEventReceived(message.payload);
                 break;
-            case CHOOSE_REQUEST:
+            case MESSAGE_TYPE.CHOOSE_REQUEST:
                 this.chooseFrom(message.payload);
                 break;
             default:
