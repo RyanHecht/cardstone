@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
 import events.CardHealedEvent;
+import events.CardPlayedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
@@ -70,6 +71,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			results = handleDraw((CardDrawnEvent) event);
 			break;
 		case CARD_PLAYED:
+			results = handleCardPlayed((CardPlayedEvent) event);
+			break;
+		case CARD_ZONE_CHANGED:
 			results = handleCardZoneChange((CardZoneChangeEvent) event);
 			break;
 		case CREATURE_DIED:
@@ -196,6 +200,14 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		List<Effect> results = new LinkedList<>();
 		for (Card c : cards) {
 			results.add(c.onCreatureDeath(cDeath.getCreature(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handleCardPlayed(CardPlayedEvent played) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onCardPlayed(played.getCard(), getZone()));
 		}
 		return results;
 	}

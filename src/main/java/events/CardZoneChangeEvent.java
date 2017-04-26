@@ -20,7 +20,7 @@ public class CardZoneChangeEvent implements Event {
 	@Override
 	public EventType getType() {
 		// TODO Auto-generated method stub
-		return EventType.CARD_PLAYED;
+		return EventType.CARD_ZONE_CHANGED;
 	}
 
 	public Card getCard() {

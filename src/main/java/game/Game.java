@@ -19,6 +19,7 @@ import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import cards.templates.TargetsOtherCard;
+import events.CardPlayedEvent;
 import events.CreatureAttackEvent;
 import events.TurnEndEvent;
 import server.CommsWebSocket;
@@ -330,6 +331,38 @@ public class Game implements Jsonifiable {
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
+		} else {
+			sendPlayerActionBad(playerId, "Acting out of turn.");
+		}
+	}
+
+	public void handleCardPlayed(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+			// grab relevant card.
+			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+			if (!(board.getActivePlayer().validateCost(card.getCost()))) {
+				// in this case they can't play the card.
+				sendPlayerActionBad(playerId, "Cannot pay card's cost.");
+				return;
+			}
+			Zone z;
+			if (card instanceof Creature) {
+				z = Zone.CREATURE_BOARD;
+			} else if (card instanceof SpellCard) {
+				z = Zone.GRAVE;
+			} else {
+				z = Zone.AURA_BOARD;
+			}
+
+			// create event representing CardPlayedEvent
+			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
+					board.getOcc(board.getActivePlayer(), z));
+
+			// tell player action was ok.
+			sendPlayerActionGood(playerId);
+
+			// execute event on board.
+			board.takeAction(event);
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
