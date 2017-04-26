@@ -148,7 +148,7 @@ class Server{
                 this.chooseFrom(message.payload);
                 break;
             default:
-                console.log("Unknown message type!");
+                console.log("Unknown message type: " + message.type);
 		}
 	}
 
@@ -207,8 +207,8 @@ class Server{
             wholeBoard.flip();
             wholeBoard.flipNow();
         }
-        
-        
+
+
 		redrawAll();
 	}
 
