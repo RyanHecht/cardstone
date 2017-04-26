@@ -60,6 +60,10 @@ public enum MessageTypeEnum {
 
   // Player has ended their turn (Client -> Server)
   // 14
-  TURN_END
+  TURN_END,
+
+  // Send a textual message to the client (Server -> Client)
+  // 15
+  TEXT_MESSAGE
 
 }

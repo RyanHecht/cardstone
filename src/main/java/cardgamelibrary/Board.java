@@ -1,5 +1,6 @@
 package cardgamelibrary;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
+import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
 import events.PlayerDamagedEvent;
@@ -20,6 +22,7 @@ import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
+import server.CommsWebSocket;
 
 /**
  * Contains the entire state of a given game
@@ -95,6 +98,10 @@ public class Board implements Jsonifiable {
 
 		// set up starting hands.
 		assignStartingHands();
+
+		// create turn start event for starting player (active player)
+		TurnStartEvent event = new TurnStartEvent(activePlayer);
+		takeAction(event);
 	}
 
 	/**
@@ -143,9 +150,50 @@ public class Board implements Jsonifiable {
 
 				handleEvent(e);
 
+				// used to send animations off to front end!
+				JsonObject animation = new JsonObject();
+				JsonObject payload = new JsonObject();
+
+				// send animation for creature combat.
+				if (e.getType() == EventType.CREATURE_ATTACKED) {
+					CreatureAttackEvent event = (CreatureAttackEvent) e;
+					animation.addProperty("eventType", "creatureAttacked");
+					payload.addProperty("id1", event.getAttacker().getId());
+					payload.addProperty("id2", event.getTarget().getId());
+					animation.add("payload", payload);
+					sendAnimation(animation);
+				}
+
+				// send animation for creature taking damage.
+				if (e.getType() == EventType.CARD_DAMAGED) {
+					CardDamagedEvent event = (CardDamagedEvent) e;
+					animation.addProperty("eventType", "creatureDamaged");
+					payload.addProperty("id1", event.getTarget().getId());
+					animation.add("payload", payload);
+					sendAnimation(animation);
+				}
+
+				// send animation for player attacked.
+				if (e.getType() == EventType.PLAYER_ATTACKED) {
+					// TODO
+				}
+
+				// if send animation for player damaged.
+				if (e.getType() == EventType.PLAYER_DAMAGED) {
+					// TODO
+				}
+
 				// TODO go over logic in how changing active player here will work with
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
+				if (e.getType() == EventType.TURN_START) {
+					// give player who is starting turn their resources!
+					activePlayer.startTurn();
+					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
+					// add first card from deck to hand.
+					addCardToOcc(activeDeck.getFirstCard(), getOcc(activePlayer, Zone.HAND), activeDeck);
+				}
+
 				if (e.getType() == EventType.TURN_END) {
 					// switch the active player.
 					if (activePlayer.getPlayerType() == PlayerType.PLAYER_ONE) {
@@ -154,10 +202,7 @@ public class Board implements Jsonifiable {
 						activePlayer = deckOne.getPlayer();
 					}
 					eventQueue.add(new TurnStartEvent(activePlayer));
-				}
-				if (e.getType() == EventType.TURN_START) {
-					// give player who is starting turn their resources!
-					activePlayer.startTurn();
+					System.out.println("Active Player Id: " + activePlayer.getId());
 				}
 
 			} else {
@@ -204,8 +249,8 @@ public class Board implements Jsonifiable {
 		for (OrderedCardCollection occ : cardsInGame) {
 			System.out.println("this shoul appear 6x");
 			System.out.println(occ.size());
-			for(Card c : occ){
-				if(alreadyDone.contains(c)){
+			for (Card c : occ) {
+				if (alreadyDone.contains(c)) {
 					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
 				}
 				alreadyDone.add(c);
@@ -216,6 +261,23 @@ public class Board implements Jsonifiable {
 				// the queue.
 				effectQueue.add(e);
 			}
+		}
+	}
+
+	/**
+	 * Sends animation to both players in a game.
+	 *
+	 * @param message
+	 *          the message being sent.
+	 */
+	private void sendAnimation(JsonObject message) {
+		try {
+			// send animation to both players.
+			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
+			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 

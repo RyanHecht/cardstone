@@ -266,6 +266,15 @@ public class Game implements Jsonifiable {
 			board.takeAction(event);
 			// send board to both players.
 			sendWholeBoardToBoth();
+
+			// active player switched.
+			try {
+				// tell new active player it's their turn.
+				CommsWebSocket.sendTextMessage(board.getActivePlayer().getId(), "It's your turn!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

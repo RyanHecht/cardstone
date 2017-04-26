@@ -80,10 +80,11 @@ public class Creature extends PlayableCard {
 	@Override
 	public Effect onThisPlayed(Card c, Zone z) {
 		return (Board board) -> {
+			// note that cost payment is handled in default onCardPlayed so no need to
+			// do it here!
+
 			// play the creature onto the board!
-			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD),
-					board.getOcc(getOwner(), Zone.CREATURE_BOARD));
-			                                                                                                                           
+			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
 		};
 	}
 
@@ -127,8 +128,10 @@ public class Creature extends PlayableCard {
 
 	@Override
 	public Effect onTurnStart(Player p, Zone z) {
-		if (p == this.getOwner() && z == Zone.CREATURE_BOARD) {
+		System.out.println(getId() + " has received turn start event.");
+		if (p.equals(this.getOwner()) && z == Zone.CREATURE_BOARD) {
 			this.attacks = 1;
+			System.out.println(getId() + " has updated their attack count.");
 		}
 		return super.onTurnStart(p, z);
 	}
