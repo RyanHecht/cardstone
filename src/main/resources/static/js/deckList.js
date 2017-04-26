@@ -83,6 +83,7 @@ class deckList extends drawableZone{
                 result.push(wrapper.card.name);
             }
         }
+        return result;
     }
 }
 

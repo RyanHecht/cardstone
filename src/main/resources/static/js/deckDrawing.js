@@ -107,10 +107,12 @@ function setupInput(){
 function submitDeck(){
     const post_param = {
         name:$("#deckName").val(),
-        deck:collect.
+        deck: list.getCardArray()
     }
-    $.post("/deck_upload");
-    window.location.replace("/decks");
+    $.post("/deck_upload",JSON.stringify(post_param),function(){
+        window.location.replace("/decks");
+    });
+    
 }
 
 $('document').ready(function(){
