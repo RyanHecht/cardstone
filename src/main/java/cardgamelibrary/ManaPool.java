@@ -74,9 +74,11 @@ public class ManaPool {
 	public boolean canPay(ManaPool expense) {
 		for (ElementType et : ElementType.values()) {
 			if (this.getElement(et) < expense.getElement(et)) {
+				System.out.println("it was too expecnis");
 				return false;
 			}
 		}
+		System.out.println("checking cost");
 		return (this.getResources() >= expense.getResources());
 	}
 
