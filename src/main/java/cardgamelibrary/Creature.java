@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import effects.CardDamageEffect;
 import effects.EmptyEffect;
+import effects.PlayerDamageEffect;
 import game.Player;
 
 public class Creature extends PlayableCard {
@@ -79,12 +80,27 @@ public class Creature extends PlayableCard {
 	@Override
 	public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
 		if (attacker.equals(this)) {
+			// assert we can still attack.
+			assert (getNumAttacks() > 0);
 			// decrement the number of times it can attack.
 			attacker.setAttacks(attacker.getNumAttacks() - 1);
 			return new CardDamageEffect(attacker, target, target.getAttack());
 		}
 		if (target.equals(this)) {
 			return new CardDamageEffect(target, attacker, attacker.getAttack());
+		}
+		return EmptyEffect.create();
+	}
+
+	@Override
+	public Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+		if (attacker.equals(this)) {
+			// assert we can still attack.
+			assert (getNumAttacks() > 0);
+			// decrement the number of times it can attack.
+			attacker.setAttacks(attacker.getNumAttacks() - 1);
+			// damage player by the card's attack.
+			return new PlayerDamageEffect(attacker, target, attacker.getAttack());
 		}
 		return EmptyEffect.create();
 	}

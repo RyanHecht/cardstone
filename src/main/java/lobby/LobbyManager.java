@@ -47,6 +47,10 @@ public class LobbyManager {
     return false;
   }
 
+  public static void playerJoinLobby(int playerId, String lobbyName) {
+    lobbies.get(lobbyName).join(playerId);
+  }
+
   /**
    * Get a Lobby from a player's id.
    * @param playerId Id of player to get lobby of.

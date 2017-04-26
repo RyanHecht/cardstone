@@ -172,6 +172,16 @@ function setupCardClick(){
         $(".card").on("click", function(){
             server.cardClicked($(this));
         });
+        $("#health1").droppable({
+			drop: function( event, ui ) {
+				  server.playerTargeted(ui.draggable.attr("id"),true);
+			}
+		});
+        $("#health2").droppable({
+			drop: function( event, ui ) {
+				  server.playerTargeted(ui.draggable.attr("id"),false);
+			}
+		});
     }
 }
 

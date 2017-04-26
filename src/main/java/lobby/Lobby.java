@@ -2,6 +2,9 @@ package lobby;
 
 import cardgamelibrary.Jsonifiable;
 import com.google.gson.JsonObject;
+import game.Game;
+import game.GameManager;
+import java.util.List;
 
 public class Lobby implements Jsonifiable {
   private String name;
@@ -9,6 +12,8 @@ public class Lobby implements Jsonifiable {
   private String password;
   private Integer uId1;
   private Integer uId2;
+  private List<String> p1deck;
+  private List<String> p2deck;
 
   public Lobby(String name, boolean priv, String password, int hostUId) {
     this.name = name;
@@ -36,6 +41,10 @@ public class Lobby implements Jsonifiable {
     return (uId1 != null) && (uId2 != null);
   }
 
+  public boolean decksSet() {
+    return (p1deck != null) && (p2deck != null);
+  }
+
   public int getCount() {
     if (isFull()) {
       return 2;
@@ -61,11 +70,22 @@ public class Lobby implements Jsonifiable {
   }
 
   public void beginGame() {
-
+    if (isFull() && decksSet()) {
+      Game game = new Game(p1deck, p2deck, uId1, uId2);
+      GameManager.addGame(uId1, uId2, game);
+    }
   }
 
   public boolean containsPlayer(Integer uId) {
     return uId1 == uId || uId2 == uId;
+  }
+
+  public void setDeck(int uId, List<String> deck) {
+    if (uId == uId1) {
+      p1deck = deck;
+    } else if (uId == uId2) {
+      p2deck = deck;
+    }
   }
 
   @Override

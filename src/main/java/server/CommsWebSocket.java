@@ -54,7 +54,7 @@ public class CommsWebSocket {
   @OnWebSocketMessage
   public void message(Session session, String message) throws IOException {
     // Get the object received, the message type, and the payload
-    System.out.println(message);
+    System.out.println("Got a message!" + "\n" + message);
     JsonObject received = GSON.fromJson(message, JsonObject.class);
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
@@ -86,7 +86,7 @@ public class CommsWebSocket {
         int id = payload.get("id").getAsInt();
         sessions.put(session, id);
         idToSessions.put(id, session);
-        CommsWebSocket.sendWholeBoardSate(testBoard(), id);
+        // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
       }
     }
 

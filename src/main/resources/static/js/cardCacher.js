@@ -33,13 +33,12 @@ class cardCacher{
 	}
     
     repairCardList(cards){
-        for(let card of zone.cards){
+        for(let card of cards){
             this.repairCard(card);
         }
     }
 	
 	repairCard(card){
-		console.log(card);
 		if(!card.changed){
 			return;
 		}
@@ -104,7 +103,7 @@ class cardCacher{
     getCardList(cards){
         let result = [];
         for(let card of cards){
-            result.push(this.getByIID(card.id));
+            result.push(this.getByIID(card.IID));
         }
         return result;
     }
