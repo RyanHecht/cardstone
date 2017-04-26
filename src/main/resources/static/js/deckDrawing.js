@@ -105,11 +105,13 @@ function setupInput(){
 }
 
 function submitDeck(){
-    const post_param = {
+    const post_params = {
         name:$("#deckName").val(),
-        deck: list.getCardArray()
+        deck: JSON.stringify(list.getCardArray())
     }
-    $.post("/deck_upload",JSON.stringify(post_param),function(){
+    $.post("/deck_upload",post_params, responseJSON => {
+		console.log(post_params.name);
+		console.log(post_params.deck);
         window.location.replace("/decks");
     });
     

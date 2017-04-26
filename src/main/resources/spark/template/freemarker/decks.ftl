@@ -15,9 +15,11 @@
 	       ${deck_list}
 	     </div>
 	   </div>
+	   <a href="/deckDraw.html">Create new deck</a>
        <a href="/login">Logout</a>
 	</div>
      <script src="js/jquery-2.1.1.js"></script>
      <script src="js/bootstrap.min.js"></script>
+     <script src="js/lobbiesdisplay.js"></script>
   </body>
 </html>

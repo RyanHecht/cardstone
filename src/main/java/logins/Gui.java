@@ -41,6 +41,7 @@ public class Gui {
     Spark.get("/deck", new DeckHandler(), fm); // displaying one deck
     Spark.get("/games", new GameDisplayHandler(), fm);
     Spark.get("/replay", new GameReplayHandler(), fm);
+    Spark.get("/lobbies", new LobbiesHandler(), fm);
   }
 
   public void init() {
@@ -186,6 +187,15 @@ public class Gui {
 		  return new ModelAndView(vars, "deck.ftl");
 	  }
   }
+  
+  private class LobbiesHandler implements TemplateViewRoute {
+	  @Override
+	  public ModelAndView handle(Request req, Response res) {
+		  Map<String, Object> vars = ImmutableMap.of("title",
+		          "Cardstone: The Shattering");
+		  return new ModelAndView(vars, "lobbies.ftl");
+	  }
+  }
 
   /**
    * Handles deck uploads.
@@ -199,6 +209,7 @@ public class Gui {
       String deck = qm.value("deck");
       String deckName = qm.value("name");
       String uid = req.cookie("id");
+      System.out.println("Have deck named " + deckName);
       System.out.println("Inserting muh deck " + deck);
       
       String deckSearch = "select id from deck where name = ? and user = ?;";
