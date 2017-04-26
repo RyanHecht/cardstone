@@ -209,7 +209,7 @@ public class Board implements Jsonifiable {
 			}
 		}
 		handleDead();
-		if(eventQueue.size() > 0 || effectQueue.size() > 0){
+		if (eventQueue.size() > 0 || effectQueue.size() > 0) {
 			handleState();
 		}
 	}
@@ -556,7 +556,9 @@ public class Board implements Jsonifiable {
 	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
 		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
 		destination.add(c);
+		System.out.println("DOG " + start.size());
 		start.remove(c);
+		System.out.println("CAT " + start.size());
 		eventQueue.add(event);
 	}
 
