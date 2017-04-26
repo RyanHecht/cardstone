@@ -1,6 +1,8 @@
 package lobby;
 
+import com.google.gson.JsonArray;
 import java.util.Arrays;
+import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -25,8 +27,11 @@ public class LobbyHandlers {
 
     @Override
     public Object handle(Request req, Response res) throws Exception {
-      // TODO Auto-generated method stub
-      return null;
+      JsonArray array = new JsonArray();
+      for (Lobby l : LobbyManager.getAllLobbies()) {
+        array.add(l.jsonifySelf());
+      }
+      return array;
     }
 
   }
@@ -44,7 +49,19 @@ public class LobbyHandlers {
 
     @Override
     public Object handle(Request req, Response res) throws Exception {
-      // TODO Auto-generated method stub
+      QueryParamsMap qm = req.queryMap();
+      String name = qm.value("name");
+      boolean priv = Boolean.parseBoolean(qm.value("private"));
+      String password = qm.value("password");
+
+      try {
+        LobbyManager.addLobby(name, priv, password,
+            Integer.parseInt(req.cookie("id")));
+
+        // TODO: load lobby page
+      } catch (IllegalArgumentException x) {
+        // TODO: redirect to lobby list page, with message.
+      }
       return null;
     }
 
@@ -64,7 +81,17 @@ public class LobbyHandlers {
 
     @Override
     public Object handle(Request req, Response res) throws Exception {
-      // TODO Auto-generated method stub
+      QueryParamsMap qm = req.queryMap();
+      String name = qm.value("name");
+      String password = qm.value("password");
+
+      try {
+        LobbyManager.playerJoinLobby(Integer.parseInt(req.cookie("id")), name,
+            password);
+        // TODO: load lobby page
+      } catch (IllegalArgumentException x) {
+        // TODO: redirect to lobby list page, with message.
+      }
       return null;
     }
 
@@ -78,7 +105,7 @@ public class LobbyHandlers {
         System.out.println("will's in a lobby.");
       } else {
         LobbyManager.addLobby("test", false, "", 2);
-        LobbyManager.playerJoinLobby(4, "test");
+        LobbyManager.playerJoinLobby(4, "test", "");
         LobbyManager.getLobbyByName("test").setDeck(2,
             Arrays.asList("EarthswornObserver",
                 "BuriedTreasure"));

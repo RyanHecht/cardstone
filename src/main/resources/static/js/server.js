@@ -19,7 +19,7 @@ TURN_END: 14
 class Server{
 
   sendChosen(id){
-	 const payload = {"iid": id};
+	 const payload = {"IID": id};
      console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.socket.send(JSON.stringify(obj));
@@ -51,14 +51,14 @@ class Server{
 	// }
 
   cardTargeted(cardID,targetID){
-   const payload = {"iid1": cardID, "iid2": targetID};
+   const payload = {"IID1": cardID, "IID2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
 	 this.websocket.send(JSON.stringify(obj));
    console.log("sent card targeted");
 	}
 
 	cardPlayed(cardID,zoneID){
-		const payload = {"iid": cardID, "zoneID": zoneID};
+		const payload = {"IID1": cardID, "zoneID": zoneID};
  	 const obj = {"type": MESSAGE_TYPE.ATTEMPTED_TO_PLAY, "payload": payload};
  	 this.websocket.send(JSON.stringify(obj));
    console.log("sent card played");
@@ -66,7 +66,7 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {"iid": cardID, "self": isSelf};
+			const payload = {"IID": cardID, "self": isSelf};
 		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
 		 this.websocket.send(JSON.stringify(obj));
      console.log("sent player targeted");
