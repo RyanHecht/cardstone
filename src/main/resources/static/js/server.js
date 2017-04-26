@@ -191,6 +191,7 @@ class Server{
 
 	boardReceived(data){
         if(data.player1.playerId != $.cookie("id")){
+            console.log($.cookie("id"),data.player1.playerId);
             wholeBoard.flipAndFlipNow();
         }
         
