@@ -45,7 +45,11 @@ public class Lobby implements Jsonifiable {
   }
 
   public void join(int uId) {
-
+    if (!isFull()) {
+      uId2 = uId;
+    } else {
+      throw new IllegalArgumentException("Cannot join full room.");
+    }
   }
 
   public void leave(int uId) {
@@ -58,6 +62,10 @@ public class Lobby implements Jsonifiable {
 
   public void beginGame() {
 
+  }
+
+  public boolean containsPlayer(Integer uId) {
+    return uId1 == uId || uId2 == uId;
   }
 
   @Override

@@ -4,8 +4,18 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * Handlers for Spark pertaining to Lobbies.
+ * @author ryan
+ *
+ */
 public class LobbyHandlers {
 
+  /**
+   * Return a list of all lobbies.
+   * @author ryan
+   *
+   */
   public static class ListLobbies implements Route {
 
     public ListLobbies() {
@@ -20,6 +30,11 @@ public class LobbyHandlers {
 
   }
 
+  /**
+   * Make a lobby.
+   * @author ryan
+   *
+   */
   public static class MakeLobby implements Route {
 
     public MakeLobby() {
@@ -33,6 +48,12 @@ public class LobbyHandlers {
     }
 
   }
+
+  /**
+   * Join a lobby.
+   * @author ryan
+   *
+   */
 
   public static class JoinLobby implements Route {
 
