@@ -151,15 +151,13 @@ public class Board implements Jsonifiable {
 
 				// used to send animations off to front end!
 				JsonObject animation = new JsonObject();
-				JsonObject payload = new JsonObject();
 
 				// send animation for creature combat.
 				if (e.getType() == EventType.CREATURE_ATTACKED) {
 					CreatureAttackEvent event = (CreatureAttackEvent) e;
 					animation.addProperty("eventType", "creatureAttacked");
-					payload.addProperty("id1", event.getAttacker().getId());
-					payload.addProperty("id2", event.getTarget().getId());
-					animation.add("payload", payload);
+					animation.addProperty("id1", event.getAttacker().getId());
+					animation.addProperty("id2", event.getTarget().getId());
 					sendAnimation(animation);
 				}
 
@@ -167,8 +165,7 @@ public class Board implements Jsonifiable {
 				if (e.getType() == EventType.CARD_DAMAGED) {
 					CardDamagedEvent event = (CardDamagedEvent) e;
 					animation.addProperty("eventType", "creatureDamaged");
-					payload.addProperty("id1", event.getTarget().getId());
-					animation.add("payload", payload);
+					animation.addProperty("id1", event.getTarget().getId());
 					sendAnimation(animation);
 				}
 
