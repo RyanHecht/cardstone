@@ -6,9 +6,13 @@
     <link rel="stylesheet" href="css/bootstrap.css">
   </head>
   <body>
-     <#include "user_info.ftl">
-     ${content}
-     <script src="js/jquery-2.1.1.js"></script>
-     <script src="js/bootstrap.min.js"></script>
+     <div class="container">
+       <div class="row">
+         <div class="col-sm-8">
+           <h3 id="deckhead">${deckname} </h3>
+           <p id="decktext">${cards} </p>
+         </div>
+       </div>
+     </div>
   </body>
 </html>

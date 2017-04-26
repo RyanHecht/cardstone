@@ -17,6 +17,48 @@ ID_RESPONSE: 13
 
 class Server{
 
+  sendChosen(id){
+	 const payload = {"iid": id};
+ 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
+ 	 this.socket.send(JSON.stringify(obj));
+	}
+
+    // cardSelected(cardDiv){
+		// console.log(cardDiv);
+		// // $(".card").removeClass("cardSelected");
+		// // cardDiv.addClass("cardSelected");
+		// // selectedCard = cardDiv.attr("id");
+	// }
+
+	// targetChosen(cardDiv){
+		// let response = sendTargetResponse(cardDiv.getId);
+		// // if(response.valid){
+			// // inputState = IDLE;
+		// // }
+		// // else{
+			// // actionFailed(response.message);
+		// // }
+	// }
+
+  cardTargeted(cardID,targetID){
+   const payload = {"iid1": cardID, "iid2": targetID};
+	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
+	 this.socket.send(JSON.stringify(obj));
+	}
+
+	cardPlayed(cardID,zoneID){
+		const payload = {"iid": cardID, "zoneID": zoneID};
+ 	 const obj = {"type": MESSAGE_TYPE.ATTEMPTED_TO_PLAY, "payload": payload};
+ 	 this.socket.send(JSON.stringify(obj));
+	}
+
+    //isself is a boolean
+    playerTargeted(cardID,isSelf){
+			const payload = {};
+		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
+		 this.socket.send(JSON.stringify(obj));
+    }
+
 	constructor() {
 		this.websocket = new WebSocket("ws://localhost:8080/socket");
 		this.websocket.server = this;
@@ -39,9 +81,7 @@ class Server{
 
 
 
-	sendChosen(id){
-		console.log("chose" + id);
-	}
+
 
 
 	cardClicked(cardDiv){
@@ -81,51 +121,55 @@ class Server{
 
 
 
-	parseEvent(data){
-
-	}
 
 
 
-
-	cardSelected(cardDiv){
-		console.log(cardDiv);
-		// $(".card").removeClass("cardSelected");
-		// cardDiv.addClass("cardSelected");
-		// selectedCard = cardDiv.attr("id");
-	}
-
-	targetChosen(cardDiv){
-		let response = sendTargetResponse(cardDiv.getId);
-		// if(response.valid){
-			// inputState = IDLE;
-		// }
-		// else{
-			// actionFailed(response.message);
-		// }
-	}
 
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
-				console.log("received board: " + JSON.stringify(message.payload))
 				this.boardReceived(message.payload);
+                break;
+            case ACTION_BAD:
+                this.badMessage(message.payload);
+                break;
+            case ANIMATION:
+                this.animationEventReceived(message.payload);
+                break;
+            case CHOOSE_REQUEST:
+                this.chooseFrom(message.payload);
+                break;
+            default:
+                console.log("Unknown message type!");
 		}
 	}
 
+    badMessage(message){
+        alert(message.errorMessage);
+    }
+
+    animationEventReceived(message){
+        switch(message.eventType){
+            case "attacked":
+                quedAnims.push(animationMaker.getAttackAnimation(message.id1, message.id2).create());
+                break;
+            case "damaged":
+                quedAnims.push(animationMaker.getDamagedAnimation(message.id1).create());
+                break;
+            default:
+                console.log("unknown animation type");
+        }
+    }
+
+
 	chooseFrom(cards){
 		$("#chooseOneAsk").modal('show');
+        cardCache.repairCardList(cards);
 		let collection = new chooseZone($("#chooseZoneDisplay"),cards);
-		collection.forceRedrawLater(2500);
+		collection.forceRedrawLater(500);
 	}
 
-	cardTargeted(cardID,targetID){
-		//
-	}
 
-	cardPlayed(cardID,zoneID){
-
-	}
 
 	setPlayers(player1,player2){
 		console.log(player1)
@@ -146,15 +190,15 @@ class Server{
 		wholeBoard.getFromCache(data.board);
 		redrawAll();
 	}
-    
+
     replayRequestStepBack(){
-        
+
     }
-    
+
     replayRequestStepForward(){
-        
+
     }
-    
+
     requestCardCollection(){
         let joshPool = new manaPool(10,'');
         joshPool.setFire(5);

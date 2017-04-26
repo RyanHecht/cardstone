@@ -36,3 +36,14 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+#userlist ul {
+  position: relative;
+  top: 100%;
+  display: block;
+  margin: 0;
+    
+  list-style: none; 
+  width: 100%; 
+  padding: 0;
+}

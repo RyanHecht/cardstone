@@ -57,7 +57,7 @@ class deckList extends drawableZone{
     
     getWrapper(card){
         for(let deckCard of this.deck){
-            if(deckCard.card.IID = card.IID){
+            if(deckCard.card.IID == card.IID){
                 return deckCard;
             }
         }

@@ -1,29 +1,12 @@
 <#assign content>
-<#-- <#include "list.ftl"> -->
 <div class="container">
-  <#-- <h3> User ${username} has these puppies... </h3>
+  <h3> Welcome to Cardstone, ${username} </h3> 
   <div class="row">
-    ${list}
-  </div>
-  <div class='row'>
-    <input type="hidden" id="user" value="${username}">
-    <div class='col-sm-6'>
-      <div class='form-group'>
-         <div class='input-group'>
-            <input type="text" class="form-control" id="puppyname" placeholder="Add a puppy...">
-               <span class="input-group-btn">
-                  <input class="btn btn-primary" type="submit" id="addpuppy">
-               </span>
-         </div>
-      </div>
+    <div class="col-sm-8">
+    <a href="/decks" class="btn btn-default btn-lg btn-block">Decks</a>
+    <a href="/games" class="btn btn-default btn-lg btn-block">Games</a>
+    <a href="/lobbies" class="btn btn-default btn-lg btn-block">Lobbies</a>
     </div>
-  </div>
-  -->
-  <div class='row'>
-  <div class='col-sm-6'>
-    <input type=file id=files />
-    <button id=upload>Upload</button>
-  </div>
   </div>
   <a href="/login">Logout</a>
 </div>

@@ -32,7 +32,8 @@ public class GameManager {
     return null;
   }
 
-  public static void receiveUnderstoodBoardState(int playerId, JsonObject message) {
+  public static void receiveUnderstoodBoardState(int playerId,
+      JsonObject message) {
 
   }
 
@@ -41,6 +42,14 @@ public class GameManager {
   }
 
   public static void recieveTargetedPlayer(int playerId, JsonObject message) {
+
+  }
+
+  public static void receiveAttemptedToPlay(int playerId, JsonObject message) {
+
+  }
+
+  public static void receiveChooseResponse(int playerId, JsonObject message) {
 
   }
 

@@ -1,6 +1,9 @@
 package lobby;
 
-public class Lobby {
+import cardgamelibrary.Jsonifiable;
+import com.google.gson.JsonObject;
+
+public class Lobby implements Jsonifiable {
   private String name;
   private boolean priv;
   private String password;
@@ -10,6 +13,8 @@ public class Lobby {
   public Lobby(String name, boolean priv, String password, int hostUId) {
     this.name = name;
     this.priv = priv;
+    this.password = password;
+    this.uId1 = hostUId;
   }
 
   public Lobby(String name, int hostUId) {
@@ -30,4 +35,52 @@ public class Lobby {
   public boolean isFull() {
     return (uId1 != null) && (uId2 != null);
   }
+
+  public int getCount() {
+    if (isFull()) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+
+  public void join(int uId) {
+    if (!isFull()) {
+      uId2 = uId;
+    } else {
+      throw new IllegalArgumentException("Cannot join full room.");
+    }
+  }
+
+  public void leave(int uId) {
+    if (uId == uId1) {
+      LobbyManager.cancelLobby(this.name);
+    } else if (uId == uId2) {
+      // TODO: Handle player 2 leaving
+    }
+  }
+
+  public void beginGame() {
+
+  }
+
+  public boolean containsPlayer(Integer uId) {
+    return uId1 == uId || uId2 == uId;
+  }
+
+  @Override
+  public JsonObject jsonifySelf() {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("name", this.name);
+    obj.addProperty("count", getCount());
+    obj.addProperty("isPrivate", priv);
+
+    return obj;
+  }
+
+  @Override
+  public JsonObject jsonifySelfChanged() {
+    throw new UnsupportedOperationException();
+  }
+
 }

@@ -95,6 +95,7 @@ public class Creature extends PlayableCard {
 		result.addProperty("attack", getAttack());
 		result.addProperty("health", getHealth());
 		result.addProperty("damaged", getMaxHealth() > getHealth());
+		result.addProperty("type", "creature");
 		return result;
 	}
 

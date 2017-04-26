@@ -3,7 +3,7 @@ class chooseZone extends drawableZone{
 	constructor(div,cards){
 		super();
 		this.div = div;
-		this.cards = cards;
+		this.cards = cardCache.getCardList(cards);
 		this.changed = true;
 		console.log(div,cards.length);
 	}
