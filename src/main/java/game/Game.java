@@ -39,6 +39,7 @@ public class Game implements Jsonifiable {
 	private Player								playerTwo;
 	private int										id;
 	private static AtomicInteger	idGenerator				= new AtomicInteger(0);
+	private static final String		PACKAGE_PATH			= "cards";
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId) {
 		// Initialize both players with starting life.
@@ -72,7 +73,7 @@ public class Game implements Jsonifiable {
 			// invoking constructors as we go and adding to new list before adding all
 			// to the OrderedCardCollections?
 			for (String formattedName : firstPlayerCards) {
-				Object p = Class.forName(formattedName).getConstructor(Player.class).newInstance(playerOne);
+				Object p = Class.forName(PACKAGE_PATH + formattedName).getConstructor(Player.class).newInstance(playerOne);
 				if (p instanceof Creature) {
 					fCards.add((Creature) p);
 				} else if (p instanceof AuraCard) {
@@ -88,7 +89,7 @@ public class Game implements Jsonifiable {
 
 			// repeat process with player two's deck.
 			for (String formattedName : secondPlayerCards) {
-				Object p = Class.forName(formattedName).getConstructor(Player.class).newInstance(playerTwo);
+				Object p = Class.forName(PACKAGE_PATH + formattedName).getConstructor(Player.class).newInstance(playerTwo);
 				if (p instanceof Creature) {
 					sCards.add((Creature) p);
 				} else if (p instanceof AuraCard) {
