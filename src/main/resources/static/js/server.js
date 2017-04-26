@@ -196,7 +196,7 @@ class Server{
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
-        console.log(data.player1, $.cookie("id");
+        console.log(data.player1, $.cookie("id"));
         if(data.player1.playerId == $.cookie("id")){
             wholeBoard.flipAndFlipNow();
         }
