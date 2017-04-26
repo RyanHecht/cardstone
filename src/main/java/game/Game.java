@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 
@@ -39,7 +38,7 @@ public class Game implements Jsonifiable {
 	private Player								playerTwo;
 	private int										id;
 	private static AtomicInteger	idGenerator				= new AtomicInteger(0);
-	private static final String		PACKAGE_PATH			= "cards";
+	private static final String		PACKAGE_PATH			= "cards.";
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId) {
 		// Initialize both players with starting life.
@@ -54,8 +53,13 @@ public class Game implements Jsonifiable {
 		OrderedCardCollection deckTwo = new OrderedCardCollection(Zone.DECK, playerTwo);
 
 		// format the card names from the lists.
-		firstPlayerCards.stream().map(elt -> formatName(elt)).collect(Collectors.toList());
-		secondPlayerCards.stream().map(elt -> formatName(elt)).collect(Collectors.toList());
+		for (String name : firstPlayerCards) {
+			name.replaceAll("[^A-Za-z0-9]", "");
+		}
+
+		for (String name : secondPlayerCards) {
+			name.replaceAll("[^A-Za-z0-9]", "");
+		}
 
 		// for first player
 		List<PlayableCard> fCards = new ArrayList<>();
@@ -138,21 +142,6 @@ public class Game implements Jsonifiable {
 
 		// Some sort of board constructor goes here.
 		board = new Board(deckOne, deckTwo);
-	}
-
-	/**
-	 * Takes in a card's name and produces a properly formatted name such that it
-	 * matches the card's class name (so we can use reflection).
-	 *
-	 * @param name
-	 *          the name of the card in question.
-	 * @return the string that matches the card's class (based on our naming
-	 *         conventions).
-	 */
-	private String formatName(String name) {
-		// all non alphanumeric characters replaced with empty string, including
-		// spaces.
-		return name.replaceAll("[^A-Za-z0-9]", "");
 	}
 
 	public void setBoard(Board board) {
