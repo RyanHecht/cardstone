@@ -188,7 +188,7 @@ public class Gui {
   }
 
   /**
-   * Handles file uploads.
+   * Handles deck uploads.
    * @wriley1
    */
   private class UploadHandler implements Route {
@@ -196,8 +196,23 @@ public class Gui {
     public String handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       
-      String file = qm.value("upload");
-      System.out.println("Uploading muh file " + file);
+      String deck = qm.value("deck");
+      String deckName = qm.value("name");
+      String uid = req.cookie("id");
+      System.out.println("Inserting muh deck " + deck);
+      
+      String deckSearch = "select id from deck where name = ? and user = ?;";
+      try (ResultSet rs = Db.query(deckSearch, deckName, uid)) {
+    	  if (rs.next()) {
+    		  Db.update("update deck set cards = ? where id = ?;", rs.getInt(1));
+    		  System.out.println("Overrode previous deck");
+    	  } else {
+    		  Db.update("insert into deck values(null, ?, ?, ?);", deckName, uid, deck);
+    		  System.out.println("Inserted deck");
+    	  }
+      } catch (NullPointerException | SQLException e) {
+		e.printStackTrace();
+	  } 
 
       Map<String, Object> variables = ImmutableMap.of("title",
           "Cardstone: The Shattering");
@@ -220,8 +235,6 @@ public class Gui {
 
       Map<String, Object> vars = new HashMap<>();
       vars.put("title", "Cardstone: The Shattering");
-
-
 
       // See if there's anyone with the same username/password combo
       // if there is, log them in; otherwise, do not
