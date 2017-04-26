@@ -21,6 +21,7 @@ import cardgamelibrary.Zone;
 import cards.templates.TargetsOtherCard;
 import events.CardPlayedEvent;
 import events.CreatureAttackEvent;
+import events.PlayerAttackEvent;
 import events.TurnEndEvent;
 import server.CommsWebSocket;
 
@@ -344,6 +345,31 @@ public class Game implements Jsonifiable {
 
 			// get the card.
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+
+			if (target) {
+				// targeted self.
+			} else {
+				// targeted opponent.
+				if (card instanceof Creature) {
+					// we have an attack going down.
+					Creature attacker = (Creature) card;
+
+					if (!(attacker.canAttack())) {
+						sendPlayerActionBad(playerId, "That creature can no longer attack.");
+						return;
+					}
+
+					// creature can attack, so let's attack!
+
+					PlayerAttackEvent event = new PlayerAttackEvent(board.getInactivePlayer(), attacker);
+
+					// tell player their action is valid.
+					sendPlayerActionGood(playerId);
+
+					// execute event on board.
+					board.takeAction(event);
+				}
+			}
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}

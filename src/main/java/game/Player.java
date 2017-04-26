@@ -81,12 +81,36 @@ public class Player {
 		life += heal;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o != null && this != null && o instanceof Player) {
+			return ((Player) o).getId() == this.getId();
+		}
+		return false;
+	}
+
+	/**
+	 * Checks to see if a player can pay a cost.
+	 *
+	 * @param cost
+	 *          the cost.
+	 * @return a boolean representing whether the player has sufficient resources
+	 *         to pay the cost.
+	 */
 	public boolean validateCost(ManaPool cost) {
 		return manaPool.canPay(cost);
 	}
 
+	/**
+	 * makes the player pay the specified cost.
+	 *
+	 * @param cost
+	 *          the cost to pay.
+	 */
 	public void payCost(ManaPool cost) {
-
+		// assert we can pay the cost.
+		assert (validateCost(cost));
+		manaPool.payCost(cost);
 	}
 
 	public JsonObject jsonifySelf() {
