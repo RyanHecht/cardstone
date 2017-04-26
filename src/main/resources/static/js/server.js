@@ -148,7 +148,7 @@ class Server{
                 this.chooseFrom(message.payload);
                 break;
             default:
-                console.log("Unknown message type!");
+                console.log("Unknown message type: " + message.type);
 		}
 	}
 
@@ -203,8 +203,6 @@ class Server{
         // if(data.player1.playerId != parseInt($.cookie("id"))){
             // wholeBoard.flipZones();
         // }
-        
-        
 		redrawAll();
 	}
 

@@ -59,36 +59,42 @@ public class CommsWebSocket {
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
     // These types of messages can only be operated on fully added sessions
-    if (sessions.containsKey(session)) {
+    try {
 
-      int id = sessions.get(session);
+      if (sessions.containsKey(session)) {
 
-      if (type == MessageTypeEnum.UNDERSTOOD_BOARD_STATE.ordinal()) {
-        GameManager.receiveUnderstoodBoardState(id, payload);
-      } else if (type == MessageTypeEnum.TARGETED_CARD.ordinal()) {
-        GameManager.recieveTargetedCard(id, payload);
-      } else if (type == MessageTypeEnum.TARGETED_PLAYER.ordinal()) {
-        GameManager.recieveTargetedPlayer(id, payload);
-      } else if (type == MessageTypeEnum.ATTEMPTED_TO_PLAY.ordinal()) {
-        GameManager.receiveAttemptedToPlay(id, payload);
-      } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {
-        GameManager.receiveChooseResponse(id, payload);
-      } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
+        int id = sessions.get(session);
 
-      } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
-        GameManager.receiveTurnEnd(id);
+        if (type == MessageTypeEnum.UNDERSTOOD_BOARD_STATE.ordinal()) {
+          GameManager.receiveUnderstoodBoardState(id, payload);
+        } else if (type == MessageTypeEnum.TARGETED_CARD.ordinal()) {
+          GameManager.recieveTargetedCard(id, payload);
+        } else if (type == MessageTypeEnum.TARGETED_PLAYER.ordinal()) {
+          GameManager.recieveTargetedPlayer(id, payload);
+        } else if (type == MessageTypeEnum.ATTEMPTED_TO_PLAY.ordinal()) {
+          GameManager.receiveAttemptedToPlay(id, payload);
+        } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {
+          GameManager.receiveChooseResponse(id, payload);
+        } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
+
+        } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
+          GameManager.receiveTurnEnd(id);
+        }
+      } else {
+        // ID_RESPONSE is the only thing that the client should send it if it
+        // isn't in the map yet.
+        if (type == MessageTypeEnum.ID_RESPONSE.ordinal()) {
+          // Let's get the Id and put it in the map!
+          int id = payload.get("id").getAsInt();
+          sessions.put(session, id);
+          idToSessions.put(id, session);
+          GameManager.playerIsReady(id);
+          // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
+        }
       }
-    } else {
-      // ID_RESPONSE is the only thing that the client should send it if it
-      // isn't in the map yet.
-      if (type == MessageTypeEnum.ID_RESPONSE.ordinal()) {
-        // Let's get the Id and put it in the map!
-        int id = payload.get("id").getAsInt();
-        sessions.put(session, id);
-        idToSessions.put(id, session);
-        GameManager.playerIsReady(id);
-        // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
-      }
+    } catch (Exception ex) {
+      System.out.println("ERROR in message handling");
+      ex.printStackTrace();
     }
 
   }
