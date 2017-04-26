@@ -78,7 +78,7 @@ public interface Card extends Jsonifiable {
 	default public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
-		if (c.equals(this)) {
+		if (c.equals(this) && z == Zone.HAND) {
 			System.out.println("mebeb asd");
 			// pay cost of the card.
 			getOwner().payCost(getCost());
@@ -99,7 +99,8 @@ public interface Card extends Jsonifiable {
 	 */
 	default public Effect onThisPlayed(Card c, Zone z) {
 		// make sure this only triggers if c really is this card.
-		assert (c.equals(this));
+		// and if the card is in your hand.
+		assert (c.equals(this) && z == Zone.HAND);
 		return EmptyEffect.create();
 	}
 
