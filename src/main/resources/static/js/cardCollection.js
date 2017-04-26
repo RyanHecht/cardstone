@@ -141,7 +141,7 @@ class cardCollection extends drawableZone{
 			drop: function( event, ui ) {
 				$( this )
 				  .addClass( "cardSelected" );
-				  server.cardTargeted(ui.draggable,$(this));
+				  server.cardTargeted(ui.draggable.attr("id"),$(this).attr("id"));
 			},
 			greedy:true
 		})
