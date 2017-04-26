@@ -33,7 +33,7 @@ class cardCacher{
 	}
     
     repairCardList(cards){
-        for(let card of zone.cards){
+        for(let card of cards){
             this.repairCard(card);
         }
     }
