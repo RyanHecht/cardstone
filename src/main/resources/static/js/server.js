@@ -190,19 +190,20 @@ class Server{
 	}
 
 	boardReceived(data){
+        if(data.player1.playerId != parseInt($.cookie("id"))){
+            wholeBoard.flipTry();
+        }
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
         if(data.player1.playerId != parseInt($.cookie("id"))){
-            wholeBoard.flipZones();
+            wholeBoard.flipFeatures();
         }
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
         console.log(data.player1, $.cookie("id"));
-        // if(data.player1.playerId != parseInt($.cookie("id"))){
-            // wholeBoard.flipZones();
-        // }
+        
 		redrawAll();
 	}
 
