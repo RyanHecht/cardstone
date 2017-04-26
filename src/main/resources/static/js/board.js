@@ -48,7 +48,7 @@ class board{
     }
     
     flipTry(){
-        if(!this.flipped){
+        if(!this.isFlipped){
             this.flipNow();
         }
     }
