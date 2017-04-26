@@ -112,7 +112,12 @@ public class Board implements Jsonifiable {
 				// when we handle an event we want to put
 				// all effects it produces onto the queue.
 				Event e = eventQueue.poll();
+
 				handleEvent(e);
+
+				// TODO go over logic in how changing active player here will work with
+				// cards that might depend on that info. Could be a mistake to do that
+				// here.
 				if (e.getType() == EventType.TURN_END) {
 					// switch the active player.
 					if (activePlayer.getPlayerType() == PlayerType.PLAYER_ONE) {
@@ -126,6 +131,7 @@ public class Board implements Jsonifiable {
 					// give player who is starting turn their resources!
 					activePlayer.startTurn();
 				}
+
 			} else {
 				// dead creatures are cleaned up after all events have processed.
 				// should we handle all effects from an event immediately?
@@ -253,7 +259,7 @@ public class Board implements Jsonifiable {
 		case PLAYER_TWO:
 			switch (cards.getZone()) {
 			case CREATURE_BOARD:
-				// TODO enfore some sort of check here to ensure
+				// TODO enforce some sort of check here to ensure
 				// everything is a creature? I mean we're not gonna
 				// use this in the logic, it's only for testing...
 				creatureTwo = cards;

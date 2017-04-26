@@ -8,6 +8,7 @@ import cards.StubCreature;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import game.Game;
+import game.GameManager;
 import game.Player;
 import game.PlayerType;
 import java.io.IOException;
@@ -63,15 +64,15 @@ public class CommsWebSocket {
       int id = sessions.get(session);
 
       if (type == MessageTypeEnum.UNDERSTOOD_BOARD_STATE.ordinal()) {
-
+        GameManager.receiveUnderstoodBoardState(id, payload);
       } else if (type == MessageTypeEnum.TARGETED_CARD.ordinal()) {
-
+        GameManager.recieveTargetedCard(id, payload);
       } else if (type == MessageTypeEnum.TARGETED_PLAYER.ordinal()) {
-
+        GameManager.recieveTargetedPlayer(id, payload);
       } else if (type == MessageTypeEnum.ATTEMPTED_TO_PLAY.ordinal()) {
-
+        GameManager.receiveAttemptedToPlay(id, payload);
       } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {
-
+        GameManager.receiveChooseResponse(id, payload);
       } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
 
       } else if (type == MessageTypeEnum.TURN_END.ordinal()) {

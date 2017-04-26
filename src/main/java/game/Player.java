@@ -85,6 +85,10 @@ public class Player {
 		return manaPool.canPay(cost);
 	}
 
+	public void payCost(ManaPool cost) {
+
+	}
+
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("health", life);

@@ -78,8 +78,26 @@ public class ManaPool {
 		}
 		return (this.getResources() >= expense.getResources());
 	}
-	
-	public JsonObject jsonifySelf(){
+
+	/**
+	 * Pays the cost of a ManaPool from this ManaPool.
+	 *
+	 * @param cost
+	 *          the ManaPool we are using this pool to pay.
+	 */
+	public void payCost(ManaPool cost) {
+		// should only call this if we can pay the cost.
+		assert (this.canPay(cost));
+
+		for (ElementType et : ElementType.values()) {
+			// for a given element decrement this pool's value by the value in cost.
+			this.setElement(et, this.getElement(et) - cost.getElement(et));
+		}
+		// decrement resources.
+		this.setResources(this.getResources() - cost.getResources());
+	}
+
+	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("resources", resources);
 		result.addProperty("fire", elementMap.get(ElementType.FIRE));

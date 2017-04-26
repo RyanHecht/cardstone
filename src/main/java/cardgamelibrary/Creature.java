@@ -2,6 +2,8 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import effects.CardDamageEffect;
+import effects.EmptyEffect;
 import game.Player;
 
 public class Creature extends PlayableCard {
@@ -37,6 +39,16 @@ public class Creature extends PlayableCard {
 		return attacks;
 	}
 
+	/**
+	 * Tells you if a given creature can still attack.
+	 *
+	 * @return a boolean representing whether or not the creature can still
+	 *         attack.
+	 */
+	public boolean canAttack() {
+		return attacks > 0;
+	}
+
 	public void takeDamage(int damage, Card src) {
 		setHealth(getHealth() - damage);
 	}
@@ -62,6 +74,19 @@ public class Creature extends PlayableCard {
 	 */
 	public boolean isDead() {
 		return getHealth() <= 0;
+	}
+
+	@Override
+	public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
+		if (attacker.equals(this)) {
+			// decrement the number of times it can attack.
+			attacker.setAttacks(attacker.getNumAttacks() - 1);
+			return new CardDamageEffect(attacker, target, target.getAttack());
+		}
+		if (target.equals(this)) {
+			return new CardDamageEffect(target, attacker, attacker.getAttack());
+		}
+		return EmptyEffect.create();
 	}
 
 	@Override

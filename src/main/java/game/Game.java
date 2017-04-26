@@ -19,6 +19,7 @@ import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import cards.templates.TargetsOtherCard;
+import events.CardPlayedEvent;
 import events.CreatureAttackEvent;
 import events.TurnEndEvent;
 import server.CommsWebSocket;
@@ -188,6 +189,183 @@ public class Game implements Jsonifiable {
 	 */
 	public boolean inGame(int playerId) {
 		return (playerOne.getId() == playerId) || (playerTwo.getId() == playerId);
+	}
+
+	/**
+	 * Checks to see if it's a player with a certain id's turn.
+	 *
+	 * @param playerId
+	 *          the player id.
+	 * @return a boolean representing whether the the player with the input id is
+	 *         the current active player. Outputs false if the input playerId is
+	 *         not in the game.
+	 */
+	public boolean isTurn(int playerId) {
+		return inGame(playerId) && board.getActivePlayer().getId() == playerId;
+	}
+
+	/**
+	 * Used to send a message to a player saying their action was valid.
+	 *
+	 * @param playerId
+	 *          the id of the player we are sending the message to.
+	 */
+	private void sendPlayerActionGood(int playerId) {
+		try {
+			CommsWebSocket.sendActionOk(playerId);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Used to send messages to players telling them their actions are bad.
+	 *
+	 * @param playerId
+	 *          the id of the player we are sending a message to.
+	 * @param message
+	 *          the message we are sending them.
+	 */
+	private void sendPlayerActionBad(int playerId, String message) {
+		try {
+			CommsWebSocket.sendActionBad(playerId, message);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Handles receiving turn end inputs from front end.
+	 *
+	 * @param userInput
+	 *          a JsonObject representing the user's input.
+	 * @param playerId
+	 *          the id of the player who sent the action.
+	 */
+	public void handleTurnend(JsonObject userInput, int playerId) {
+		if (!(isTurn(playerId))) {
+			// player acting out of turn.
+			sendPlayerActionBad(playerId, "Acting out of turn.");
+		} else {
+			sendPlayerActionGood(playerId);
+			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
+			board.takeAction(event);
+		}
+	}
+
+	/**
+	 * Handles receiving card targeted inputs from front end.
+	 *
+	 * @param userInput
+	 *          a JsonObject representing the user's input.
+	 * @param playerId
+	 *          the id of the player who sent the action.
+	 */
+	public void handleCardTargeted(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+
+			Card targetter = board.getCardById(userInput.get("IID1").getAsInt());
+			Card targetee = board.getCardById(userInput.get("IID2").getAsInt());
+
+			// check to see if we can pay the card's cost.
+			if (!(board.getActivePlayer().validateCost(targetter.getCost()))) {
+				sendPlayerActionBad(playerId, "Cannot play card, insufficient resources.");
+				return;
+			}
+
+			if ((targetter instanceof Creature) && (targetee instanceof Creature)) {
+				// in this case we have an attack.
+
+				Creature attacker = (Creature) targetter;
+				Creature target = (Creature) targetee;
+
+				if (attacker.getOwner().getId() != playerId) {
+					sendPlayerActionBad(playerId, "Can't attack using an opponents creature!");
+					return;
+				}
+
+				if (target.getOwner().getId() == playerId) {
+					sendPlayerActionBad(playerId, "Can't attack your own creature!");
+					return;
+				}
+
+				// at this point we know the attacker belongs to the player who sent the
+				// action and the target
+				// belongs to the player who didn't send the action (the opponent).
+
+				if (!(attacker.canAttack())) {
+					sendPlayerActionBad(playerId, "Creature can't attack anymore!");
+					return;
+				}
+
+				// at this point we know the event is valid.
+				CreatureAttackEvent event = new CreatureAttackEvent(attacker, target);
+
+				// tell player their action was valid.
+				sendPlayerActionGood(playerId);
+
+				// execute action on the board.
+				board.takeAction(event);
+
+			} else if (targetter instanceof TargetsOtherCard) {
+				// we have some sort of card on card action here son.
+
+				// the targetted card wasn't a valid target.
+				if (!(((TargetsOtherCard) targetter).isValidTarget(targetee))) {
+					sendPlayerActionBad(playerId, "Invalid target!");
+					return;
+				}
+
+			} else {
+				// well the card that attempted to target something isn't allowed to
+				// target stuff. Error time!
+				sendPlayerActionBad(playerId, "The card you attempted to use to target something isn't allowed to do that.");
+			}
+		} else {
+			// player acting out of turn.
+			sendPlayerActionBad(playerId, "Acting out of turn.");
+		}
+	}
+
+	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+
+		} else {
+			sendPlayerActionBad(playerId, "Acting out of turn.");
+		}
+	}
+
+	public void handleCardPlayed(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+			// grab relevant card.
+			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+			if (!(board.getActivePlayer().validateCost(card.getCost()))) {
+				// in this case they can't play the card.
+				sendPlayerActionBad(playerId, "Cannot pay card's cost.");
+				return;
+			}
+			Zone z;
+			if (card instanceof Creature) {
+				z = Zone.CREATURE_BOARD;
+			} else if (card instanceof SpellCard) {
+				z = Zone.GRAVE;
+			} else {
+				z = Zone.AURA_BOARD;
+			}
+
+			// create event representing CardPlayedEvent
+			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
+					board.getOcc(board.getActivePlayer(), z));
+
+			// tell player action was ok.
+			sendPlayerActionGood(playerId);
+
+			// execute event on board.
+			board.takeAction(event);
+		} else {
+			sendPlayerActionBad(playerId, "Acting out of turn.");
+		}
 	}
 
 	/**

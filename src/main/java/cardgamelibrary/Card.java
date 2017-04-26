@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import cards.templates.TargetsOtherCard;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -75,6 +76,29 @@ public interface Card extends Jsonifiable {
 
 	// specific behaviors based on when certain cards are played
 	default public Effect onCardPlayed(Card c, Zone z) {
+		// cards that have effects that trigger when THEY are played activate stuff
+		// via this.
+		if (c.equals(this)) {
+			// pay cost of the card.
+			getOwner().payCost(getCost());
+			// return effect specific to this card being played!
+			return onThisPlayed(c, z);
+		}
+		return EmptyEffect.create();
+	}
+
+	/**
+	 * Specific behaviors based on when THIS specific card is played.
+	 *
+	 * @param c
+	 *          this card!
+	 * @param z
+	 *          the zone this card is in.
+	 * @return an effect this card produces when it's played.
+	 */
+	default public Effect onThisPlayed(Card c, Zone z) {
+		// make sure this only triggers if c really is this card.
+		assert (c.equals(this));
 		return EmptyEffect.create();
 	}
 
@@ -95,6 +119,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when a card targets another card
+	default public Effect onCardTarget(TargetsOtherCard targetter, Card target, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	// creature attacks another creature
 	default public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
 		return EmptyEffect.create();
@@ -102,6 +131,18 @@ public interface Card extends Jsonifiable {
 
 	// creature attacks player
 	default public Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when a creature's attack is changed.
+	// note that amtChange can be negative or positive.
+	default public Effect onAttackChange(Creature changed, int amtChange, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when a creature's health is changed.
+	// note that amtChange can be negative or positive.
+	default public Effect onHealthChange(Creature changed, int amtChange, Zone z) {
 		return EmptyEffect.create();
 	}
 
