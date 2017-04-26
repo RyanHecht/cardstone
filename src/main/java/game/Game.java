@@ -19,6 +19,7 @@ import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import cards.templates.TargetsOtherCard;
+import cards.templates.TargetsPlayer;
 import events.CardPlayedEvent;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
@@ -347,7 +348,7 @@ public class Game implements Jsonifiable {
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
 
 			if (target) {
-				// targeted self.
+				// TODO targeted self.
 			} else {
 				// targeted opponent.
 				if (card instanceof Creature) {
@@ -368,6 +369,8 @@ public class Game implements Jsonifiable {
 
 					// execute event on board.
 					board.takeAction(event);
+				} else if (card instanceof TargetsPlayer) {
+					// TODO Targeted opposing player.
 				}
 			}
 		} else {

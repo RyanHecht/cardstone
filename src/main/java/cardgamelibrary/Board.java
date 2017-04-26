@@ -31,6 +31,8 @@ public class Board implements Jsonifiable {
 	Queue<Event>									eventQueue;
 	Queue<Effect>									effectQueue;
 
+	private static final int			STARTING_HAND_SIZE	= 6;
+
 	// player one stuff;
 	private OrderedCardCollection	deckOne;
 	private OrderedCardCollection	handOne;
@@ -46,7 +48,7 @@ public class Board implements Jsonifiable {
 	private OrderedCardCollection	creatureTwo;
 
 	// everything in the game;
-	List<OrderedCardCollection>		cardsInGame	= new ArrayList<>();
+	List<OrderedCardCollection>		cardsInGame					= new ArrayList<>();
 
 	// currently active player.
 	private Player								activePlayer;
@@ -83,12 +85,15 @@ public class Board implements Jsonifiable {
 		cardsInGame.add(creatureOne);
 		cardsInGame.add(creatureTwo);
 
-		// decide starting player
+		// decide starting player.
 		if (Math.random() > 0.5) {
 			activePlayer = deckOne.getPlayer();
 		} else {
 			activePlayer = deckTwo.getPlayer();
 		}
+
+		// set up starting hands.
+		assignStartingHands();
 	}
 
 	/**
@@ -102,7 +107,7 @@ public class Board implements Jsonifiable {
 
 	/**
 	 * Gets the inactive player.
-	 * 
+	 *
 	 * @return the inactive player.
 	 */
 	public Player getInactivePlayer() {
@@ -200,6 +205,25 @@ public class Board implements Jsonifiable {
 				// the queue.
 				effectQueue.add(e);
 			}
+		}
+	}
+
+	/**
+	 * Used to assign players their starting hands.
+	 */
+	private void assignStartingHands() {
+		Iterator<Card> itOne = deckOne.iterator();
+		Iterator<Card> itTwo = deckTwo.iterator();
+
+		int i = 0;
+		while (i < STARTING_HAND_SIZE) {
+			if (itOne.hasNext()) {
+				handOne.add(itOne.next());
+			}
+			if (itTwo.hasNext()) {
+				handTwo.add(itTwo.next());
+			}
+			i++;
 		}
 	}
 
