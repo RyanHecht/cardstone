@@ -193,6 +193,7 @@ class Server{
         if(data.player1.playerId != parseInt($.cookie("id"))){
             console.log($.cookie("id"),data.player1.playerId);
             wholeBoard.flipNow();
+            wholeBoard.flip();
         }
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
@@ -204,6 +205,7 @@ class Server{
         if(data.player1.playerId != parseInt($.cookie("id"))){
             console.log($.cookie("id"),data.player1.playerId);
             wholeBoard.flip();
+            wholeBoard.flipNow();
         }
         
         
