@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
@@ -18,6 +19,7 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import cards.templates.PlayerChoosesCards;
 import cards.templates.TargetsOtherCard;
 import cards.templates.TargetsPlayer;
 import events.CardPlayedEvent;
@@ -34,6 +36,7 @@ import server.CommsWebSocket;
  */
 public class Game implements Jsonifiable {
 	private static final int			PLAYER_START_LIFE	= 30;
+	private GameState							state							= GameState.IDLE;
 	private Board									board;
 	private Player								playerOne;
 	private Player								playerTwo;
@@ -153,6 +156,23 @@ public class Game implements Jsonifiable {
 		this.board = board;
 	}
 
+	/**
+	 * gets the id of the player who ISN'T the player w/the input id.
+	 * 
+	 * @param playerId
+	 *          the id of the player we're trying to find the opponent of.
+	 * @return the opposing player's id, or -1 if the input id doesn't belong to
+	 *         either player.
+	 */
+	public int getOpposingPlayerId(int playerId) {
+		if (playerOne.getId() == playerId) {
+			return playerTwo.getId();
+		} else if (playerTwo.getId() == playerId) {
+			return playerOne.getId();
+		}
+		return -1;
+	}
+
 	public void startGame() {
 		while (playerOne.getLife() > 0 && playerTwo.getLife() > 0) {
 			// if neither player has 0 life the game goes on.
@@ -199,6 +219,16 @@ public class Game implements Jsonifiable {
 	 */
 	public boolean isTurn(int playerId) {
 		return inGame(playerId) && board.getActivePlayer().getId() == playerId;
+	}
+
+	/**
+	 * Used to change the state of the game.
+	 *
+	 * @param newState
+	 *          the new state of the game.
+	 */
+	public void setState(GameState newState) {
+		state = newState;
 	}
 
 	/**
@@ -261,6 +291,19 @@ public class Game implements Jsonifiable {
 			// player acting out of turn.
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		} else {
+
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				String message;
+				if (state == GameState.AWAITING_CHOICE) {
+					message = "Please make a choice from the presented cards!";
+				} else {
+					message = "Please select a target!";
+				}
+				sendPlayerActionBad(playerId, message);
+				return;
+			}
 			sendPlayerActionGood(playerId);
 			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
 			board.takeAction(event);
@@ -429,6 +472,33 @@ public class Game implements Jsonifiable {
 				CommsWebSocket.sendTargetRequest(playerId);
 				return;
 			}
+
+			// the user must make some sort of choice here.
+			if (card instanceof PlayerChoosesCards) {
+				// get possible options.
+				List<Card> options = ((PlayerChoosesCards) card).getOptions(board);
+
+				// create JsonObject to send to front end for user to make a choice.
+				JsonObject result = new JsonObject();
+				result.addProperty("size", options.size());
+				List<JsonObject> cardObjects = new ArrayList<>();
+				System.out.println("Number of Options: " + options.size());
+				for (Card c : options) {
+					System.out.println("card checked");
+					cardObjects.add(c.jsonifySelf());
+				}
+				Gson gson = new Gson();
+				result.add("cards", gson.toJsonTree(cardObjects));
+
+				// send to front end.
+				try {
+					CommsWebSocket.sendChooseRequest(playerId, result);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 			Zone z;
 			if (card instanceof Creature) {
 				z = Zone.CREATURE_BOARD;

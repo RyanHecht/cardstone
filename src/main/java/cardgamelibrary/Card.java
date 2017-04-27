@@ -153,6 +153,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when cards are chosen by the player through a PlayerChoosesCard situation.
+	default public Effect onCardChosen(Card chooser, Card chosen, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	@Override
 	default JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
