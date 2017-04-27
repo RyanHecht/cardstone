@@ -158,7 +158,7 @@ public class Game implements Jsonifiable {
 
 	/**
 	 * gets the id of the player who ISN'T the player w/the input id.
-	 * 
+	 *
 	 * @param playerId
 	 *          the id of the player we're trying to find the opponent of.
 	 * @return the opposing player's id, or -1 if the input id doesn't belong to
@@ -386,6 +386,8 @@ public class Game implements Jsonifiable {
 					return;
 				}
 
+				// targetted card was a valid card.
+
 			} else {
 				// well the card that attempted to target something isn't allowed to
 				// target stuff. Error time!
@@ -461,6 +463,21 @@ public class Game implements Jsonifiable {
 		if (isTurn(playerId)) {
 			// grab relevant card.
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+
+			// check to see if game is in a state where cards can be played.
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				String message;
+				if (state == GameState.AWAITING_CHOICE) {
+					message = "Please make a choice from the presented cards!";
+				} else {
+					message = "Please select a target!";
+				}
+				sendPlayerActionBad(playerId, message);
+				return;
+			}
+
 			if (!(board.getActivePlayer().validateCost(card.getCost()))) {
 				// in this case they can't play the card.
 				sendPlayerActionBad(playerId, "Cannot pay card's cost.");

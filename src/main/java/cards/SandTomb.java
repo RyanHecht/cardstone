@@ -36,7 +36,7 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 	}
 
 	@Override
-	public Effect onTargetedPlay(Card target) {
+	public Effect impactTarget(Card target) {
 		assert isValidTarget(target);
 		Creature tomb = new Tomb(target, getOwner());
 		return (Board board) -> {
