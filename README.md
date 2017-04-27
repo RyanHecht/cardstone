@@ -1,10 +1,10 @@
 # cs0320 Term Project
 
-**Team Members:** _Fill this in!_
+**Team Members:** jpattiz, knimmaga, rhecht, wriley1
 
 **Project Idea:** A Player vs. Player Collectable Card Game
 
-**Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
+**Mentor TA:** Nick DeMarco, nicholas_demarco@brown.edu
 
 ## Project Requirements
 
