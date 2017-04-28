@@ -79,6 +79,8 @@ public class CommsWebSocket {
 
         } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
           GameManager.receiveTurnEnd(id);
+        } else if (type == MessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
+          GameManager.receivePlayerChat(id, payload);
         }
       } else {
         // ID_RESPONSE is the only thing that the client should send it if it
@@ -197,6 +199,14 @@ public class CommsWebSocket {
     obj.addProperty("message", message);
     System.out.println("Sending message " + message);
     sendMessage(userId, MessageTypeEnum.TEXT_MESSAGE, obj);
+  }
+
+  public static void sendChatMessage(int userId, String message)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("message", message);
+    System.out.println("Sending chat message: " + message);
+    sendMessage(userId, MessageTypeEnum.RECEIVE_CHAT, obj);
   }
 
   public static void closeSession(int userId) {

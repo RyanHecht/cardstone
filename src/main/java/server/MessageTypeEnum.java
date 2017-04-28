@@ -64,6 +64,14 @@ public enum MessageTypeEnum {
 
   // Send a textual message to the client (Server -> Client)
   // 15
-  TEXT_MESSAGE
+  TEXT_MESSAGE,
+
+  // Player sends an in-game chat message (Client -> Server)
+  // 16
+  PLAYER_SEND_CHAT,
+
+  // Server alerts player of new chat message (Server -> Client)
+  // 17
+  RECEIVE_CHAT
 
 }

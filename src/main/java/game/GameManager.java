@@ -85,6 +85,19 @@ public class GameManager {
     }
   }
 
+  public static void receivePlayerChat(int playerId, JsonObject message) {
+    String chat = message.get("message").getAsString();
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      int idToSend = game.getOpposingPlayerId(playerId);
+      try {
+        CommsWebSocket.sendChatMessage(idToSend, chat);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   public static void playerIsReady(int uId) {
     try {
       CommsWebSocket

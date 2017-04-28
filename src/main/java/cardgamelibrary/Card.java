@@ -3,6 +3,7 @@ package cardgamelibrary;
 import com.google.gson.JsonObject;
 
 import cards.templates.TargetsOtherCard;
+import cards.templates.TargetsPlayer;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -126,6 +127,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when a card targets a player
+	default public Effect onPlayerTarget(TargetsPlayer targetter, Player target, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	// creature attacks another creature
 	default public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
 		return EmptyEffect.create();
@@ -150,6 +156,11 @@ public interface Card extends Jsonifiable {
 
 	// when a player gains elemental resources.
 	default public Effect onElementGain(Player player, ElementType elem, int amount, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when cards are chosen by the player through a PlayerChoosesCard situation.
+	default public Effect onCardChosen(Card chooser, Card chosen, Zone z) {
 		return EmptyEffect.create();
 	}
 

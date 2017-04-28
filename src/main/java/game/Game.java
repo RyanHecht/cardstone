@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
@@ -18,11 +19,14 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import cards.templates.PlayerChoosesCards;
 import cards.templates.TargetsOtherCard;
 import cards.templates.TargetsPlayer;
 import events.CardPlayedEvent;
+import events.CardTargetedEvent;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
+import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
 import server.CommsWebSocket;
 
@@ -34,6 +38,7 @@ import server.CommsWebSocket;
  */
 public class Game implements Jsonifiable {
 	private static final int			PLAYER_START_LIFE	= 30;
+	private GameState							state							= GameState.IDLE;
 	private Board									board;
 	private Player								playerOne;
 	private Player								playerTwo;
@@ -153,6 +158,23 @@ public class Game implements Jsonifiable {
 		this.board = board;
 	}
 
+	/**
+	 * gets the id of the player who ISN'T the player w/the input id.
+	 *
+	 * @param playerId
+	 *          the id of the player we're trying to find the opponent of.
+	 * @return the opposing player's id, or -1 if the input id doesn't belong to
+	 *         either player.
+	 */
+	public int getOpposingPlayerId(int playerId) {
+		if (playerOne.getId() == playerId) {
+			return playerTwo.getId();
+		} else if (playerTwo.getId() == playerId) {
+			return playerOne.getId();
+		}
+		return -1;
+	}
+
 	public void startGame() {
 		while (playerOne.getLife() > 0 && playerTwo.getLife() > 0) {
 			// if neither player has 0 life the game goes on.
@@ -202,6 +224,20 @@ public class Game implements Jsonifiable {
 	}
 
 	/**
+	 * Used to tell the game to wait for a choice input from the user.
+	 */
+	public void lockState() {
+		state = GameState.AWAITING_CHOICE;
+	}
+
+	/**
+	 * Used to tell the game to stop waiting for a choice input.
+	 */
+	public void unlockState() {
+		state = GameState.IDLE;
+	}
+
+	/**
 	 * Used to send a message to a player saying their action was valid.
 	 *
 	 * @param playerId
@@ -232,6 +268,9 @@ public class Game implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Sends the board state to both players in the game.
+	 */
 	private void sendWholeBoardToBoth() {
 		try {
 			CommsWebSocket.sendWholeBoardSate(this, playerOne.getId());
@@ -261,6 +300,13 @@ public class Game implements Jsonifiable {
 			// player acting out of turn.
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		} else {
+
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
 			sendPlayerActionGood(playerId);
 			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
 			board.takeAction(event);
@@ -289,12 +335,20 @@ public class Game implements Jsonifiable {
 	public void handleCardTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
+
 			Card targetter = board.getCardById(userInput.get("IID1").getAsInt());
 			Card targetee = board.getCardById(userInput.get("IID2").getAsInt());
 
-			// check to see if we can pay the card's cost.
-			if (!(board.getActivePlayer().validateCost(targetter.getCost()))) {
-				sendPlayerActionBad(playerId, "Cannot play card, insufficient resources.");
+			if (!(targetter.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
 				return;
 			}
 
@@ -337,12 +391,30 @@ public class Game implements Jsonifiable {
 			} else if (targetter instanceof TargetsOtherCard) {
 				// we have some sort of card on card action here son.
 
-				// the targetted card wasn't a valid target.
-				if (!(((TargetsOtherCard) targetter).isValidTarget(targetee))) {
+				// check to see if we can pay the card's cost.
+				if (!(board.getActivePlayer().validateCost(targetter.getCost()))) {
+					sendPlayerActionBad(playerId, "Cannot play card, insufficient resources.");
+					return;
+				}
+
+				// the targeted card wasn't a valid target.
+				if (!(((TargetsOtherCard) targetter).cardValidTarget(targetee))) {
 					sendPlayerActionBad(playerId, "Invalid target!");
 					return;
 				}
 
+				// targeted card was a valid card.
+				// construct appropriate event.
+				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee);
+
+				// tell player the action was ok.
+				sendPlayerActionGood(playerId);
+
+				// execute action on board.
+				board.takeAction(event);
+
+				// send board to both players.
+				sendWholeBoardToBoth();
 			} else {
 				// well the card that attempted to target something isn't allowed to
 				// target stuff. Error time!
@@ -364,6 +436,14 @@ public class Game implements Jsonifiable {
 	 */
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
+
 			// this is true if the target player is the player who is acting and
 			// false if the target player is the player who is not acting.
 			boolean target = userInput.get("self").getAsBoolean();
@@ -371,8 +451,40 @@ public class Game implements Jsonifiable {
 			// get the card.
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
 
+			if (!(card.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
+				return;
+			}
+
 			if (target) {
 				// TODO targeted self.
+				if (card instanceof TargetsPlayer) {
+					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
+						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
+						return;
+					}
+
+					if (!(((TargetsPlayer) card).playerValidTarget(board.getActivePlayer()))) {
+						sendPlayerActionBad(playerId, "You can't target yourself with that card.");
+						return;
+					}
+
+					// construct event.
+					PlayerTargetedEvent event = new PlayerTargetedEvent((TargetsPlayer) card, board.getActivePlayer());
+
+					// tell player action was good.
+					sendPlayerActionGood(playerId);
+
+					// execute event.
+					board.takeAction(event);
+
+					// send board.
+					sendWholeBoardToBoth();
+				} else {
+					sendPlayerActionBad(playerId, "You can't target yourself with that card.");
+				}
 			} else {
 				// targeted opponent.
 				if (card instanceof Creature) {
@@ -398,10 +510,56 @@ public class Game implements Jsonifiable {
 					sendWholeBoardToBoth();
 				} else if (card instanceof TargetsPlayer) {
 					// TODO Targeted opposing player.
+					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
+						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
+						return;
+					}
+
+					if (!(((TargetsPlayer) card).playerValidTarget(board.getInactivePlayer()))) {
+						sendPlayerActionBad(playerId, "You can't target your opponent with that card.");
+						return;
+					}
+
+					// construct event.
+					PlayerTargetedEvent event = new PlayerTargetedEvent((TargetsPlayer) card, board.getInactivePlayer());
+
+					// tell player action was good.
+					sendPlayerActionGood(playerId);
+
+					// execute event.
+					board.takeAction(event);
+
+					// send board.
+					sendWholeBoardToBoth();
+				} else {
+					sendPlayerActionBad(playerId, "You can't target a player with that card.");
 				}
 			}
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
+		}
+	}
+
+	/**
+	 * Handles users choosing a card from some list we sent them.
+	 *
+	 * @param userInput
+	 * @param playerId
+	 */
+	public void handleChosen(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+			// in this case, since we only enter this state if a choose request is
+			// occurring, the user has responded.
+
+			// TODO retrieve card or list of cards that user has chosen and create
+			// events that reflect them .
+
+			// done responding to choose request so change game state again.
+			unlockState();
+		} else {
+			// yeah i'm not sure how this would even happen but better safe than
+			// sorry.
+			sendPlayerActionBad(playerId, "Acting our of turn.");
 		}
 	}
 
@@ -418,6 +576,22 @@ public class Game implements Jsonifiable {
 		if (isTurn(playerId)) {
 			// grab relevant card.
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+
+			// check to see if game is in a state where cards can be played.
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
+
+			if (!(card.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
+				return;
+			}
+
 			if (!(board.getActivePlayer().validateCost(card.getCost()))) {
 				// in this case they can't play the card.
 				sendPlayerActionBad(playerId, "Cannot pay card's cost.");
@@ -429,6 +603,36 @@ public class Game implements Jsonifiable {
 				CommsWebSocket.sendTargetRequest(playerId);
 				return;
 			}
+
+			// the user must make some sort of choice here.
+			if (card instanceof PlayerChoosesCards) {
+				// get possible options.
+				List<Card> options = ((PlayerChoosesCards) card).getOptions(board);
+
+				// create JsonObject to send to front end for user to make a choice.
+				JsonObject result = new JsonObject();
+				result.addProperty("size", options.size());
+				List<JsonObject> cardObjects = new ArrayList<>();
+				System.out.println("Number of Options: " + options.size());
+				for (Card c : options) {
+					System.out.println("card checked");
+					cardObjects.add(c.jsonifySelf());
+				}
+				Gson gson = new Gson();
+				result.add("cards", gson.toJsonTree(cardObjects));
+
+				// send to front end.
+				try {
+					CommsWebSocket.sendChooseRequest(playerId, result);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// state should now set to awaiting response.
+				lockState();
+			}
+
 			Zone z;
 			if (card instanceof Creature) {
 				z = Zone.CREATURE_BOARD;
