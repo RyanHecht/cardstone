@@ -224,13 +224,17 @@ public class Game implements Jsonifiable {
 	}
 
 	/**
-	 * Used to change the state of the game.
-	 *
-	 * @param newState
-	 *          the new state of the game.
+	 * Used to tell the game to wait for a choice input from the user.
 	 */
-	public void setState(GameState newState) {
-		state = newState;
+	public void lockState() {
+		state = GameState.AWAITING_CHOICE;
+	}
+
+	/**
+	 * Used to tell the game to stop waiting for a choice input.
+	 */
+	public void unlockState() {
+		state = GameState.IDLE;
 	}
 
 	/**
@@ -264,6 +268,9 @@ public class Game implements Jsonifiable {
 		}
 	}
 
+	/**
+	 * Sends the board state to both players in the game.
+	 */
 	private void sendWholeBoardToBoth() {
 		try {
 			CommsWebSocket.sendWholeBoardSate(this, playerOne.getId());
@@ -297,13 +304,7 @@ public class Game implements Jsonifiable {
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other input from
 				// the user so they can't end their turn.
-				String message;
-				if (state == GameState.AWAITING_CHOICE) {
-					message = "Please make a choice from the presented cards!";
-				} else {
-					message = "Please select a target!";
-				}
-				sendPlayerActionBad(playerId, message);
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
 				return;
 			}
 			sendPlayerActionGood(playerId);
@@ -333,6 +334,13 @@ public class Game implements Jsonifiable {
 	 */
 	public void handleCardTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
 
 			Card targetter = board.getCardById(userInput.get("IID1").getAsInt());
 			Card targetee = board.getCardById(userInput.get("IID2").getAsInt());
@@ -421,6 +429,14 @@ public class Game implements Jsonifiable {
 	 */
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+
+			if (state != GameState.IDLE) {
+				// if the game state isn't idle, we are awaiting some other input from
+				// the user so they can't end their turn.
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
+
 			// this is true if the target player is the player who is acting and
 			// false if the target player is the player who is not acting.
 			boolean target = userInput.get("self").getAsBoolean();
@@ -511,6 +527,29 @@ public class Game implements Jsonifiable {
 	}
 
 	/**
+	 * Handles users choosing a card from some list we sent them.
+	 *
+	 * @param userInput
+	 * @param playerId
+	 */
+	public void handleChosen(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+			// in this case, since we only enter this state if a choose request is
+			// occurring, the user has responded.
+
+			// TODO retrieve card or list of cards that user has chosen and create
+			// events that reflect them .
+
+			// done responding to choose request so change game state again.
+			unlockState();
+		} else {
+			// yeah i'm not sure how this would even happen but better safe than
+			// sorry.
+			sendPlayerActionBad(playerId, "Acting our of turn.");
+		}
+	}
+
+	/**
 	 * Handles a card being played.
 	 *
 	 * @param userInput
@@ -528,13 +567,7 @@ public class Game implements Jsonifiable {
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other input from
 				// the user so they can't end their turn.
-				String message;
-				if (state == GameState.AWAITING_CHOICE) {
-					message = "Please make a choice from the presented cards!";
-				} else {
-					message = "Please select a target!";
-				}
-				sendPlayerActionBad(playerId, message);
+				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
 				return;
 			}
 
@@ -574,6 +607,9 @@ public class Game implements Jsonifiable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				// state should now set to awaiting response.
+				lockState();
 			}
 
 			Zone z;
