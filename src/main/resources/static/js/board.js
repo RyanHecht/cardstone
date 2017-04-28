@@ -1,15 +1,17 @@
-const HAND_1_DIV = "#hand1";
-const HAND_2_DIV = "#hand2";
-const AURA_1_DIV = "#aura1";
-const AURA_2_DIV = "#aura2";
-const CREATURE_1_DIV = "#creature1";
-const CREATURE_2_DIV = "#creature2";
+const HAND_1_DIV = ".overlayHand1";
+const HAND_2_DIV = ".overlayHand2";
+const AURA_1_DIV = ".aura1";
+const AURA_2_DIV = ".aura2";
+const CREATURE_1_DIV = ".creature1";
+const CREATURE_2_DIV = ".creature2";
 const BASE_1_DIV = "#baseRes1";
 const BASE_2_DIV = "#baseRes2";
 const MANA_1_DIV = "#mana1";
 const MANA_2_DIV = "#mana2";
 const EXPAND_1_DIV = "#onTop1";
 const EXPAND_2_DIV = "#onTop2";
+const HUD_1_DIV = ".overlayHUD1";
+const HUD_2_DIV = ".overlayHUD2";
 
 
 
@@ -100,6 +102,8 @@ class board{
 		this.allZones.set("healthRes2",new healthResZone($(BASE_2_DIV),this.features.get("p2Health"),this.features.get("p2RegRes"),this.features.get("p2Deck")));
 		this.allZones.set("p1Mana",new manaZone($(MANA_1_DIV),this.features.get("p1Mana")));
 		this.allZones.set("p2Mana",new manaZone($(MANA_2_DIV),this.features.get("p2Mana")));
+        this.allZones.set("p1HUD", new hudZone($(HUD_1_DIV),this.features.get("p1Health"),this.features.get("p1RegRes")));
+        this.allZones.set("p2HUD", new hudZone($(HUD_2_DIV),this.features.get("p2Health"),this.features.get("p2RegRes")));
 	}
 	
 	changeFeature(key,val){
@@ -112,6 +116,7 @@ class board{
 	
 	draw(){
 		for(let zone of this.allZones.values()){
+            console.log("drawing zone", zone);
 			zone.draw();
 		}
 		setupCardClick();
@@ -119,6 +124,7 @@ class board{
 	
 	forceRedraw(){
 		for(let zone of this.allZones.values()){
+            console.log("drawing zone", zone);
 			zone.forceRedraw();
 		}
 		setupCardClick();

@@ -1,0 +1,308 @@
+/*  */
+
+html{
+    background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
+	width:98%;
+	height:100%;   
+    
+}
+
+img{
+    -webkit-user-drag: none;
+    
+}
+
+body{
+	background:none;
+    overflow:hidden;
+    width:98%;
+	height:100%;
+}
+
+.tooltipHidden{
+    display : none !important;
+    opacity:0% !important;
+    visibility:hidden;
+}
+
+.boxOuter{
+     perspective: 900px;
+     height:100%;
+     width:100%;
+}
+
+.boxInner{
+    width:80%;
+	height:120%;
+    background:none;
+    transform: rotateX(40deg);
+    position:absolute;
+    top:-21%;
+    left:10%;
+}
+
+.targetCursor{
+	background-image: url("../images/targetCursor.png");
+	height:50px;
+	width:50px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:right bottom;
+	z-index:500;
+}
+
+/* .endTurn{
+	position:absolute;
+	left:0%;
+	top:0%;
+	width:100%;
+	height:50%;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	background-image: url("../images/endTurnButton.png");
+} */
+
+body .bigModal .modal-dialog {
+    width:80%;
+	max-width:80%;
+	height:80%;
+}
+
+.bigModal .modal-content {
+	background:rgba(0,0,0,0);
+	width:100%;
+	height:100%;
+	max-height:300px;
+	text-align: center;
+	border:none;
+}
+
+.bigModal .cardBox{
+	opacity:1.0;
+	margin-left:8px;
+	margin-right:8px;
+}
+
+.expandButton{
+	background-image: url("../images/expandButton.png");
+	position:absolute;
+	z-index:100;
+	bottom:3px;
+	right:3px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:right bottom;
+	height:10%;
+	width:5%;
+}
+
+.board{
+	height:100%;
+	width:100%;
+	display: inline-block;
+	position:absolute;
+	top:0%;
+	left:0%;
+    /* border: 3px solid lightblue; */
+	text-align: center;
+    box-shadow: 0 -2px 20px 5px #9ecaed;
+}
+
+.lineLeft{
+    position:absolute;
+    right:58%;
+    top:40%;
+    width:42%;
+    height:0%;
+    border: 3px solid lightblue;
+    box-shadow: 0 -2px 20px 5px #9ecaed;
+}
+
+.lineRight{
+    position:absolute;
+    right:0%;
+    top:40%;
+    width:42%;
+    height:0%;
+    border: 3px solid lightblue;
+    box-shadow: 0 -2px 20px 5px #9ecaed;
+}
+
+.lineLeftLight{
+    position:absolute;
+    right:58%;
+    top:40%;
+    width:42%;
+    height:0%;
+    border: 1px solid lightblue;
+    box-shadow: 0 -2px 20px 2px #9ecaed;
+}
+
+.lineRightLight{
+    position:absolute;
+    right:0%;
+    top:40%;
+    width:42%;
+    height:0%;
+    border: 1px solid lightblue;
+    box-shadow: 0 -2px 20px 2px #9ecaed;
+}
+
+.overlayHand1{
+    position:absolute;
+    top:75%;
+    left:20%;
+    width:80%;
+   /*  border: 3px solid yellow; */
+    height:25%;
+    z-index: 12000;
+}
+
+.overlayHand2{
+    position:absolute;
+    top:0%;
+    left:10%;
+    width:80%;
+   /*  border: 3px solid yellow; */
+    height:15%;
+    display:none;
+}
+
+.boardOverlay{
+	position:absolute;
+	top:0%;
+	left:0%;
+	z-index:100;
+	height:100%;
+	width:100%;
+}
+
+.boardSide{
+    width:100%;
+    position:absolute;
+}
+
+
+
+
+.centerClockRect{
+    position:absolute;
+    width:16%;
+    height:10%;
+    top:35%;
+    left:42%;
+    border: 3px solid lightblue;
+    box-shadow: 0 -2px 20px 5px #9ecaed;
+    background-size:contain;
+    background-position:center;
+    background-image:url("../images/EndButton.png");
+    background-repeat:no-repeat;
+}
+
+.board .zone{
+	/* border: 3px solid lightblue; */
+	text-align: center;
+}
+
+.player2{
+   width:100%;
+    height:100%;
+    position:absolute;
+    top:0%;
+    left:0%;
+}
+
+.player1{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0%;
+    left:0%;
+}
+
+.side2{
+    top:0%;
+    left:0%;
+    height:35%;
+}
+
+.side1{
+    top:45%;
+    left:0%;
+    height:40%;
+}
+
+.creature{
+    position:absolute;
+    width:80%;
+    height:100%;
+    top:0%;
+    left:0%;
+}
+
+.aura{
+    position:absolute;
+    width:20%;
+    height:100%;
+    top:0%;
+    left:80%;
+}
+
+.manaPool .manaRes{
+	height:15%;
+	display:flex;
+}
+
+.manaRes{
+	padding-left: 3%;
+	height:100%;
+	display:inline-flex;
+}
+
+.manaRes img{
+	max-height:100%;
+	object-fit:contain;
+}
+
+.board .zonegroup{
+	display: inline-block;
+}
+
+
+
+
+
+
+.boardOverlay{
+	height:100%;
+	width:100%;
+	z-index: 300;
+    pointer-events: none;
+}
+
+
+.onTop{
+	position:absolute;
+	z-index: 1000;
+	display: none;
+	height:50%;
+	width:100%;
+	text-align: center;
+	background-image: url("../images/boardBackground.jpg");
+}
+
+.resPop{
+    display:none;
+}
+
+
+#onTop1{
+	left: 0%;
+	top: 50%;
+	
+}
+#onTop2{
+	left: 0%;
+	top: 0%;
+}

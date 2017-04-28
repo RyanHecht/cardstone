@@ -15,6 +15,9 @@ let josh;
 let server;
 let cardCache;
 let isReplayMode = false;
+let mouseSystem;
+let canvasLine = new DrawnLine(0,0,0,0);
+let turnTimer;
 
 /**
 Fill a div with a list of cards, if they can fit.
@@ -27,14 +30,17 @@ Adds rows as needed up to max row count.
 
 function redrawAll(){
 	wholeBoard.forceRedraw();
+    mouseSystem.redraw();
 	setupCanvas();
+}
+
+function redrawChanged(){
+    wholeBoard.draw();
+    mouseSystem.redraw();
 }
 
 //I don't know how to kill elements from an array
 function updateAndDrawAnimations(){
-	if(animations.length > 0){
-		canvasQuery.show();
-	}
 	canvasCtx.clearRect(0,0,canvasCtx.canvas.width,canvasCtx.canvas.height);
 	for(let x = 0; x < animations.length; x++){
 		if(animations[x].length == 0){
@@ -58,10 +64,14 @@ function updateAndDrawAnimations(){
 			console.log(quedAnims);
 		}
 	}
+    if(mouseSystem.isClicked){
+        canvasCtx.lineWidth = 4;
+        canvasCtx.strokeStyle = "#ADD8E6";
+        canvasCtx.shadowColor = "white";
+        canvasCtx.shadowBlur = 10;
+        canvasLine.draw(canvasCtx);
+    }
 	window.setTimeout(updateAndDrawAnimations, UPDATE_RATE);
-	if(animations.length <= 0){
-		canvasQuery.hide();
-	}
 }
 
 function popFirst(arr){
@@ -83,7 +93,6 @@ function setupCanvas(){
     canvas.width = htmlBoard.width();
     canvas.height = htmlBoard.height();
 	$(".boardOverlay").attr('width',canvas.width);
-	canvasQuery.hide();
 };
 
 function setupBoard(){
@@ -94,8 +103,8 @@ function setupBoard(){
 	joshPool.setEarth(6);
 	joshPool.setBalance(4);
 	let smallJoshPool = new manaPool(3,'&nbsp;');
-	smallJoshPool.setEarth(1);
-	smallJoshPool.setBalance(1);
+	//smallJoshPool.setEarth(1);
+	smallJoshPool.setFire(1);
 
 	let smallSkyWhalePool = new manaPool(3,'&nbsp;');
 	let bigWhalePool = new manaPool(3,'&nbsp;');
@@ -128,7 +137,6 @@ function setupBoard(){
 	let fire = new elementCard(-17,"fire");
 	let air = new elementCard(-18,"air");
 
-	josh.setState("cardCanAttack");
 	fire.setState("cardCanPlay");
 	let back = new cardBack(-121);
 
@@ -195,7 +203,22 @@ function setupCardClick(){
     
 }
 
+function setupMouseListen(){
+    mouseSystem = new MouseManagerSystem();
+    $(document).mousemove(function(event){
+      mouseSystem.mousemoved(event);  
+    })
+    $(document).mouseup(function(event){
+       mouseSystem.mouseup(event); 
+    });
+}
+
+function prepTurnTimers(){
+    turnTimer = new TurnTimer(true,10);
+}
+
 $(document).ready(function(){
+    setupMouseListen();
 	setupCanvas();
     cardCache = new cardCacher();
 	setupBoard();
@@ -213,11 +236,11 @@ $(document).ready(function(){
 		else if(e.which == 122){
 			console.log("dong");
 			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,1);
-			redrawAll();
+			redrawChanged();
 		}
 		else if(e.which == 120){
-			animations.push(animationsMaker.getAttackAnimation(6,5).create());
-			quedAnims.push(animationsMaker.getDamagedAnimation(5).create());
+			animations.push(animationsMaker.getAttackAnimation(-6,-5).create());
+			quedAnims.push(animationsMaker.getDamagedAnimation(-5).create());
 		}
         if(isReplayMode){
             if(e.which == 37){
@@ -241,4 +264,7 @@ $(document).ready(function(){
 	wholeBoard.draw();
 	setupCardClick();
     setupServer();
+    $(".boxOuter").addClass("cursorTarget");
+    prepTurnTimers();
+    mouseSystem.redraw();
 });

@@ -35,63 +35,68 @@
 		</div>
 	  </div>
 	</div>
-	<canvas class="boardOverlay"></canvas>
-		<div class="board">
-			<div class="onTop" id="onTop2"></div>
-			<div class="onTop" id="onTop1"></div>
-			<div class="edge zonegroup" id="edge2">
-				<div class="zone infoZone" id="infoZone1"></div>
-				<div class="zone hand" id="hand2">
+	<canvas class="boardOverlay" ></canvas>
+        <div class="boxOuter" onmousedown="return false">
+            <div class="boxInner">
+                <div class="board">
+                    <div class="onTop" id="onTop2"></div>
+                    <div class="onTop" id="onTop1"></div>
+                    <div class="edge zonegroup" id="edge2">
+                        <div class="zone infoZone" id="infoZone1"></div>
+                        <div class="zone hand" id="hand2">
 
-				</div>
-				<div class="zone aura" id="aura2">
+                        </div>
+                        <div class="zone aura" id="aura2">
 
-				</div>
-			</div>
-			<div class="center zonegroup" id="center2">
-				<div class="zone creature" id="creature2">
+                        </div>
+                    </div>
+                    <div class="center zonegroup" id="center2">
+                        <div class="zone creature" id="creature2">
 
-				</div>
-				<div class="zonegroup res">
-					<div class="zone basicRes" id="baseRes2">
-						<table>
-						<tr>
-						<td class="health resDisplay" id="health2"></td>
-						<td class="deckTd"><div class="deck resDisplay" id="deck2"></div></td>
-						<td class="regRes resDisplay" id="regRes2"></td>
-						</tr>
-						</table>
-					</div>
-					<div class="zone mana manaPool resDisplay" id="mana2"></div>
-				</div>
-			</div>
-			<div class="center zonegroup" id="center1" >
-				<div class="zone creature" id="creature1"></div>
-				<div class="zonegroup res">
-					<div class="zone basicRes" id="baseRes1">
-						<table>
-						<tr>
-						<td class="health resDisplay" id="health1"></td>
-						<td class="deckTd"><div class="deck resDisplay" id="deck1"></div></td>
-						<td class="regRes resDisplay" id="regRes1"></td>
-						</tr>
-						</table>
-					</div>
-					<div class="zone mana manaPool resDisplay" id="mana1"></div>
-				</div>
-			</div>
-			<div class="edge" id="edge1">
-				<div class="zone infoZone" id="infoZone1">
-					<div class="endTurn" id="endTurnButton"></div>
-				</div>
-				<div class="zone hand" id="hand1"></div>
-				<div class="zone aura" id="aura1"></div>
-			</div>
-		</div>
+                        </div>
+                        <div class="zonegroup res">
+                            <div class="zone basicRes" id="baseRes2">
+                                <table>
+                                <tr>
+                                <td class="health resDisplay" id="health2"></td>
+                                <td class="deckTd"><div class="deck resDisplay" id="deck2"></div></td>
+                                <td class="regRes resDisplay" id="regRes2"></td>
+                                </tr>
+                                </table>
+                            </div>
+                            <div class="zone mana manaPool resDisplay" id="mana2"></div>
+                        </div>
+                    </div>
+                    <div class="center zonegroup" id="center1" >
+                        <div class="zone creature" id="creature1"></div>
+                        <div class="zonegroup res">
+                            <div class="zone basicRes" id="baseRes1">
+                                <table>
+                                <tr>
+                                <td class="health resDisplay" id="health1"></td>
+                                <td class="deckTd"><div class="deck resDisplay" id="deck1"></div></td>
+                                <td class="regRes resDisplay" id="regRes1"></td>
+                                </tr>
+                                </table>
+                            </div>
+                            <div class="zone mana manaPool resDisplay" id="mana1"></div>
+                        </div>
+                    </div>
+                    <div class="edge" id="edge1">
+                        <div class="zone infoZone" id="infoZone1">
+                            <div class="endTurn" id="endTurnButton"></div>
+                        </div>
+                        <div class="zone hand" id="hand1"></div>
+                        <div class="zone aura" id="aura1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 		<script src="js/jquery-2.1.1.js"></script>
 		<script src="js/jquery-cookie.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="js/MouseManagerSystem.js"></script>
 		<script src="js/animationsMaker.js"></script>
 		<script src="js/Enums.js"></script>
 		<script src="js/tether.min.js"></script>
