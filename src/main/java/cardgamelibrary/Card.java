@@ -3,6 +3,7 @@ package cardgamelibrary;
 import com.google.gson.JsonObject;
 
 import cards.templates.TargetsOtherCard;
+import cards.templates.TargetsPlayer;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -123,6 +124,11 @@ public interface Card extends Jsonifiable {
 
 	// when a card targets another card
 	default public Effect onCardTarget(TargetsOtherCard targetter, Card target, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	// when a card targets a player
+	default public Effect onPlayerTarget(TargetsPlayer targetter, Player target, Zone z) {
 		return EmptyEffect.create();
 	}
 

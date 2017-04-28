@@ -26,7 +26,7 @@ public class CardTargetedEvent implements Event {
 	@Override
 	public EventType getType() {
 		// TODO Auto-generated method stub
-		return EventType.CARD_TARGETTED;
+		return EventType.CARD_TARGETED;
 	}
 
 }

@@ -27,6 +27,7 @@ import events.GainElementEvent;
 import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
+import events.PlayerTargetedEvent;
 import events.StatChangeEvent;
 import events.TurnEndEvent;
 import events.TurnStartEvent;
@@ -136,8 +137,11 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case CARD_CHOSEN:
 			results = handleCardChosen((CardChosenEvent) event);
 			break;
-		case CARD_TARGETTED:
-			results = handleCardTargetted((CardTargetedEvent) event);
+		case CARD_TARGETED:
+			results = handleCardTargeted((CardTargetedEvent) event);
+			break;
+		case PLAYER_TARGETED:
+			results = handlePlayerTargeted((PlayerTargetedEvent) event);
 			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
@@ -150,10 +154,18 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return changed;
 	}
 
-	private List<Effect> handleCardTargetted(CardTargetedEvent event) {
+	private List<Effect> handleCardTargeted(CardTargetedEvent event) {
 		List<Effect> results = new LinkedList<>();
 		for (Card c : cards) {
 			results.add(c.onCardTarget(event.getTargetter(), event.getTargeted(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handlePlayerTargeted(PlayerTargetedEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onPlayerTarget(event.getTargetter(), event.getTarget(), getZone()));
 		}
 		return results;
 	}

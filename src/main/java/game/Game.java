@@ -23,8 +23,10 @@ import cards.templates.PlayerChoosesCards;
 import cards.templates.TargetsOtherCard;
 import cards.templates.TargetsPlayer;
 import events.CardPlayedEvent;
+import events.CardTargetedEvent;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
+import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
 import server.CommsWebSocket;
 
@@ -380,14 +382,24 @@ public class Game implements Jsonifiable {
 			} else if (targetter instanceof TargetsOtherCard) {
 				// we have some sort of card on card action here son.
 
-				// the targetted card wasn't a valid target.
-				if (!(((TargetsOtherCard) targetter).isValidTarget(targetee))) {
+				// the targeted card wasn't a valid target.
+				if (!(((TargetsOtherCard) targetter).cardValidTarget(targetee))) {
 					sendPlayerActionBad(playerId, "Invalid target!");
 					return;
 				}
 
-				// targetted card was a valid card.
+				// targeted card was a valid card.
+				// construct appropriate event.
+				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee);
 
+				// tell player the action was ok.
+				sendPlayerActionGood(playerId);
+
+				// execute action on board.
+				board.takeAction(event);
+
+				// send board to both players.
+				sendWholeBoardToBoth();
 			} else {
 				// well the card that attempted to target something isn't allowed to
 				// target stuff. Error time!
@@ -418,6 +430,31 @@ public class Game implements Jsonifiable {
 
 			if (target) {
 				// TODO targeted self.
+				if (card instanceof TargetsPlayer) {
+					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
+						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
+						return;
+					}
+
+					if (!(((TargetsPlayer) card).playerValidTarget(board.getActivePlayer()))) {
+						sendPlayerActionBad(playerId, "You can't target yourself with that card.");
+						return;
+					}
+
+					// construct event.
+					PlayerTargetedEvent event = new PlayerTargetedEvent((TargetsPlayer) card, board.getActivePlayer());
+
+					// tell player action was good.
+					sendPlayerActionGood(playerId);
+
+					// execute event.
+					board.takeAction(event);
+
+					// send board.
+					sendWholeBoardToBoth();
+				} else {
+					sendPlayerActionBad(playerId, "You can't target yourself with that card.");
+				}
 			} else {
 				// targeted opponent.
 				if (card instanceof Creature) {
@@ -443,6 +480,29 @@ public class Game implements Jsonifiable {
 					sendWholeBoardToBoth();
 				} else if (card instanceof TargetsPlayer) {
 					// TODO Targeted opposing player.
+					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
+						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
+						return;
+					}
+
+					if (!(((TargetsPlayer) card).playerValidTarget(board.getInactivePlayer()))) {
+						sendPlayerActionBad(playerId, "You can't target your opponent with that card.");
+						return;
+					}
+
+					// construct event.
+					PlayerTargetedEvent event = new PlayerTargetedEvent((TargetsPlayer) card, board.getInactivePlayer());
+
+					// tell player action was good.
+					sendPlayerActionGood(playerId);
+
+					// execute event.
+					board.takeAction(event);
+
+					// send board.
+					sendWholeBoardToBoth();
+				} else {
+					sendPlayerActionBad(playerId, "You can't target a player with that card.");
 				}
 			}
 		} else {
