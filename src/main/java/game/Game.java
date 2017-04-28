@@ -345,9 +345,10 @@ public class Game implements Jsonifiable {
 			Card targetter = board.getCardById(userInput.get("IID1").getAsInt());
 			Card targetee = board.getCardById(userInput.get("IID2").getAsInt());
 
-			// check to see if we can pay the card's cost.
-			if (!(board.getActivePlayer().validateCost(targetter.getCost()))) {
-				sendPlayerActionBad(playerId, "Cannot play card, insufficient resources.");
+			if (!(targetter.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
 				return;
 			}
 
@@ -389,6 +390,12 @@ public class Game implements Jsonifiable {
 				sendWholeBoardToBoth();
 			} else if (targetter instanceof TargetsOtherCard) {
 				// we have some sort of card on card action here son.
+
+				// check to see if we can pay the card's cost.
+				if (!(board.getActivePlayer().validateCost(targetter.getCost()))) {
+					sendPlayerActionBad(playerId, "Cannot play card, insufficient resources.");
+					return;
+				}
 
 				// the targeted card wasn't a valid target.
 				if (!(((TargetsOtherCard) targetter).cardValidTarget(targetee))) {
@@ -443,6 +450,13 @@ public class Game implements Jsonifiable {
 
 			// get the card.
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+
+			if (!(card.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
+				return;
+			}
 
 			if (target) {
 				// TODO targeted self.
@@ -568,6 +582,13 @@ public class Game implements Jsonifiable {
 				// if the game state isn't idle, we are awaiting some other input from
 				// the user so they can't end their turn.
 				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				return;
+			}
+
+			if (!(card.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
 				return;
 			}
 
