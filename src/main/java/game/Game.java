@@ -1,5 +1,7 @@
 package game;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import cardgamelibrary.Zone;
 import cards.templates.PlayerChoosesCards;
 import cards.templates.TargetsOtherCard;
 import cards.templates.TargetsPlayer;
+import events.CardChosenEvent;
 import events.CardPlayedEvent;
 import events.CardTargetedEvent;
 import events.CreatureAttackEvent;
@@ -45,6 +48,11 @@ public class Game implements Jsonifiable {
 	private int										id;
 	private static AtomicInteger	idGenerator				= new AtomicInteger(0);
 	private static final String		PACKAGE_PATH			= "cards.";
+
+	// used to keep track of the card that spawns a choose request so we can
+	// handle
+	// specific behavior once we get a response from the user.
+	private PlayerChoosesCards		chooserCard				= null;
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId) {
 		// Initialize both players with starting life.
@@ -551,8 +559,25 @@ public class Game implements Jsonifiable {
 			// in this case, since we only enter this state if a choose request is
 			// occurring, the user has responded.
 
+			// ensure there is some card prompting the choice saved.
+			assertNotNull(chooserCard);
+
 			// TODO retrieve card or list of cards that user has chosen and create
 			// events that reflect them .
+
+			// get card the user chose.
+			Card chosen = board.getCardById(userInput.get("IID1").getAsInt());
+
+			CardChosenEvent event = new CardChosenEvent(chooserCard, chosen);
+
+			sendPlayerActionGood(playerId);
+
+			board.takeAction(event);
+
+			sendWholeBoardToBoth();
+
+			// reset the choosing card.
+			chooserCard = null;
 
 			// done responding to choose request so change game state again.
 			unlockState();
@@ -628,6 +653,12 @@ public class Game implements Jsonifiable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				// make sure no other choosing cnard is saved.
+				assert (chooserCard == null);
+
+				// save the choosing card into the variable.
+				chooserCard = (PlayerChoosesCards) card;
 
 				// state should now set to awaiting response.
 				lockState();
