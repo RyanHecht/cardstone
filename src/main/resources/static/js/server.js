@@ -43,15 +43,15 @@ class Server{
 		// // selectedCard = cardDiv.attr("id");
 	// }
 
-	// targetChosen(cardDiv){
-		// let response = sendTargetResponse(cardDiv.getId);
-		// // if(response.valid){
-			// // inputState = IDLE;
-		// // }
-		// // else{
-			// // actionFailed(response.message);
-		// // }
-	// }
+	targetChosen(cardDiv){
+		let response = sendTargetResponse(cardDiv.getId);
+		if(response.valid){
+			inputState = IDLE;
+		}
+		else{
+			actionFailed(response.message);
+		}
+	}
 
   cardTargeted(cardID,targetID){
    const payload = {"IID1": cardID, "IID2": targetID};
@@ -76,11 +76,11 @@ class Server{
     }
 
 	constructor() {
-		// this.websocket = new WebSocket("ws://" + window.location.host + "/socket");
-		// this.websocket.server = this;
-		// this.websocket.socket = this.websocket;
-		// this.websocket.onmessage = this.onWebSocketMessage;
-		// this.websocket.onopen = this.onWebSocketOpen;
+		this.websocket = new WebSocket("ws://" + window.location.host + "/socket");
+		this.websocket.server = this;
+		this.websocket.socket = this.websocket;
+		this.websocket.onmessage = this.onWebSocketMessage;
+		this.websocket.onopen = this.onWebSocketOpen;
 
 	}
 
