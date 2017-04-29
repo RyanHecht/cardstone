@@ -1,0 +1,55 @@
+.bigCardBox{
+	width:100%;
+	height:100%;
+	font-size:16px;
+}
+
+.qtip-content{
+	height:100%;
+	width:100%;
+}
+
+
+.bigCard .name{
+	width:100%;
+	height:4%;
+}
+
+.bigCard .cost{
+	position:absolute;
+	top:6%;
+	left:0%;
+	width:100%;
+	height:5%;
+	right:100%;
+}
+
+.bigCard .imageArea{
+	width:100%;
+	height:35%;
+	overflow:hidden;
+	position:absolute;
+	top:13%;
+	left: 0%;
+	right:100%;
+}
+
+
+.bigCard .cardText{
+	position:absolute;
+	top:49%;
+	left:0%;
+	right:100%;
+	width:100%;
+	height:40%;
+}
+
+/* we color this area based on.smallCard type, and we put stats here if relevant */
+.bigCard .statArea{
+	position:absolute;
+	top:90%;
+	left:0%;
+	right:100%;
+	width:100%;
+	height:10%;
+}

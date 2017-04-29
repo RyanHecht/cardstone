@@ -2,7 +2,9 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import cards.templates.PlayerChoosesCards;
 import cards.templates.TargetsOtherCard;
+import cards.templates.TargetsPlayer;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -126,6 +128,11 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when a card targets a player
+	default public Effect onPlayerTarget(TargetsPlayer targetter, Player target, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	// creature attacks another creature
 	default public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
 		return EmptyEffect.create();
@@ -153,8 +160,13 @@ public interface Card extends Jsonifiable {
 		return EmptyEffect.create();
 	}
 
+	// when cards are chosen by the player through a PlayerChoosesCard situation.
+	default public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
+		return EmptyEffect.create();
+	}
+
 	@Override
-	default JsonObject jsonifySelf() {
+	default public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("text", this.getText());
 		result.addProperty("id", this.getId());

@@ -1,7 +1,9 @@
 html{
-
+    background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
 	width:98%;
 	height:98%;
+    color:lightblue;
+    user-select: none;
 }
 
 body{
@@ -35,6 +37,13 @@ body{
     top:0%;
     height:80%;
     width:65%;
+    text-align:center;
+}
+#progressBar{
+    width:0%;
+    height:0%;
+    border: 4px solid lightblue;
+    box-shadow: 0 -2px 20px 6px #9ecaed;
 }
 
 .pageLeft{
@@ -67,6 +76,7 @@ body{
     top:0%;
    height:80%;
    width:25%;
+   color:lightblue;
 }
 
 .deckContent{

@@ -213,6 +213,8 @@ public class Board implements Jsonifiable {
 			handleState();
 		}
 	}
+	
+	
 
 	private void handleDead() {
 		Iterator<Card> it = creatureOne.iterator();
@@ -556,9 +558,9 @@ public class Board implements Jsonifiable {
 	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
 		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
 		destination.add(c);
-		System.out.println("DOG " + start.size());
+		//System.out.println("DOG " + start.size());
 		start.remove(c);
-		System.out.println("CAT " + start.size());
+		//System.out.println("CAT " + start.size());
 		eventQueue.add(event);
 	}
 

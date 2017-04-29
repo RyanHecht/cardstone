@@ -15,6 +15,7 @@ import java.io.StringWriter;
 import lobby.LobbyHandlers;
 import logins.Gui;
 import server.CommsWebSocket;
+import server.LobbyWebSocket;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -97,6 +98,7 @@ public class Main {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.webSocket("/socket", CommsWebSocket.class);
+    Spark.webSocket("/lobbySocket", LobbyWebSocket.class);
     Spark.get("/listLobbies", new LobbyHandlers.ListLobbies());
     Spark.post("/joinLobby", new LobbyHandlers.JoinLobby());
     Spark.post("/makeLobby", new LobbyHandlers.MakeLobby());

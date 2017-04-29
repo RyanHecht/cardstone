@@ -9,6 +9,7 @@ class cardCollection extends drawableZone{
 		this.prepareForExpand();
 		this.expandInto = expandInto;
 		this.zone = div.attr("id");
+        this.count = 0;
 	}
 	
 	prepareForExpand(){
@@ -51,6 +52,7 @@ class cardCollection extends drawableZone{
 			cards.push(cache.getByIID(id));
 		}
 		this.cards = cards;
+        this.changed = true;
 	}
 	
 	forceRedraw(){
@@ -71,11 +73,11 @@ class cardCollection extends drawableZone{
 		}
 		else{
 		}
-		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 3;
+		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 12;
 		let rows = 1;
-		while(baseWidth * ($this.cards.length / rows) >= curDiv.width() * .97){
+		while(baseWidth * ($this.cards.length / rows) >= curDiv.width() * .95){
 			rows++;
-			baseWidth = ((curDiv.height() / rows) * WIDTH_RATIO) + 3;
+			baseWidth = ((curDiv.height() / rows) * WIDTH_RATIO) + 12;
 		}
 		let maxInRow = Math.ceil($this.cards.length / rows);
 		if(maxInRow == 0){
@@ -100,6 +102,7 @@ class cardCollection extends drawableZone{
 	
 	draw(){
 		this.drawInDiv(this.div);
+        this.changed = false;
 	}
 	
 	forceDrawInDiv(div){
@@ -112,12 +115,15 @@ class cardCollection extends drawableZone{
 			this.changed = false;
 			div.empty();
 			this.fillDiv(div);
-			this.prepareToolTips(div);
-			this.sizeCards(div);
-            if(this.expandInto != null){
-                this.div.append('<div class="expandButton"></div>');
-                this.prepareForExpand();
+            if(tooltipDisplay){
+                this.prepareToolTips(div);
             }
+            this.prepareHover();
+			this.sizeCards(div);
+            // if(this.expandInto != null){
+                // this.div.append('<div class="expandButton"></div>');
+                // this.prepareForExpand();
+            // }
             if(!isReplayMode){
                 this.prepareDraggables();
                 this.prepareDroppables();
@@ -127,35 +133,76 @@ class cardCollection extends drawableZone{
 	}
 	
 	prepareDraggables(){
-		this.div.find(".card").draggable({ 
-			revert: false, 
-			helper: function(){
-				return "<div class='targetCursor'></div>";
-			},
-			cursorAt: { bottom: 25, right: 25}
-		});
+        // let $this = this;
+		// this.div.find(".card").draggable({ 
+			// revert: false, 
+			// helper: function(){
+				// return "<div class='targetCursor'></div>";
+			// },
+			// cursorAt: { bottom: $this.getX(), left: $this.getY()}
+		// });
+        this.prepareDraggablesManual();
 	}
+    
+    
+    
+    prepareDraggablesManual(){
+        let $this = this;
+                
+        this.div.mouseup(function(event){
+            mouseSystem.mouseupDiv($this,event);
+        });
+        
+        this.div.find(".card").mousedown(function(event){
+            mouseSystem.mousedown($(this).attr("id"),event)
+        });
+        
+        this.div.find(".card").mouseup(function(event){
+            mouseSystem.mouseupCard($(this).attr("id"),event);
+        });
+        $(document).mouseup(function(event){
+            mouseSystem.mouseup(event);
+        })
+    }
+    
+    
+    getX(){
+        this.count+=100;
+        console.log(this.count);
+        return this.count;
+    }
 	
+    getY(){
+       this.count+=100;
+       console.log(this.count);
+       return this.count;
+    }
+    
 	prepareDroppables(){
-		this.div.find(".card").droppable({
-			drop: function( event, ui ) {
-				$( this )
-				  .addClass( "cardSelected" );
-				  server.cardTargeted(ui.draggable.attr("id"),$(this).attr("id"));
-			},
-			greedy:true
-		})
+		// this.div.find(".card").droppable({
+			// drop: function( event, ui ) {
+				// $( this )
+				  // .addClass( "cardSelected" );
+				  // server.cardTargeted(ui.draggable.attr("id"),$(this).attr("id"));
+			// },
+			// greedy:true
+		// })
 	}
 	
 	prepareDroppableZone(){
-		this.div.droppable({
-			drop: function( event, ui ) {
-				  server.cardPlayed(ui.draggable.attr("id"),$(this));
-			}
-		});
+		// this.div.droppable({
+			// drop: function( event, ui ) {
+				  // server.cardPlayed(ui.draggable.attr("id"),$(this));
+			// }
+		// });
 	}
 	
 	sizeCards(div){
+        div.children().children('.cardBox').css({
+			'height':function(index, value){
+				return $(this).height() - 12;
+			}
+		});
 		div.children().children('.cardBox').css({
 			'width':function(index, value){
 				return $(this).height() * WIDTH_RATIO;
@@ -163,7 +210,17 @@ class cardCollection extends drawableZone{
 		});
 	}
 
-	
+	prepareHover(){
+        this.div.find(".cardBox").hover(function(){
+          $(this).addClass("cardBoxHighlighted");  
+        },
+        function(){
+            $(this).removeClass("cardBoxHighlighted");
+        })
+    }
+    
+    
+    
 	prepareToolTips(div){
 		let maxHeight = $(document).height();
 		let maxWidth = $(document).width();
@@ -188,6 +245,7 @@ class cardCollection extends drawableZone{
 				content: {
 					text: $(this).next('div') 
 				},
+                prerender: true,
 				style: {
 					height: height,
 					width: width,

@@ -14,7 +14,9 @@ ACTION_OK: 11,
 ACTION_BAD: 12,
 ID_RESPONSE: 13,
 TURN_END: 14,
-TEXT_MESSAGE: 15
+TEXT_MESSAGE: 15,
+PLAYER_SEND_CHAT: 16,
+RECEIVE_CHAT: 17
 };
 
 class Server{
@@ -30,7 +32,7 @@ class Server{
     endTurn(){
       const payload = {};
       const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
-    	 this.websocket.send(JSON.stringify(obj));
+    	// this.websocket.send(JSON.stringify(obj));
        console.log("sent turn end");
     }
 
@@ -41,15 +43,15 @@ class Server{
 		// // selectedCard = cardDiv.attr("id");
 	// }
 
-	// targetChosen(cardDiv){
-		// let response = sendTargetResponse(cardDiv.getId);
-		// // if(response.valid){
-			// // inputState = IDLE;
-		// // }
-		// // else{
-			// // actionFailed(response.message);
-		// // }
-	// }
+	targetChosen(cardDiv){
+		let response = sendTargetResponse(cardDiv.getId);
+		if(response.valid){
+			inputState = IDLE;
+		}
+		else{
+			actionFailed(response.message);
+		}
+	}
 
   cardTargeted(cardID,targetID){
    const payload = {"IID1": cardID, "IID2": targetID};
@@ -151,6 +153,8 @@ class Server{
                 break;
             case MESSAGE_TYPE.TEXT_MESSAGE:
                 this.alertMessage(message.payload);
+            case MESSAGE_TYPE.RECEIVE_CHAT:
+                this.handleChat(message.payload);
             default:
                 console.log("Unknown message type: " + message.type);
 		}
@@ -158,6 +162,18 @@ class Server{
 
   alertMessage(message) {
     alert(message.message);
+  }
+
+  handleChat(message) {
+    const chat = message.message;
+    console.log("Got chat message: " + chat);
+    // TODO: things and stuff
+  }
+
+  sendChat(chat) {
+    const obj = {"type": MESSAGE_TYPE.PLAYER_SEND_CHAT, "payload": {"message": chat}};
+    this.websocket.send(JSON.stringify(obj));
+    console.log("sent chat: " + chat);
   }
 
     badMessage(message){
@@ -180,7 +196,7 @@ class Server{
                 else{
                     quedAnims.push(quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health2")));
                 }
-                break;  
+                break;
             default:
                 console.log("unknown animation type");
         }

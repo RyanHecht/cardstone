@@ -62,10 +62,14 @@ public class Gui {
       		+ "FOREIGN KEY (user) REFERENCES user(id) "
       		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists game("
-      		+ "id integer primary key autoincrement, "
+      		+ "id integer primary key, "
       		+ "winner integer, moves integer, "
       		+ "UNIQUE(id, winner), "
       		+ "FOREIGN KEY (winner) REFERENCES user(id) "
+      		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
+      Db.update("create table if not exists inProgress("
+      		+ "id integer primary key autoincrement,"
+      		+ "player1 integer, player2 integer, "
       		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists user_game("
       		+ "user integer not null, game integer not null,"

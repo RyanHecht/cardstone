@@ -1,14 +1,38 @@
+/*  */
+
 html{
-	background-image: url("../images/boardBackground.jpg");
+    background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
 	width:98%;
-	height:98%;
+	height:100%;   
 }
 
 body{
 	background:none;
-	width:100%;
-	height:98%;
-	overflow:hidden;
+    overflow:hidden;
+    width:98%;
+	height:100%;
+}
+
+.tooltipHidden{
+    display : none !important;
+    opacity:0% !important;
+    visibility:hidden;
+}
+
+.boxOuter{
+     perspective: 900px;
+     height:100%;
+     width:100%;
+}
+
+.boxInner{
+    width:80%;
+	height:120%;
+    background:none;
+    transform: rotateX(40deg);
+    position:absolute;
+    top:-21%;
+    left:10%;
 }
 
 .targetCursor{
@@ -96,10 +120,13 @@ body .bigModal .modal-dialog {
 
 .board .zone{
 	display: inline-block;
-	border: 1px solid black;
+	border: 3px solid lightblue;
+    box-shadow: 0 -2px 20px 5px #9ecaed;
 	text-align: center;
 	height:100%;
 }
+
+ 
 
 .manaPool .manaRes{
 	height:15%;
@@ -149,6 +176,7 @@ body .bigModal .modal-dialog {
 	height:23%;
 	width:100%;
 	display: inline-block;
+    perspective: 900px;
 }
 
 .board .center{
@@ -162,6 +190,7 @@ body .bigModal .modal-dialog {
 	left:10%;
 	height: 100%;
 	width:63%;
+    transform: rotateX(-40deg);
 }
 
 .board .edge .aura{
@@ -192,12 +221,13 @@ body .bigModal .modal-dialog {
 	height:100%;
 	width:100%;
 	z-index: 300;
+    pointer-events: none;
 }
 
 
 .onTop{
 	position:absolute;
-	z-index: 200;
+	z-index: 1000;
 	display: none;
 	height:50%;
 	width:100%;

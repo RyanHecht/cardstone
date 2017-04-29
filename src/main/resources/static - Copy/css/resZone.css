@@ -1,0 +1,74 @@
+.health{
+	color:black;
+	background:rgba(200,15,0,.4);
+	background-image:url("../images/health.png");
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-position:center;
+}
+
+.regRes{
+	display:inline-block;
+	
+}
+
+.basicRes .regRes{
+	background-color:rgba(130,99,66,.7);
+	display:table-cell;
+	background-image:url("../images/regRes.png");
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-position:center;
+	
+}
+
+table{
+	width:100%;
+	height:100%;
+}
+
+tr{
+	height:100%;
+	width:100%;
+}
+
+td{
+	width:33%;
+	height:100%;
+	vertical-align:middle;
+	text-align:center;
+	valign:middle;
+}
+
+.zonegroup .basicRes .resDisplay{
+	position:relative;
+	height:100%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.deckTd{
+	background-image:url("../images/cardBack.jpg");
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	background-color:rgba(128,188,163,.5);
+}
+
+
+
+.board .center .res .mana{
+	position:absolute;
+	top:40%;
+	left:0%;
+	height:60%;
+	width:100%;
+	background-color:rgba(30,30,30,.6);
+}
+
+.board .center .res .basicRes{
+	position:relative;
+	height:40%;
+	width:100%;
+}
+

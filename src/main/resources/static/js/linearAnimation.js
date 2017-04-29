@@ -74,28 +74,21 @@ class linearAnimation extends animation{
 	}
 	
 	setStartDiv(divElem){
-		let left = divElem.offsetLeft;
-		let top = divElem.offsetTop;
+        
+        let pos = $(divElem).offset();
+		let left = pos.left - $(document).scrollLeft();
+		let top = pos.top - $(document).scrollTop();
 		let width = divElem.offsetWidth;
 		let height = divElem.offsetHeight;
-		while(divElem.offsetParent != null){
-			divElem = divElem.offsetParent;
-			left += divElem.offsetLeft;
-			top += divElem.offsetTop;
-		}
 		this.setStartRange(left,top,left + width, top + height);
 	}
 	
 	setEndDiv(divElem){
-		let left = divElem.offsetLeft;
-		let top = divElem.offsetTop;
+		let pos = $(divElem).offset();
+		let left = pos.left - $(document).scrollLeft();
+		let top = pos.top - $(document).scrollTop();
 		let width = divElem.offsetWidth;
 		let height = divElem.offsetHeight;
-		while(divElem.offsetParent != null){
-			divElem = divElem.offsetParent;
-			left += divElem.offsetLeft;
-			top += divElem.offsetTop;
-		}
 		this.setEndRange(left + width / 3,top + width / 3,left  + (2*(width / 3)), top  + (2*(height / 3 )));
 	}
 	

@@ -1,0 +1,39 @@
+.creatureCard.tinyCard .statArea{
+	position:absolute;
+	width:100%;
+	height:40%;
+	top:60%;
+	left:0%;
+}
+
+.creatureCard.tinyCard .imageArea{
+	position:absolute;
+	top:0%;
+	left:0%;
+	width:100%;
+	height:60%;
+}
+
+.spellCard.tinyCard .imageArea{
+	position:absolute;
+	top:30%;
+	left:0%;
+	width:100%;
+	height:70%;
+}
+
+.spellCard.tinyCard {
+}
+
+.tinyCard .cost{
+	position:absolute;
+	top:0%;
+	left:0%;
+	width:100%;
+	height:30%;
+}
+
+.tinyCard .resDisplay img{
+	height:1em;
+	width: .875em;
+}

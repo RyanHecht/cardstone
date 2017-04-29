@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+	<head>
+		<link rel="stylesheet" href="css/resZone.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/cardBack.css">
+		<link rel="stylesheet" href="css/board.css">
+		<link rel="stylesheet" href="css/cardStyle.css">
+		<link rel="stylesheet" href="css/smallCard.css">
+		<link rel="stylesheet" href="css/bigCard.css">
+		<link rel="stylesheet" href="css/tinyCard.css">
+		<link rel="stylesheet" href="qtip.css">
+	</head>
+	<body>
+	<div class="modal fade" id="endTurnAsk" tabindex="-1" role="dialog" aria-hidden="true">
+	  <div class="modal-dialog alert" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h4 class="modal-title">Really end your turn?</h4>
+		  </div>
+		  <div class="modal-body">
+			<br>
+			<button id="endTurnButton" type="submit" class="btn btn-primary">Yes</button>
+			<button type="cancel" class="btn btn-secondary pull-right" data-dismiss="modal">No</button>
+			<br>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<div class="modal fade bigModal" id="chooseOneAsk" tabindex="-1" role="dialog" aria-hidden="true">
+	  <div class="modal-dialog alert" role="document">
+		<div class="modal-content">
+		  <div class="modal-body" id="chooseZoneDisplay">
+
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<canvas class="boardOverlay" ></canvas>
+        <div class="boxOuter" onmousedown="return false">
+            <div class="boxInner">
+                <div class="board">
+                    <div class="onTop" id="onTop2"></div>
+                    <div class="onTop" id="onTop1"></div>
+                    <div class="edge zonegroup" id="edge2">
+                        <div class="zone infoZone" id="infoZone1"></div>
+                        <div class="zone hand" id="hand2">
+
+                        </div>
+                        <div class="zone aura" id="aura2">
+
+                        </div>
+                    </div>
+                    <div class="center zonegroup" id="center2">
+                        <div class="zone creature" id="creature2">
+
+                        </div>
+                        <div class="zonegroup res">
+                            <div class="zone basicRes" id="baseRes2">
+                                <table>
+                                <tr>
+                                <td class="health resDisplay" id="health2"></td>
+                                <td class="deckTd"><div class="deck resDisplay" id="deck2"></div></td>
+                                <td class="regRes resDisplay" id="regRes2"></td>
+                                </tr>
+                                </table>
+                            </div>
+                            <div class="zone mana manaPool resDisplay" id="mana2"></div>
+                        </div>
+                    </div>
+                    <div class="center zonegroup" id="center1" >
+                        <div class="zone creature" id="creature1"></div>
+                        <div class="zonegroup res">
+                            <div class="zone basicRes" id="baseRes1">
+                                <table>
+                                <tr>
+                                <td class="health resDisplay" id="health1"></td>
+                                <td class="deckTd"><div class="deck resDisplay" id="deck1"></div></td>
+                                <td class="regRes resDisplay" id="regRes1"></td>
+                                </tr>
+                                </table>
+                            </div>
+                            <div class="zone mana manaPool resDisplay" id="mana1"></div>
+                        </div>
+                    </div>
+                    <div class="edge" id="edge1">
+                        <div class="zone infoZone" id="infoZone1">
+                            <div class="endTurn" id="endTurnButton"></div>
+                        </div>
+                        <div class="zone hand" id="hand1"></div>
+                        <div class="zone aura" id="aura1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<script src="js/jquery-2.1.1.js"></script>
+		<script src="js/jquery-cookie.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="js/MouseManagerSystem.js"></script>
+		<script src="js/animationsMaker.js"></script>
+		<script src="js/Enums.js"></script>
+		<script src="js/tether.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/cardCacher.js"></script>
+		<script src="js/drawable.js"></script>
+		<script src="js/animation.js"></script>
+		<script src="js/radialAnimation.js"></script>
+		<script src="js/movingDrawable.js"></script>
+		<script src="js/linearAnimation.js"></script>
+		<script src="js/manaPool.js"></script>
+		<script src="js/cost.js"></script>
+		<script src="js/card.js"></script>
+		<script src="js/drawableZone.js"></script>
+		<script src="js/healthResZone.js"></script>
+		<script src="js/chooseZone.js"></script>
+		<script src="js/cardCollection.js"></script>
+		<script src="js/board.js"></script>
+		<script src="js/server.js"></script>
+		<script src="js/cardDrawing.js"></script>
+		<script src="js/qtip.js"></script>
+	</body>
+</html>

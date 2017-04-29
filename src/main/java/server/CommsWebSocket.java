@@ -79,6 +79,8 @@ public class CommsWebSocket {
 
         } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
           GameManager.receiveTurnEnd(id);
+        } else if (type == MessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
+          GameManager.receivePlayerChat(id, payload);
         }
       } else {
         // ID_RESPONSE is the only thing that the client should send it if it
@@ -139,18 +141,36 @@ public class CommsWebSocket {
     }
   }
 
+  /**
+   * Send an animation the front end knows about.
+   * @param userId Id of recipient.
+   * @param message animation message.
+   * @throws IOException thrown by websocket.
+   */
   public static void sendAnimation(int userId, JsonObject message)
       throws IOException {
     System.out.println("Sending animation " + message.toString());
     sendMessage(userId, MessageTypeEnum.ANIMATION, message);
   }
 
+  /**
+   * Send an explicit animation that the server doesn't know about.
+   * @param userId Id of recipient.
+   * @param message Message containing animation data.
+   * @throws IOException thrown by websocket.
+   */
   public static void sendExplicitAnimation(int userId, JsonObject message)
       throws IOException {
     System.out.println("Sending animation " + message.toString());
     sendMessage(userId, MessageTypeEnum.EXPLICIT_ANIMATION, message);
   }
 
+  /**
+   * Send a request by the server for the player to choose from a list of cards.
+   * @param userId Id of recipient.
+   * @param message Message containing options.
+   * @throws IOException thrown by websocket.
+   */
   public static void sendChooseRequest(int userId, JsonObject message)
       throws IOException {
     System.out.println("Sending choose request " + message.toString());
@@ -168,7 +188,7 @@ public class CommsWebSocket {
   /**
    * Inform the user that their action was correct.
    * @param userId The id of the recipient user.
-   * @throws IOException .
+   * @throws IOException thrown by websocket.
    */
   public static void sendActionOk(int userId) throws IOException {
     JsonObject obj = new JsonObject();
@@ -181,7 +201,7 @@ public class CommsWebSocket {
    * Inform the user that their action was incorrect.
    * @param uderId The id of the recipient user.
    * @param message The message of why the action was bad.
-   * @throws IOException
+   * @throws IOException thrown by websocket.
    */
   public static void sendActionBad(int userId, String message)
       throws IOException {
@@ -191,12 +211,32 @@ public class CommsWebSocket {
     sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
   }
 
+  /**
+   * Send text message to be alerted to the user.
+   * @param userId Id of recipient.
+   * @param message Message to be alerted.
+   * @throws IOException thrown by websocket.
+   */
   public static void sendTextMessage(int userId, String message)
       throws IOException {
     JsonObject obj = new JsonObject();
     obj.addProperty("message", message);
     System.out.println("Sending message " + message);
     sendMessage(userId, MessageTypeEnum.TEXT_MESSAGE, obj);
+  }
+
+  /**
+   * Send message to be displayed in the in-game chat.
+   * @param userId Id of recipient.
+   * @param message Message for chat.
+   * @throws IOException thrown by websocket.
+   */
+  public static void sendChatMessage(int userId, String message)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("message", message);
+    System.out.println("Sending chat message: " + message);
+    sendMessage(userId, MessageTypeEnum.RECEIVE_CHAT, obj);
   }
 
   public static void closeSession(int userId) {

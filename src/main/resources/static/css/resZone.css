@@ -12,6 +12,76 @@
 	
 }
 
+.HUD{
+    z-index:500;
+}
+
+.overlayHUD1{
+  position:absolute;
+  left:2%;
+  bottom:3%;
+  height:100px;
+  width:100px;
+  background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-color:black;
+}
+
+.overlayHUD2{
+  position:absolute;
+  right:2%;
+  top:3%;
+  height:100px;
+  width:100px;
+  background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-color:black;
+}
+
+.healthLine{
+  position:absolute;
+  bottom:0px;
+  left:100px;
+  border:3px solid yellow;
+  width:0px;
+}
+
+.healthBox{
+  position:absolute;
+  right:0px;
+  top:opx;
+  width:35%;
+  height:35%;
+  background-color:red;
+  text-align:center;
+}
+
+.resBox{
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:35%;
+  height:35%;
+  background-color:darkorange;
+  text-align:center;
+}
+
+.optionsGear{
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  width:20%;
+  height:20%;
+  background-color:lightblue;
+  background-image:url("../images/option.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  text-align:center;
+}
+
 .basicRes .regRes{
 	background-color:rgba(130,99,66,.7);
 	display:table-cell;

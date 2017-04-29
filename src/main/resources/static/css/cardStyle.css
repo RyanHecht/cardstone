@@ -1,18 +1,41 @@
 .cardBox{
 	height: 100%;
 	display:inline-block;
-	border-left:3px;
-	padding-right:3px;
+	margin:6px;
 	font-size:14px;
+    box-shadow: 0px -2px 5px 3px rgba(0,0,0,0.75);
 }
 
+.cardBoxHighlighted{
+    border:2px solid rgba(255,251,193,.8);
+    box-shadow: 0 -2px 20px 5px #9ecaed;
+    height:103%;
+    transform: scale(1.2, 1.2);
+}
 
+.cardBoxHighlightedClick{
+    border:2px solid rgba(255,251,193,.8);
+    box-shadow: 0 -2px 20px 5px #9ecaed;
+    height:103%;
+    transform: scale(1.2, 1.2);
+}
+
+.cardBox::before {
+  content: "";
+  z-index: -1;
+  bottom: 0;
+  left: 15px;
+  height: 10%;
+  width: 70%;
+  box-shadow: -25px -4px 4px 0 rgba(0,0,0,0.75);
+  transform: skewX(60deg);
+}
 
 .card{
 	border: 1px solid black;
 	display: inline-block;
 	position: relative;
-	height:96%;
+    height:100%;
 	width:100%;
 
 }

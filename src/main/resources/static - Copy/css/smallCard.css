@@ -1,0 +1,45 @@
+.smallCard .name{
+	position:absolute;
+	top:0%;
+	left:0%;
+	width:100%;
+	height:13%;
+	line-height:90%;
+
+}
+
+.smallCard .cost{
+	position:absolute;
+	top:13%;
+	left:0%;
+	width:100%;
+	height:12%;
+}
+
+.smallCard .imageArea{
+	position:absolute;
+	top:25%;
+	left:0%;
+	width:100%;
+	height:58%;
+}
+
+.smallCard .statArea{
+	position:absolute;
+	top:83%;
+	bottom:100%;
+	left:0%;
+	width:100%;
+	height:17%;
+}
+
+.smallCard .imageArea .image{
+	object-fit: cover;
+	min-width: 100%;
+	min-height:100%;
+}
+
+.smallCard .resDisplay img{
+	height:1em;
+	width: .875em;
+}

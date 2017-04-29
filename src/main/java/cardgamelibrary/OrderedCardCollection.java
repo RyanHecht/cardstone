@@ -13,10 +13,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cards.FireElement;
+import events.CardChosenEvent;
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
 import events.CardHealedEvent;
 import events.CardPlayedEvent;
+import events.CardTargetedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
@@ -25,6 +27,7 @@ import events.GainElementEvent;
 import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
+import events.PlayerTargetedEvent;
 import events.StatChangeEvent;
 import events.TurnEndEvent;
 import events.TurnStartEvent;
@@ -131,6 +134,15 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case ELEMENT_GAINED:
 			results = handleElementGain((GainElementEvent) event);
 			break;
+		case CARD_CHOSEN:
+			results = handleCardChosen((CardChosenEvent) event);
+			break;
+		case CARD_TARGETED:
+			results = handleCardTargeted((CardTargetedEvent) event);
+			break;
+		case PLAYER_TARGETED:
+			results = handlePlayerTargeted((PlayerTargetedEvent) event);
+			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
 		}
@@ -140,6 +152,22 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	public boolean getChanged() {
 		return changed;
+	}
+
+	private List<Effect> handleCardTargeted(CardTargetedEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onCardTarget(event.getTargetter(), event.getTargeted(), getZone()));
+		}
+		return results;
+	}
+
+	private List<Effect> handlePlayerTargeted(PlayerTargetedEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onPlayerTarget(event.getTargetter(), event.getTarget(), getZone()));
+		}
+		return results;
 	}
 
 	private List<Effect> handleElementGain(GainElementEvent event) {
@@ -280,6 +308,14 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return results;
 	}
 
+	private List<Effect> handleCardChosen(CardChosenEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onCardChosen(event.getChooser(), event.getChosen(), getZone()));
+		}
+		return results;
+	}
+
 	@Override
 	public boolean add(Card e) {
 		System.out.println(cards);
@@ -364,6 +400,15 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		// should only shuffle decks.
 		assertTrue(zone == Zone.DECK);
 		Collections.shuffle(cards);
+	}
+
+	/**
+	 * Gets the cards in the occ.
+	 * 
+	 * @return the list of cards within the occ.
+	 */
+	public List<Card> getCards() {
+		return cards;
 	}
 
 	@Override
