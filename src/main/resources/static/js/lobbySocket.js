@@ -57,7 +57,7 @@ class LobbySocket {
 
   setDeck(deck) {
     const obj = {"type": LOBBY_MESSAGE_TYPE.SELF_SET_DECK, "payload": deck};
-    this.socket.send(JSON.stringify(obj));
+    this.websocket.send(JSON.stringify(obj));
     console.log("sent deck: " + deck);
   }
 

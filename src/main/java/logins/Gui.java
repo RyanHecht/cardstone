@@ -335,7 +335,7 @@ public class Gui {
       String deckName = qm.value("deck");
       String uid = req.cookie("id");
       
-      String deckQuery = "select cards from user where name = ? and user = ?;";
+      String deckQuery = "select cards from deck where name = ? and user = ?;";
       try (ResultSet rs = Db.query(deckQuery, deckName, uid)) {
     	  rs.next();
     	  json.addProperty("cards", rs.getString(1));
