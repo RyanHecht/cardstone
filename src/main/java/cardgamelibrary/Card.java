@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import cards.templates.PlayerChoosesCards;
 import cards.templates.TargetsOtherCard;
 import cards.templates.TargetsPlayer;
 import effects.EmptyEffect;
@@ -160,7 +161,7 @@ public interface Card extends Jsonifiable {
 	}
 
 	// when cards are chosen by the player through a PlayerChoosesCard situation.
-	default public Effect onCardChosen(Card chooser, Card chosen, Zone z) {
+	default public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
 		return EmptyEffect.create();
 	}
 
