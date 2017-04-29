@@ -81,11 +81,38 @@ public class LobbyManager {
     try {
       System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId,
           lobbyName, password));
-      lobbies.get(lobbyName).join(playerId, password);
+      Lobby l = lobbies.get(lobbyName);
+      if (l != null) {
+        lobbies.get(lobbyName).join(playerId, password);
+        LobbyWebSocket.sendOppenentEnteredLobby(l.getOtherPlayer(playerId),
+            playerId);
+      }
+
     } catch (IllegalArgumentException x) {
       throw x;
     }
 
+  }
+
+  /**
+   * Have the player of id playerId leave their lobby.
+   * @param playerId The player Id.
+   */
+  public static void playerLeftLobby(int playerId) {
+    Lobby l = getLobbyByPlayerId(playerId);
+    if (l != null) {
+      Integer other = l.getOtherPlayer(playerId);
+      l.leave(playerId);
+
+      if (l.isHost(playerId)) {
+        if (other != null) {
+          LobbyWebSocket.sendLobbyCancelled(other);
+        }
+      } else {
+        LobbyWebSocket.sendOppenentLeftLobby(other);
+      }
+
+    }
   }
 
   /**
@@ -123,9 +150,8 @@ public class LobbyManager {
   public static void handleSelfSetDeck(int uId, JsonObject message) {
     Lobby lobby = getLobbyByPlayerId(uId);
     if (lobby != null) {
-      JsonObject deck = message.get("deck").getAsJsonObject();
-      String deckName = deck.get("name").getAsString();
-      JsonArray cards = deck.get("cards").getAsJsonArray();
+
+      JsonArray cards = message.get("cards").getAsJsonArray();
       List<String> cardList = new ArrayList<>();
 
       for (JsonElement card : cards) {
@@ -134,7 +160,7 @@ public class LobbyManager {
       }
       System.out.print("\n");
       lobby.setDeck(uId, cardList);
-      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId), deckName);
+      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId));
     }
   }
 

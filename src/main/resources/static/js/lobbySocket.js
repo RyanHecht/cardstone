@@ -20,31 +20,32 @@ class LobbySocket {
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
-		this.server.onOpponentJoin = onOpponentJoin;
-		this.server.onOpponentLeave = onOpponentLeave;
-		this.server.onOpponentSetDeck = onOpponentSetDeck;
-		this.server.onGameStart = onGameStart;
-		this.server.onLobbyCancel = onLobbyCancel;
-		this.server.handleChat = handleChat;
-		this.server.isHost = isHost;
-		this.server.userId = userId;
+		this.onOpponentJoin = onOpponentJoin;
+		this.onOpponentLeave = onOpponentLeave;
+		this.onOpponentSetDeck = onOpponentSetDeck;
+		this.onGameStart = onGameStart;
+		this.onLobbyCancel = onLobbyCancel;
+		this.handleChat = handleChat;
+		this.isHost = isHost;
+		this.userId = userId;
 	}
 
 	onWebSocketOpen() {
-    const type = -1
-    const payload = {"id": this.server.userId}
-    if (isHost) {
-      type = LOBBY_MESSAGE_TYPE.LOBBY_CREATE;
-    } else {
-      type = LOBBY_MESSAGE_TYPE.LOBBY_CONNECT;
-    }
+		let type = -1
+		const payload = {"id": this.userId}
+		if (isHost) {
+		  type = LOBBY_MESSAGE_TYPE.LOBBY_CREATE;
+		} else {
+		  type = LOBBY_MESSAGE_TYPE.LOBBY_CONNECT;
+		}
 
-    const obj = {"type": type, "payload": payload};
-		this.socket.send(JSON.stringify(obj));
-		console.log('opened');
+		const obj = {"type": type, "payload": payload};
+			this.socket.send(JSON.stringify(obj));
+			console.log('opened');
 	}
 
 	onWebSocketMessage(event) {
+		console.log(event.data)
 		this.server.messageReceived(JSON.parse(event.data));
 	}
 
@@ -56,7 +57,7 @@ class LobbySocket {
 
   setDeck(deck) {
     const obj = {"type": LOBBY_MESSAGE_TYPE.SELF_SET_DECK, "payload": deck};
-    this.socket.send(JSON.stringify(obj));
+    this.websocket.send(JSON.stringify(obj));
     console.log("sent deck: " + deck);
   }
 
@@ -64,29 +65,31 @@ class LobbySocket {
     if (isHost) {
       const obj = {"type": LOBBY_MESSAGE_TYPE.START_GAME_REQUEST,
                     "payload": {}};
-      this.socket.send(JSON.stringify(obj));
+      this.websocket.send(JSON.stringify(obj));
       console.log("start game request");
     }
   }
 
   messageReceived(message) {
+		console.log(message);
     switch(message.type) {
       case LOBBY_MESSAGE_TYPE.OPPONENT_ENTERED_LOBBY:
-        this.server.onOpponentJoin(message.payload.id);
+        this.onOpponentJoin(message.payload.id);
         break;
       case LOBBY_MESSAGE_TYPE.OPPONENT_LEFT_LOBBY:
-        this.server.onOpponentLeave();
+        this.onOpponentLeave();
         break;
       case LOBBY_MESSAGE_TYPE.OPPONENT_SET_DECK:
-        this.server.onOpponentSetDeck(message.payload.name);
+        this.onOpponentSetDeck(message.payload.name);
         break;
       case LOBBY_MESSAGE_TYPE.GAME_IS_STARTING:
-        this.server.onGameStart();
+        this.onGameStart();
         break;
       case LOBBY_MESSAGE_TYPE.LOBBY_CANCELLED:
-        this.server.onLobbyCancel();
+        this.onLobbyCancel();
+				break;
 			case LOBBY_MESSAGE_TYPE.RECEIVE_CHAT:
-				this.server.handleChat(message.message);
+				this.handleChat(message.message);
         break;
     }
   }
