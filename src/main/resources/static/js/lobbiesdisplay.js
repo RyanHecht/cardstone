@@ -37,7 +37,17 @@ $("#lobby-table").on("click", "tr", function() {
 		if (!isPriv) {
 			const postParams = {name: selectedName, password: ""};
 			console.log(postParams);
-			$.post("/joinLobby", postParams, function() {
+			$.post("/joinLobby", postParams, responseJSON => {
+				const respObj = JSON.parse(responseJSON);
+				console.log(respObj);
+
+				if (respObj.auth) {
+					window.location.replace("/lobby");
+				} else {
+					$("#messageModal").modal("show");
+					$("#messageheader").text("Error joining lobby");
+					$("#message").text(respObj.message);
+				}
 			});
 		} else {
 			$("#passwordModal").modal("show");
