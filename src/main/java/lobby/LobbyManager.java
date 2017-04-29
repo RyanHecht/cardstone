@@ -3,6 +3,7 @@ package lobby;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,12 +24,15 @@ public class LobbyManager {
    */
   public static Lobby addLobby(String name, boolean priv, String password,
       int hostUId) throws IllegalArgumentException {
-    if (lobbies.containsKey("name")) {
-      throw new IllegalArgumentException("Lobby already exists");
+    if (lobbies.containsKey(name)) {
+      throw new IllegalArgumentException(
+          "Lobby with name " + name + " already exists");
     } else if (priv && password.length() < 1) {
-      throw new IllegalArgumentException("Password must be non-empty");
+      throw new IllegalArgumentException(
+          "Private lobbies must have non-empty passwords");
     } else {
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
+      System.out.println("Made lobby: " + lobby);
       return lobby;
     }
   }
@@ -41,6 +45,10 @@ public class LobbyManager {
     lobbies.remove(name);
   }
 
+  /**
+   * Get all lobbies that are currently open.
+   * @return A Collection containing all lobbies.
+   */
   public static Collection<Lobby> getAllLobbies() {
     return lobbies.values();
   }
@@ -59,10 +67,20 @@ public class LobbyManager {
     return false;
   }
 
+  /**
+   * Attempt to have a player of a specified Id join a lobby.
+   * @param playerId The player Id.
+   * @param lobbyName The name of the lobby to add them to.
+   * @param password the password of the lobby (empty string for non-private).
+   * @throws IllegalArgumentException Thrown if player could not join the lobby
+   *           (it's full, incorrect password, etc).
+   */
   public static void playerJoinLobby(int playerId, String lobbyName,
       String password)
       throws IllegalArgumentException {
     try {
+      System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId,
+          lobbyName, password));
       lobbies.get(lobbyName).join(playerId, password);
     } catch (IllegalArgumentException x) {
       throw x;
@@ -116,7 +134,20 @@ public class LobbyManager {
       }
       System.out.print("\n");
       lobby.setDeck(uId, cardList);
-      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlater(uId), deckName);
+      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId), deckName);
+    }
+  }
+
+  public static void receivePlayerChat(int playerId, JsonObject message) {
+    String chat = message.get("message").getAsString();
+    Lobby lobby = getLobbyByPlayerId(playerId);
+    if (lobby != null) {
+      int idToSend = lobby.getOtherPlayer(playerId);
+      try {
+        LobbyWebSocket.sendChatMessage(idToSend, chat);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 

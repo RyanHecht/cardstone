@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import lobby.Lobby;
+import lobby.LobbyManager;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -42,6 +45,7 @@ public class Gui {
     Spark.get("/games", new GameDisplayHandler(), fm);
     Spark.get("/replay", new GameReplayHandler(), fm);
     Spark.get("/lobbies", new LobbiesHandler(), fm);
+    Spark.get("/lobby", new LobbyHandler(), fm);
   }
 
   public void init() {
@@ -82,6 +86,53 @@ public class Gui {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Handles requests to the lobby page.
+   * @author wriley1
+   */
+  private class LobbyHandler implements TemplateViewRoute {
+	  @Override
+	  public ModelAndView handle(Request req, Response res) {
+		  int uid = Integer.parseInt(req.cookie("id"));
+		  Lobby l = LobbyManager.getLobbyByPlayerId(uid);
+		  
+		  if (l == null) {
+			  return new ModelAndView(ImmutableMap.of("title", "Cardstone: The Shattering"), 
+					  "lobbies.ftl");
+		  }
+		  
+		  System.out.println("Got lobby " + l);
+		  List<String> decks = new ArrayList<>();
+		  int oppId = l.getOtherPlayer(uid);
+		  String opp = "Opponent";
+		  String oppMsg = "Waiting for another player to join...";
+		  String deckQuery = "select name from deck where user = ?;";
+		  try (ResultSet rs = Db.query(deckQuery, uid)) {
+			while (rs.next()) {
+			  decks.add(rs.getString(1));
+			}
+			if (oppId != -1) {
+				try (ResultSet user = Db.query("select username from user where id = ?;", oppId)) {
+					user.next();
+					opp = user.getString(1);
+					oppMsg = opp + " is choosing a deck";
+					assert !user.next();
+				}
+			}
+		  } catch (NullPointerException | SQLException e) {
+			e.printStackTrace();
+		  }
+		  
+		  
+		  
+		  Map<String, Object> vars = ImmutableMap.of("title",
+		          "Cardstone: The Shattering", "decks", decks, 
+		          "isHost", l.isHost(uid), "opp", opp, "oppMsg", oppMsg);
+		  System.out.println(Arrays.toString(vars.values().toArray()));
+		  return new ModelAndView(vars, "lobby.ftl");
+	  }
   }
   
   private class GameReplayHandler implements TemplateViewRoute {

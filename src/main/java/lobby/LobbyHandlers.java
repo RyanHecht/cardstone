@@ -1,11 +1,8 @@
 package lobby;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.Arrays;
-import java.util.Map;
 
 import spark.QueryParamsMap;
 import spark.Request;
@@ -18,7 +15,6 @@ import spark.Route;
  *
  */
 public class LobbyHandlers {
-	private static final Gson GSON = new Gson();
 
   /**
    * Return a list of all lobbies.
@@ -59,26 +55,22 @@ public class LobbyHandlers {
       String name = qm.value("name");
       boolean priv = Boolean.parseBoolean(qm.value("private"));
       String password = qm.value("password");
-
-      System.out.println(String.format("Name: %s, Private: %s, Password: %s", name, priv, password));
-      System.out.println("i is makin a lobbies");
-//      try {
-//        LobbyManager.addLobby(name, priv, password,
-//            Integer.parseInt(req.cookie("id")));
-//
-//        // TODO: load lobby page
-//        obj.addProperty("auth", true);
-//      } catch (IllegalArgumentException x) {
-//        // TODO: redirect to lobby list page, with message.
-//        obj.addProperty("auth", false);
-//        obj.addProperty("message", x.getMessage());
-//      }
-      Map<String, Object> variables = ImmutableMap.of("auth",
-              false, "message", "dingus");
-      System.out.println(variables.values());
-      String shiggy = GSON.toJson(variables);
-      System.out.println(shiggy);
-      return GSON.toJson(variables);
+      
+      JsonObject json = new JsonObject();
+      boolean auth = false;
+      System.out.println(String.format("Name: %s, Private: %s, Password: %s, UID: %d", 
+    		  name, priv, password, Integer.parseInt(req.cookie("id"))));
+      try {
+    	  int uid = Integer.parseInt(req.cookie("id"));
+    	  LobbyManager.addLobby(name, priv, password, uid);
+    	  auth = true;
+      } catch (IllegalArgumentException e) {
+    	  json.addProperty("message", e.getMessage());
+      } 
+      json.addProperty("auth", auth);
+      
+      System.out.println(json.toString());
+      return json.toString();
     }
 
   }
@@ -96,23 +88,25 @@ public class LobbyHandlers {
     }
 
     @Override
-    public Object handle(Request req, Response res) throws Exception {
+    public String handle(Request req, Response res) throws Exception {
       JsonObject obj = new JsonObject();
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("name");
       String password = qm.value("password");
 
+      boolean auth = false;
       try {
+    	System.out.println("Joining " + name + " with password " + password);
         LobbyManager.playerJoinLobby(Integer.parseInt(req.cookie("id")), name,
             password);
-        // TODO: load lobby page
-        obj.addProperty("auth", true);
-      } catch (IllegalArgumentException x) {
-        // TODO: redirect to lobby list page, with message.
-        obj.addProperty("auth", false);
-        obj.addProperty("message", x.getMessage());
+        auth = true;
+      } catch (IllegalArgumentException e) {
+    	e.printStackTrace();
+        obj.addProperty("message", e.getMessage());
       }
-      return obj;
+      obj.addProperty("auth", auth);
+      System.out.println(obj.toString());
+      return obj.toString();
     }
 
   }

@@ -38,4 +38,9 @@ public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 			board.addCardToOcc(chosen, board.getOcc(getOwner(), Zone.HAND), board.getOcc(getOwner(), Zone.DECK));
 		};
 	}
+
+	@Override
+	public int getNumChoices() {
+		return 1;
+	}
 }

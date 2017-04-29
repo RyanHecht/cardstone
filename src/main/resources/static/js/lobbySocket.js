@@ -1,30 +1,33 @@
 const LOBBY_MESSAGE_TYPE = {
-LOBBY_CONNECT: 0,
-LOBBY_CREATE: 1
-OPPONENT_ENTERED_LOBBY: 2,
-OPPONENT_LEFT_LOBBY: 3,
-SELF_SET_DECK: 4,
-OPPONENT_SET_DECK: 5,
-START_GAME_REQUEST: 6,
-GAME_IS_STARTING: 7,
-LOBBY_CANCELLED: 8
+	LOBBY_CONNECT: 0,
+	LOBBY_CREATE: 1,
+	OPPONENT_ENTERED_LOBBY: 2,
+	OPPONENT_LEFT_LOBBY: 3,
+	SELF_SET_DECK: 4,
+	OPPONENT_SET_DECK: 5,
+	START_GAME_REQUEST: 6,
+	GAME_IS_STARTING: 7,
+	LOBBY_CANCELLED: 8,
+	PLAYER_SEND_CHAT: 9,
+	RECEIVE_CHAT: 10
 };
 
 class LobbySocket {
 
-	constructor(userId, isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel) {
+	constructor(userId, isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel, handleChat) {
 		this.websocket = new WebSocket("ws://" + window.location.host + "/lobbySocket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
-    this.server.onOpponentJoin = onOpponentJoin;
-    this.server.onOpponentLeave = onOpponentLeave;
-    this.server.onOpponentSetDeck = onOpponentSetDeck;
-    this.server.onGameStart = onGameStart;
-    this.server.onLobbyCancel = onLobbyCancel;
-    this.server.isHost = isHost;
-    this.server.userId = userId;
+		this.server.onOpponentJoin = onOpponentJoin;
+		this.server.onOpponentLeave = onOpponentLeave;
+		this.server.onOpponentSetDeck = onOpponentSetDeck;
+		this.server.onGameStart = onGameStart;
+		this.server.onLobbyCancel = onLobbyCancel;
+		this.server.handleChat = handleChat;
+		this.server.isHost = isHost;
+		this.server.userId = userId;
 	}
 
 	onWebSocketOpen() {
@@ -44,6 +47,12 @@ class LobbySocket {
 	onWebSocketMessage(event) {
 		this.server.messageReceived(JSON.parse(event.data));
 	}
+
+  sendChat(chat) {
+    const obj = {"type": LOBBY_MESSAGE_TYPE.PLAYER_SEND_CHAT, "payload": {"message": chat}};
+    this.websocket.send(JSON.stringify(obj));
+    console.log("sent chat: " + chat);
+  }
 
   setDeck(deck) {
     const obj = {"type": LOBBY_MESSAGE_TYPE.SELF_SET_DECK, "payload": deck};
@@ -76,13 +85,9 @@ class LobbySocket {
         break;
       case LOBBY_MESSAGE_TYPE.LOBBY_CANCELLED:
         this.server.onLobbyCancel();
+			case LOBBY_MESSAGE_TYPE.RECEIVE_CHAT:
+				this.server.handleChat(message.message);
         break;
     }
   }
-
-
-
-
-
-
 }
