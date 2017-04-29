@@ -45,7 +45,8 @@ class LobbySocket {
 	}
 
 	onWebSocketMessage(event) {
-		this.messageReceived(JSON.parse(event.data));
+		console.log(event.data)
+		this.server.messageReceived(JSON.parse(event.data));
 	}
 
   sendChat(chat) {
@@ -70,6 +71,7 @@ class LobbySocket {
   }
 
   messageReceived(message) {
+		console.log(message);
     switch(message.type) {
       case LOBBY_MESSAGE_TYPE.OPPONENT_ENTERED_LOBBY:
         this.onOpponentJoin(message.payload.id);
@@ -85,6 +87,7 @@ class LobbySocket {
         break;
       case LOBBY_MESSAGE_TYPE.LOBBY_CANCELLED:
         this.onLobbyCancel();
+				break;
 			case LOBBY_MESSAGE_TYPE.RECEIVE_CHAT:
 				this.handleChat(message.message);
         break;

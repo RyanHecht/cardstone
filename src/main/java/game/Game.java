@@ -68,7 +68,7 @@ public class Game implements Jsonifiable {
 
 		// format the card names from the lists.
 		for (String name : firstPlayerCards) {
-			name.replaceAll("[^A-Za-z0-9]", "");
+			name.replaceAll("[^A-Za-z0-9]", "").replaceAll(" ", "");
 		}
 
 		for (String name : secondPlayerCards) {
@@ -284,6 +284,13 @@ public class Game implements Jsonifiable {
 			e.printStackTrace();
 		}
 		ClassByJosh.insertBoardStateIntoDb(this.jsonifySelf(), this.id);
+	}
+
+	/**
+	 * Sends the board to spectators of the current game.
+	 */
+	public void sendBoardToSpectators() {
+
 	}
 
 	/**
