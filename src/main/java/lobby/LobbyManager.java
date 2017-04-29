@@ -81,7 +81,13 @@ public class LobbyManager {
     try {
       System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId,
           lobbyName, password));
-      lobbies.get(lobbyName).join(playerId, password);
+      Lobby l = lobbies.get(lobbyName);
+      if (l != null) {
+        lobbies.get(lobbyName).join(playerId, password);
+        LobbyWebSocket.sendOppenentEnteredLobby(l.getOtherPlayer(playerId),
+            playerId);
+      }
+
     } catch (IllegalArgumentException x) {
       throw x;
     }

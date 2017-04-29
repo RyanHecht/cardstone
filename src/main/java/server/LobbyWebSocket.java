@@ -30,9 +30,11 @@ public class LobbyWebSocket {
 
     // TODO: Check if player is in game or in lobby, terminate game or update
     // lobby.
+    System.out.println(id + " left");
     LobbyManager.playerLeftLobby(id);
     sessions.remove(session);
     idToSessions.remove(id);
+    // System.out.println("took away " + id + "'s session.");
   }
 
   @OnWebSocketMessage
@@ -62,9 +64,12 @@ public class LobbyWebSocket {
         int id = payload.get("id").getAsInt();
         sessions.put(session, id);
         idToSessions.put(id, session);
+        // System.out.println("gave " + id + " a session.");
 
       } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
-
+        int id = payload.get("id").getAsInt();
+        sessions.put(session, id);
+        idToSessions.put(id, session);
       }
     }
 
@@ -84,7 +89,7 @@ public class LobbyWebSocket {
     payload.addProperty("id", oppUId);
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_ENTERED_LOBBY,
-          new JsonObject());
+          payload);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -96,6 +101,7 @@ public class LobbyWebSocket {
    */
   public static void sendOppenentLeftLobby(int uId) {
     try {
+      System.out.println("sending leaving to " + uId);
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_LEFT_LOBBY,
           new JsonObject());
     } catch (IOException e) {
@@ -167,7 +173,7 @@ public class LobbyWebSocket {
       JsonObject obj = new JsonObject();
       obj.addProperty("type", type.ordinal());
       obj.add("payload", payload);
-
+      System.out.println("a lobby message is being sent now.");
       session.getRemote().sendString(GSON.toJson(obj));
     }
   }

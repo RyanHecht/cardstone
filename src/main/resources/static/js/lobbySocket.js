@@ -32,7 +32,7 @@ class LobbySocket {
 
 	onWebSocketOpen() {
     let type = -1
-    const payload = {"id": this.userId}
+    const payload = {"id": this.server.userId};
     if (isHost) {
       type = LOBBY_MESSAGE_TYPE.LOBBY_CREATE;
     } else {
@@ -41,11 +41,13 @@ class LobbySocket {
 
     const obj = {"type": type, "payload": payload};
 		this.socket.send(JSON.stringify(obj));
+		console.log(JSON.stringify(payload));
 		console.log('opened');
 	}
 
 	onWebSocketMessage(event) {
-		this.messageReceived(JSON.parse(event.data));
+		console.log(event.data)
+		this.server.messageReceived(JSON.parse(event.data));
 	}
 
   sendChat(chat) {
@@ -70,6 +72,7 @@ class LobbySocket {
   }
 
   messageReceived(message) {
+		console.log(message);
     switch(message.type) {
       case LOBBY_MESSAGE_TYPE.OPPONENT_ENTERED_LOBBY:
         this.onOpponentJoin(message.payload.id);
@@ -85,6 +88,7 @@ class LobbySocket {
         break;
       case LOBBY_MESSAGE_TYPE.LOBBY_CANCELLED:
         this.onLobbyCancel();
+				break;
 			case LOBBY_MESSAGE_TYPE.RECEIVE_CHAT:
 				this.handleChat(message.message);
         break;

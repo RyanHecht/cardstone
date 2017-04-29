@@ -123,6 +123,8 @@ public class Lobby implements Jsonifiable {
       LobbyManager.cancelLobby(this.name);
     } else if (uId == uId2) {
       // TODO: Handle player 2 leaving
+      this.uId2 = null;
+      // System.out.println("handled " + uId + " leaving");
     }
   }
 
