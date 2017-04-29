@@ -21,8 +21,13 @@
 	     </div>
 	   </div>
 	</div>
+	
+	 <script type="text/javascript">
+		let isHost = ${isHost?string("true", "false")};
+	 </script>
      <script src="js/jquery-2.1.1.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
+     <script src="js/jquery-cookie.js"></script>
      <script src="js/lobbySocket.js"></script>
      <script src="js/lobbydisplay.js"></script>
   </body>

@@ -61,27 +61,31 @@ public class Gui {
       		+ "UNIQUE(name, user), "
       		+ "FOREIGN KEY (user) REFERENCES user(id) "
       		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
-      Db.update("create table if not exists game("
+      Db.update("create table if not exists finished_games("
       		+ "id integer primary key, "
       		+ "winner integer, moves integer, "
       		+ "UNIQUE(id, winner), "
       		+ "FOREIGN KEY (winner) REFERENCES user(id) "
       		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
-      Db.update("create table if not exists inProgress("
+      Db.update("create table if not exists all_games("
       		+ "id integer primary key autoincrement,"
       		+ "player1 integer, player2 integer, "
-      		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
+      		+ "FOREIGN KEY (player1) REFERENCES user(id) "
+      		+ "ON DELETE CASCADE ON UPDATE CASCADE,"
+      		+ "FOREIGN KEY (player2) REFERENCES user(id)"
+      		+ "ON DELETE CASCADE ON UPDATE CASCADE, "
+      		+ "UNIQUE(id, player1, player2));");
       Db.update("create table if not exists user_game("
       		+ "user integer not null, game integer not null,"
       		+ "UNIQUE(user, game),"
       		+ "FOREIGN KEY (user) REFERENCES user(id)"
       		+ "ON DELETE CASCADE ON UPDATE CASCADE,"
-      		+ "FOREIGN KEY (game) REFERENCES game(id)"
+      		+ "FOREIGN KEY (game) REFERENCES finished_game(id)"
       		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists game_event("
       		+ "game integer not null, event integer not null,"
       		+ "board text not null, UNIQUE(game, event),"
-      		+ "FOREIGN KEY (game) REFERENCES game(id)"
+      		+ "FOREIGN KEY (game) REFERENCES all_games(id)"
       		+ "ON DELETE CASCADE ON UPDATE CASCADE);");
     } catch (SQLException e) {
       e.printStackTrace();
@@ -123,9 +127,7 @@ public class Gui {
 			}
 		  } catch (NullPointerException | SQLException e) {
 			e.printStackTrace();
-		  }
-		  
-		  
+		  }		  
 		  
 		  Map<String, Object> vars = ImmutableMap.of("title",
 		          "Cardstone: The Shattering", "decks", decks, 
@@ -164,7 +166,7 @@ public class Gui {
 	  public ModelAndView handle(Request req, Response res) {
 		  String uid = req.cookie("id");
 		  
-		  String gameQuery = "select g.id, g.winner, g.moves from game as g, user_game"
+		  String gameQuery = "select g.id, g.winner, g.moves from finished_games as g, user_game"
 		  		+ " as ug where g.id = ug.game and ug.user = ?;";
 		  List<MetaGame> toDisplay = new ArrayList<>();
 		  try (ResultSet rs = Db.query(gameQuery, uid)) {
