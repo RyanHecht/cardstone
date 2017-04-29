@@ -9,7 +9,9 @@ public class SpellCard extends PlayableCard {
 		super(cost, image, owner, name, text, type);
 	}
 	
-	public JsonObject JsonifySelf(){
+	
+	@Override
+	public JsonObject jsonifySelf(){
 		JsonObject result = super.jsonifySelf();
 		result.addProperty("type", "spell");
 		return result;

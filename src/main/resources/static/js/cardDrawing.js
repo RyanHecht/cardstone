@@ -97,6 +97,7 @@ function setupBoard(){
 	let smallJoshPool = new manaPool(3,'&nbsp;');
 	//smallJoshPool.setEarth(1);
 	smallJoshPool.setBalance(1);
+    smallJoshPool.setFire(1);
 
 	let smallSkyWhalePool = new manaPool(3,'&nbsp;');
 	let bigWhalePool = new manaPool(3,'&nbsp;');
