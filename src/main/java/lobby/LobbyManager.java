@@ -41,6 +41,10 @@ public class LobbyManager {
     lobbies.remove(name);
   }
 
+  /**
+   * Get all lobbies that are currently open.
+   * @return A Collection containing all lobbies.
+   */
   public static Collection<Lobby> getAllLobbies() {
     return lobbies.values();
   }
@@ -59,6 +63,14 @@ public class LobbyManager {
     return false;
   }
 
+  /**
+   * Attempt to have a player of a specified Id join a lobby.
+   * @param playerId The player Id.
+   * @param lobbyName The name of the lobby to add them to.
+   * @param password the password of the lobby (empty string for non-private).
+   * @throws IllegalArgumentException Thrown if player could not join the lobby
+   *           (it's full, incorrect password, etc).
+   */
   public static void playerJoinLobby(int playerId, String lobbyName,
       String password)
       throws IllegalArgumentException {
