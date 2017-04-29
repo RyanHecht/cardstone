@@ -12,14 +12,17 @@ import effects.EmptyEffect;
 public interface PlayerChoosesCards extends Card {
 
 	@Override
-	public default Effect onThisPlayed(Card c, Zone z) {
-		assert (c.equals(this));
-		return EmptyEffect.create();
+	default public Effect onThisPlayed(Card c, Zone z) {
+		return (Board board) -> {
+
+			// send card to graveyard.
+			board.addCardToOcc(c, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
+		};
 	}
 
 	/**
 	 * Gets the options the person who played this card must choose from.
-	 * 
+	 *
 	 * @param board
 	 *          the board we are searching for options.
 	 * @return a list of things we want the player to choose from.
@@ -28,7 +31,25 @@ public interface PlayerChoosesCards extends Card {
 		return new LinkedList<Card>();
 	}
 
-	public default Effect getChooseEffect(Card thisCard, Card chosenCard) {
+	@Override
+	default public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
+		if (this.equals(chooser) && z == Zone.HAND) {
+			return getChooseEffect(chooser, chosen);
+		}
+		return EmptyEffect.create();
+	}
+
+	/**
+	 * Gets some effect associated with the card the player has chosen.
+	 *
+	 * @param thisCard
+	 *          this card.
+	 * @param chosenCard
+	 *          the card the user chose.
+	 * @return an effect describing how the game state should be changed based on
+	 *         the user's choice of card.
+	 */
+	public default Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosenCard) {
 		return EmptyEffect.create();
 	}
 }

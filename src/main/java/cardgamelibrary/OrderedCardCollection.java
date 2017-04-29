@@ -402,6 +402,15 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		Collections.shuffle(cards);
 	}
 
+	/**
+	 * Gets the cards in the occ.
+	 * 
+	 * @return the list of cards within the occ.
+	 */
+	public List<Card> getCards() {
+		return cards;
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
