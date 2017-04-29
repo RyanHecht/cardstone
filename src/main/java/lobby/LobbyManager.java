@@ -150,9 +150,8 @@ public class LobbyManager {
   public static void handleSelfSetDeck(int uId, JsonObject message) {
     Lobby lobby = getLobbyByPlayerId(uId);
     if (lobby != null) {
-      JsonObject deck = message.get("deck").getAsJsonObject();
-      String deckName = deck.get("name").getAsString();
-      JsonArray cards = deck.get("cards").getAsJsonArray();
+
+      JsonArray cards = message.get("cards").getAsJsonArray();
       List<String> cardList = new ArrayList<>();
 
       for (JsonElement card : cards) {
@@ -161,7 +160,7 @@ public class LobbyManager {
       }
       System.out.print("\n");
       lobby.setDeck(uId, cardList);
-      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId), deckName);
+      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId));
     }
   }
 

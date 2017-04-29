@@ -114,9 +114,9 @@ public class LobbyWebSocket {
    * @param uId Id of recipient.
    * @param deckName The name of the opponent's deck.
    */
-  public static void sendOppenentSetDeck(int uId, String deckName) {
+  public static void sendOppenentSetDeck(int uId) {
     JsonObject payload = new JsonObject();
-    payload.addProperty("name", deckName);
+    // payload.addProperty("name", deckName);
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_SET_DECK, payload);
     } catch (IOException e) {
