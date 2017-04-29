@@ -166,14 +166,20 @@ class Server{
 
   handleChat(message) {
     const chat = message.message;
+    if(message == "my dog"){
+        $(".chatLog").append("<div class='chatMessage chatMessageMe alert alert-info'>" + chat + "</div>")
+    }
+    else{
+         $(".chatLog").append("<div class='chatMessage chatMessageOther alert alert-success'>" + chat + "</div>")
+    
+    }
+    $('.chatLog').scrollTop($('.chatLog')[0].scrollHeight);
     console.log("Got chat message: " + chat);
-    // TODO: things and stuff
   }
 
   sendChat(chat) {
     const obj = {"type": MESSAGE_TYPE.PLAYER_SEND_CHAT, "payload": {"message": chat}};
     this.websocket.send(JSON.stringify(obj));
-    console.log("sent chat: " + chat);
   }
 
     badMessage(message){

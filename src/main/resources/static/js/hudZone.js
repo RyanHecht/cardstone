@@ -11,7 +11,7 @@ class hudZone extends drawableZone{
     draw(){
         console.log("started draw" + this.div);
         let $this = this;
-        let totalHeight = 100;
+        let totalHeight = 50;
         this.div.children(".healthBox").text($this.health);
         this.div.children(".healthLine").css({
 			'height':function(index, value){

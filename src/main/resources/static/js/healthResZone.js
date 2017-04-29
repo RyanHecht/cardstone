@@ -1,9 +1,9 @@
 class healthResZone extends drawableZone{
 	constructor(div,health,res,deck){
 		super();
-		this.healthDiv = div.children().children().children().children('.health');
-		this.resDiv = div.children().children().children().children('.regRes');
-		this.deckDiv = div.children().children().children().children(".deckTd");
+		this.healthDiv = div.find('.health');
+		this.resDiv = div.find('.regRes');
+		this.deckDiv = div.find(".deck");
 		this.health = health;
 		this.res = res;
 		this.deck = deck;
@@ -22,9 +22,11 @@ class healthResZone extends drawableZone{
 				classes: 'qtip-bootstrap ',
 			},
 			position: { 
-				my: 'top right',
-				at: 'bottom left',
-				target: this,
+					viewport: $(window),
+					adjust: {
+						method: 'flipinvert shift'
+					}
+					
 			}
 		}
 		);

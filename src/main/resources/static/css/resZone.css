@@ -15,7 +15,7 @@
     position:absolute;
     left:20px;
     width:50px;
-    bottom:130px;
+    bottom:100px;
     font-size:20px;
     color:yellow;
 }
@@ -24,7 +24,7 @@
     position:absolute;
     right:70px;
     width:50px;
-    top:130px;
+    top:100px;
     font-size:20px;
     color:yellow;
 }    
@@ -36,31 +36,36 @@
 .overlayHUD1{
   position:absolute;
   left:20px;
-  bottom:30px;
-  height:100px;
+  bottom:20px;
+  height:80px;
   width:100px;
-  background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-color:black;
 }
 
 .overlayHUD2{
   position:absolute;
   right:20px;
-  top:30px;
-  height:100px;
+  top:20px;
+  height:80px;
   width:100px;
-  background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-color:black;
+}
+
+
+.userIcon{
+    height:50px;
+    width:50px;
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-color:black;
 }
 
 .healthLine{
   position:absolute;
   bottom:0px;
-  left:100px;
+  left:50px;
   border:3px solid yellow;
   width:0px;
 }
@@ -69,16 +74,34 @@
   position:absolute;
   right:0px;
   top:0px;
-  width:35%;
+  width:33%;
   height:35%;
   text-align:center;
+}
+
+.deckBox{
+  position:absolute;
+  right:34px;
+  top:0px;
+  width:34%;
+  height:35%;
+  text-align:center;
+  background-color:white;
+  background-image:url("../images/cardBack.jpg");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
+.imageSub{
+    
 }
 
 .resBox{
   position:absolute;
   left:0px;
   top:0px;
-  width:35%;
+  width:33%;
   height:35%;
   text-align:center;
 }

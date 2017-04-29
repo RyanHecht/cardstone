@@ -119,6 +119,53 @@ body .bigModal .modal-dialog {
     box-shadow: 0 -2px 20px 6px #9ecaed;
 }
 
+.chat{
+    height:40%;
+    position:absolute;
+    top:2%;
+    left:2%;
+    width:15%;
+    background-color:rgba(230,230,240,1.0);
+    padding:3px;
+}
+
+.chatLog{
+    overflow: auto;
+    height:60%;
+    width:100%;
+}
+
+.chatMessageType{
+    position:absolute;
+    bottom:2px;
+    float:right;
+    width:95%;
+    height:30%;
+}
+
+#chatMessageSubmit{
+    float:right;
+}
+
+#chatMessageContent{
+    width:100%;
+}
+
+.chatMessage{
+    padding:4px;
+    margin:4px;
+}
+
+.chatMessageMe{
+    float:right;
+    width:80%;
+}
+
+.chatMessageOther{
+    float:left;
+    width:80%;
+}
+
 .lineRight{
     position:absolute;
     right:0%;
@@ -268,7 +315,6 @@ body .bigModal .modal-dialog {
 .board .zonegroup{
 	display: inline-block;
 }
-
 
 
 

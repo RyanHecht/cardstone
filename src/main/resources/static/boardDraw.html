@@ -53,6 +53,13 @@
 	<canvas class="boardOverlay" ></canvas>
     <div class="overlayHand1 HUD"></div>
     <div class="overlayHand2 HUD"></div>
+    <div class="alert chat HUD" id="chatBox">
+    <div class="chatLog"></div>
+    <div class="chatMessageType">
+        <textarea id="chatMessageContent" type="text" placeholder="message"></textarea>
+        <button class="pull-right" id="chatMessageSubmit">Submit</button>
+    </div>
+    </div>
     <div id="manaDisplay1" class="manaHUD1 HUD">
         <div class="zone mana manaPool resDisplay" id="mana1"></div>
     </div>
@@ -64,13 +71,15 @@
         <div class="deck deckBox resDisplay" id="deck1"></div>
         <div class="healthLine"></div>
         <div class="resBox regRes resDisplay" id="regRes1"></div>
-        <div class="optionsGear" id="optionsPopperGear"></div>
+        
+        <div class="userIcon"><div class="optionsGear" id="optionsPopperGear"></div></div>
     </div>
     <div class="overlayHUD2 HUD hasTooltip">
         <div class="healthBox health resDisplay" id="health2"></div>
         <div class="deck deckBox resDisplay" id="deck2"></div>
         <div class="healthLine"></div>
         <div class="resBox regRes resDisplay" id="regRes2"></div>
+        <div class="userIcon"></div>
     </div>
         <div class="boxOuter" onmousedown="return false">
             <div class="boxInner">

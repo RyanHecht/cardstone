@@ -92,9 +92,6 @@ function setupBoard(){
 	let joshPool = new manaPool(1,'');
 	joshPool.setFire(5);
 	joshPool.setAir(5);
-	joshPool.setWater(3);
-	joshPool.setEarth(6);
-	joshPool.setBalance(4);
 	let smallJoshPool = new manaPool(3,'&nbsp;');
 	//smallJoshPool.setEarth(1);
     smallJoshPool.setAir(1);
@@ -221,6 +218,23 @@ function setupKeypress(){
 	});
 }
 
+function submitChat(){
+    let cont = $("#chatMessageContent")
+    server.sendChat(cont.val());
+    cont.val("");
+    
+}
+
+function setupChat(){
+    $("#chatMessageContent").keyup(function(e){
+        if(e.which == 13){
+            submitChat();
+        }
+        return false;
+    });
+    $("#chatMessageSubmit").click(submitChat);
+}
+
 
 $(document).ready(function(){
     setupMouseListen();
@@ -228,6 +242,7 @@ $(document).ready(function(){
     cardCache = new cardCacher();
 	setupBoard();
     setupKeypress();
+    setupChat();
 	$(window).resize(function() {
 		clearAnimations();
 		redrawAll();
