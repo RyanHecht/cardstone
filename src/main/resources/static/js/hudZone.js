@@ -5,7 +5,7 @@ class hudZone extends drawableZone{
         this.div = div;
         this.health = health;
         this.res = res;
-        this.prepTip();
+        //not prepping tip atm;
     }
     
     draw(){

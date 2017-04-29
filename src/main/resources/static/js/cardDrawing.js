@@ -19,6 +19,7 @@ let mouseSystem;
 let canvasLine = new DrawnLine(0,0,0,0);
 let turnTimer;
 let tooltipDisplay = false;
+let isSpectateMode = false;
 
 function redrawAll(){
 	wholeBoard.forceRedraw();
@@ -88,7 +89,7 @@ function setupCanvas(){
 };
 
 function setupBoard(){
-	let joshPool = new manaPool(10,'');
+	let joshPool = new manaPool(1,'');
 	joshPool.setFire(5);
 	joshPool.setAir(5);
 	joshPool.setWater(3);
@@ -96,8 +97,7 @@ function setupBoard(){
 	joshPool.setBalance(4);
 	let smallJoshPool = new manaPool(3,'&nbsp;');
 	//smallJoshPool.setEarth(1);
-	smallJoshPool.setBalance(1);
-    smallJoshPool.setFire(1);
+    smallJoshPool.setAir(1);
 
 	let smallSkyWhalePool = new manaPool(3,'&nbsp;');
 	let bigWhalePool = new manaPool(3,'&nbsp;');
