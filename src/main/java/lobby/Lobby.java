@@ -7,10 +7,10 @@ import game.GameManager;
 import java.util.List;
 
 public class Lobby implements Jsonifiable {
-  private String name;
-  private boolean priv;
-  private String password;
-  private Integer uId1;
+  private final String name;
+  private final boolean priv;
+  private final String password;
+  private final Integer uId1;
   private Integer uId2;
   private List<String> p1deck;
   private List<String> p2deck;
@@ -53,9 +53,9 @@ public class Lobby implements Jsonifiable {
     }
   }
 
-  public void join(int uId, String password) {
+  public void join(int uId, String pw) {
     if (priv) {
-      if (!(this.password == password)) {
+      if (!(this.password.equals(pw))) {
         throw new IllegalArgumentException("Incorrect password.");
       }
     }
@@ -84,17 +84,26 @@ public class Lobby implements Jsonifiable {
     }
   }
 
-  public int getOtherPlater(int uId) {
+  public int getOtherPlayer(int uId) {
+	System.out.println("Other player request from user " + uId);
+	System.out.println("In lobby " + name + " with pw " + password + " and users " 
+						+ uId1 + ", " + uId2);
+	Integer ret = null;
     if (uId == uId1) {
-      return uId2;
+      ret = uId2;
     } else if (uId == uId2) {
-      return uId1;
+      ret = uId1;
     }
-    return -1;
+    
+    return (ret == null) ? -1 : ret;
   }
 
   public boolean containsPlayer(Integer uId) {
     return uId1 == uId || uId2 == uId;
+  }
+  
+  public boolean isHost(int uId) {
+	  return uId1 == uId;
   }
 
   public void setDeck(int uId, List<String> deck) {
@@ -109,9 +118,9 @@ public class Lobby implements Jsonifiable {
   public JsonObject jsonifySelf() {
     JsonObject obj = new JsonObject();
     obj.addProperty("name", this.name);
-    obj.addProperty("count", getCount());
-    obj.addProperty("isPrivate", priv);
-    obj.addProperty("hostId", uId1);
+    obj.addProperty("full", getCount() > 1);
+    obj.addProperty("private", priv);
+    obj.addProperty("host", uId1);
     return obj;
   }
 
