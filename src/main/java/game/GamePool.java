@@ -3,6 +3,11 @@ package game;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Represents pool of all games that are going on.
+ * @author ryan
+ *
+ */
 public class GamePool {
   Map<Integer, Game> playerIdsToGames = new ConcurrentHashMap<>();
 
