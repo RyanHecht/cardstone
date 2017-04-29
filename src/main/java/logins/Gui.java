@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import lobby.Lobby;
 import lobby.LobbyManager;
@@ -46,6 +47,8 @@ public class Gui {
     Spark.get("/replay", new GameReplayHandler(), fm);
     Spark.get("/lobbies", new LobbiesHandler(), fm);
     Spark.get("/lobby", new LobbyHandler(), fm);
+    Spark.post("/username", new UsernameHandler());
+    Spark.post("/deck_from", new DeckFinder());
   }
 
   public void init() {
@@ -287,6 +290,61 @@ public class Gui {
       Map<String, Object> variables = ImmutableMap.of("title",
           "Cardstone: The Shattering");
       return GSON.toJson(variables);
+    }
+  }
+  
+  /**
+   * Finds username based on user id.
+   * @wriley1
+   */
+  private class UsernameHandler implements Route {
+    @Override
+    public String handle(Request req, Response res) {
+      JsonObject json = new JsonObject();
+      QueryParamsMap qm = req.queryMap();
+      
+      String id = qm.value("id");
+      String username;
+      
+      String userQuery = "select username from user where id = ?;";
+      try (ResultSet rs = Db.query(userQuery, id)) {
+    	  rs.next();
+    	  username = rs.getString(1);
+    	  assert !rs.next();
+      } catch (NullPointerException | SQLException e) {
+    	  username = "Anonymous";
+    	  e.printStackTrace();
+      }
+      
+      json.addProperty("username", username);
+
+      return json.toString();
+    }
+  }
+  
+  /**
+   * Finds cards in deck given deck's name.
+   * @wriley1
+   */
+  private class DeckFinder implements Route {
+    @Override
+    public String handle(Request req, Response res) {
+      JsonObject json = new JsonObject();
+      QueryParamsMap qm = req.queryMap();
+      
+      String deckName = qm.value("deck");
+      String uid = req.cookie("id");
+      
+      String deckQuery = "select cards from user where name = ? and user = ?;";
+      try (ResultSet rs = Db.query(deckQuery, deckName, uid)) {
+    	  rs.next();
+    	  json.addProperty("cards", rs.getString(1));
+    	  assert !rs.next();
+      } catch (NullPointerException | SQLException e) {
+    	  e.printStackTrace();
+      }
+
+      return json.toString();
     }
   }
 

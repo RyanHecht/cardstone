@@ -31,17 +31,17 @@ class LobbySocket {
 	}
 
 	onWebSocketOpen() {
-    let type = -1
-    const payload = {"id": this.userId}
-    if (isHost) {
-      type = LOBBY_MESSAGE_TYPE.LOBBY_CREATE;
-    } else {
-      type = LOBBY_MESSAGE_TYPE.LOBBY_CONNECT;
-    }
+		let type = -1
+		const payload = {"id": this.userId}
+		if (isHost) {
+		  type = LOBBY_MESSAGE_TYPE.LOBBY_CREATE;
+		} else {
+		  type = LOBBY_MESSAGE_TYPE.LOBBY_CONNECT;
+		}
 
-    const obj = {"type": type, "payload": payload};
-		this.socket.send(JSON.stringify(obj));
-		console.log('opened');
+		const obj = {"type": type, "payload": payload};
+			this.socket.send(JSON.stringify(obj));
+			console.log('opened');
 	}
 
 	onWebSocketMessage(event) {

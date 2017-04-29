@@ -18,7 +18,7 @@
 <div class="col-md-4">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">${opp}</h3>
+      <h3 class="panel-title" id="oppname">${opp}</h3>
     </div>
     <div class="panel-body">
 	    <p id="oppmessage">${oppMsg} </p>
