@@ -7,24 +7,6 @@
     <th>Full?</th>
   </thead>
   <tbody id="lobby-table">
-      <tr class="clickable-row" data-href="/foo">
-        <td class="name">Ayy</td>
-        <td class="host">willay</td>
-        <td class="private">Yes</td>
-        <td class="full">No</td>
-      </tr>
-      <tr class="clickable-row" data-href="/foo">
-        <td class="name">Lmao</td>
-        <td class="host">joshie</td>
-        <td class="private">No</td>
-        <td class="full">No</td>
-      </tr>
-      <tr class="clickable-row" data-href="/foo">
-        <td class="name">Kung Pao</td>
-        <td class="host">abc</td>
-        <td class="private">No</td>
-        <td class="full">Yes</td>
-      </tr>  
   </tbody>
 </table>
 
@@ -37,9 +19,8 @@
         <h4 class="modal-title">Create a lobby</h4>
       </div>
       <div class="modal-body">
-          <form>
              <div class="form-group row">
-               <label class="col-sm-2 col-form-label">Lobby Name</label>
+               <label class="col-sm-2 col-form-label">Name</label>
                <div class="col-sm-8">
                <input type="text" class="form-control" id="lname">
                </div>
@@ -60,10 +41,9 @@
              </div>
 		    <div class="form-group row">
 		      <div class="offset-sm-2 col-sm-10">
-		        <button type="submit" class="btn btn-default" id="createlobby">Host</button>
+		        <input class="btn btn-primary" type="submit" id="createlobby" value="Host">
 		      </div>
 			</div>
-		  </form>
       </div>
     </div>
   </div>
@@ -100,7 +80,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Error joining game</h4>
+        <h4 class="modal-title" id="messageheader"></h4>
       </div>
       <div class="modal-body">
         <p id="message"> </p>

@@ -23,12 +23,13 @@ public class LobbyManager {
    */
   public static Lobby addLobby(String name, boolean priv, String password,
       int hostUId) throws IllegalArgumentException {
-    if (lobbies.containsKey("name")) {
-      throw new IllegalArgumentException("Lobby already exists");
+    if (lobbies.containsKey(name)) {
+      throw new IllegalArgumentException("Lobby with name " + name + " already exists");
     } else if (priv && password.length() < 1) {
-      throw new IllegalArgumentException("Password must be non-empty");
+      throw new IllegalArgumentException("Private lobbies must have non-empty passwords");
     } else {
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
+      System.out.println("Made lobby: " + lobby);
       return lobby;
     }
   }
@@ -75,6 +76,7 @@ public class LobbyManager {
       String password)
       throws IllegalArgumentException {
     try {
+      System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId, lobbyName, password));
       lobbies.get(lobbyName).join(playerId, password);
     } catch (IllegalArgumentException x) {
       throw x;
@@ -128,7 +130,7 @@ public class LobbyManager {
       }
       System.out.print("\n");
       lobby.setDeck(uId, cardList);
-      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlater(uId), deckName);
+      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId), deckName);
     }
   }
 

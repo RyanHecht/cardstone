@@ -12,10 +12,10 @@ import java.util.List;
  *
  */
 public class Lobby implements Jsonifiable {
-  private String name;
-  private boolean priv;
-  private String password;
-  private Integer uId1;
+  private final String name;
+  private final boolean priv;
+  private final String password;
+  private final Integer uId1;
   private Integer uId2;
   private List<String> p1deck;
   private List<String> p2deck;
@@ -96,9 +96,9 @@ public class Lobby implements Jsonifiable {
    * @param password their proposed password ("" for non-private).
    * @throws IllegalArgumentException thrown if there's an issue joining.
    */
-  public void join(int uId, String password) throws IllegalArgumentException {
+  public void join(int uId, String pw) throws IllegalArgumentException {
     if (priv) {
-      if (!(this.password == password)) {
+      if (!(this.password.equals(pw))) {
         throw new IllegalArgumentException("Incorrect password.");
       }
     }
@@ -134,18 +134,18 @@ public class Lobby implements Jsonifiable {
     }
   }
 
-  /**
-   * Get the player in the lobby that isn't the one specified.
-   * @param uId The uId to get the opponent of.
-   * @return The id of the player that isn't uId.
-   */
-  public int getOtherPlater(int uId) {
+  public int getOtherPlayer(int uId) {
+	System.out.println("Other player request from user " + uId);
+	System.out.println("In lobby " + name + " with pw " + password + " and users " 
+						+ uId1 + ", " + uId2);
+	Integer ret = null;
     if (uId == uId1) {
-      return uId2;
+      ret = uId2;
     } else if (uId == uId2) {
-      return uId1;
+      ret = uId1;
     }
-    return -1;
+    
+    return (ret == null) ? -1 : ret;
   }
 
   /**
@@ -155,6 +155,10 @@ public class Lobby implements Jsonifiable {
    */
   public boolean containsPlayer(Integer uId) {
     return uId1 == uId || uId2 == uId;
+  }
+  
+  public boolean isHost(int uId) {
+	  return uId1 == uId;
   }
 
   /**
@@ -174,9 +178,9 @@ public class Lobby implements Jsonifiable {
   public JsonObject jsonifySelf() {
     JsonObject obj = new JsonObject();
     obj.addProperty("name", this.name);
-    obj.addProperty("count", getCount());
-    obj.addProperty("isPrivate", priv);
-    obj.addProperty("hostId", uId1);
+    obj.addProperty("full", getCount() > 1);
+    obj.addProperty("private", priv);
+    obj.addProperty("host", uId1);
     return obj;
   }
 

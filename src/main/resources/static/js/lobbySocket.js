@@ -1,13 +1,13 @@
 const LOBBY_MESSAGE_TYPE = {
-LOBBY_CONNECT: 0,
-LOBBY_CREATE: 1
-OPPONENT_ENTERED_LOBBY: 2,
-OPPONENT_LEFT_LOBBY: 3,
-SELF_SET_DECK: 4,
-OPPONENT_SET_DECK: 5,
-START_GAME_REQUEST: 6,
-GAME_IS_STARTING: 7,
-LOBBY_CANCELLED: 8
+	LOBBY_CONNECT: 0,
+	LOBBY_CREATE: 1,
+	OPPONENT_ENTERED_LOBBY: 2,
+	OPPONENT_LEFT_LOBBY: 3,
+	SELF_SET_DECK: 4,
+	OPPONENT_SET_DECK: 5,
+	START_GAME_REQUEST: 6,
+	GAME_IS_STARTING: 7,
+	LOBBY_CANCELLED: 8
 };
 
 class LobbySocket {
@@ -18,13 +18,13 @@ class LobbySocket {
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
-    this.server.onOpponentJoin = onOpponentJoin;
-    this.server.onOpponentLeave = onOpponentLeave;
-    this.server.onOpponentSetDeck = onOpponentSetDeck;
-    this.server.onGameStart = onGameStart;
-    this.server.onLobbyCancel = onLobbyCancel;
-    this.server.isHost = isHost;
-    this.server.userId = userId;
+		this.server.onOpponentJoin = onOpponentJoin;
+		this.server.onOpponentLeave = onOpponentLeave;
+		this.server.onOpponentSetDeck = onOpponentSetDeck;
+		this.server.onGameStart = onGameStart;
+		this.server.onLobbyCancel = onLobbyCancel;
+		this.server.isHost = isHost;
+		this.server.userId = userId;
 	}
 
 	onWebSocketOpen() {
@@ -79,10 +79,4 @@ class LobbySocket {
         break;
     }
   }
-
-
-
-
-
-
 }
