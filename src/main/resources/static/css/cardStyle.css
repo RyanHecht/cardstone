@@ -20,6 +20,8 @@
     transform: scale(1.2, 1.2);
 }
 
+
+
 .cardBox::before {
   content: "";
   z-index: -1;

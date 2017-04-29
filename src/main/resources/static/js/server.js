@@ -42,16 +42,26 @@ class Server{
 		// // cardDiv.addClass("cardSelected");
 		// // selectedCard = cardDiv.attr("id");
 	// }
+    
+    cardClicked(id){
+        if(inputState == StateEnum.IDLE){
+            
+        }
+        else if(inputState == StateEnum.TARGET_NEEDED){
+            this.targetChosen(id);
+        }
+    }
 
-	targetChosen(cardDiv){
-		let response = sendTargetResponse(cardDiv.getId);
-		if(response.valid){
-			inputState = IDLE;
-		}
-		else{
-			actionFailed(response.message);
-		}
+	targetChosen(id){
+		this.sendTargetResponse(id);
+        inputState = StateEnum.IDLE;
 	}
+    
+    
+    //RY GUY WRITE THIS QUIK
+    sendTargetResponse(id){
+        console.log(id);
+    }
 
   cardTargeted(cardID,targetID){
    const payload = {"IID1": cardID, "IID2": targetID};
@@ -69,10 +79,10 @@ class Server{
 
     //isself is a boolean
     playerTargeted(cardID,isSelf){
-			const payload = {"IID1": cardID, "self": isSelf};
-		 const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
-		 this.websocket.send(JSON.stringify(obj));
-     console.log("sent player targeted");
+        console.log("sent player targeted");
+        const payload = {"IID1": cardID, "self": isSelf};
+		const obj = {"type": MESSAGE_TYPE.TARGETED_PLAYER, "payload": payload};
+		this.websocket.send(JSON.stringify(obj));
     }
 
 	constructor() {
@@ -95,31 +105,6 @@ class Server{
 		this.server.messageReceived(JSON.parse(event.data));
 	}
 
-
-
-
-
-
-	cardClicked(cardDiv){
-		console.log(cardDiv);
-		if(isTurn){
-			switch(inputState){
-				case StateEnum.IDLE:
-					//cardSelected(cardDiv);
-					break;
-				case StateEnum.TARGET_NEEDED:
-					//targetChosen(cardDiv);
-					break;
-				default:
-					actionFailed();
-			}
-		}
-		else{
-			actionFailed();
-		}
-
-	}
-
 	parseAnimation(data){
 		let animationType = data.animationType;
 		let animation;
@@ -135,7 +120,11 @@ class Server{
 		updateAndDrawAnimations();
 	}
 
-
+    chooseTarget(){
+        alert("please pick a target");
+        inputState = StateEnum.TARGET_NEEDED;
+    }
+    
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
@@ -151,6 +140,9 @@ class Server{
             case MESSAGE_TYPE.CHOOSE_REQUEST:
                 this.chooseFrom(message.payload);
                 break;
+            case MESSAGE_TYPE.TARGET_REQUEST:
+                this.chooseTarget();
+                break;
             case MESSAGE_TYPE.TEXT_MESSAGE:
                 this.alertMessage(message.payload);
             case MESSAGE_TYPE.RECEIVE_CHAT:
@@ -164,9 +156,12 @@ class Server{
     alert(message.message);
   }
 
-  handleChat(message) {
+  handleChat(message,flag) {
+      if(flag == null){
+          flag = false;
+      }
     const chat = message.message;
-    if(message == "my dog"){
+    if(flag){
         $(".chatLog").append("<div class='chatMessage chatMessageMe alert alert-info'>" + chat + "</div>")
     }
     else{
@@ -180,6 +175,7 @@ class Server{
   sendChat(chat) {
     const obj = {"type": MESSAGE_TYPE.PLAYER_SEND_CHAT, "payload": {"message": chat}};
     this.websocket.send(JSON.stringify(obj));
+    this.handleChat(obj.payload,true);
   }
 
     badMessage(message){

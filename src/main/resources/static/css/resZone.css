@@ -87,7 +87,7 @@
   height:35%;
   text-align:center;
   background-color:white;
-  background-image:url("../images/cardBack.jpg");
+  background-image:url("../images/deckIcon.png");
   background-size:contain;
   background-repeat:no-repeat;
   background-position:center;
@@ -120,7 +120,7 @@
   text-align:center;
 }
 
-.HUD .regRes{
+.resHUD .regRes{
 	background-color:rgba(130,99,66,.7);
 	display:table-cell;
 	background-image:url("../images/regRes.png");

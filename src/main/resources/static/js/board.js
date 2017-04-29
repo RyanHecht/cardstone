@@ -181,17 +181,13 @@ class board{
     setupCardClick(){
         if(!isReplayMode){
             $(".card").on("click", function(){
-                server.cardClicked($(this));
+                server.cardClicked($(this).attr("id"));
             });
-            $("#health1").droppable({
-                drop: function( event, ui ) {
-                      server.playerTargeted(ui.draggable.attr("id"),true);
-                }
+            $(".overlayHUD1").mouseup(function(event){
+                mouseSystem.mouseupPlayer(true,event);
             });
-            $("#health2").droppable({
-                drop: function( event, ui ) {
-                      server.playerTargeted(ui.draggable.attr("id"),false);
-                }
+            $(".overlayHUD2").mouseup(function(event){
+                mouseSystem.mouseupPlayer(false,event);
             });
         }
     }

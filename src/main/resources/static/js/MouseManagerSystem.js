@@ -54,7 +54,14 @@ class MouseManagerSystem{
     
     mouseupDiv(div,event){
         if(this.isClicked){
-            server.cardPlayed(this.curTargeted,div);
+            server.cardPlayed(this.curTargeter,div);
+        }
+        this.mouseup(event);
+    }
+    
+    mouseupPlayer(isSelf,event){
+        if(this.isClicked){
+            server.playerTargeted(this.curTargeter,isSelf);
         }
         this.mouseup(event);
     }

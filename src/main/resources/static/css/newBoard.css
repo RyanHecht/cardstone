@@ -12,6 +12,17 @@ img{
     
 }
 
+.blue-font{
+    width:50%;
+    margin:auto;
+    color:lightblue; 
+    text-align:center;
+}
+
+.center-text{
+    text-align:center;
+}
+
 body{
 	background:none;
     overflow:hidden;
@@ -127,6 +138,15 @@ body .bigModal .modal-dialog {
     width:15%;
     background-color:rgba(230,230,240,1.0);
     padding:3px;
+    opacity:.25;
+}
+
+.chat:focus{
+    opacity:1.0;
+}
+
+.chat:hover{
+    opacity:1.0;
 }
 
 .chatLog{
@@ -140,7 +160,7 @@ body .bigModal .modal-dialog {
     bottom:2px;
     float:right;
     width:95%;
-    height:30%;
+    height:40%;
 }
 
 #chatMessageSubmit{
@@ -220,7 +240,7 @@ body .bigModal .modal-dialog {
 	position:absolute;
 	top:0%;
 	left:0%;
-	z-index:100;
+	z-index:1000;
 	height:100%;
 	width:100%;
 }
@@ -229,9 +249,6 @@ body .bigModal .modal-dialog {
     width:100%;
     position:absolute;
 }
-
-
-
 
 .centerClockRect{
     position:absolute;

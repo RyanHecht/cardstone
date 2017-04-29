@@ -230,19 +230,19 @@ function setupChat(){
         if(e.which == 13){
             submitChat();
         }
-        return false;
+        e.stopPropagation();
     });
     $("#chatMessageSubmit").click(submitChat);
 }
 
 
 $(document).ready(function(){
+    setupChat();
     setupMouseListen();
 	setupCanvas();
     cardCache = new cardCacher();
 	setupBoard();
     setupKeypress();
-    setupChat();
 	$(window).resize(function() {
 		clearAnimations();
 		redrawAll();
@@ -259,4 +259,5 @@ $(document).ready(function(){
     prepTurnTimers();
     mouseSystem.redraw();
     redrawAll();
+    server.chooseTarget();
 });
