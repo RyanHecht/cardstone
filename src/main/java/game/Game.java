@@ -182,9 +182,9 @@ public class Game implements Jsonifiable {
 		}
 		return -1;
 	}
-	
-	public void endGame(int i){
-		ClassByJosh.endGame(this,i);
+
+	public void endGame(int i) {
+		ClassByJosh.endGame(this, i);
 	}
 
 	/**
@@ -329,14 +329,12 @@ public class Game implements Jsonifiable {
 	}
 
 	private void checkWinners() {
-		if(playerOne.getLife() < 0 || playerTwo.getLife() < 0){
-			if(playerOne.getLife() > 0){
+		if (playerOne.getLife() < 0 || playerTwo.getLife() < 0) {
+			if (playerOne.getLife() > 0) {
 				endGame(1);
-			}
-			else if(playerTwo.getLife() > 0){
+			} else if (playerTwo.getLife() > 0) {
 				endGame(2);
-			}
-			else{
+			} else {
 				endGame(0);
 			}
 		}
