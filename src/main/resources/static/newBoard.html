@@ -19,10 +19,25 @@
 		  </div>
 		  <div class="modal-body">
 			<br>
-			<button id="endTurnButton" type="submit" class="btn btn-primary">Yes</button>
+			<button type="submit" class="btn btn-primary endTurnButton">Yes</button>
 			<button type="cancel" class="btn btn-secondary pull-right" data-dismiss="modal">No</button>
 			<br>
 		  </div>
+		</div>
+	  </div>
+	</div>
+    <div class="modal fade" id="optionsMenu" tabindex="-1" role="dialog" aria-hidden="true">
+	  <div class="modal-dialog alert" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h4 class="modal-title">Options!</h4>
+		  </div>
+		  <div class="modal-body">
+			<input type="checkbox" id="tooltipsToggle">Display tooltips on hover<br>
+		  </div>
+          <div class="modal-footer">
+            <button type="cancel" class="btn btn-primary" data-dismiss="modal">Return to the game!</button>
+          </div>     
 		</div>
 	  </div>
 	</div>
@@ -42,6 +57,7 @@
         <div class="healthBox"></div>
         <div class="healthLine"></div>
         <div class="resBox"></div>
+        <div class="optionsGear" id="optionsPopperGear"></div>
     </div>
     <div class="zonegroup res resPop">
         <div class="zone basicRes" id="baseRes1">
@@ -77,7 +93,7 @@
                 <div class="board">
                     <div class="onTop" id="onTop2"></div>
                     <div class="onTop" id="onTop1"></div>
-                    <div class="zone centerClockRect centerInfo"></div>
+                    <div class="zone centerClockRect centerInfo endTurnButton"></div>
                     <div class="lineLeft"></div>
                     <div class="lineRight"></div>
                     <div class="lineLeftLight"></div>

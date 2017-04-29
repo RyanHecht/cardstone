@@ -7,17 +7,13 @@ class radialAnimation extends animation{
 	
 	setCenterDivById(divID){
 		let $divElem = $("#"+divID);
-		let divElem = $divElem[0];
-		console.log(divElem);
-		let left = divElem.offsetLeft;
-		let top = divElem.offsetTop;
-		let height = divElem.offsetHeight;
-		let width = divElem.offsetWidth;
-		while(divElem.offsetParent != null){
-			divElem = divElem.offsetParent;
-			left += divElem.offsetLeft;
-			top += divElem.offsetTop;
-		}
+        let rect = $divElem[0].getBoundingClientRect();
+        console.log(rect);
+		let left = rect.left;
+		let top = rect.top;
+        console.log(left,top);
+        let width = rect.width;
+        let height = rect.height;
 		let centerX = left + (width / 2);
 		let centerY = top + (height / 2);
 		this.setCenter(centerX,centerY);
@@ -101,3 +97,4 @@ class collapsingSingleRadialDrawable extends singleRadialDrawable{
 		return false;
 	}
 }
+

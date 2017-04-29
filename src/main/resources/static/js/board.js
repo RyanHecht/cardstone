@@ -119,7 +119,7 @@ class board{
             console.log("drawing zone", zone);
 			zone.draw();
 		}
-		setupCardClick();
+		this.setupCardClick();
 	}
 	
 	forceRedraw(){
@@ -127,7 +127,7 @@ class board{
             console.log("drawing zone", zone);
 			zone.forceRedraw();
 		}
-		setupCardClick();
+		this.setupCardClick();
 	}
 
 	getFromCache(data){
@@ -177,5 +177,22 @@ class board{
 				console.log("unknown zone in board pushcard");
 		}
 	}
-	
+    
+    setupCardClick(){
+        if(!isReplayMode){
+            $(".card").on("click", function(){
+                server.cardClicked($(this));
+            });
+            $("#health1").droppable({
+                drop: function( event, ui ) {
+                      server.playerTargeted(ui.draggable.attr("id"),true);
+                }
+            });
+            $("#health2").droppable({
+                drop: function( event, ui ) {
+                      server.playerTargeted(ui.draggable.attr("id"),false);
+                }
+            });
+        }
+    }
 }

@@ -13,7 +13,7 @@ class MouseManagerSystem{
         canvasLine.x1 = this.transformX(event.pageX);
         canvasLine.y1 = this.transformY(event.pageY);
         $(".qtip").addClass("tooltipHidden");
-        $("#"+id).addClass("cardBoxHighlightedClick");
+        $("#"+id).parent().addClass("cardBoxHighlightedClick");
         
     }
     
@@ -40,7 +40,7 @@ class MouseManagerSystem{
        this.tips.removeClass("tooltipHidden");
        $('div.qtip:visible').qtip('hide');
        event.stopPropagation();
-       $("#"+this.curTargeter).removeClass("cardBoxHighlightedClick");
+       $("#"+this.curTargeter).parent().removeClass("cardBoxHighlightedClick");
     }
     
     mouseupCard(id,event){ 
@@ -60,11 +60,11 @@ class MouseManagerSystem{
     }
     
     transformX(x){
-        return x * .76832;
+        return x;
     }
     
     transformY(x){
-        return x * 1.2;
+        return x;
     }
 
 }

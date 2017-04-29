@@ -18,15 +18,7 @@ let isReplayMode = false;
 let mouseSystem;
 let canvasLine = new DrawnLine(0,0,0,0);
 let turnTimer;
-
-/**
-Fill a div with a list of cards, if they can fit.
-Adds rows as needed up to max row count.
-*/
-
-
-
-
+let tooltipDisplay = false;
 
 function redrawAll(){
 	wholeBoard.forceRedraw();
@@ -90,8 +82,8 @@ function setupCanvas(){
 	let htmlBoard = $('.board');
 	animations = [];
 	canvasCtx = canvas.getContext('2d');
-    canvas.width = htmlBoard.width();
-    canvas.height = htmlBoard.height();
+    canvas.width = $(document).width();
+    canvas.height = $(document).height();
 	$(".boardOverlay").attr('width',canvas.width);
 };
 
@@ -104,7 +96,7 @@ function setupBoard(){
 	joshPool.setBalance(4);
 	let smallJoshPool = new manaPool(3,'&nbsp;');
 	//smallJoshPool.setEarth(1);
-	smallJoshPool.setFire(1);
+	smallJoshPool.setBalance(1);
 
 	let smallSkyWhalePool = new manaPool(3,'&nbsp;');
 	let bigWhalePool = new manaPool(3,'&nbsp;');
@@ -162,46 +154,11 @@ function setupBoard(){
 	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
 }
 
-
-
-
-
-function buildRadial(options){
-	let radial = new RadialAnimation();
-	radial.buildFromOptions(options);
-	return radial;
-}
-
-function buildCloud(options){
-	let cloud = new linearAnimation();
-	cloud.buildFromOptions(options);
-	return cloud;
-}
-
-
-
 function setupServer(){
 	server = new Server();
 }
 
-function setupCardClick(){
-    if(!isReplayMode){
-        $(".card").on("click", function(){
-            server.cardClicked($(this));
-        });
-        $("#health1").droppable({
-			drop: function( event, ui ) {
-				  server.playerTargeted(ui.draggable.attr("id"),true);
-			}
-		});
-        $("#health2").droppable({
-			drop: function( event, ui ) {
-				  server.playerTargeted(ui.draggable.attr("id"),false);
-			}
-		});
-    }
-    
-}
+
 
 function setupMouseListen(){
     mouseSystem = new MouseManagerSystem();
@@ -217,14 +174,20 @@ function prepTurnTimers(){
     turnTimer = new TurnTimer(true,10);
 }
 
-$(document).ready(function(){
-    setupMouseListen();
-	setupCanvas();
-    cardCache = new cardCacher();
-	setupBoard();
-	//server.messageReceived(JSON.parse(board1));
-	$(document).keypress(function(e) {
-		console.log("aqui");
+function popOptionsMenu(){
+    $("#optionsMenu").modal("show");
+}
+
+function setupOptionsMenu(){
+    $("#tooltipsToggle").change(function() {
+        tooltipDisplay = this.checked;
+        redrawAll();
+    });
+}
+
+function setupKeypress(){
+    	$(document).keyup(function(e) {
+		console.log("pressed" + e.which);
 		if(e.which == 13) {
 			server.chooseFrom([josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
 			josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
@@ -238,10 +201,13 @@ $(document).ready(function(){
 			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,1);
 			redrawChanged();
 		}
-		else if(e.which == 120){
-			animations.push(animationsMaker.getAttackAnimation(-6,-5).create());
-			quedAnims.push(animationsMaker.getDamagedAnimation(-5).create());
+		else if(e.which == 88){
+			animations.push(animationsMaker.getAttackAnimation(-6,-20).create());
+			quedAnims.push(animationsMaker.getDamagedAnimation(-20).create());
 		}
+        else if(e.which == 27){
+            popOptionsMenu();
+        }
         if(isReplayMode){
             if(e.which == 37){
                 server.replayRequestStepBack();
@@ -252,19 +218,29 @@ $(document).ready(function(){
         }
 		console.log(e.which);
 	});
-	 $(window).resize(function() {
+}
+
+
+$(document).ready(function(){
+    setupMouseListen();
+	setupCanvas();
+    cardCache = new cardCacher();
+	setupBoard();
+    setupKeypress();
+	$(window).resize(function() {
 		clearAnimations();
 		redrawAll();
 	});
-     $("#endTurnButton").click(function(){
+     $(".endTurnButton").click(function(){
             server.endTurn();
             $("#endTurnAsk").modal("hide");
     });
 	updateAndDrawAnimations();
 	wholeBoard.draw();
-	setupCardClick();
     setupServer();
+    setupOptionsMenu();
     $(".boxOuter").addClass("cursorTarget");
     prepTurnTimers();
     mouseSystem.redraw();
+    redrawAll();
 });

@@ -9,10 +9,13 @@ class drawable{
 
 	draw(ctx){
 		ctx.beginPath(0,0);
-		ctx.strokeStyle = this.color ;
+		ctx.strokeStyle = this.color;
 		if(this.shape == "circle"){
 			ctx.ellipse(this.x,this.y,this.radius,this.radius,0,0,10);
 		}
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
 		ctx.closePath();
 		ctx.stroke();
 	}

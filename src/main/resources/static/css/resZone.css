@@ -68,6 +68,20 @@
   text-align:center;
 }
 
+.optionsGear{
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  width:20%;
+  height:20%;
+  background-color:lightblue;
+  background-image:url("../images/option.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  text-align:center;
+}
+
 .basicRes .regRes{
 	background-color:rgba(130,99,66,.7);
 	display:table-cell;

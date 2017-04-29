@@ -21,8 +21,6 @@ class TurnTimer{
             $(".centerClockRect").css("background-image","../images/EnemyTurn.png");
         }
         this.updateThread(this);
-        
-        
     }
     
     updateThread($this){

@@ -22,6 +22,7 @@ class hudZone extends drawableZone{
 		}});
         this.div.children(".resBox").text($this.res);
         console.log("completed draw" + this);
+        $("#optionsPopperGear").click(popOptionsMenu);
     }
     
     forceRedraw(){

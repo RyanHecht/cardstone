@@ -5,9 +5,9 @@ class animationsMaker{
         console.log(attacker);
 		anim.setColorSet(attackerCard.cost.manaPool.getColors());
 		anim.setShape("circle");
-		anim.setRadius(2);
-		anim.setCount(200);
-		anim.setSpeed(.6);
+		anim.setRadius(1);
+		anim.setCount(150);
+		anim.setSpeed(.5);
 		anim.setRandom(true);
 		anim.setStartDivById(attacker);
 		anim.setEndDivById(defender);
@@ -18,8 +18,8 @@ class animationsMaker{
 		let anim = new singleRadial();
 		anim.setColor("red");
 		anim.setShape("circle");
-		anim.setRadius(130);
-		anim.setSpeed(.4);
+		anim.setRadius(50);
+		anim.setSpeed(.3);
 		anim.setCenterDivById(damaged);
 		anim.setCount(3);
 		return anim;

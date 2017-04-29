@@ -115,7 +115,9 @@ class cardCollection extends drawableZone{
 			this.changed = false;
 			div.empty();
 			this.fillDiv(div);
-			this.prepareToolTips(div);
+            if(tooltipDisplay){
+                this.prepareToolTips(div);
+            }
             this.prepareHover();
 			this.sizeCards(div);
             // if(this.expandInto != null){
