@@ -60,5 +60,10 @@ public class ClassByJosh {
 		
 		
 	}
+
+	public static void endGame(Game game, int winnerNumber) {
+		// TODO calc game metadata, transfer in progress to done
+		
+	}
 	
 }
