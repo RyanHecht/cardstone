@@ -80,6 +80,8 @@ public class LobbyWebSocket {
    * @param oppUId opponent's id.
    */
   public static void sendOppenentEnteredLobby(int uId, int oppUId) {
+    JsonObject payload = new JsonObject();
+    payload.addProperty("id", oppUId);
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_ENTERED_LOBBY,
           new JsonObject());

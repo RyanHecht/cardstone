@@ -20,7 +20,7 @@ class LobbySocket {
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
-		this.server.onOpponentJoin = onOpponentJoin;
+		this.onOpponentJoin = onOpponentJoin;
 		this.server.onOpponentLeave = onOpponentLeave;
 		this.server.onOpponentSetDeck = onOpponentSetDeck;
 		this.server.onGameStart = onGameStart;

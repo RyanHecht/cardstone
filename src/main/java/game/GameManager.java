@@ -16,7 +16,7 @@ public class GameManager {
   // some sort of method to add games.
   public static void addGame(int uId1, int uId2, Game game) {
     games.addGame(uId1, uId2, game);
-    // game.startGame();
+
   }
 
   // remove games when they complete.
@@ -73,7 +73,7 @@ public class GameManager {
       JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
-      // game.
+      game.handleChosen(message, playerId);
     }
   }
 
