@@ -581,6 +581,12 @@ public class Game implements Jsonifiable {
 
 			act(event);
 
+			// create card played event for the choosing card.
+			CardPlayedEvent cEvent = new CardPlayedEvent(chooserCard, board.getOcc(chooserCard.getOwner(), Zone.GRAVE),
+					board.getOcc(chooserCard.getOwner(), Zone.HAND));
+
+			act(cEvent);
+
 			sendWholeBoardToAllAndDb();
 
 			// reset the choosing card.
