@@ -53,40 +53,24 @@
 	<canvas class="boardOverlay" ></canvas>
     <div class="overlayHand1 HUD"></div>
     <div class="overlayHand2 HUD"></div>
-    <div class="overlayHUD1 HUD hasTooltip">
-        <div class="healthBox"></div>
-        <div class="healthLine"></div>
-        <div class="resBox"></div>
-        <div class="optionsGear" id="optionsPopperGear"></div>
-    </div>
-    <div class="zonegroup res resPop">
-        <div class="zone basicRes" id="baseRes1">
-            <table>
-            <tr>
-            <td class="health resDisplay" id="health1"></td>
-            <td class="deckTd"><div class="deck resDisplay" id="deck1"></div></td>
-            <td class="regRes resDisplay" id="regRes1"></td>
-            </tr>
-            </table>
-        </div>
+    <div id="manaDisplay1" class="manaHUD1 HUD">
         <div class="zone mana manaPool resDisplay" id="mana1"></div>
     </div>
-    <div class="overlayHUD2 HUD hasTooltip">
-        <div class="healthBox"></div>
-        <div class="healthLine"></div>
-        <div class="resBox"></div>
-    </div>
-    <div class="zonegroup res resPop">
-        <div class="zone basicRes" id="baseRes2">
-            <table>
-            <tr>
-            <td class="health resDisplay" id="health2"></td>
-            <td class="deckTd"><div class="deck resDisplay" id="deck2"></div></td>
-            <td class="regRes resDisplay" id="regRes2"></td>
-            </tr>
-            </table>
-        </div>
+    <div id="manaDisplay2" class="manaHUD2 HUD">
         <div class="zone mana manaPool resDisplay" id="mana2"></div>
+    </div>
+    <div class="overlayHUD1 HUD hasTooltip">
+        <div class="healthBox health resDisplay" id="health1"></div>
+        <div class="deck deckBox resDisplay" id="deck1"></div>
+        <div class="healthLine"></div>
+        <div class="resBox regRes resDisplay" id="regRes1"></div>
+        <div class="optionsGear" id="optionsPopperGear"></div>
+    </div>
+    <div class="overlayHUD2 HUD hasTooltip">
+        <div class="healthBox health resDisplay" id="health2"></div>
+        <div class="deck deckBox resDisplay" id="deck2"></div>
+        <div class="healthLine"></div>
+        <div class="resBox regRes resDisplay" id="regRes2"></div>
     </div>
         <div class="boxOuter" onmousedown="return false">
             <div class="boxInner">

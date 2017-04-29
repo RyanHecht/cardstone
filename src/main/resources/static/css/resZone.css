@@ -1,6 +1,6 @@
 .health{
 	color:black;
-	background:rgba(200,15,0,.4);
+	background:rgba(255,102,102,1.0);
 	background-image:url("../images/health.png");
 	background-repeat:no-repeat;
 	background-size:contain;
@@ -9,8 +9,25 @@
 
 .regRes{
 	display:inline-block;
-	
 }
+
+.manaHUD1{
+    position:absolute;
+    left:20px;
+    width:50px;
+    bottom:130px;
+    font-size:20px;
+    color:yellow;
+}
+
+.manaHUD2{ 
+    position:absolute;
+    right:70px;
+    width:50px;
+    top:130px;
+    font-size:20px;
+    color:yellow;
+}    
 
 .HUD{
     z-index:500;
@@ -18,8 +35,8 @@
 
 .overlayHUD1{
   position:absolute;
-  left:2%;
-  bottom:3%;
+  left:20px;
+  bottom:30px;
   height:100px;
   width:100px;
   background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
@@ -30,8 +47,8 @@
 
 .overlayHUD2{
   position:absolute;
-  right:2%;
-  top:3%;
+  right:20px;
+  top:30px;
   height:100px;
   width:100px;
   background-image:url(https://openclipart.org/download/247319/abstract-user-flat-3.svg);
@@ -51,10 +68,9 @@
 .healthBox{
   position:absolute;
   right:0px;
-  top:opx;
+  top:0px;
   width:35%;
   height:35%;
-  background-color:red;
   text-align:center;
 }
 
@@ -64,7 +80,6 @@
   top:0px;
   width:35%;
   height:35%;
-  background-color:darkorange;
   text-align:center;
 }
 
@@ -82,7 +97,7 @@
   text-align:center;
 }
 
-.basicRes .regRes{
+.HUD .regRes{
 	background-color:rgba(130,99,66,.7);
 	display:table-cell;
 	background-image:url("../images/regRes.png");

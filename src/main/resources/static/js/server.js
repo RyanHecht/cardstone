@@ -216,10 +216,10 @@ class Server{
 		console.log(player1)
 		wholeBoard.changeFeature("p1Health",player1.health);
 		wholeBoard.changeFeature("p1RegRes",player1.resources);
-		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(6,'',player1.element));
+		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(1,'',player1.element));
 		wholeBoard.changeFeature("p2Health",player2.health);
 		wholeBoard.changeFeature("p2RegRes",player2.resources);
-		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(6,'',player2.element));
+		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(1,'',player2.element));
 	}
 
 	boardReceived(data){

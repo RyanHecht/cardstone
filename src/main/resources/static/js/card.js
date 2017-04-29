@@ -320,6 +320,13 @@ class elementCard extends Card{
 			console.log("not possible to modify an element card currently");	
 		}
 	}
+    
+    drawBig(div){
+        div.html(elementHtml);
+		div.children(".card").children(".imageArea").children(".cardImage").attr("src", "images/elements/"+this.elementType+"Big.jpg");
+		div.addClass("hasToolTip");
+		div.children(".card")[0].style.background = this.color;
+    }
 	
 	drawGivenSpace(){
 		this.drawSmallAndBig(this.div);
