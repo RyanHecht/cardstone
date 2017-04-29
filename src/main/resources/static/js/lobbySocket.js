@@ -65,7 +65,7 @@ class LobbySocket {
     if (isHost) {
       const obj = {"type": LOBBY_MESSAGE_TYPE.START_GAME_REQUEST,
                     "payload": {}};
-      this.socket.send(JSON.stringify(obj));
+      this.websocket.send(JSON.stringify(obj));
       console.log("start game request");
     }
   }
