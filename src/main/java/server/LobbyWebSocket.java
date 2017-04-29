@@ -30,7 +30,7 @@ public class LobbyWebSocket {
 
     // TODO: Check if player is in game or in lobby, terminate game or update
     // lobby.
-
+    LobbyManager.playerLeftLobby(id);
     sessions.remove(session);
     idToSessions.remove(id);
   }

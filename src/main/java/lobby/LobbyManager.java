@@ -89,6 +89,27 @@ public class LobbyManager {
   }
 
   /**
+   * Have the player of id playerId leave their lobby.
+   * @param playerId The player Id.
+   */
+  public static void playerLeftLobby(int playerId) {
+    Lobby l = getLobbyByPlayerId(playerId);
+    if (l != null) {
+      Integer other = l.getOtherPlayer(playerId);
+      l.leave(playerId);
+
+      if (l.isHost(playerId)) {
+        if (other != null) {
+          LobbyWebSocket.sendLobbyCancelled(other);
+        }
+      } else {
+        LobbyWebSocket.sendOppenentLeftLobby(other);
+      }
+
+    }
+  }
+
+  /**
    * Get a Lobby from a player's id.
    * @param playerId Id of player to get lobby of.
    * @return The Lobby the player is in (null if not in lobby).

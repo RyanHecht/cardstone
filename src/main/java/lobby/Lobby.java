@@ -62,6 +62,10 @@ public class Lobby implements Jsonifiable {
     return password;
   }
 
+  public String getName() {
+    return name;
+  }
+
   /**
    * Get whether this lobby is full (has two players).
    * @return True if neither player slot is null, false otherwise.
@@ -134,17 +138,18 @@ public class Lobby implements Jsonifiable {
     }
   }
 
-  public int getOtherPlayer(int uId) {
-	System.out.println("Other player request from user " + uId);
-	System.out.println("In lobby " + name + " with pw " + password + " and users " 
-						+ uId1 + ", " + uId2);
-	Integer ret = null;
+  public Integer getOtherPlayer(int uId) {
+    System.out.println("Other player request from user " + uId);
+    System.out
+        .println("In lobby " + name + " with pw " + password + " and users "
+            + uId1 + ", " + uId2);
+    Integer ret = null;
     if (uId == uId1) {
       ret = uId2;
     } else if (uId == uId2) {
       ret = uId1;
     }
-    
+
     return (ret == null) ? -1 : ret;
   }
 
@@ -156,9 +161,9 @@ public class Lobby implements Jsonifiable {
   public boolean containsPlayer(Integer uId) {
     return uId1 == uId || uId2 == uId;
   }
-  
+
   public boolean isHost(int uId) {
-	  return uId1 == uId;
+    return uId1 == uId;
   }
 
   /**
