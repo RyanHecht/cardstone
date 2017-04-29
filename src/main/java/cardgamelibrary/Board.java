@@ -213,6 +213,8 @@ public class Board implements Jsonifiable {
 			handleState();
 		}
 	}
+	
+	
 
 	private void handleDead() {
 		Iterator<Card> it = creatureOne.iterator();

@@ -166,7 +166,7 @@ public interface Card extends Jsonifiable {
 	}
 
 	@Override
-	default JsonObject jsonifySelf() {
+	default public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
 		result.addProperty("text", this.getText());
 		result.addProperty("id", this.getId());

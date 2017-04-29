@@ -9,6 +9,11 @@ class deckList extends drawableZone{
     }
    
     addCard(card){
+        if(this.getNumCards() >= DECK_SIZE){
+            alert("Deck can only hold " + DECK_SIZE + " cards. Remove some first!");
+            return;
+        }
+        console.log(this.getNumCards());
         if(this.hasCard(card)){
             this.getWrapper(card).increment();
         }
@@ -21,7 +26,10 @@ class deckList extends drawableZone{
     }
     
     addCardByIID(IID){
-        console.log(IID);
+        if(this.getNumCards() >= DECK_SIZE){
+            alert("Deck can only hold " + DECK_SIZE + " cards. Remove some first!");
+            return;
+        }
         for(let card of allCards){
             if(card.IID == IID){
                 this.addCard(card);
@@ -85,6 +93,14 @@ class deckList extends drawableZone{
         }
         return result;
     }
+    
+    getNumCards(){
+        let result = 0;
+        for(let wrapper of this.deck){
+            result+=wrapper.count;
+        }
+        return result;
+    }
 }
 
 class cardWrapper{
@@ -94,6 +110,12 @@ class cardWrapper{
         this.onChanged = onChanged;
     }
     increment(){
+        if(!(this.card instanceof elementCard)){
+            if(this.count >= MAX_NON_ELEMENT){
+                alert("Can't have more than " + MAX_NON_ELEMENT + " of a non-element card");
+                return;
+            }
+        }
         this.count++;
     }
     decrement(){
@@ -102,9 +124,14 @@ class cardWrapper{
     
     draw(div){
         div.append("<div class='decrementer' id='decrementer_"+this.card.IID+"'></div>");
-        div.append("<div class='deck_card_name'>"+this.card.name+" : " + this.count + "</div>");
+        div.append("<div class='deck_card_name hasTooltip'>"+this.card.name+" : " + this.count + "</div>");
+        div.append("<div class='bigCardBox'></div>")
+        let boxDiv = div.children(".bigCardBox");
+        this.card.drawBig(boxDiv);
+        boxDiv.hide();
         div.append("<div class='incrementer' id='incrementer"+this.card.IID+"'></div>");
         this.prepareChangers();
+        this.prepareToolTips(div);
     }
     
     prepareChangers(){
@@ -114,8 +141,48 @@ class cardWrapper{
             redrawAll();
         })
          $("#incrementer"+this.card.IID).click(function(){
-            $this.increment();
+            list.addCardByIID($this.card.IID);
             redrawAll();
          })
     }
+    
+    prepareToolTips(div){
+		let maxHeight = $(document).height();
+		let maxWidth = $(document).width();
+		let height;
+		if(maxHeight > 400){
+			height = 350;
+		}
+		else{
+			height = maxHeight * .8;
+			$(".bigCardBox").css({
+				fontSize : "10px",
+				lineHeight : "90%"
+			});
+		}
+		let width = height * WIDTH_RATIO;
+		while(width > maxWidth){
+			height -= 10;
+			width = height * WIDTH_RATIO;
+		}
+		div.find('.hasTooltip').each(function() {
+			$(this).qtip({
+				content: {
+					text: $(this).next('div') 
+				},
+				style: {
+					height: height,
+					width: width,
+					classes: 'qtip-bootstrap',
+				},
+				position: { 
+					viewport: $(window),
+					adjust: {
+						method: 'flipinvert shift'
+					}
+					
+				}
+			});
+		});
+	}
 }

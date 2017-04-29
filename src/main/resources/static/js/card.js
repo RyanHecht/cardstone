@@ -44,6 +44,7 @@ class creatureCard extends Card {
 		this.health = health;
 		this.attack = attack;
 		this.IID = IID;
+        this.type = "creature";
 	}
 	modifyWith(info){
 		super.modifyWith(info);
@@ -159,6 +160,7 @@ class spellCard extends Card{
 		this.text = text;
 		this.imagePath = imagePath;
 		this.IID = IID;
+        this.type ="spell";
 	}
 	modifyWith(info){
 		if(info.name != null){
@@ -310,6 +312,7 @@ class elementCard extends Card{
 		this.cost = {
             regRes : -1
         }
+        this.type="element";
 	}
 	
 	modifyWith(info){

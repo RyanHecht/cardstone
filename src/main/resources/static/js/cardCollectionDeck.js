@@ -43,11 +43,11 @@ class cardCollectionDeck extends drawableZone{
 		}
 		else{
 		}
-		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 3;
+		let baseWidth = (curDiv.height() * WIDTH_RATIO) + 12;
 		let rows = 1;
 		while(baseWidth * ($this.cards.length / rows) >= curDiv.width() * .97){
 			rows++;
-			baseWidth = ((curDiv.height() / rows) * WIDTH_RATIO) + 3;
+			baseWidth = ((curDiv.height() / rows) * WIDTH_RATIO) + 12;
 		}
 		let maxInRow = Math.ceil($this.cards.length / rows);
 		if(maxInRow == 0){
@@ -87,8 +87,18 @@ class cardCollectionDeck extends drawableZone{
 			this.prepareToolTips(div);
 			this.sizeCards(div);
             this.prepClicking();
+            this.prepareHover();
 		}
 	}
+    
+    prepareHover(){
+        this.div.find(".cardBox").hover(function(){
+          $(this).addClass("cardBoxHighlighted");  
+        },
+        function(){
+            $(this).removeClass("cardBoxHighlighted");
+        })
+    }
     
     prepClicking(){
         $(".card").click(function(){

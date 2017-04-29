@@ -7,6 +7,8 @@ let server;
 let isReplayMode = false;
 let collect;
 let list;
+let DECK_SIZE = 50;
+let MAX_NON_ELEMENT = 4;
 
 
 
@@ -14,6 +16,7 @@ let list;
 function redrawAll(){
     collect.forceRedraw();
     list.draw();
+    drawProgressBar();
 }
 
 function setPage(){
@@ -76,6 +79,13 @@ function filter(cards,filterBy){
         if(card.text != null){
             if(card.text.toLowerCase().includes(filterBy)){
                 result.push(card);
+                continue;
+            }
+        }
+        if(card.type != null){
+            if(card.type.includes(filterBy)){
+                result.push(card);
+                continue;
             }
         }
     }
@@ -118,6 +128,17 @@ function submitDeck(){
     
 }
 
+function drawProgressBar(){
+    let numCards = list.getNumCards();
+    $("#progressBar").css("width",((numCards * 100 / DECK_SIZE ) + "%"))
+    if(numCards == DECK_SIZE){
+        $("#progressBar").css("border-color","lightyellow");
+    }
+    else{
+        $("#progressBar").css("border-color","lightblue");
+    }
+}
+
 $('document').ready(function(){
     allCards = [];
     server = new Server();
@@ -131,7 +152,6 @@ $('document').ready(function(){
          redrawAll();
         
 	});
-    
     setupPaging();
     setupInput();
 })

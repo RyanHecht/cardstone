@@ -16,6 +16,7 @@ import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Element;
+import cardgamelibrary.Event;
 import cardgamelibrary.Jsonifiable;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
@@ -31,6 +32,7 @@ import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
 import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
+import logins.ClassByJosh;
 import server.CommsWebSocket;
 
 /**
@@ -55,12 +57,10 @@ public class Game implements Jsonifiable {
 	private PlayerChoosesCards		chooserCard				= null;
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId) {
+		this.id = ClassByJosh.createNewGame(playerOneId, playerTwoId);
 		// Initialize both players with starting life.
 		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
 		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
-
-		// set game id.
-		this.id = idGenerator.incrementAndGet();
 
 		// build decks from the lists of cards.
 		OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, playerOne);
@@ -182,19 +182,9 @@ public class Game implements Jsonifiable {
 		}
 		return -1;
 	}
-
-	public void startGame() {
-		while (playerOne.getLife() > 0 && playerTwo.getLife() > 0) {
-			// if neither player has 0 life the game goes on.
-
-		}
-		if (playerOne.getLife() <= 0 && playerTwo.getLife() > 0) {
-			System.out.println("Player One loses.");
-		} else if (playerTwo.getLife() <= 0 && playerOne.getLife() > 0) {
-			System.out.println("Player Two loses.");
-		} else {
-			System.out.println("Game is drawn.");
-		}
+	
+	public void endGame(int i){
+		ClassByJosh.endGame(this,i);
 	}
 
 	/**
@@ -279,7 +269,7 @@ public class Game implements Jsonifiable {
 	/**
 	 * Sends the board state to both players in the game.
 	 */
-	private void sendWholeBoardToBoth() {
+	private void sendWholeBoardToAllAndDb() {
 		try {
 			CommsWebSocket.sendWholeBoardSate(this, playerOne.getId());
 		} catch (IOException e) {
@@ -293,6 +283,7 @@ public class Game implements Jsonifiable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ClassByJosh.insertBoardStateIntoDb(this.jsonifySelf(), this.id);
 	}
 
 	/**
@@ -317,9 +308,9 @@ public class Game implements Jsonifiable {
 			}
 			sendPlayerActionGood(playerId);
 			TurnEndEvent event = new TurnEndEvent(board.getActivePlayer());
-			board.takeAction(event);
+			act(event);
 			// send board to both players.
-			sendWholeBoardToBoth();
+			sendWholeBoardToAllAndDb();
 
 			// active player switched.
 			try {
@@ -328,6 +319,25 @@ public class Game implements Jsonifiable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+	}
+
+	private void act(Event event) {
+		board.takeAction(event);
+		checkWinners();
+	}
+
+	private void checkWinners() {
+		if(playerOne.getLife() < 0 || playerTwo.getLife() < 0){
+			if(playerOne.getLife() > 0){
+				endGame(1);
+			}
+			else if(playerTwo.getLife() > 0){
+				endGame(2);
+			}
+			else{
+				endGame(0);
 			}
 		}
 	}
@@ -391,11 +401,10 @@ public class Game implements Jsonifiable {
 				// tell player their action was valid.
 				sendPlayerActionGood(playerId);
 
-				// execute action on the board.
-				board.takeAction(event);
+				act(event);
 
 				// send board to both players.
-				sendWholeBoardToBoth();
+				sendWholeBoardToAllAndDb();
 			} else if (targetter instanceof TargetsOtherCard) {
 				// we have some sort of card on card action here son.
 
@@ -419,10 +428,10 @@ public class Game implements Jsonifiable {
 				sendPlayerActionGood(playerId);
 
 				// execute action on board.
-				board.takeAction(event);
+				act(event);
 
 				// send board to both players.
-				sendWholeBoardToBoth();
+				sendWholeBoardToAllAndDb();
 			} else {
 				// well the card that attempted to target something isn't allowed to
 				// target stuff. Error time!
@@ -486,10 +495,10 @@ public class Game implements Jsonifiable {
 					sendPlayerActionGood(playerId);
 
 					// execute event.
-					board.takeAction(event);
+					act(event);
 
 					// send board.
-					sendWholeBoardToBoth();
+					sendWholeBoardToAllAndDb();
 				} else {
 					sendPlayerActionBad(playerId, "You can't target yourself with that card.");
 				}
@@ -512,10 +521,10 @@ public class Game implements Jsonifiable {
 					sendPlayerActionGood(playerId);
 
 					// execute event on board.
-					board.takeAction(event);
+					act(event);
 
 					// send board to both players.
-					sendWholeBoardToBoth();
+					sendWholeBoardToAllAndDb();
 				} else if (card instanceof TargetsPlayer) {
 					// TODO Targeted opposing player.
 					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
@@ -535,10 +544,10 @@ public class Game implements Jsonifiable {
 					sendPlayerActionGood(playerId);
 
 					// execute event.
-					board.takeAction(event);
+					act(event);
 
 					// send board.
-					sendWholeBoardToBoth();
+					sendWholeBoardToAllAndDb();
 				} else {
 					sendPlayerActionBad(playerId, "You can't target a player with that card.");
 				}
@@ -572,9 +581,9 @@ public class Game implements Jsonifiable {
 
 			sendPlayerActionGood(playerId);
 
-			board.takeAction(event);
+			act(event);
 
-			sendWholeBoardToBoth();
+			sendWholeBoardToAllAndDb();
 
 			// reset the choosing card.
 			chooserCard = null;
@@ -682,10 +691,10 @@ public class Game implements Jsonifiable {
 			sendPlayerActionGood(playerId);
 
 			// execute event on board.
-			board.takeAction(event);
+			act(event);
 
 			// send board to both players.
-			sendWholeBoardToBoth();
+			sendWholeBoardToAllAndDb();
 		} else {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
