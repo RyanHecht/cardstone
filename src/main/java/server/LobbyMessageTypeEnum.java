@@ -44,6 +44,14 @@ public enum LobbyMessageTypeEnum {
 
   // Lobby is cancelled (host left) (Server -> Client).
   // 8
-  LOBBY_CANCELLED
+  LOBBY_CANCELLED,
+
+  // Player sends an in-game chat message (Client -> Server)
+  // 9
+  PLAYER_SEND_CHAT,
+
+  // Server alerts player of new chat message (Server -> Client)
+  // 10
+  RECEIVE_CHAT
 
 }

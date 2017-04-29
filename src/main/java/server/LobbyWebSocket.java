@@ -51,6 +51,8 @@ public class LobbyWebSocket {
         LobbyManager.handleSelfSetDeck(id, payload);
       } else if (type == LobbyMessageTypeEnum.START_GAME_REQUEST.ordinal()) {
         LobbyManager.handleStartGameRequest(id, payload);
+      } else if (type == LobbyMessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
+        LobbyManager.receivePlayerChat(id, payload);
       }
 
     } else {
@@ -72,6 +74,11 @@ public class LobbyWebSocket {
 
   }
 
+  /**
+   * Send message that Opponent has entered a lobby.
+   * @param uId Id of recipient.
+   * @param oppUId opponent's id.
+   */
   public static void sendOppenentEnteredLobby(int uId, int oppUId) {
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_ENTERED_LOBBY,
@@ -81,6 +88,10 @@ public class LobbyWebSocket {
     }
   }
 
+  /**
+   * Send message that Opponent has left a lobby.
+   * @param uId Id of recipient.
+   */
   public static void sendOppenentLeftLobby(int uId) {
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_LEFT_LOBBY,
@@ -90,6 +101,11 @@ public class LobbyWebSocket {
     }
   }
 
+  /**
+   * Send message that opponent has set their deck.
+   * @param uId Id of recipient.
+   * @param deckName The name of the opponent's deck.
+   */
   public static void sendOppenentSetDeck(int uId, String deckName) {
     JsonObject payload = new JsonObject();
     payload.addProperty("name", deckName);
@@ -100,6 +116,11 @@ public class LobbyWebSocket {
     }
   }
 
+  /**
+   * Send message telling user the game is starting.
+   * @param uId Id of recipient.
+   * @param oppUId The opponent's Id.
+   */
   public static void sendGameIsStarting(int uId, int oppUId) {
     JsonObject payload = new JsonObject();
     payload.addProperty("opponentId", oppUId);
@@ -110,6 +131,10 @@ public class LobbyWebSocket {
     }
   }
 
+  /**
+   * Send message telling the user the lobby is cancelled.
+   * @param uId Id of recipient.
+   */
   public static void sendLobbyCancelled(int uId) {
     try {
       sendMessage(uId, LobbyMessageTypeEnum.LOBBY_CANCELLED,
@@ -117,6 +142,20 @@ public class LobbyWebSocket {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Send message to be displayed in the in-game chat.
+   * @param userId Id of recipient.
+   * @param message Message for chat.
+   * @throws IOException thrown by websocket.
+   */
+  public static void sendChatMessage(int userId, String message)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("message", message);
+    System.out.println("Sending chat message: " + message);
+    sendMessage(userId, LobbyMessageTypeEnum.RECEIVE_CHAT, obj);
   }
 
   private static void sendMessage(int userId, LobbyMessageTypeEnum type,

@@ -3,6 +3,7 @@ package lobby;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,9 +25,11 @@ public class LobbyManager {
   public static Lobby addLobby(String name, boolean priv, String password,
       int hostUId) throws IllegalArgumentException {
     if (lobbies.containsKey(name)) {
-      throw new IllegalArgumentException("Lobby with name " + name + " already exists");
+      throw new IllegalArgumentException(
+          "Lobby with name " + name + " already exists");
     } else if (priv && password.length() < 1) {
-      throw new IllegalArgumentException("Private lobbies must have non-empty passwords");
+      throw new IllegalArgumentException(
+          "Private lobbies must have non-empty passwords");
     } else {
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
       System.out.println("Made lobby: " + lobby);
@@ -76,7 +79,8 @@ public class LobbyManager {
       String password)
       throws IllegalArgumentException {
     try {
-      System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId, lobbyName, password));
+      System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId,
+          lobbyName, password));
       lobbies.get(lobbyName).join(playerId, password);
     } catch (IllegalArgumentException x) {
       throw x;
@@ -131,6 +135,19 @@ public class LobbyManager {
       System.out.print("\n");
       lobby.setDeck(uId, cardList);
       LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId), deckName);
+    }
+  }
+
+  public static void receivePlayerChat(int playerId, JsonObject message) {
+    String chat = message.get("message").getAsString();
+    Lobby lobby = getLobbyByPlayerId(playerId);
+    if (lobby != null) {
+      int idToSend = lobby.getOtherPlayer(playerId);
+      try {
+        LobbyWebSocket.sendChatMessage(idToSend, chat);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
