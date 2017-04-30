@@ -93,8 +93,11 @@ public class CommsWebSocket {
           sessions.put(session, id);
           idToSessions.put(id, session);
 
-          sadfsd
-          GameManager.playerIsReady(id);
+          if (isSpectator(id)) {
+            CommsWebSocket.sendIsSpectator(id);
+          } else {
+            GameManager.playerIsReady(id);
+          }
 
         }
       }
@@ -129,6 +132,18 @@ public class CommsWebSocket {
       JsonObject obj = new JsonObject();
       JsonObject payload = toSend.jsonifySelfChanged();
       obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
+      obj.add("payload", payload);
+
+      session.getRemote().sendString(GSON.toJson(obj));
+    }
+  }
+
+  public static void sendIsSpectator(int userId) throws IOException {
+    if (idToSessions.containsKey(userId)) {
+      Session session = idToSessions.get(userId);
+      JsonObject obj = new JsonObject();
+      JsonObject payload = new JsonObject();
+      obj.addProperty("type", MessageTypeEnum.SET_SPECTATOR.ordinal());
       obj.add("payload", payload);
 
       session.getRemote().sendString(GSON.toJson(obj));
@@ -280,6 +295,17 @@ public class CommsWebSocket {
       obj.add("payload", payload);
 
       session.getRemote().sendString(GSON.toJson(obj));
+    }
+
+    for (Integer spectator : spectators.get(userId)) {
+      if (idToSessions.containsKey(spectator)) {
+        Session session = idToSessions.get(spectator);
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", type.ordinal());
+        obj.add("payload", payload);
+
+        session.getRemote().sendString(GSON.toJson(obj));
+      }
     }
   }
 

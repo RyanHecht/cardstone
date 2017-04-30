@@ -6,6 +6,7 @@ import game.Game;
 import game.GameManager;
 import java.util.ArrayList;
 import java.util.List;
+import server.CommsWebSocket;
 
 /**
  * Represents a Lobby, a waiting room before a game is begun.
@@ -160,6 +161,8 @@ public class Lobby implements Jsonifiable {
       Game game = new Game(p1deck, p2deck, uId1, uId2);
       System.out.println("game made.");
       GameManager.addGame(uId1, uId2, game);
+      CommsWebSocket.setSpectators(uId1, uId1Spectators);
+      CommsWebSocket.setSpectators(uId2, uId2Spectators);
     } else {
       if (!isFull()) {
         throw new IllegalArgumentException("Lobby not full!");

@@ -80,6 +80,6 @@ public enum MessageTypeEnum {
 
   // Become a spectator (Server -> Client)
   // 19
-  IS_SPECTATOR
+  SET_SPECTATOR
 
 }

@@ -151,6 +151,7 @@ public class LobbyHandlers {
       } else {
         LobbyManager.addLobby("test", false, "", 2);
         LobbyManager.playerJoinLobby(4, "test", "");
+        LobbyManager.spectatorJoinLobby(5, "test", "");
         LobbyManager.getLobbyByName("test").setDeck(2,
             Arrays.asList("EarthswornObserver",
                 "BuriedTreasure", "EarthElement", "EarthElement",
