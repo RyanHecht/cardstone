@@ -212,6 +212,13 @@ public class CommsWebSocket {
     sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
   }
 
+  public static void sendTurnStart(int userId, boolean userIdsTurn)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("isSelf", userIdsTurn);
+    sendMessage(userId, MessageTypeEnum.TURN_START, obj);
+  }
+
   /**
    * Send text message to be alerted to the user.
    * @param userId Id of recipient.
