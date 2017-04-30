@@ -311,7 +311,7 @@ class Server{
             collection.push(balance);
             collection.push(air);
         }
-        recieveCardCollection(collection);
+        this.recieveCardCollection(collection);
     }
     
     recieveCardCollection(collection){
