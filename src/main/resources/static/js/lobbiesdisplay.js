@@ -2,28 +2,57 @@ let selectedName;
 
 $(document).ready(() => {
 	const lobbyList = $("#lobby-table");
-	$.get("/listLobbies", responseJSON => {
-		const responseObject = JSON.parse(responseJSON);
-		console.log(responseObject);
-		
-		for (let i = 0, len = responseObject.length; i < len; i++) {
-			const curr_lobby = responseObject[i];
-			console.log(curr_lobby);
-			
-			const privateAttr = curr_lobby.private ? "Yes" : "No";
-			const fullAttr = curr_lobby.full ? "Yes" : "No";
-			
-			const postParams = {id: curr_lobby.host};
-			$.post("/username", postParams, responseJSON => {
-				const hostUsername = JSON.parse(responseJSON).username;				
-				lobbyList.append("<tr> <td class='name'>" 
-								 + curr_lobby.name + "</td> " +
-								" <td class='host'>" + hostUsername + "</td> " +
-								"<td class='private'>" + privateAttr + "</td> " +
-								"<td class='full'>" + fullAttr + "</td> </tr>");
-			});
-		}
-	});
+//	setInterval(function() {
+//		$.get("/listLobbies", responseJSON => {
+//			const responseObject = JSON.parse(responseJSON);
+//			console.log(responseObject);
+//			lobbyList.empty();
+//
+//			for (let i = 0, len = responseObject.length; i < len; i++) {
+//				const curr_lobby = responseObject[i];
+//				console.log(curr_lobby);
+//
+//				const privateAttr = curr_lobby.private ? "Yes" : "No";
+//				const fullAttr = curr_lobby.full ? "Yes" : "No";
+//
+//				const postParams = {id: curr_lobby.host};
+//				$.post("/username", postParams, responseJSON => {
+//					const hostUsername = JSON.parse(responseJSON).username;				
+//					lobbyList.append("<tr> <td class='name'>" 
+//									 + curr_lobby.name + "</td> " +
+//									" <td class='host'>" + hostUsername + "</td> " +
+//									"<td class='private'>" + privateAttr + "</td> " +
+//									"<td class='full'>" + fullAttr + "</td> </tr>");
+//				});
+//			}
+//		});
+//	}, 2000);
+		$.get("/listLobbies", responseJSON => {
+			const responseObject = JSON.parse(responseJSON);
+			console.log(responseObject);
+			lobbyList.empty();
+
+			for (let i = 0, len = responseObject.length; i < len; i++) {
+				const curr_lobby = responseObject[i];
+				console.log(curr_lobby);
+
+				const privateAttr = curr_lobby.private ? "Yes" : "No";
+				const fullAttr = curr_lobby.full ? "Yes" : "No";
+
+				const postParams = {id: curr_lobby.host};
+				$.post("/username", postParams, responseJSON => {
+					const hostUsername = JSON.parse(responseJSON).username;				
+					lobbyList.append("<tr> <td class='name'>" 
+									 + curr_lobby.name + "</td> " +
+									" <td class='host'>" + hostUsername + "</td> " +
+									"<td class='private'>" + privateAttr + "</td> " +
+									"<td class='full'>" + fullAttr + "</td> " +
+									"<td class='join'> <button class='btn btn-default'>Join</button> </td> " + 
+									"<td class='spectate'> <button class='btn btn-default'>Spectate</button> </td> </tr>");
+				});
+			}
+		});
+
 	
 	if (error && errorHeader) {
 		$("#messageModal").modal("show");

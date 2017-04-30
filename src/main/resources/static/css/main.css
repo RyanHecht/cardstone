@@ -2,6 +2,14 @@ html{
     height:100%;
 }
 
+.centerText{
+	text-align:center;
+}
+
+.hostPanel{
+	border-color:blue;
+}
+
 body {
   background-color: #eee;
   height:99%;

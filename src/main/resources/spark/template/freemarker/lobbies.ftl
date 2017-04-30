@@ -23,7 +23,6 @@
        <#if error?? && errorHeader??>
           let error = "${error}";
 		  let errorHeader = "${errorHeader}";
-		  console.log("dingus");
 	   </#if>
 	 </script>
      <script src="js/jquery-2.1.1.js"></script>

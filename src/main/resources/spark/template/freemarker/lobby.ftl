@@ -12,7 +12,7 @@
 	   <div class="row fullRow">
 	     ${lobby_display}
 	   </div>
-	   <div class="col-md-2" id="lobbybuttons">
+	   <div class="col-md-2 centerText" id="lobbybuttons">
 	       <#if isHost>
 	         <button type="button" class="btn btn-default disabled" id="play">Play</button>
 	       </#if>

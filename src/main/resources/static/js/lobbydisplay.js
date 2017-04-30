@@ -65,9 +65,6 @@ function handleChat(msg) {
 
 $("#leave").on("click", function() {
 	window.location.replace("/lobbies");
-	// should trigger onOpponentLeave
-	// also onLobbyCancel if the person who left was
-	// the host
 });
 
 $("#deckselect").on("change", function() {
@@ -84,7 +81,6 @@ $("#deckselect").on("change", function() {
 			if (respObj.cards) {
 				socket.setDeck(respObj);
 				$("#message").text("Deck set to " + deckName);
-				// Ryan's socket connection is closed here
 			}
 			userReady = true;
 		});	
