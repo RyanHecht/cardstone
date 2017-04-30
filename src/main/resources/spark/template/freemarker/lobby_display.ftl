@@ -16,7 +16,18 @@
   </div>
 </div>
 <div class="col-md-4 tallCol">
-  <div class="panel panel-default tallPanel">
+	eio qwinu qwdiun qwidu qwidub qwdb qwd
+	 qwd 
+	 qwd
+	  qwd
+	   qwd
+	    qw
+	    d q
+	    wdhjbqwdib
+</div>
+<div class="col-md-4 tallCol pull-right">
+  
+  <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title" id="oppname">${opp}</h3>
     </div>
