@@ -216,6 +216,8 @@ public class CommsWebSocket {
       throws IOException {
     JsonObject obj = new JsonObject();
     obj.addProperty("isSelf", userIdsTurn);
+    System.out
+        .println("Sending turn start to " + userId + "...it's " + userIdsTurn);
     sendMessage(userId, MessageTypeEnum.TURN_START, obj);
   }
 
