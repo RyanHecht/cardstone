@@ -16,7 +16,8 @@ ID_RESPONSE: 13,
 TURN_END: 14,
 TEXT_MESSAGE: 15,
 PLAYER_SEND_CHAT: 16,
-RECEIVE_CHAT: 17
+RECEIVE_CHAT: 17,
+TURN_START: 18
 };
 
 class Server{
@@ -42,10 +43,10 @@ class Server{
 		// // cardDiv.addClass("cardSelected");
 		// // selectedCard = cardDiv.attr("id");
 	// }
-    
+
     cardClicked(id){
         if(inputState == StateEnum.IDLE){
-            
+
         }
         else if(inputState == StateEnum.TARGET_NEEDED){
             this.targetChosen(id);
@@ -56,8 +57,8 @@ class Server{
 		this.sendTargetResponse(id);
         inputState = StateEnum.IDLE;
 	}
-    
-    
+
+
     //RY GUY WRITE THIS QUIK
     sendTargetResponse(id){
         console.log(id);
@@ -124,7 +125,7 @@ class Server{
         alert("please pick a target");
         inputState = StateEnum.TARGET_NEEDED;
     }
-    
+
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
@@ -166,7 +167,7 @@ class Server{
     }
     else{
          $(".chatLog").append("<div class='chatMessage chatMessageOther alert alert-success'>" + chat + "</div>")
-    
+
     }
     $('.chatLog').scrollTop($('.chatLog')[0].scrollHeight);
     console.log("Got chat message: " + chat);
@@ -314,7 +315,7 @@ class Server{
         }
         this.recieveCardCollection(collection);
     }
-    
+
     recieveCardCollection(collection){
         allCards = collection;
 		allCardsReady();
