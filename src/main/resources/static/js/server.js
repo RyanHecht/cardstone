@@ -146,13 +146,19 @@ class Server{
                 break;
             case MESSAGE_TYPE.TEXT_MESSAGE:
                 this.alertMessage(message.payload);
+                break;
             case MESSAGE_TYPE.RECEIVE_CHAT:
                 this.handleChat(message.payload);
+                break;
+            case MESSAGE_TYPE.TURN_START:
+                turnTimer.startTurn(message.payload.isSelf);
             default:
                 console.log("Unknown message type: " + message.type);
 		}
 	}
 
+    
+    
   alertMessage(message) {
     alert(message.message);
   }
