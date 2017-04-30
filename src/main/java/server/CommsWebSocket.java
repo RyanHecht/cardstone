@@ -13,6 +13,7 @@ import game.Player;
 import game.PlayerType;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.jetty.websocket.api.Session;
@@ -33,6 +34,7 @@ public class CommsWebSocket {
   private static final Gson GSON = new Gson();
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
+  private static final Map<Integer, List<Integer>> spectators = new ConcurrentHashMap<>();
 
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
@@ -90,8 +92,10 @@ public class CommsWebSocket {
           int id = payload.get("id").getAsInt();
           sessions.put(session, id);
           idToSessions.put(id, session);
+
+          sadfsd
           GameManager.playerIsReady(id);
-          // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
+
         }
       }
     } catch (Exception ex) {
@@ -100,6 +104,15 @@ public class CommsWebSocket {
 
     }
 
+  }
+
+  public static boolean isSpectator(Integer userId) {
+    for (List<Integer> specList : spectators.values()) {
+      if (specList.contains(userId)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -251,6 +264,11 @@ public class CommsWebSocket {
 
   public static void closeSession(int userId) {
 
+  }
+
+  public static void setSpectators(int spectateeId,
+      List<Integer> spectatorList) {
+    spectators.put(spectateeId, spectatorList);
   }
 
   private static void sendMessage(int userId, MessageTypeEnum type,

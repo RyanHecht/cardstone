@@ -56,6 +56,14 @@ public enum LobbyMessageTypeEnum {
 
   // Some sort of error in message handling (Server -> client)
   // 11
-  HANDLE_ERROR
+  HANDLE_ERROR,
+
+  // Spectator has entered the lobby (Client -> Server)
+  // 12
+  SPECTATOR_CONNECT,
+
+  // Spectator has selected who they're spectating (Client -> Server)
+  // 13
+  SPECTATEE_UPDATE
 
 }

@@ -55,6 +55,8 @@ public class LobbyWebSocket {
         LobbyManager.handleStartGameRequest(id, payload);
       } else if (type == LobbyMessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
         LobbyManager.receivePlayerChat(id, payload);
+      } else if (type == LobbyMessageTypeEnum.SPECTATEE_UPDATE.ordinal()) {
+        LobbyManager.spectatorUpdate(id, payload.get("id").getAsInt());
       }
 
     } else {
@@ -69,6 +71,10 @@ public class LobbyWebSocket {
             LobbyManager.getLobbyByPlayerId(id).getOtherPlayer(id));
 
       } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
+        int id = payload.get("id").getAsInt();
+        sessions.put(session, id);
+        idToSessions.put(id, session);
+      } else if (type == LobbyMessageTypeEnum.SPECTATOR_CONNECT.ordinal()) {
         int id = payload.get("id").getAsInt();
         sessions.put(session, id);
         idToSessions.put(id, session);
