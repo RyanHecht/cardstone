@@ -32,7 +32,8 @@ class LobbySocket {
 
 	onWebSocketOpen() {
 		let type = -1
-		const payload = {"id": this.userId}
+		//console.log($.cookie('id'))
+		const payload = {"id": this.server.userId}
 		if (isHost) {
 		  type = LOBBY_MESSAGE_TYPE.LOBBY_CREATE;
 		} else {

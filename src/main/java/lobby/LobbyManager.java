@@ -150,7 +150,7 @@ public class LobbyManager {
   public static void handleSelfSetDeck(int uId, JsonObject message) {
     Lobby lobby = getLobbyByPlayerId(uId);
     if (lobby != null) {
-
+      System.out.println(message.get("cards").toString());
       JsonArray cards = message.get("cards").getAsJsonArray();
       List<String> cardList = new ArrayList<>();
 
