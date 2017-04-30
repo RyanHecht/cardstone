@@ -320,7 +320,8 @@ public class Game implements Jsonifiable {
 
       // active player switched.
       try {
-        // tell new active player it's their turn.
+        // tell new active player it's their turn
+        // System.out.println("Sending turn start messages");
         CommsWebSocket.sendTurnStart(board.getActivePlayer().getId(), true);
         CommsWebSocket.sendTurnStart(board.getInactivePlayer().getId(), false);
       } catch (IOException e) {

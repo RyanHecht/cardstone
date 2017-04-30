@@ -33,7 +33,7 @@ class Server{
     endTurn(){
       const payload = {};
       const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
-    	// this.websocket.send(JSON.stringify(obj));
+    	this.websocket.send(JSON.stringify(obj));
        console.log("sent turn end");
     }
 
@@ -157,8 +157,8 @@ class Server{
 		}
 	}
 
-    
-    
+
+
   alertMessage(message) {
     alert(message.message);
   }
