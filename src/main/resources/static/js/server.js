@@ -64,6 +64,7 @@ class Server{
     }
 
   cardTargeted(cardID,targetID){
+      console.log(cardID, targetID);
    const payload = {"IID1": cardID, "IID2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
 	 this.websocket.send(JSON.stringify(obj));
