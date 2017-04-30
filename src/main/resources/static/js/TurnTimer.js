@@ -28,7 +28,9 @@ class TurnTimer{
         $this.drawLines($this.timeLeft * 100 / $this.maxTime,$this);
         if($this.timeLeft <= 0){
             if($this.isTurn){
-                server.endTurn();
+                if(!spectator){
+                    server.endTurn();
+                }
             }
             return;
         }

@@ -128,34 +128,58 @@ class Server{
     }
 
 	messageReceived(message){
-		switch(message.type){
-			case MESSAGE_TYPE.BOARD_STATE:
-				this.boardReceived(message.payload);
-                break;
-            case MESSAGE_TYPE.ACTION_BAD:
-                this.badMessage(message.payload);
-                break;
-            case MESSAGE_TYPE.ANIMATION:
-                console.log(message);
-                this.animationEventReceived(message.payload);
-                break;
-            case MESSAGE_TYPE.CHOOSE_REQUEST:
-                this.chooseFrom(message.payload);
-                break;
-            case MESSAGE_TYPE.TARGET_REQUEST:
-                this.chooseTarget();
-                break;
-            case MESSAGE_TYPE.TEXT_MESSAGE:
-                this.alertMessage(message.payload);
-                break;
-            case MESSAGE_TYPE.RECEIVE_CHAT:
-                this.handleChat(message.payload);
-                break;
-            case MESSAGE_TYPE.TURN_START:
-                turnTimer.startTurn(message.payload.isSelf);
-            default:
-                console.log("Unknown message type: " + message.type);
-		}
+        if(!spectator){
+            switch(message.type){
+                case MESSAGE_TYPE.BOARD_STATE:
+                    this.boardReceived(message.payload);
+                    break;
+                case MESSAGE_TYPE.ACTION_BAD:
+                    this.badMessage(message.payload);
+                    break;
+                case MESSAGE_TYPE.ANIMATION://
+                    console.log(message);
+                    this.animationEventReceived(message.payload);
+                    break;
+                case MESSAGE_TYPE.CHOOSE_REQUEST:
+                    this.chooseFrom(message.payload);
+                    break;
+                case MESSAGE_TYPE.TARGET_REQUEST:
+                    this.chooseTarget();
+                    break;
+                case MESSAGE_TYPE.TEXT_MESSAGE:
+                    this.alertMessage(message.payload);
+                    break;
+                case MESSAGE_TYPE.RECEIVE_CHAT:
+                    this.handleChat(message.payload);
+                    break;
+                case MESSAGE_TYPE.TURN_START://
+                    turnTimer.startTurn(message.payload.isSelf);//
+                    break;
+                case MESSAGE_TYPE.SET_SPECTATOR:
+                    specator = true;
+                    canAct = false;
+                    spectating = message.payload.watching();
+                    break;
+                default:
+                    console.log("Unknown message type: " + message.type);
+            }
+        }
+        else{
+            switch(message.type){
+                case MESSAGE_TYPE.BOARD_STATE:
+                    this.boardReceived(message.payload);
+                    break;
+                case MESSAGE_TYPE.TURN_START://
+                    turnTimer.startTurn(message.payload.isSelf);//
+                    break;
+                case MESSAGE_TYPE.ANIMATION://
+                    console.log(message);
+                    this.animationEventReceived(message.payload);
+                    break;
+                
+                
+            }
+        }
 	}
 
 

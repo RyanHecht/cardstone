@@ -19,7 +19,9 @@ let mouseSystem;
 let canvasLine = new DrawnLine(0,0,0,0);
 let turnTimer;
 let tooltipDisplay = false;
-let isSpectateMode = false;
+let spectator = false;
+let canAct = true;
+let spectating = 0;
 
 function redrawAll(){
 	wholeBoard.forceRedraw();
@@ -186,13 +188,15 @@ function setupOptionsMenu(){
 function setupKeypress(){
     	$(document).keyup(function(e) {
 		console.log("pressed" + e.which);
+        if(canAct){
+            if(e.which == 32) {
+                $('#endTurnAsk').modal('show');
+            }
+        }
 		if(e.which == 13) {
 			server.chooseFrom([josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
 			josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
 			josh, josh, josh]);
-		}
-		else if(e.which == 32) {
-			$('#endTurnAsk').modal('show');
 		}
 		else if(e.which == 122){
 			console.log("dong");
