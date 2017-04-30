@@ -153,7 +153,7 @@ class creatureCard extends Card {
 
 class spellCard extends Card{
 	
-	constructor(IID,cost, name, text, imagePath){
+	constructor(IID, cost, name, text, imagePath){
 		super(IID);
 		this.cost = cost;
 		this.name = name;

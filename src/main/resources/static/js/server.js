@@ -225,6 +225,7 @@ class Server{
 	}
 
 	boardReceived(data){
+        console.log(data);
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
             window.setTimeout(function(){

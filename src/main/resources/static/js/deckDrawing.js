@@ -142,7 +142,7 @@ function drawProgressBar(){
 function checkForGlobals(){
      if(cardNames != null){
         list.fillWithNames(cardNames);
-        $("#deckName").val(deckName);
+        $("#deckName").val(nameOfDeck);
     }
 }
 

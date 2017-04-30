@@ -259,5 +259,4 @@ $(document).ready(function(){
     prepTurnTimers();
     mouseSystem.redraw();
     redrawAll();
-    server.chooseTarget();
 });
