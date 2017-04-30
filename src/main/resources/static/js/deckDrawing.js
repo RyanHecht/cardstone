@@ -142,15 +142,15 @@ function drawProgressBar(){
 function checkForGlobals(){
      if(cardNames != null){
         list.fillWithNames(cardNames);
-        $("#deckName").val(deckName);
+        $("#deckName").val(nameOfDeck);
+		list.draw();
     }
 }
 
-$('document').ready(function(){
-    allCards = [];
-    server = new Server();
+function allCardsReady(){
+	    buildPages(allCards);
+	
 
-    buildPages(allCards);
     curPage = 0;
     collect = new cardCollectionDeck($('.collectionDisplay'),pages.get(curPage),allCards);
     collect.forceRedraw();
@@ -161,5 +161,12 @@ $('document').ready(function(){
 	});
     setupPaging();
     setupInput();
-       allCards = server.requestCardCollection();
+	checkForGlobals();
+}
+
+$('document').ready(function(){
+    allCards = [];
+    server = new Server();
+
+    server.requestCardCollection();
 })

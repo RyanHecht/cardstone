@@ -1,6 +1,6 @@
 <#assign lobby_display>
-<div class="col-md-4">
-  <div class="panel panel-default" id="blah">
+<div class="col-md-4 tallCol">
+  <div class="panel panel-default tallPanel" id="blah">
     <div class="panel-heading">
       <h3 class="panel-title">You</h3>
     </div>
@@ -15,8 +15,8 @@
     </div>
   </div>
 </div>
-<div class="col-md-4">
-  <div class="panel panel-default">
+<div class="col-md-4 tallCol">
+  <div class="panel panel-default tallPanel">
     <div class="panel-heading">
       <h3 class="panel-title" id="oppname">${opp}</h3>
     </div>

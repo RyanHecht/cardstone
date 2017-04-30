@@ -84,7 +84,7 @@ public class LobbyManager {
       Lobby l = lobbies.get(lobbyName);
       if (l != null) {
         lobbies.get(lobbyName).join(playerId, password);
-        LobbyWebSocket.sendOppenentEnteredLobby(l.getOtherPlayer(playerId),
+        LobbyWebSocket.sendOpponentEnteredLobby(l.getOtherPlayer(playerId),
             playerId);
       }
 
@@ -109,7 +109,7 @@ public class LobbyManager {
           LobbyWebSocket.sendLobbyCancelled(other);
         }
       } else {
-        LobbyWebSocket.sendOppenentLeftLobby(other);
+        LobbyWebSocket.sendOpponentLeftLobby(other);
       }
 
     }
@@ -160,7 +160,7 @@ public class LobbyManager {
       }
       System.out.print("\n");
       lobby.setDeck(uId, cardList);
-      LobbyWebSocket.sendOppenentSetDeck(lobby.getOtherPlayer(uId));
+      LobbyWebSocket.sendOpponentSetDeck(lobby.getOtherPlayer(uId));
     }
   }
 

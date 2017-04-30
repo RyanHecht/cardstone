@@ -1,5 +1,4 @@
 let selectedName;
-let res;
 
 $(document).ready(() => {
 	const lobbyList = $("#lobby-table");
@@ -14,13 +13,23 @@ $(document).ready(() => {
 			const privateAttr = curr_lobby.private ? "Yes" : "No";
 			const fullAttr = curr_lobby.full ? "Yes" : "No";
 			
-			lobbyList.append("<tr> <td class='name'>" 
-							 + curr_lobby.name + "</td> " +
-							" <td class='host'>" + curr_lobby.host + "</td> " +
-							"<td class='private'>" + privateAttr + "</td> " +
-		    				"<td class='full'>" + fullAttr + "</td> </tr>");
+			const postParams = {id: curr_lobby.host};
+			$.post("/username", postParams, responseJSON => {
+				const hostUsername = JSON.parse(responseJSON).username;				
+				lobbyList.append("<tr> <td class='name'>" 
+								 + curr_lobby.name + "</td> " +
+								" <td class='host'>" + hostUsername + "</td> " +
+								"<td class='private'>" + privateAttr + "</td> " +
+								"<td class='full'>" + fullAttr + "</td> </tr>");
+			});
 		}
 	});
+	
+	if (error && errorHeader) {
+		$("#messageModal").modal("show");
+		$("#message").text(error);
+		$("#messageheader").text(errorHeader);
+	}
 });
 
 $("#lobby-table").on("click", "tr", function() {

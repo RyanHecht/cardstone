@@ -1,4 +1,6 @@
 let socket;
+let oppUser;
+let userReady = false;
 
 $(document).ready(() => {	
 	socket = new LobbySocket(parseInt($.cookie("id")), isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel, handleChat);
@@ -11,23 +13,36 @@ function onOpponentJoin(opponentId) {
 	$.post("/username", postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
 		console.log(respObj.username);
-		oppUsername = respObj.username;
+		oppUser = respObj.username;
+		
+		$("#oppmessage").text(oppUser + " has joined the game.");
+		$("#oppname").text(oppUser);
+		setTimeout(function() {
+			$("#oppmessage").text(oppUser + " is choosing a deck")
+		}, 1500);
 	});
-	
-	$("#oppmessage").text(oppUsername + " has joined the game.");
-	$("#oppname").text(oppUsername);
-	
-	setTimeout(function() {
-		$("#oppmessage").text(oppUsername + " is choosing a deck")
-	}, 1500);
 };
 
 function onOpponentLeave() {
 	console.log("Opponent left");
+	$("#oppname").text("Opponent");
+	$("#oppmessage").text(oppUser + " left the lobby");
+	
+	setTimeout(function() {
+		$("#oppmessage").text("Waiting for another player to join...");
+	}, 1500);
+	
+	$("#play").addClass("disabled");
 };
 
-function onOpponentSetDeck(deckName) {
-	console.log("Opponent set deck " + deckName);
+function onOpponentSetDeck() {
+	console.log("Opponent set deck");
+	console.log(oppUser + " is ready");
+	$("#oppmessage").text(oppUser + " is ready");
+
+	if (userReady) {
+		$("#play").removeClass("disabled");
+	}
 };
 
 function onGameStart() {
@@ -36,6 +51,12 @@ function onGameStart() {
 
 function onLobbyCancel() {
 	console.log("Lobby cancel");
+	// redirect to lobbies page with
+	// modal saying their lobby was canceled
+	const form = $("<form action='/lobbies' method='POST'>" +
+				   " <input type='text' name='errorMsg' value='Please find another lobby'/> <input type='text' name='errorHead' value='Lobby canceled'/>");
+	$('body').append(form);
+	form.submit();
 };
 
 function handleChat(msg) {
@@ -44,6 +65,9 @@ function handleChat(msg) {
 
 $("#leave").on("click", function() {
 	window.location.replace("/lobbies");
+	// should trigger onOpponentLeave
+	// also onLobbyCancel if the person who left was
+	// the host
 });
 
 $("#deckselect").on("change", function() {
@@ -60,7 +84,9 @@ $("#deckselect").on("change", function() {
 			if (respObj.cards) {
 				socket.setDeck(respObj);
 				$("#message").text("Deck set to " + deckName);
+				// Ryan's socket connection is closed here
 			}
+			userReady = true;
 		});	
 	}
 });
