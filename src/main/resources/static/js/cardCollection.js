@@ -101,9 +101,10 @@ class cardCollection extends drawableZone{
 	}
 	
 	draw(){
+        console.log(this.zone, this);
 		this.drawInDiv(this.div);
         this.changed = false;
-        console.log(this.zone, this);
+        
 	}
 	
 	forceDrawInDiv(div){

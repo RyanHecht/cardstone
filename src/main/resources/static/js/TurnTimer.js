@@ -3,7 +3,7 @@ class TurnTimer{
 
     constructor(isTurn,maxTime){
         this.willBeTurn = false;
-        this.maxTime = maxTime * 1000;
+        this.maxTime = maxTime * 100000;
         this.lineRight = $(".lineRight");
         this.lineLeft = $(".lineLeft");
         this.startTurn(isTurn);
