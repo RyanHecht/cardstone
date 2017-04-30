@@ -257,7 +257,7 @@ class Server{
 
     }
 
-    requestCardCollection(){
+    requestCardCollection(callback){
         let joshPool = new manaPool(10,'');
         joshPool.setFire(5);
         joshPool.setAir(5);
@@ -311,7 +311,11 @@ class Server{
             collection.push(balance);
             collection.push(air);
         }
-        return collection;
+        recieveCardCollection(collection);
     }
-
+    
+    recieveCardCollection(collection){
+        allCards = collection;
+        checkForGlobals();
+    }
 }

@@ -139,6 +139,13 @@ function drawProgressBar(){
     }
 }
 
+function checkForGlobals(){
+     if(cardNames != null){
+        list.fillWithNames(cardNames);
+        $("#deckName").val(deckName);
+    }
+}
+
 $('document').ready(function(){
     allCards = [];
     server = new Server();
@@ -154,7 +161,5 @@ $('document').ready(function(){
 	});
     setupPaging();
     setupInput();
-    if(cardNames != null){
-        list.fillWithNames(cardNames);
-    }
+   
 })
