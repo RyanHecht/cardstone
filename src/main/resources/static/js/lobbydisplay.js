@@ -2,7 +2,7 @@ let socket;
 let oppUser;
 let userReady = false;
 
-$(document).ready(() => {	
+$(document).ready(() => {
 	socket = new LobbySocket(parseInt($.cookie("id")), isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel, handleChat);
 });
 
@@ -14,24 +14,26 @@ function onOpponentJoin(opponentId) {
 		const respObj = JSON.parse(responseJSON);
 		console.log(respObj.username);
 		oppUser = respObj.username;
-		
+
 		$("#oppmessage").text(oppUser + " has joined the game.");
 		$("#oppname").text(oppUser);
 		setTimeout(function() {
 			$("#oppmessage").text(oppUser + " is choosing a deck")
 		}, 1500);
 	});
+
+	console.log(oppUser)
 };
 
 function onOpponentLeave() {
 	console.log("Opponent left");
 	$("#oppname").text("Opponent");
 	$("#oppmessage").text(oppUser + " left the lobby");
-	
+
 	setTimeout(function() {
 		$("#oppmessage").text("Waiting for another player to join...");
 	}, 1500);
-	
+
 	$("#play").addClass("disabled");
 };
 
@@ -61,7 +63,7 @@ function onLobbyCancel() {
 
 function handleChat(msg) {
 	console.log("Got msg: " + msg);
-}; 
+};
 
 $("#leave").on("click", function() {
 	window.location.replace("/lobbies");
@@ -70,7 +72,7 @@ $("#leave").on("click", function() {
 $("#deckselect").on("change", function() {
 	console.log("Changed to " + $(this).val());
 	const deckName = $(this).val();
-	
+
 	if (deckName == "Pick a deck") {
 		$("#message").text("Choose a valid deck from the options above.");
 	} else {
@@ -83,9 +85,6 @@ $("#deckselect").on("change", function() {
 				$("#message").text("Deck set to " + deckName);
 			}
 			userReady = true;
-		});	
+		});
 	}
 });
-
-
-

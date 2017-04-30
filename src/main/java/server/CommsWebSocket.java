@@ -97,6 +97,7 @@ public class CommsWebSocket {
     } catch (Exception ex) {
       System.out.println("ERROR in message handling");
       ex.printStackTrace();
+
     }
 
   }
@@ -209,6 +210,15 @@ public class CommsWebSocket {
     obj.addProperty("message", message);
     System.out.println("Sending action bad " + message);
     sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
+  }
+
+  public static void sendTurnStart(int userId, boolean userIdsTurn)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("isSelf", userIdsTurn);
+    System.out
+        .println("Sending turn start to " + userId + "...it's " + userIdsTurn);
+    sendMessage(userId, MessageTypeEnum.TURN_START, obj);
   }
 
   /**

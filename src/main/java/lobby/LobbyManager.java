@@ -1,5 +1,6 @@
 package lobby;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,6 +19,7 @@ import server.LobbyWebSocket;
  */
 public class LobbyManager {
   private static Map<String, Lobby> lobbies = new ConcurrentHashMap<>();
+  private static Gson gson = new Gson();
 
   /**
    * Creates a new Lobby.
@@ -151,7 +153,9 @@ public class LobbyManager {
     Lobby lobby = getLobbyByPlayerId(uId);
     if (lobby != null) {
       System.out.println(message.get("cards").toString());
-      JsonArray cards = message.get("cards").getAsJsonArray();
+
+      JsonArray cards = gson.fromJson(message.get("cards").getAsString(),
+          JsonArray.class);
       List<String> cardList = new ArrayList<>();
 
       for (JsonElement card : cards) {
@@ -183,7 +187,25 @@ public class LobbyManager {
    * @param message Message that was sent.
    */
   public static void handleStartGameRequest(int uId, JsonObject message) {
+    Lobby lobby = getLobbyByPlayerId(uId);
+    if (lobby != null) {
+      int oppId = lobby.getOtherPlayer(uId);
+      try {
+        System.out.println("Beginning game...");
+        lobby.beginGame();
+        System.out.println("Sending messages...");
+        LobbyWebSocket.sendGameIsStarting(uId, oppId);
+        LobbyWebSocket.sendGameIsStarting(oppId, uId);
+      } catch (IllegalArgumentException x) {
+        try {
+          LobbyWebSocket.sendChatMessage(uId,
+              "ERROR: Could not begin game! \n" + x.getMessage());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
 
+    }
   }
 
 }

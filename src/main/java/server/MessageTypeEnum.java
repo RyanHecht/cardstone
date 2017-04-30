@@ -72,6 +72,10 @@ public enum MessageTypeEnum {
 
   // Server alerts player of new chat message (Server -> Client)
   // 17
-  RECEIVE_CHAT
+  RECEIVE_CHAT,
+
+  // Alert user of turn start (Server -> Client)
+  // 18
+  TURN_START
 
 }

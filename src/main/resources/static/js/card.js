@@ -153,7 +153,7 @@ class creatureCard extends Card {
 
 class spellCard extends Card{
 	
-	constructor(IID,cost, name, text, imagePath){
+	constructor(IID, cost, name, text, imagePath){
 		super(IID);
 		this.cost = cost;
 		this.name = name;
@@ -179,6 +179,9 @@ class spellCard extends Card{
 	}
 	
 	drawTiny(div){
+        console.log(this);
+        console.log(this.cost);
+        console.log(typeof this);
 		div.empty();
 		div.html(tinySpellCardHtml);
 		div = div.children(".card");

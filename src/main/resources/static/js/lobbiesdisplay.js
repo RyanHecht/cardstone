@@ -53,8 +53,7 @@ $(document).ready(() => {
 			}
 		});
 
-	
-	if (error && errorHeader) {
+	if (error != undefined && errorHeader != undefined) {
 		$("#messageModal").modal("show");
 		$("#message").text(error);
 		$("#messageheader").text(errorHeader);
@@ -65,12 +64,12 @@ $("#lobby-table").on("click", "tr", function() {
 	console.log($(this));
 	const isFull = $(this).find("td.full").text() == "Yes";
 	console.log("isFull " + isFull);
-		
+
 	const isPriv = $(this).find("td.private").text() == "Yes";
 	console.log("isPriv " + isPriv);
-		
+
 	selectedName = $(this).find("td.name").text();
-	
+
 	if (!isFull) {
 		if (!isPriv) {
 			const postParams = {name: selectedName, password: ""};
@@ -89,7 +88,7 @@ $("#lobby-table").on("click", "tr", function() {
 			});
 		} else {
 			$("#passwordModal").modal("show");
-			$("#pwTitle").text("Lobby " + selectedName + 
+			$("#pwTitle").text("Lobby " + selectedName +
 							  " requires a password");
 		}
 	} else {
@@ -98,7 +97,7 @@ $("#lobby-table").on("click", "tr", function() {
 		$("#message").text("Lobby " + selectedName + " is full");
 	}
 });
-	
+
 $("#pwSubmit").on('click', function() {
 	const inputted = $("#pw").val();
 	console.log(inputted);
@@ -110,7 +109,7 @@ $("#pwSubmit").on('click', function() {
 		$.post("/joinLobby", postParams, responseJSON => {
 			const respObj = JSON.parse(responseJSON);
 			console.log(respObj);
-			
+
 			if (respObj.auth) {
 				window.location.replace("/lobby");
 			} else {
@@ -121,16 +120,16 @@ $("#pwSubmit").on('click', function() {
 		});
 	}
 });
-	
+
 $("#hostbutton").on('click', function() {
 	$("#hostLobby").modal("show");
 });
-	
+
 $("#createlobby").on('click', function() {
 	const lobby_name = $("#lname").val();
 	const isPriv = $("#lprivate").is(":checked");
 	const pw = $("#lpw").val();
-		
+
 	if (lobby_name != "") {
 		$("#hostLobby").modal("hide");
 		const postParams = {name: lobby_name, private: isPriv, password: pw};
@@ -138,7 +137,7 @@ $("#createlobby").on('click', function() {
 		$.post("/makeLobby", postParams, responseJSON => {
 			const respObj = JSON.parse(responseJSON);
 			console.log(respObj);
-			
+
 			if (respObj.auth) {
 				window.location.replace("/lobby");
 			} else {

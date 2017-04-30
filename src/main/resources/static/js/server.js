@@ -16,7 +16,8 @@ ID_RESPONSE: 13,
 TURN_END: 14,
 TEXT_MESSAGE: 15,
 PLAYER_SEND_CHAT: 16,
-RECEIVE_CHAT: 17
+RECEIVE_CHAT: 17,
+TURN_START: 18
 };
 
 class Server{
@@ -32,7 +33,7 @@ class Server{
     endTurn(){
       const payload = {};
       const obj = {"type": MESSAGE_TYPE.TURN_END, "payload": payload};
-    	// this.websocket.send(JSON.stringify(obj));
+    	this.websocket.send(JSON.stringify(obj));
        console.log("sent turn end");
     }
 
@@ -42,10 +43,10 @@ class Server{
 		// // cardDiv.addClass("cardSelected");
 		// // selectedCard = cardDiv.attr("id");
 	// }
-    
+
     cardClicked(id){
         if(inputState == StateEnum.IDLE){
-            
+
         }
         else if(inputState == StateEnum.TARGET_NEEDED){
             this.targetChosen(id);
@@ -56,14 +57,15 @@ class Server{
 		this.sendTargetResponse(id);
         inputState = StateEnum.IDLE;
 	}
-    
-    
+
+
     //RY GUY WRITE THIS QUIK
     sendTargetResponse(id){
         console.log(id);
     }
 
   cardTargeted(cardID,targetID){
+      console.log(cardID, targetID);
    const payload = {"IID1": cardID, "IID2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
 	 this.websocket.send(JSON.stringify(obj));
@@ -124,7 +126,7 @@ class Server{
         alert("please pick a target");
         inputState = StateEnum.TARGET_NEEDED;
     }
-    
+
 	messageReceived(message){
 		switch(message.type){
 			case MESSAGE_TYPE.BOARD_STATE:
@@ -145,12 +147,18 @@ class Server{
                 break;
             case MESSAGE_TYPE.TEXT_MESSAGE:
                 this.alertMessage(message.payload);
+                break;
             case MESSAGE_TYPE.RECEIVE_CHAT:
                 this.handleChat(message.payload);
+                break;
+            case MESSAGE_TYPE.TURN_START:
+                turnTimer.startTurn(message.payload.isSelf);
             default:
                 console.log("Unknown message type: " + message.type);
 		}
 	}
+
+
 
   alertMessage(message) {
     alert(message.message);
@@ -166,7 +174,7 @@ class Server{
     }
     else{
          $(".chatLog").append("<div class='chatMessage chatMessageOther alert alert-success'>" + chat + "</div>")
-    
+
     }
     $('.chatLog').scrollTop($('.chatLog')[0].scrollHeight);
     console.log("Got chat message: " + chat);
@@ -225,6 +233,7 @@ class Server{
 	}
 
 	boardReceived(data){
+        console.log(data);
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
             window.setTimeout(function(){
@@ -313,7 +322,7 @@ class Server{
         }
         this.recieveCardCollection(collection);
     }
-    
+
     recieveCardCollection(collection){
         allCards = collection;
 		allCardsReady();

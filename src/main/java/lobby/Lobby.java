@@ -137,6 +137,12 @@ public class Lobby implements Jsonifiable {
       Game game = new Game(p1deck, p2deck, uId1, uId2);
       System.out.println("game made.");
       GameManager.addGame(uId1, uId2, game);
+    } else {
+      if (!isFull()) {
+        throw new IllegalArgumentException("Lobby not full!");
+      } else if (!decksSet()) {
+        throw new IllegalArgumentException("Decks not set!");
+      }
     }
   }
 

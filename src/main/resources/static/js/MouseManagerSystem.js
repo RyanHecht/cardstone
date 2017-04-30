@@ -8,6 +8,7 @@ class MouseManagerSystem{
     }
         
     mousedown(id,event){
+        console.log(id);
         this.isClicked = true;
         this.curTargeter = id;
         canvasLine.x1 = this.transformX(event.pageX);
@@ -46,7 +47,8 @@ class MouseManagerSystem{
     mouseupCard(id,event){ 
         if(this.isClicked){
             if(this.curTargeter != id){
-                server.cardTargeted(this.targeter,id);
+                console.log(this.curTargeter);
+                server.cardTargeted(this.curTargeter,id);
             }
         }
         this.mouseup(event);
