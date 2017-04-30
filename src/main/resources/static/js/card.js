@@ -179,6 +179,7 @@ class spellCard extends Card{
 	}
 	
 	drawTiny(div){
+        console.log(this);
 		div.empty();
 		div.html(tinySpellCardHtml);
 		div = div.children(".card");
