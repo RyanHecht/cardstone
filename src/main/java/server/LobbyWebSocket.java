@@ -65,6 +65,8 @@ public class LobbyWebSocket {
         sessions.put(session, id);
         idToSessions.put(id, session);
         // System.out.println("gave " + id + " a session.");
+        LobbyWebSocket.sendOpponentEnteredLobby(id,
+            LobbyManager.getLobbyByPlayerId(id).getOtherPlayer(id));
 
       } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
         int id = payload.get("id").getAsInt();
@@ -116,7 +118,7 @@ public class LobbyWebSocket {
    */
   public static void sendOpponentSetDeck(int uId) {
     JsonObject payload = new JsonObject();
-    // payload.addProperty("name", deckName);
+    payload.addProperty("id", uId);
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_SET_DECK, payload);
     } catch (IOException e) {

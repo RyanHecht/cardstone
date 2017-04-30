@@ -187,7 +187,25 @@ public class LobbyManager {
    * @param message Message that was sent.
    */
   public static void handleStartGameRequest(int uId, JsonObject message) {
+    Lobby lobby = getLobbyByPlayerId(uId);
+    if (lobby != null) {
+      int oppId = lobby.getOtherPlayer(uId);
+      try {
+        System.out.println("Beginning game...");
+        lobby.beginGame();
+        System.out.println("Sending messages...");
+        LobbyWebSocket.sendGameIsStarting(uId, oppId);
+        LobbyWebSocket.sendGameIsStarting(oppId, uId);
+      } catch (IllegalArgumentException x) {
+        try {
+          LobbyWebSocket.sendChatMessage(uId,
+              "ERROR: Could not begin game! \n" + x.getMessage());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
 
+    }
   }
 
 }

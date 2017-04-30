@@ -9,7 +9,7 @@
   <#include "lobbies_table.ftl">
   <body>
      <div class="container">
-	 <h3> Join a game... </h3> 
+	 <h3> Join a game... </h3>
 	   <div class="row">
 	     <div class="col-sm-8" id="lobbytable">
 	       ${lobby_table}
