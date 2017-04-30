@@ -103,6 +103,7 @@ class cardCollection extends drawableZone{
 	draw(){
 		this.drawInDiv(this.div);
         this.changed = false;
+        console.log(this.zone, this);
 	}
 	
 	forceDrawInDiv(div){
