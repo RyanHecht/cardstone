@@ -149,7 +149,7 @@ function checkForGlobals(){
 $('document').ready(function(){
     allCards = [];
     server = new Server();
-    allCards = server.requestCardCollection();
+
     buildPages(allCards);
     curPage = 0;
     collect = new cardCollectionDeck($('.collectionDisplay'),pages.get(curPage),allCards);
@@ -161,5 +161,5 @@ $('document').ready(function(){
 	});
     setupPaging();
     setupInput();
-   
+       allCards = server.requestCardCollection();
 })
