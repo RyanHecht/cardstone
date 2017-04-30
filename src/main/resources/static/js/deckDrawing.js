@@ -154,4 +154,7 @@ $('document').ready(function(){
 	});
     setupPaging();
     setupInput();
+    if(cardNames != null){
+        list.fillWithNames(cardNames);
+    }
 })

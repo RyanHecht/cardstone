@@ -5,7 +5,22 @@ class deckList extends drawableZone{
         this.div = div;
         this.deck = [];
         this.allCards = allCards;
-        
+    }
+   
+    fillWithNames(names){
+        for(let name of names){
+            let added = false;
+            for(let card of allCards){
+                if(card.name == name){
+                    this.addCard(card);
+                    added = true;
+                    break;
+                }
+            }
+            if(!added){
+                alert("card " + name + " not found");
+            }
+        }
     }
    
     addCard(card){
