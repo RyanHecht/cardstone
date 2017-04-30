@@ -48,7 +48,7 @@ class MouseManagerSystem{
         if(this.isClicked){
             if(this.curTargeter != id){
                 console.log(this.curTargeter);
-                server.cardTargeted(this.targeter,id);
+                server.cardTargeted(this.curTargeter,id);
             }
         }
         this.mouseup(event);
