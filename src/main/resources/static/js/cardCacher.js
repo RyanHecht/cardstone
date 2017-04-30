@@ -42,6 +42,7 @@ class cardCacher{
 		if(!card.changed){
 			return;
 		}
+        console.log(card);
 		else if(this.cache.has(card.id)){
 			this.modifyCard(card);
 		}
