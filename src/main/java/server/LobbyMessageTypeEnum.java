@@ -52,6 +52,10 @@ public enum LobbyMessageTypeEnum {
 
   // Server alerts player of new chat message (Server -> Client)
   // 10
-  RECEIVE_CHAT
+  RECEIVE_CHAT,
+
+  // Some sort of error in message handling (Server -> client)
+  // 11
+  HANDLE_ERROR
 
 }

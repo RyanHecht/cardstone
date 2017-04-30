@@ -8,18 +8,16 @@
   </head>
   <#include "lobby_display.ftl">
   <body>
-     <div class="container-fluid">
-	   <div class="row">
+     <div class="container-fluid fullCont">
+	   <div class="row fullRow">
 	     ${lobby_display}
 	   </div>
-	   <div class="row">
-	     <div class="col-md-2" id="lobbybuttons">
+	   <div class="col-md-2" id="lobbybuttons">
 	       <#if isHost>
-	         <button type="button" class="btn btn-default disabled">Play</button>
+	         <button type="button" class="btn btn-default disabled" id="play">Play</button>
 	       </#if>
 	       <button type="button" class="btn btn-default" id="leave">Leave</button>
 	     </div>
-	   </div>
 	</div>
 	
 	 <script type="text/javascript">

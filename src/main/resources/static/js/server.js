@@ -317,6 +317,6 @@ class Server{
     
     recieveCardCollection(collection){
         allCards = collection;
-        checkForGlobals();
+		allCardsReady();
     }
 }

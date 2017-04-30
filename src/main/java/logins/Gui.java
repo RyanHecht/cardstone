@@ -46,6 +46,7 @@ public class Gui {
     Spark.get("/games", new GameDisplayHandler(), fm);
     Spark.get("/replay", new GameReplayHandler(), fm);
     Spark.get("/lobbies", new LobbiesHandler(), fm);
+    Spark.post("/lobbies", new LobbiesHandler(), fm);
     Spark.get("/lobby", new LobbyHandler(), fm);
     Spark.post("/username", new UsernameHandler());
     Spark.post("/deck_from", new DeckFinder());
@@ -228,9 +229,18 @@ public class Gui {
 	  public ModelAndView handle(Request req, Response res) {
 		  String userId = req.cookie("id");
 		  String queryString = req.queryString();
-		  String deckName = queryString.substring(queryString.lastIndexOf('=') + 1);
-		  String cards = "Deck " + deckName + " doesn't exist.";
 		  
+		  int deckIndex = queryString.lastIndexOf('=');
+		  System.out.println(queryString + " has LI of " + deckIndex); 
+		  if (deckIndex == -1) {
+			  System.out.println("I's in here massah");
+			  return new ModelAndView(ImmutableMap.of("title",
+			          "Cardstone: The Shattering"), "deck.ftl");
+		  }
+		  
+		  
+		  String deckName = queryString.substring(deckIndex + 1).replace('_', ' ');
+		  String cards = "Deck " + deckName + " doesn't exist.";  
 		  System.out.println("Deck name is: " + deckName);
 		  
 		  String deckQuery = "select cards from deck where user=? and name=?;";
@@ -244,8 +254,11 @@ public class Gui {
 			e.printStackTrace();
 		  } 
 		  
+		  
 		  Map<String, Object> vars = ImmutableMap.of("title",
-		          "Cardstone: The Shattering", "deckname", deckName, "cards", cards);
+		          "Cardstone: The Shattering", "deckname", deckName, "deck", cards);
+		  System.out.println(Arrays.toString(vars.values().toArray()));
+		  System.out.println(Arrays.toString(vars.keySet().toArray()));
 		  return new ModelAndView(vars, "deck.ftl");
 	  }
   }
@@ -253,8 +266,21 @@ public class Gui {
   private class LobbiesHandler implements TemplateViewRoute {
 	  @Override
 	  public ModelAndView handle(Request req, Response res) {
+		  QueryParamsMap qm = req.queryMap();
+		  String errorMsg = qm.value("errorMsg");
+		  
+		  if (errorMsg == null) {
+			  return new ModelAndView(
+					  ImmutableMap.of("title", "Cardstone: The Shattering"), 
+					  "lobbies.ftl");
+		  }
+		  
+		  String errorHead = qm.value("errorHead");
+		  
 		  Map<String, Object> vars = ImmutableMap.of("title",
-		          "Cardstone: The Shattering");
+		          "Cardstone: The Shattering", "error", errorMsg, 
+		          "errorHeader", errorHead);
+		  System.out.println(Arrays.toString(vars.values().toArray()));
 		  return new ModelAndView(vars, "lobbies.ftl");
 	  }
   }
@@ -277,11 +303,11 @@ public class Gui {
       String deckSearch = "select id from deck where name = ? and user = ?;";
       try (ResultSet rs = Db.query(deckSearch, deckName, uid)) {
     	  if (rs.next()) {
-    		  Db.update("update deck set cards = ? where id = ?;", rs.getInt(1));
-    		  System.out.println("Overrode previous deck");
+    		  Db.update("update deck set cards = ? where id = ?;", deck, rs.getInt(1));
+    		  System.out.println("Overrode previous deck " + deckName);
     	  } else {
     		  Db.update("insert into deck values(null, ?, ?, ?);", deckName, uid, deck);
-    		  System.out.println("Inserted deck");
+    		  System.out.println("Inserted deck " + deckName);
     	  }
       } catch (NullPointerException | SQLException e) {
 		e.printStackTrace();

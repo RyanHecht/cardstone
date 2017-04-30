@@ -65,6 +65,8 @@ public class LobbyWebSocket {
         sessions.put(session, id);
         idToSessions.put(id, session);
         // System.out.println("gave " + id + " a session.");
+        LobbyWebSocket.sendOpponentEnteredLobby(id,
+            LobbyManager.getLobbyByPlayerId(id).getOtherPlayer(id));
 
       } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
         int id = payload.get("id").getAsInt();
@@ -84,7 +86,7 @@ public class LobbyWebSocket {
    * @param uId Id of recipient.
    * @param oppUId opponent's id.
    */
-  public static void sendOppenentEnteredLobby(int uId, int oppUId) {
+  public static void sendOpponentEnteredLobby(int uId, int oppUId) {
     JsonObject payload = new JsonObject();
     payload.addProperty("id", oppUId);
     try {
@@ -99,7 +101,7 @@ public class LobbyWebSocket {
    * Send message that Opponent has left a lobby.
    * @param uId Id of recipient.
    */
-  public static void sendOppenentLeftLobby(int uId) {
+  public static void sendOpponentLeftLobby(int uId) {
     try {
       System.out.println("sending leaving to " + uId);
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_LEFT_LOBBY,
@@ -114,9 +116,9 @@ public class LobbyWebSocket {
    * @param uId Id of recipient.
    * @param deckName The name of the opponent's deck.
    */
-  public static void sendOppenentSetDeck(int uId) {
+  public static void sendOpponentSetDeck(int uId) {
     JsonObject payload = new JsonObject();
-    // payload.addProperty("name", deckName);
+    payload.addProperty("id", uId);
     try {
       sendMessage(uId, LobbyMessageTypeEnum.OPPONENT_SET_DECK, payload);
     } catch (IOException e) {

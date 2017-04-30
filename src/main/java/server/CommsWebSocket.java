@@ -97,6 +97,7 @@ public class CommsWebSocket {
     } catch (Exception ex) {
       System.out.println("ERROR in message handling");
       ex.printStackTrace();
+
     }
 
   }
