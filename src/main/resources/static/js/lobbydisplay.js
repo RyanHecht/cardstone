@@ -98,6 +98,7 @@ $("#deckselect").on("change", function() {
 			const respObj = JSON.parse(responseJSON);
 			console.log(respObj);
 			if (respObj.cards) {
+				console.log("set deck");
 				socket.setDeck(respObj);
 				$("#message").text("Deck set to " + deckName);
 			}

@@ -88,6 +88,10 @@ public class Lobby implements Jsonifiable {
     return (p1deck != null) && (p2deck != null);
   }
 
+  public boolean hostDeckSet() {
+    return p1deck != null;
+  }
+
   /**
    * Get how many people are in the lobby.
    * @return The number of players in the lobby.
