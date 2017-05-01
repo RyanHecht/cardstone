@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -202,6 +203,9 @@ public class LobbyManager {
         System.out.print(card.getAsString() + ", ");
       }
       System.out.print("\n");
+      System.out.println("I gotta deck YAYAA");
+      System.out.println(Arrays.toString(cardList.toArray()));
+      
       lobby.setDeck(uId, cardList);
       LobbyWebSocket.sendOpponentSetDeck(lobby.getOtherPlayer(uId));
     }

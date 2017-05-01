@@ -92,6 +92,7 @@ $("#deckselect").on("change", function() {
 			if (respObj.cards) {
 				console.log("set deck");
 				console.log(respObj);
+				console.log("I dun set a deckkkkkkkkkkkkkkk");
 				socket.setDeck(respObj);
 				$("#message").text("Deck set to " + deckName);
 			}
