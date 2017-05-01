@@ -94,7 +94,11 @@ public class CommsWebSocket {
           idToSessions.put(id, session);
 
           if (isSpectator(id)) {
-            CommsWebSocket.sendIsSpectator(id);
+            System.out.println(id + " is a spectator!!");
+            int spectatee = getSpectatee(id);
+            CommsWebSocket.sendIsSpectator(id, spectatee);
+            CommsWebSocket.sendWholeBoardSate(
+                GameManager.getGameByPlayerId(spectatee), id);
           } else {
             GameManager.playerIsReady(id);
           }
@@ -118,6 +122,15 @@ public class CommsWebSocket {
     return false;
   }
 
+  public static int getSpectatee(Integer userId) {
+    for (Integer spectatee : spectators.keySet()) {
+      if (spectators.get(spectatee).contains(userId)) {
+        return spectatee;
+      }
+    }
+    return -999;
+  }
+
   /**
    * Update the user given by userId on changes in the board state.
    *
@@ -138,11 +151,13 @@ public class CommsWebSocket {
     }
   }
 
-  public static void sendIsSpectator(int userId) throws IOException {
+  public static void sendIsSpectator(int userId, int watching)
+      throws IOException {
     if (idToSessions.containsKey(userId)) {
       Session session = idToSessions.get(userId);
       JsonObject obj = new JsonObject();
       JsonObject payload = new JsonObject();
+      payload.addProperty("watching", watching);
       obj.addProperty("type", MessageTypeEnum.SET_SPECTATOR.ordinal());
       obj.add("payload", payload);
 

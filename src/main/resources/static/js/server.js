@@ -157,9 +157,9 @@ class Server{
                     turnTimer.startTurn(message.payload.isSelf);//
                     break;
                 case MESSAGE_TYPE.SET_SPECTATOR:
-                    specator = true;
+                    spectator = true;
                     canAct = false;
-                    spectating = message.payload.watching();
+                    spectating = message.payload.watching;
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);
@@ -266,14 +266,28 @@ class Server{
             }, UPDATE_RATE);
             return;
         }
-        if(data.player1.playerId != parseInt($.cookie("id"))){
-            wholeBoard.flipTry();
+        if(spectator){
+            if(data.player1.playerId != spectating)){
+                wholeBoard.flipTry();
+            }
+        }
+        else{
+            if(data.player1.playerId != parseInt($.cookie("id"))){
+                wholeBoard.flipTry();
+            }
         }
 		this.setPlayers(data.player1,data.player2);
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
+        if(spectator){
+            if(data.player1.playerId != spectating)){
+                wholeBoard.flipFeatures();
+            }
+        }
+        else{
         if(data.player1.playerId != parseInt($.cookie("id"))){
             wholeBoard.flipFeatures();
+        }
         }
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
