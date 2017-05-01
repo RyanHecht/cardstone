@@ -17,7 +17,8 @@ TURN_END: 14,
 TEXT_MESSAGE: 15,
 PLAYER_SEND_CHAT: 16,
 RECEIVE_CHAT: 17,
-TURN_START: 18
+TURN_START: 18,
+SET_SPECTATOR: 19
 };
 
 class Server{
@@ -176,8 +177,8 @@ class Server{
                     console.log(message);
                     this.animationEventReceived(message.payload);
                     break;
-                
-                
+
+
             }
         }
 	}

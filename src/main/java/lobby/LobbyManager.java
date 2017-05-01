@@ -88,12 +88,38 @@ public class LobbyManager {
         lobbies.get(lobbyName).join(playerId, password);
         LobbyWebSocket.sendOpponentEnteredLobby(l.getOtherPlayer(playerId),
             playerId);
+
+        for (Integer i : l.getAllSpectators()) {
+          LobbyWebSocket.sendOpponentEnteredLobby(i, playerId);
+        }
       }
 
     } catch (IllegalArgumentException x) {
       throw x;
     }
 
+  }
+
+  public static void spectatorJoinLobby(int playerId, String lobbyName,
+      String password)
+      throws IllegalArgumentException {
+    Lobby l = lobbies.get(lobbyName);
+    if (l != null) {
+      try {
+        l.joinSpectator(playerId, password);
+      } catch (IllegalArgumentException x) {
+        throw x;
+      }
+
+    }
+  }
+
+  public static void spectatorUpdate(int spectatorId, int spectateeId) {
+    Lobby l = getLobbyByPlayerId(spectateeId);
+
+    if (l != null) {
+      l.changeSpectator(spectatorId, spectateeId);
+    }
   }
 
   /**
@@ -104,14 +130,27 @@ public class LobbyManager {
     Lobby l = getLobbyByPlayerId(playerId);
     if (l != null) {
       Integer other = l.getOtherPlayer(playerId);
+      List<Integer> spectators = l.getAllSpectators();
+
       l.leave(playerId);
 
       if (l.isHost(playerId)) {
+        // If host, cancel the lobby, alert other player and all spectators.
+
         if (other != null) {
           LobbyWebSocket.sendLobbyCancelled(other);
         }
+
+        for (Integer i : spectators) {
+          LobbyWebSocket.sendLobbyCancelled(i);
+        }
+
       } else {
         LobbyWebSocket.sendOpponentLeftLobby(other);
+
+        for (Integer i : spectators) {
+          LobbyWebSocket.sendOpponentLeftLobby(i);
+        }
       }
 
     }
@@ -196,6 +235,11 @@ public class LobbyManager {
         System.out.println("Sending messages...");
         LobbyWebSocket.sendGameIsStarting(uId, oppId);
         LobbyWebSocket.sendGameIsStarting(oppId, uId);
+
+        for (Integer i : lobby.getAllSpectators()) {
+          // TODO: figure out how this will work for spectators
+          LobbyWebSocket.sendGameIsStarting(i, oppId);
+        }
       } catch (IllegalArgumentException x) {
         try {
           LobbyWebSocket.sendChatMessage(uId,

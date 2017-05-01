@@ -76,6 +76,10 @@ public enum MessageTypeEnum {
 
   // Alert user of turn start (Server -> Client)
   // 18
-  TURN_START
+  TURN_START,
+
+  // Become a spectator (Server -> Client)
+  // 19
+  SET_SPECTATOR
 
 }

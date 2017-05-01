@@ -74,12 +74,15 @@ class LobbySocket {
 		console.log(message);
     switch(message.type) {
       case LOBBY_MESSAGE_TYPE.OPPONENT_ENTERED_LOBBY:
+				console.log("opp joined")
         this.onOpponentJoin(message.payload.id);
         break;
       case LOBBY_MESSAGE_TYPE.OPPONENT_LEFT_LOBBY:
+				console.log("opp left");
         this.onOpponentLeave();
         break;
       case LOBBY_MESSAGE_TYPE.OPPONENT_SET_DECK:
+				console.log("opp set deck");
         this.onOpponentSetDeck(message.payload.name);
         break;
       case LOBBY_MESSAGE_TYPE.GAME_IS_STARTING:

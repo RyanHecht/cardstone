@@ -13,6 +13,7 @@ import game.Player;
 import game.PlayerType;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.jetty.websocket.api.Session;
@@ -33,6 +34,7 @@ public class CommsWebSocket {
   private static final Gson GSON = new Gson();
   private static final Map<Session, Integer> sessions = new ConcurrentHashMap<>();
   private static final Map<Integer, Session> idToSessions = new ConcurrentHashMap<>();
+  private static final Map<Integer, List<Integer>> spectators = new ConcurrentHashMap<>();
 
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
@@ -90,8 +92,13 @@ public class CommsWebSocket {
           int id = payload.get("id").getAsInt();
           sessions.put(session, id);
           idToSessions.put(id, session);
-          GameManager.playerIsReady(id);
-          // CommsWebSocket.sendWholeBoardSate(testBoard(), id);
+
+          if (isSpectator(id)) {
+            CommsWebSocket.sendIsSpectator(id);
+          } else {
+            GameManager.playerIsReady(id);
+          }
+
         }
       }
     } catch (Exception ex) {
@@ -100,6 +107,15 @@ public class CommsWebSocket {
 
     }
 
+  }
+
+  public static boolean isSpectator(Integer userId) {
+    for (List<Integer> specList : spectators.values()) {
+      if (specList.contains(userId)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -116,6 +132,18 @@ public class CommsWebSocket {
       JsonObject obj = new JsonObject();
       JsonObject payload = toSend.jsonifySelfChanged();
       obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
+      obj.add("payload", payload);
+
+      session.getRemote().sendString(GSON.toJson(obj));
+    }
+  }
+
+  public static void sendIsSpectator(int userId) throws IOException {
+    if (idToSessions.containsKey(userId)) {
+      Session session = idToSessions.get(userId);
+      JsonObject obj = new JsonObject();
+      JsonObject payload = new JsonObject();
+      obj.addProperty("type", MessageTypeEnum.SET_SPECTATOR.ordinal());
       obj.add("payload", payload);
 
       session.getRemote().sendString(GSON.toJson(obj));
@@ -253,6 +281,11 @@ public class CommsWebSocket {
 
   }
 
+  public static void setSpectators(int spectateeId,
+      List<Integer> spectatorList) {
+    spectators.put(spectateeId, spectatorList);
+  }
+
   private static void sendMessage(int userId, MessageTypeEnum type,
       JsonObject payload) throws IOException {
     if (idToSessions.containsKey(userId)) {
@@ -262,6 +295,17 @@ public class CommsWebSocket {
       obj.add("payload", payload);
 
       session.getRemote().sendString(GSON.toJson(obj));
+    }
+
+    for (Integer spectator : spectators.get(userId)) {
+      if (idToSessions.containsKey(spectator)) {
+        Session session = idToSessions.get(spectator);
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", type.ordinal());
+        obj.add("payload", payload);
+
+        session.getRemote().sendString(GSON.toJson(obj));
+      }
     }
   }
 

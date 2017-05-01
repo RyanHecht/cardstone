@@ -3,7 +3,6 @@ package lobby;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.Arrays;
-
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
@@ -55,20 +54,21 @@ public class LobbyHandlers {
       String name = qm.value("name");
       boolean priv = Boolean.parseBoolean(qm.value("private"));
       String password = qm.value("password");
-      
+
       JsonObject json = new JsonObject();
       boolean auth = false;
-      System.out.println(String.format("Name: %s, Private: %s, Password: %s, UID: %d", 
-    		  name, priv, password, Integer.parseInt(req.cookie("id"))));
+      System.out
+          .println(String.format("Name: %s, Private: %s, Password: %s, UID: %d",
+              name, priv, password, Integer.parseInt(req.cookie("id"))));
       try {
-    	  int uid = Integer.parseInt(req.cookie("id"));
-    	  LobbyManager.addLobby(name, priv, password, uid);
-    	  auth = true;
+        int uid = Integer.parseInt(req.cookie("id"));
+        LobbyManager.addLobby(name, priv, password, uid);
+        auth = true;
       } catch (IllegalArgumentException e) {
-    	  json.addProperty("message", e.getMessage());
-      } 
+        json.addProperty("message", e.getMessage());
+      }
       json.addProperty("auth", auth);
-      
+
       System.out.println(json.toString());
       return json.toString();
     }
@@ -96,12 +96,43 @@ public class LobbyHandlers {
 
       boolean auth = false;
       try {
-    	System.out.println("Joining " + name + " with password " + password);
+        System.out.println("Joining " + name + " with password " + password);
         LobbyManager.playerJoinLobby(Integer.parseInt(req.cookie("id")), name,
             password);
         auth = true;
       } catch (IllegalArgumentException e) {
-    	e.printStackTrace();
+        e.printStackTrace();
+        obj.addProperty("message", e.getMessage());
+      }
+      obj.addProperty("auth", auth);
+      System.out.println(obj.toString());
+      return obj.toString();
+    }
+
+  }
+
+  public static class SpectateJoinLobby implements Route {
+
+    public SpectateJoinLobby() {
+
+    }
+
+    @Override
+    public String handle(Request req, Response res) throws Exception {
+      JsonObject obj = new JsonObject();
+      QueryParamsMap qm = req.queryMap();
+      String name = qm.value("name");
+      String password = qm.value("password");
+
+      boolean auth = false;
+      try {
+        System.out.println(
+            "Joining " + name + " as spectator with password " + password);
+        LobbyManager.spectatorJoinLobby(Integer.parseInt(req.cookie("id")),
+            name, password);
+        auth = true;
+      } catch (IllegalArgumentException e) {
+        e.printStackTrace();
         obj.addProperty("message", e.getMessage());
       }
       obj.addProperty("auth", auth);
@@ -120,6 +151,7 @@ public class LobbyHandlers {
       } else {
         LobbyManager.addLobby("test", false, "", 2);
         LobbyManager.playerJoinLobby(4, "test", "");
+        LobbyManager.spectatorJoinLobby(5, "test", "");
         LobbyManager.getLobbyByName("test").setDeck(2,
             Arrays.asList("EarthswornObserver",
                 "BuriedTreasure", "EarthElement", "EarthElement",
