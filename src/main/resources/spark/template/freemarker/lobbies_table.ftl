@@ -5,6 +5,8 @@
     <th>Host</th>
     <th>Private?</th>
     <th>Full?</th>
+    <th></th>
+    <th></th>
   </thead>
   <tbody id="lobby-table">
   </tbody>
@@ -84,6 +86,24 @@
       </div>
       <div class="modal-body">
         <p id="message"> </p>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<div id="clickModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="click_header">Choose a path</h4>
+      </div>
+      <div class="modal-body">
+        <p id="click_msg"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="join">Join</button>
+        <button type="button" class="btn btn-default" id="spectate">Spectate</button>
       </div>
     </div>
   </div>

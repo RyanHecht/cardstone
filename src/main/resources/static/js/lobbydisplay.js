@@ -1,6 +1,7 @@
 let socket;
 let oppUser;
 let userReady = false;
+let oppReady = false;
 
 $(document).ready(() => {
 	socket = new LobbySocket(parseInt($.cookie("id")), isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel, handleChat);
@@ -22,7 +23,7 @@ function onOpponentJoin(opponentId) {
 		}, 1500);
 	});
 
-	console.log(oppUser)
+	console.log(oppUser);
 };
 
 function onOpponentLeave() {
@@ -34,6 +35,8 @@ function onOpponentLeave() {
 		$("#oppmessage").text("Waiting for another player to join...");
 	}, 1500);
 
+	oppReady = false;
+	console.log("Disabling button");
 	$("#play").addClass("disabled");
 };
 
@@ -42,7 +45,9 @@ function onOpponentSetDeck() {
 	console.log(oppUser + " is ready");
 	$("#oppmessage").text(oppUser + " is ready");
 
-	if (userReady) {
+	oppReady = true;
+	if (userReady && oppReady) {
+		console.log("Enabling button");
 		$("#play").removeClass("disabled");
 	}
 };

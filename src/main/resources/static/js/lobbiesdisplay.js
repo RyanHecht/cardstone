@@ -1,4 +1,5 @@
 let selectedName;
+let selectedRow;
 
 $(document).ready(() => {
 	const lobbyList = $("#lobby-table");
@@ -44,11 +45,9 @@ $(document).ready(() => {
 					const hostUsername = JSON.parse(responseJSON).username;				
 					lobbyList.append("<tr> <td class='name'>" 
 									 + curr_lobby.name + "</td> " +
-									" <td class='host'>" + hostUsername + "</td> " +
+									"<td class='host'>" + hostUsername + "</td> " +
 									"<td class='private'>" + privateAttr + "</td> " +
-									"<td class='full'>" + fullAttr + "</td> " +
-									"<td class='join'> <button class='btn btn-default'>Join</button> </td> " + 
-									"<td class='spectate'> <button class='btn btn-default'>Spectate</button> </td> </tr>");
+									"<td class='full'>" + fullAttr + "</td> </tr>");
 				});
 			}
 		});
@@ -69,7 +68,19 @@ $("#lobby-table").on("click", "tr", function() {
 	console.log("isPriv " + isPriv);
 
 	selectedName = $(this).find("td.name").text();
+	selectedRow = $(this);
+	$("#clickModal").modal("show");
+	$("#click_msg").text("Would you like to join or spectate lobby " + selectedName + "?");
+});
 
+$("#join").on('click', function(event) {
+	console.log(event);
+	console.log($(this));
+	
+	const isFull = selectedRow.find("td.full").text() == "Yes";
+	const isPriv = selectedRow.find("td.private").text() == "Yes";
+	
+	$("#clickModal").modal("hide");
 	if (!isFull) {
 		if (!isPriv) {
 			const postParams = {name: selectedName, password: ""};
@@ -95,8 +106,9 @@ $("#lobby-table").on("click", "tr", function() {
 		$("#messageModal").modal("show");
 		$("#messageheader").text("Error joining lobby");
 		$("#message").text("Lobby " + selectedName + " is full");
-	}
+	}	
 });
+
 
 $("#pwSubmit").on('click', function() {
 	const inputted = $("#pw").val();
