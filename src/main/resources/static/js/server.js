@@ -157,9 +157,9 @@ class Server{
                     turnTimer.startTurn(message.payload.isSelf);//
                     break;
                 case MESSAGE_TYPE.SET_SPECTATOR:
-                    specator = true;
+                    spectator = true;
                     canAct = false;
-                    spectating = message.payload.watching();
+                    spectating = message.payload.watching;
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);
