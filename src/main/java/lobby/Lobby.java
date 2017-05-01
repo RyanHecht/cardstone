@@ -177,10 +177,6 @@ public class Lobby implements Jsonifiable {
   }
 
   public Integer getOtherPlayer(int uId) {
-    System.out.println("Other player request from user " + uId);
-    System.out
-        .println("In lobby " + name + " with pw " + password + " and users "
-            + uId1 + ", " + uId2);
     Integer ret = null;
     if (uId == uId1) {
       ret = uId2;
@@ -202,6 +198,10 @@ public class Lobby implements Jsonifiable {
 
   public boolean isHost(int uId) {
     return uId1 == uId;
+  }
+  
+  public int getHost() {
+	return uId1;
   }
 
   /**

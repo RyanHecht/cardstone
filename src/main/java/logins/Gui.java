@@ -14,6 +14,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import game.Game;
+import game.GameManager;
 import lobby.Lobby;
 import lobby.LobbyManager;
 import spark.ModelAndView;
@@ -36,20 +38,29 @@ public class Gui {
     Spark.get("/login", new LoginHandler(), fm);
     Spark.get("/register", new RegisterHandler(), fm);
     Spark.post("/login", new LoginHandler(), fm);
+    Spark.post("/register", new RegisterHandler(), fm); // buggy
+    Spark.post("/username", new UsernameHandler());
     
-    Spark.post("/register", new RegisterHandler(), fm);
-    Spark.post("/deck_upload", new UploadHandler());
+    
     Spark.post("/menu", new MenuHandler(), fm);
     Spark.get("/menu", new MenuHandler(), fm);
+    
+    Spark.post("/deck_upload", new UploadHandler());
     Spark.get("/decks", new DecksHandler(), fm); // displaying all decks
     Spark.get("/deck", new DeckHandler(), fm); // displaying one deck
+    Spark.post("/deck_from", new DeckFinder());
+    
     Spark.get("/games", new GameDisplayHandler(), fm);
     Spark.get("/replay", new GameReplayHandler(), fm);
+    
     Spark.get("/lobbies", new LobbiesHandler(), fm);
     Spark.post("/lobbies", new LobbiesHandler(), fm);
     Spark.get("/lobby", new LobbyHandler(), fm);
-    Spark.post("/username", new UsernameHandler());
-    Spark.post("/deck_from", new DeckFinder());
+    
+    
+    
+    Spark.post("/spectate", new SpectateHandler(), fm);
+    Spark.get("/game", new GameHandler(), fm);
   }
 
   public void init() {
@@ -96,6 +107,83 @@ public class Gui {
     }
   }
 
+  /**
+   * Handles requests to the lobby page.
+   * @author wriley1
+   */
+  private class GameHandler implements TemplateViewRoute {
+	  @Override
+	  public ModelAndView handle(Request req, Response res) {
+		  System.out.println("Gabbagoo");
+		  
+		  int uid = Integer.parseInt(req.cookie("id"));
+		  Game g = GameManager.getGameByPlayerId(uid);
+		  if (g == null) {
+			return new ModelAndView(ImmutableMap.of("title", "Cardstone: The Shattering", 
+					"error", "You are not currently in a game. Join one on this page.", 
+					"errorHeader", "Could not play game"), "lobbies.ftl");
+		  }
+
+		  return new ModelAndView(ImmutableMap.of(), "boardDraw.ftl");
+	  }
+  }
+
+  /**
+   * Handles requests to spectate.
+   * @author wriley1
+   */
+  private class SpectateHandler implements TemplateViewRoute {
+	  @Override
+	  public ModelAndView handle(Request req, Response res) {
+		  System.out.println("I IS SPECTATIN AND HANDLIN");
+		  String lname = req.queryMap().value("lobby");
+		  Lobby l = LobbyManager.getLobbyByName(lname);
+		  
+		  if (l == null) {
+			  return new ModelAndView(ImmutableMap.of("title", "Cardstone: The Shattering", 
+					  "error", "Please find another lobby", "errorHeader", 
+					  "Lobby " + lname + " does not exist"), "lobbies.ftl");
+		  }
+		 
+		  System.out.println("Got lobby " + l);
+		  int hostId = l.getHost();
+		  int otherId = l.getOtherPlayer(hostId);
+		  String hostUser = null;
+		  String otherUser = null;
+		  
+		  String userQuery = "select username from user where id = ? or id = ?;";
+		  try (ResultSet rs = Db.query(userQuery, hostId, otherId)) {
+			rs.next();
+			hostUser = rs.getString(1);
+			if (rs.next()) {
+			  otherUser = rs.getString(1);
+			}
+			assert !rs.next();
+		  } catch (NullPointerException | SQLException e) {
+			hostUser = "Player 1";
+			otherUser = "Player 2";
+		  }
+		  
+		  Map<String, Object> vars;
+		  if (otherId == -1) {
+			vars = new ImmutableMap.Builder<String, Object>()
+					.put("title", "Cardstone: The Shattering")
+					.put("p1", hostUser)
+					.put("p2", "Opponent")
+					.put("id1", hostId)
+					.put("id2", otherId)
+					.put("msg", "Waiting for another player to join...")
+					.build();
+		  } else {
+			vars = ImmutableMap.of("title", "Cardstone: The Shattering", 
+						"p1", hostUser, "p2", otherUser, "id1", hostId, 
+						"id2", otherId);
+		  }
+		  System.out.println(Arrays.toString(vars.values().toArray()));
+		  return new ModelAndView(vars, "spectate_lobby.ftl");
+	  }
+  }
+  
   /**
    * Handles requests to the lobby page.
    * @author wriley1
@@ -331,7 +419,7 @@ public class Gui {
       
       String id = qm.value("id");
       String username;
-      
+      System.out.println("Have id: " + id);
       String userQuery = "select username from user where id = ?;";
       try (ResultSet rs = Db.query(userQuery, id)) {
     	  rs.next();
@@ -343,7 +431,6 @@ public class Gui {
       }
       
       json.addProperty("username", username);
-
       return json.toString();
     }
   }

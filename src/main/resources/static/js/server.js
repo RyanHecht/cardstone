@@ -267,7 +267,7 @@ class Server{
             return;
         }
         if(spectator){
-            if(data.player1.playerId != spectating)){
+            if(data.player1.playerId != spectating){
                 wholeBoard.flipTry();
             }
         }
@@ -280,7 +280,7 @@ class Server{
 		wholeBoard.changeFeature("p1Deck",data.board.deckOne);
 		wholeBoard.changeFeature("p2Deck",data.board.deckTwo);
         if(spectator){
-            if(data.player1.playerId != spectating)){
+            if(data.player1.playerId != spectating){
                 wholeBoard.flipFeatures();
             }
         }
