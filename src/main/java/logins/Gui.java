@@ -360,7 +360,7 @@ public class Gui {
       
       String deckName = qm.value("deck");
       String uid = req.cookie("id");
-      
+      System.out.println("Have deckname: " + deckName + " " + deckName.length());
       String deckQuery = "select cards from deck where name = ? and user = ?;";
       try (ResultSet rs = Db.query(deckQuery, deckName, uid)) {
     	  rs.next();
