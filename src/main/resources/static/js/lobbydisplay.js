@@ -1,4 +1,5 @@
 let socket;
+let oppId;
 let oppUser;
 let userReady = false;
 let oppReady = false;
@@ -10,7 +11,7 @@ $(document).ready(() => {
 function onOpponentJoin(opponentId) {
 	console.log("Have opp id" + opponentId);
 	const postParams = {id: opponentId};
-	let oppUsername;
+	oppId = opponentId;
 	$.post("/username", postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
 		console.log(respObj.username);
@@ -43,7 +44,18 @@ function onOpponentLeave() {
 function onOpponentSetDeck() {
 	console.log("Opponent set deck");
 	console.log(oppUser + " is ready");
-	$("#oppmessage").text(oppUser + " is ready");
+	if (typeof oppUser == 'undefined' ) {
+		const postParams = {id: oppId};
+		$.post("/username", postParams, responseJSON => {
+			const respObj = JSON.parse(responseJSON);
+			console.log(respObj.username);
+			oppUser = respObj.username;
+
+			$("#oppmessage").text(oppUser + " is ready");
+		});
+	} else {
+		$("#oppmessage").text(oppUser + " is ready");
+	}
 
 	oppReady = true;
 	if (userReady && oppReady) {
