@@ -52,6 +52,7 @@ class Card{
                     break;
             }
         }
+        console.log(this.name,taunt, canPlay, canAttack, this.states, this.div);
         if(taunt){
             this.div.addClass("taunt");
         }

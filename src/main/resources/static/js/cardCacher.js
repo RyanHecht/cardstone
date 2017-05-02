@@ -83,7 +83,7 @@ class cardCacher{
         let pool = manaPool.buildPool(3,"&nbsp;",card.cost);
         let cardCost = new cost(card.cost.resources,pool);
         let newCard = new spellCard(card.id,cardCost,card.name,card.text,card.image);
-        parseStates(card,newCard);
+        this.parseStates(card,newCard);
         this.setByIID(card.id,newCard);
     }
     
