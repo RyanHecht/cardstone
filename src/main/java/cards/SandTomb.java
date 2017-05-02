@@ -45,8 +45,6 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 		return (Board board) -> {
 			// transform the card.
 			board.transformCard(target, tomb, Zone.BOARD);
-
-			// send card to graveyard from hand.
 			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
 		};
 	}

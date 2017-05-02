@@ -90,6 +90,11 @@ function setupCanvas(){
 	$(".boardOverlay").attr('width',canvas.width);
 };
 
+function customAlert(message){
+    $("#customMessage").text(message);
+    $("#messageModal").modal(show);
+}
+
 function setupBoard(){
 	let joshPool = new manaPool(1,'');
 	joshPool.setFire(5);

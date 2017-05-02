@@ -14,7 +14,7 @@ public class BuriedTreasure extends SpellCard {
 	private static final ManaPool	defaultCost		= new ManaPool(25, 0, 0, 1, 0, 0);
 	private static final String		defaultImage	= "images/SandTomb.jpg";
 	private static final String		defaultName		= "Buried Treasure";
-	private static final String		defaultText		= "Draw the most expensive (highest resource cost) card in your deck.";
+	private static final String		defaultText		= "Draw the most expensive (highest gold cost) card in your deck.";
 	private static final CardType	defaultType		= CardType.SPELL;
 
 	public BuriedTreasure(Player owner) {

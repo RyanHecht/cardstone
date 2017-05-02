@@ -1,5 +1,6 @@
 package cardgamelibrary;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import templates.TargetsPlayer;
  * @author 42jpa
  *
  */
-public interface Card extends Jsonifiable {
+public interface Card extends Jsonifiable, Serializable {
 
 	// Doesn't have to be unique
 	String getName();
@@ -206,9 +207,27 @@ public interface Card extends Jsonifiable {
 
 		Gson gson = new Gson();
 
+		if (this.is(Creature.class)) {
+			if (((Creature) this).getNumAttacks() > 0) {
+				states.add("canAttack");
+			}
+		}
+
 		result.addProperty("states", gson.toJson(states));
 
 		return result;
+	}
+
+	/**
+	 * Checks to see if a given card is another class (will be used to check
+	 * wrappers).
+	 *
+	 * @param c
+	 *          the class we are checking.
+	 * @return a boolean representing whether the given card is another class.
+	 */
+	default public boolean is(Class c) {
+		return this.getClass() == c;
 	}
 
 	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone) {
