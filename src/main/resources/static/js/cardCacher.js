@@ -75,7 +75,7 @@ class cardCacher{
 		let pool = manaPool.buildPool(3,"&nbsp;",card.cost);
 		let cardCost = new cost(card.cost.resources,pool);
 		let newCard = new creatureCard(card.id,cardCost,card.name,card.text,card.image,card.attack,card.health);
-		parseStates(card,newCard);
+		this.parseStates(card,newCard);
         this.setByIID(card.id,newCard);
 	}
     
@@ -90,13 +90,13 @@ class cardCacher{
     addNewElement(card){
         let newCard = new elementCard(card.id,card.elementType);
         this.setByIID(card.id,newCard);
-        parseStates(card,newCard);
+        this.parseStates(card,newCard);
     }
     
     addNewBack(card){
         let newCard = new cardBack(card.id);
         this.setByIID(card.id,newCard);
-        parseStates(card,newCard);
+        this.parseStates(card,newCard);
     }
     
     parseStates(card,newCard){
