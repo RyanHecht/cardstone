@@ -10,6 +10,7 @@ public class TurnStartEvent extends Event {
 	private Player starting;
 
 	public TurnStartEvent(Player p) {
+		super();
 		starting = p;
 	}
 

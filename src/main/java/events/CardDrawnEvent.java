@@ -9,6 +9,7 @@ public class CardDrawnEvent extends Event {
 	private Card drawn;
 
 	public CardDrawnEvent(Card drawn) {
+		super();
 		this.drawn = drawn;
 	}
 

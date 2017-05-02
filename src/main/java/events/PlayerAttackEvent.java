@@ -10,6 +10,7 @@ public class PlayerAttackEvent extends Event {
 	private Creature	attacker;
 
 	public PlayerAttackEvent(Player target, Creature attacker) {
+		super();
 		this.target = target;
 		this.attacker = attacker;
 	}

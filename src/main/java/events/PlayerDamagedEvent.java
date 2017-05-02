@@ -12,6 +12,7 @@ public class PlayerDamagedEvent extends Event {
 	private int			dmg;
 
 	public PlayerDamagedEvent(Card src, Player p, int dmg) {
+		super();
 		this.src = src;
 		this.p = p;
 		this.dmg = dmg;

@@ -5,6 +5,10 @@ import cardgamelibrary.EventType;
 
 public class EmptyEvent extends Event{
 
+	public EmptyEvent(){
+		super();
+	}
+	
 	@Override
 	public EventType getType() {
 		return EventType.EMPTY;

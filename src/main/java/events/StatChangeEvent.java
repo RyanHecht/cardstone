@@ -13,6 +13,7 @@ public class StatChangeEvent extends Event{
 	private int amount;
 
 	public StatChangeEvent(EventType type, Creature target, int amount) {
+		super();
 		this.eventType = type;
 		this.target = target;
 		this.amount = amount;

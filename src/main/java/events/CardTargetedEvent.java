@@ -11,6 +11,7 @@ public class CardTargetedEvent extends Event {
 	private Card							targeted;
 
 	public CardTargetedEvent(TargetsOtherCard targetter, Card targeted) {
+		super();
 		this.targetter = targetter;
 		this.targeted = targeted;
 	}

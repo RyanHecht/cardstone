@@ -12,6 +12,7 @@ public class GainElementEvent extends Event {
 	private int					amount;
 
 	public GainElementEvent(Player p, ElementType type, int amount) {
+		super();
 		this.player = p;
 		this.type = type;
 		this.amount = amount;

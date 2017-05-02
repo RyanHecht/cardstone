@@ -9,6 +9,7 @@ public class CreatureDiedEvent extends Event {
 	private Creature creature;
 
 	public CreatureDiedEvent(Creature cr) {
+		super();
 		creature = cr;
 	}
 
