@@ -76,7 +76,7 @@ public class Creature extends PlayableCard {
 	public boolean isDead() {
 		return getHealth() <= 0;
 	}
-	
+
 	@Override
 	public Effect onThisPlayed(Card c, Zone z) {
 		return (Board board) -> {
@@ -95,10 +95,10 @@ public class Creature extends PlayableCard {
 			assert (getNumAttacks() > 0);
 			// decrement the number of times it can attack.
 			attacker.setAttacks(attacker.getNumAttacks() - 1);
-			return new CardDamageEffect(attacker, target, target.getAttack());
+			return new CardDamageEffect(attacker, target, attacker.getAttack());
 		}
 		if (target.equals(this)) {
-			return new CardDamageEffect(target, attacker, attacker.getAttack());
+			return new CardDamageEffect(target, attacker, target.getAttack());
 		}
 		return EmptyEffect.create();
 	}
