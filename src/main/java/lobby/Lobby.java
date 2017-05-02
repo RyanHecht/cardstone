@@ -131,7 +131,6 @@ public class Lobby implements Jsonifiable {
         throw new IllegalArgumentException("Incorrect password.");
       }
     }
-
     uId1Spectators.add(spectatorId);
   }
 
@@ -199,9 +198,9 @@ public class Lobby implements Jsonifiable {
   public boolean isHost(int uId) {
     return uId1 == uId;
   }
-  
+
   public int getHost() {
-	return uId1;
+    return uId1;
   }
 
   /**

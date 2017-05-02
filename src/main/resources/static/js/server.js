@@ -160,12 +160,14 @@ class Server{
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
+                    console.log("i'm a spectator");
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);
             }
         }
         else{
+          console.log("i'm a spectator and i got a message of type " + message.type);
             switch(message.type){
                 case MESSAGE_TYPE.BOARD_STATE:
                     this.boardReceived(message.payload);
@@ -317,7 +319,7 @@ class Server{
         console.log(collection);
         cardCache.repairCardList(collection);
         for(let card of collection){
-            allCards.push(card.id);
+            allCards.push(cardCache.getByIID(card.id));
         }
 		allCardsReady();
     }

@@ -205,7 +205,7 @@ public class LobbyManager {
       System.out.print("\n");
       System.out.println("I gotta deck YAYAA");
       System.out.println(Arrays.toString(cardList.toArray()));
-      
+
       lobby.setDeck(uId, cardList);
       LobbyWebSocket.sendOpponentSetDeck(lobby.getOtherPlayer(uId));
     }
