@@ -122,7 +122,6 @@ class cardCollection extends drawableZone{
             }
             this.prepareHover();
 			this.sizeCards(div);
-            this.drawStates();
             if(!isReplayMode){
                 this.prepareDraggables();
                 this.prepareDroppables();
@@ -214,13 +213,6 @@ class cardCollection extends drawableZone{
 			}
 		});
 	}
-    
-    drawStates(){
-        console.log(this);
-        for(let card of this.cards){
-            card.drawStates();
-        }
-    }
 
 	prepareHover(){
         this.div.find(".cardBox").hover(function(){

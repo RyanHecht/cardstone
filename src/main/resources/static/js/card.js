@@ -32,7 +32,7 @@ class Card{
 		this.states = states;
 	}
     
-    drawStates(){
+    drawStates(div){
         let taunt = false;
         let canPlay = false;
         let canAttack = false;
@@ -52,18 +52,19 @@ class Card{
                     break;
             }
         }
-        console.log(this.name,taunt, canPlay, canAttack, this.states, this.div);
+        console.log(this.name, taunt, canPlay, canAttack, this.states, this.div);
         if(taunt){
-            this.div.addClass("taunt");
+            div.addClass("taunt");
         }
         else{
-            this.div.removeClass("taunt");
+            div.removeClass("taunt");
         }
-        if(canPlay || canAct){
-            this.div.addClass("canAct");
+        if(canPlay || canAttack){
+            console.log("acted", canPlay, canAct);
+            div.addClass("canAct");
         }
         else{
-            this.div.removeClass("canAct");
+            div.removeClass("canAct");
         }
     }
 	
@@ -110,6 +111,7 @@ class creatureCard extends Card {
 	
 	drawTiny(div){
 		div.html(tinyCardHtml);
+        this.drawStates(div);
 		div = div.children(".card");
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);
 		let stats = div.children(".statArea");
@@ -117,9 +119,11 @@ class creatureCard extends Card {
 		stats.children(".attack").html(this.attack);
 		//div.children(".statArea").css({background: this.cost.getColor()});
 		div[0].style.background = this.cost.getColor();
+        
 	}
 	drawSmall(div){
 		div.html(smallCardHtml);
+        this.drawStates(div);
 		div = div.children(".card");
 		div.children(".name").text(this.name);
 		this.cost.draw(div.children(".cost"));
@@ -214,11 +218,9 @@ class spellCard extends Card{
 	}
 	
 	drawTiny(div){
-        console.log(this);
-        console.log(this.cost);
-        console.log(typeof this);
 		div.empty();
 		div.html(tinySpellCardHtml);
+        this.drawStates(div);
 		div = div.children(".card");
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);
 		this.cost.draw(div.children(".cost"));
@@ -226,6 +228,7 @@ class spellCard extends Card{
 	}
 	drawSmall(div){
 		div.html(smallSpellCardHtml);
+        this.drawStates(div);
 		div = div.children(".card");
 		div.children(".name").text(this.name);
 		this.cost.draw(div.children(".cost"));
@@ -308,6 +311,7 @@ class cardBack extends Card{
 	
 	drawSmallAndBig(div){
 		div.html(cardBackHtml);
+        this.drawStates(div);
 		div.append('<div class="bigCardBox"></div>');
 		div = div.children('.bigCardBox');
 		div.html(cardBackHtml);
@@ -373,6 +377,7 @@ class elementCard extends Card{
 	
 	drawSmallAndBig(div){
 		div.html(elementHtml);
+        this.drawStates(div);
 		div.children(".card").children(".imageArea").children(".cardImage").attr("src", "images/elements/"+this.elementType+"Big.jpg");
 		div.children(".card")[0].style.background = this.color;
 		div.append('<div class="bigCardBox"></div>');
