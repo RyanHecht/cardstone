@@ -100,7 +100,9 @@ class cardCacher{
     }
     
     parseStates(card,newCard){
-        newCard.setStates(card.states);
+        if(card.states != null){
+            newCard.setStates(card.states);
+        }
     }
     
     addNewParsedCard(card){

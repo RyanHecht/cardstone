@@ -4,7 +4,7 @@ class Card{
 	
 	constructor(IID){
 		this.IID = IID;
-		this.state = "";
+		this.states = [];
 	}
 	
 	setDiv(div){
@@ -29,11 +29,41 @@ class Card{
 	}
 	
 	setStates(states){
-		this.states = state;
+		this.states = states;
 	}
     
     drawStates(){
-        
+        let taunt = false;
+        let canPlay = false;
+        let canAttack = false;
+        for(let state of this.states){
+            switch(state){
+                case "taunt":
+                    taunt = true;
+                    break;
+                case "canPlay":
+                    canPlay = true;
+                    break;
+                case "canAttack":
+                    canAttack = true;
+                    break;
+                default:
+                    console.log("unknown state", state);
+                    break;
+            }
+        }
+        if(taunt){
+            this.div.addClass("taunt");
+        }
+        else{
+            this.div.removeClass("taunt");
+        }
+        if(canPlay || canAct){
+            this.div.addClass("canAct");
+        }
+        else{
+            this.div.removeClass("canAct");
+        }
     }
 	
 }

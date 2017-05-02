@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="css/bootstrapalt.css">
   </head>
   <#include "game_table.ftl">
+  <#include "navbar.ftl">
   <body>
+     ${nav}
      <div class="container">
+     <br>
+     <br>
 	 <h3> ${username}'s Games</h3> 
 	   <div class="row">
 	     <div class="col-sm-8" id="userlist">
@@ -17,7 +21,6 @@
 	   </div>
        <a href="/login">Logout</a>
 	</div>
-     <script src="js/jquery-2.1.1.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/gamedisplay.js"></script>
   </body>

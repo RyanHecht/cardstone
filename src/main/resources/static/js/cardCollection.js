@@ -122,10 +122,7 @@ class cardCollection extends drawableZone{
             }
             this.prepareHover();
 			this.sizeCards(div);
-            // if(this.expandInto != null){
-                // this.div.append('<div class="expandButton"></div>');
-                // this.prepareForExpand();
-            // }
+            this.drawStates();
             if(!isReplayMode){
                 this.prepareDraggables();
                 this.prepareDroppables();
@@ -219,7 +216,8 @@ class cardCollection extends drawableZone{
 	}
     
     drawStates(){
-        for(let card of cards){
+        console.log(this);
+        for(let card of this.cards){
             card.drawStates();
         }
     }

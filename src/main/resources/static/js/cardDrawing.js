@@ -112,8 +112,15 @@ function setupBoard(){
 	josh = new creatureCard(-6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
 		" These may include dancing, singing, or just generally having a good time." +
 		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
-	let skyWhale = new creatureCard(-5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
-	let whale = new creatureCard(-20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
+    let stateList1 = [];
+
+    stateList1.push("taunt");
+    josh.setStates(stateList1);
+    let stateList2 = [];
+    stateList2.push("canAttack");
+    let skyWhale = new creatureCard(-5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
+	skyWhale.setStates(stateList2);
+    let whale = new creatureCard(-20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
 	"images/giantWhale.png",5,12);
 
 	let purgePool = new manaPool(3,'&nbsp;');
@@ -129,7 +136,6 @@ function setupBoard(){
 	let fire = new elementCard(-17,"fire");
 	let air = new elementCard(-18,"air");
 
-	fire.setState("cardCanPlay");
 	let back = new cardBack(-121);
 
 	let hand1Joshs = [fire, water, earth, air, balance, purge];
