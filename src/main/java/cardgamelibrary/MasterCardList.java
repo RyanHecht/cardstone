@@ -22,7 +22,7 @@ import game.PlayerType;
  */
 public final class MasterCardList {
 	public static MasterCardList	master			= new MasterCardList();
-	private List<Card>						masterList	= new LinkedList<>();
+	private LinkedList<Card>			masterList	= new LinkedList<>();
 	private Player								fakePlayer	= new Player(0, PlayerType.PLAYER_ONE, -1);
 	private static final Gson			GSON				= new Gson();
 
@@ -64,11 +64,11 @@ public final class MasterCardList {
 			Element air = (Element) Class.forName("cards.AirElement").getConstructor(Player.class).newInstance(fakePlayer);
 			Element balance = (Element) Class.forName("cards.BalanceElement").getConstructor(Player.class)
 					.newInstance(fakePlayer);
-			masterList.add(0, balance);
-			masterList.add(0, air);
-			masterList.add(0, earth);
-			masterList.add(0, water);
-			masterList.add(0, fire);
+			masterList.addFirst(balance);
+			masterList.addFirst(air);
+			masterList.addFirst(earth);
+			masterList.addFirst(water);
+			masterList.addFirst(fire);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
