@@ -10,7 +10,7 @@ $(document).ready(() => {
 function onOpponentJoin(opponentId) {
 	console.log("Have opp id" + opponentId);
 	const postParams = {id: opponentId};
-	let oppUsername;
+	oppId = opponentId;
 	$.post("/username", postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
 		console.log(respObj.username);
@@ -42,9 +42,7 @@ function onOpponentLeave() {
 
 function onOpponentSetDeck() {
 	console.log("Opponent set deck");
-	console.log(oppUser + " is ready");
-	$("#oppmessage").text(oppUser + " is ready");
-
+	$("#oppmessage").text($("#oppname").text() + " is ready");
 	oppReady = true;
 	if (userReady && oppReady) {
 		console.log("Enabling button");
@@ -53,7 +51,9 @@ function onOpponentSetDeck() {
 };
 
 function onGameStart() {
-	console.log("Starting game");
+	window.location.replace("/game");
+	// in game route, determine whether player 
+	// is supposed to be in game or nah
 };
 
 function onLobbyCancel() {
@@ -74,6 +74,10 @@ $("#leave").on("click", function() {
 	window.location.replace("/lobbies");
 });
 
+$("#play").on("click", function() {
+	socket.startGame();
+});
+
 $("#deckselect").on("change", function() {
 	console.log("Changed to " + $(this).val());
 	const deckName = $(this).val();
@@ -87,10 +91,15 @@ $("#deckselect").on("change", function() {
 			console.log(respObj);
 			if (respObj.cards) {
 				console.log("set deck");
+				console.log(respObj);
+				console.log("I dun set a deckkkkkkkkkkkkkkk");
 				socket.setDeck(respObj);
 				$("#message").text("Deck set to " + deckName);
 			}
 			userReady = true;
+			if (userReady && oppReady) {
+				$("#play").removeClass("disabled");
+			}
 		});
 	}
 });

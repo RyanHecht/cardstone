@@ -1,6 +1,9 @@
 package cardgamelibrary;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,10 +36,14 @@ import server.CommsWebSocket;
  * @author Kaushik Raghu Nimmagadda
  *
  */
-public class Board implements Jsonifiable {
+public class Board implements Jsonifiable, Serializable {
 
-	Queue<Event>									eventQueue;
-	Queue<Effect>									effectQueue;
+	/**
+	 * Default value for serial version that eclipse generated.
+	 */
+	private static final long			serialVersionUID		= 1L;
+	private Queue<Event>					eventQueue;
+	private Queue<Effect>					effectQueue;
 
 	private static final int			STARTING_HAND_SIZE	= 6;
 
@@ -216,8 +223,6 @@ public class Board implements Jsonifiable {
 			handleState();
 		}
 	}
-	
-	
 
 	private void handleDead() {
 		Iterator<Card> it = creatureOne.iterator();
@@ -492,6 +497,26 @@ public class Board implements Jsonifiable {
 	}
 
 	/**
+	 * Gets the byte array form of a board.
+	 * 
+	 * @return a byte array of the game.
+	 */
+	public byte[] getByteArray() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] boardAsBytes = baos.toByteArray();
+
+		return boardAsBytes;
+	}
+
+	/**
 	 * Transforms a card from one card to another.
 	 *
 	 * @param target
@@ -584,9 +609,9 @@ public class Board implements Jsonifiable {
 	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
 		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
 		destination.add(c);
-		//System.out.println("DOG " + start.size());
+		// System.out.println("DOG " + start.size());
 		start.remove(c);
-		//System.out.println("CAT " + start.size());
+		// System.out.println("CAT " + start.size());
 		eventQueue.add(event);
 	}
 
