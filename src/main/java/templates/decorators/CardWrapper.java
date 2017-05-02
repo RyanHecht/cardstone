@@ -1,4 +1,4 @@
-package cards.templates.decorators;
+package templates.decorators;
 
 import com.google.gson.JsonObject;
 
@@ -11,10 +11,10 @@ import cardgamelibrary.Event;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
-import cards.templates.PlayerChoosesCards;
-import cards.templates.TargetsOtherCard;
-import cards.templates.TargetsPlayer;
 import game.Player;
+import templates.PlayerChoosesCards;
+import templates.TargetsOtherCard;
+import templates.TargetsPlayer;
 
 public class CardWrapper implements Card {
 

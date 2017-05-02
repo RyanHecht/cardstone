@@ -3,7 +3,7 @@ package events;
 import cardgamelibrary.Card;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
-import cards.templates.PlayerChoosesCards;
+import templates.PlayerChoosesCards;
 
 public class CardChosenEvent extends Event {
 

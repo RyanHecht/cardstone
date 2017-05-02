@@ -317,8 +317,10 @@ class Server{
 
     receiveCardCollection(collection){
         console.log(collection);
-
-        allCards = collection;
+        cardCache.repairCardList(collection);
+        for(let card of collection){
+            allCards.push(cardCache.getByIID(card.id));
+        }
 		allCardsReady();
     }
 }

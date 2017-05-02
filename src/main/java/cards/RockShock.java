@@ -8,10 +8,10 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import cards.templates.TargetsOtherCard;
-import cards.templates.decorators.CantAttackForTurnsCreature;
 import effects.EmptyEffect;
 import game.Player;
+import templates.TargetsOtherCard;
+import templates.decorators.CantAttackForTurnsCreature;
 
 public class RockShock extends SpellCard implements TargetsOtherCard{
 

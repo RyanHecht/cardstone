@@ -1,4 +1,4 @@
-package cards.templates;
+package templates;
 
 import java.util.LinkedList;
 import java.util.List;

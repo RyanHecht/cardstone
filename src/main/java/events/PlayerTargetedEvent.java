@@ -2,8 +2,8 @@ package events;
 
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
-import cards.templates.TargetsPlayer;
 import game.Player;
+import templates.TargetsPlayer;
 
 public class PlayerTargetedEvent extends Event {
 

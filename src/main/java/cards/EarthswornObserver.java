@@ -7,8 +7,8 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
-import cards.templates.CantAttackCreature;
 import game.Player;
+import templates.CantAttackCreature;
 
 public class EarthswornObserver extends Creature implements CantAttackCreature {
 

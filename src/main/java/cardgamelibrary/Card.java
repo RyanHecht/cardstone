@@ -2,11 +2,11 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
-import cards.templates.PlayerChoosesCards;
-import cards.templates.TargetsOtherCard;
-import cards.templates.TargetsPlayer;
 import effects.EmptyEffect;
 import game.Player;
+import templates.PlayerChoosesCards;
+import templates.TargetsOtherCard;
+import templates.TargetsPlayer;
 
 /**
  * A card in the game.

@@ -8,9 +8,9 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import cards.templates.TargetsOtherCard;
-import cards.templates.TargetsPlayer;
 import game.Player;
+import templates.TargetsOtherCard;
+import templates.TargetsPlayer;
 
 public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlayer {
 

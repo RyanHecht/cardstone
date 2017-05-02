@@ -7,9 +7,9 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
-import cards.templates.CantAttackCreature;
 import effects.EmptyEffect;
 import game.Player;
+import templates.CantAttackCreature;
 
 public class RockInTheWay extends Creature implements CantAttackCreature {
 
