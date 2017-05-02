@@ -11,6 +11,7 @@ public class PlayerTargetedEvent extends Event {
 	private Player				target;
 
 	public PlayerTargetedEvent(TargetsPlayer targetter, Player target) {
+		super();
 		this.targetter = targetter;
 		this.target = target;
 	}

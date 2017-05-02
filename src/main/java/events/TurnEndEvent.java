@@ -9,6 +9,7 @@ public class TurnEndEvent extends Event {
 	private Player finished;
 
 	public TurnEndEvent(Player p) {
+		super();
 		finished = p;
 	}
 

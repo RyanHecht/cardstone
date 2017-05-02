@@ -15,6 +15,7 @@ public class EventCancelledEvent extends Event{
 	}
 	
 	public EventCancelledEvent(Event cancelled, Card canceller){
+		super();
 		this.canceller = canceller;
 		this.cancelled = cancelled;
 	}

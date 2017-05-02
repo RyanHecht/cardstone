@@ -42,7 +42,7 @@ public class Board implements Jsonifiable, Serializable {
 	 */
 	private static final long			serialVersionUID		= 1L;
 	private Queue<Event>					eventQueue;
-	private Queue<Effect>					effectQueue;
+	private LinkedList<Effect>					effectQueue;
 
 	private static final int			STARTING_HAND_SIZE	= 6;
 
@@ -218,7 +218,11 @@ public class Board implements Jsonifiable, Serializable {
 			} else {
 				handleDead();
 				while (effectQueue.size() != 0) {
-					handleEffect(effectQueue.poll());
+					Effect e = effectQueue.pop();
+					handleEffect(e);
+					if(e.hasNext()){
+						effectQueue.addFirst(e);
+					}
 				}
 			}
 		}

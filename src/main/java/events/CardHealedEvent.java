@@ -12,6 +12,7 @@ public class CardHealedEvent extends Event {
 	private int				heal;
 
 	public CardHealedEvent(Creature target, Card src, int heal) {
+		super();
 		this.target = target;
 		this.src = src;
 		this.heal = heal;

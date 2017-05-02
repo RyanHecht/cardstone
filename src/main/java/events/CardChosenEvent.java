@@ -11,6 +11,7 @@ public class CardChosenEvent extends Event {
 	private Card								chosen;
 
 	public CardChosenEvent(PlayerChoosesCards chooser, Card chosen) {
+		super();
 		this.chooser = chooser;
 		this.chosen = chosen;
 	}

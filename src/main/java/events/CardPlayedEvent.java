@@ -12,6 +12,7 @@ public class CardPlayedEvent extends Event {
 	private OrderedCardCollection	destination;
 
 	public CardPlayedEvent(Card c, OrderedCardCollection start, OrderedCardCollection destination) {
+		super();
 		this.c = c;
 		this.start = start;
 		this.destination = destination;

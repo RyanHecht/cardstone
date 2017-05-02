@@ -11,6 +11,7 @@ public class CardZoneCreatedEvent extends Event{
 	private Zone createdLocation;
 
 	public CardZoneCreatedEvent(Card card, Zone createdLocation){
+		super();
 		this.card = card;
 		this.createdLocation = createdLocation;
 	}

@@ -12,6 +12,7 @@ public class PlayerHealedEvent extends Event {
 	private int			heal;
 
 	public PlayerHealedEvent(Player target, Card src, int heal) {
+		super();
 		this.target = target;
 		this.src = src;
 		this.heal = heal;
