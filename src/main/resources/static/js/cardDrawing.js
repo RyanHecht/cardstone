@@ -172,7 +172,6 @@ function setupMouseListen(){
 
 function prepTurnTimers(){
     turnTimer = new TurnTimer(true,10);
-    turnTimer.startTurn(false);
 }
 
 function popOptionsMenu(){
