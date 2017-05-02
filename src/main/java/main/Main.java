@@ -34,7 +34,7 @@ public class Main {
     // g1.setBoard(b1);
     // System.out.println(g1.jsonifySelf());
     FreeMarkerEngine f = createEngine();
-    runSparkServer(4567, f);
+    runSparkServer(80, f);
 
     gui = new Gui(f);
     gui.init();
