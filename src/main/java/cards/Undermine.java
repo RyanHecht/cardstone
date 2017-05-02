@@ -8,9 +8,9 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import cards.templates.OnAnyAttackCard;
 import effects.EmptyEffect;
 import game.Player;
+import templates.OnAnyAttackCard;
 
 public class Undermine extends SpellCard implements OnAnyAttackCard{
 

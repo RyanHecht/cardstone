@@ -315,8 +315,10 @@ class Server{
 
     receiveCardCollection(collection){
         console.log(collection);
-        
-        allCards = collection;
+        cardCache.repairCardList(collection);
+        for(let card of collection){
+            allCards.push(card.id);
+        }
 		allCardsReady();
     }
 }

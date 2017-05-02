@@ -23,9 +23,6 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import cards.templates.PlayerChoosesCards;
-import cards.templates.TargetsOtherCard;
-import cards.templates.TargetsPlayer;
 import events.CardChosenEvent;
 import events.CardPlayedEvent;
 import events.CardTargetedEvent;
@@ -35,6 +32,9 @@ import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
 import logins.ClassByJosh;
 import server.CommsWebSocket;
+import templates.PlayerChoosesCards;
+import templates.TargetsOtherCard;
+import templates.TargetsPlayer;
 
 /**
  * Class to represent a game.

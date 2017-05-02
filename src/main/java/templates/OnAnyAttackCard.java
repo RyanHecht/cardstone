@@ -1,4 +1,4 @@
-package cards.templates;
+package templates;
 
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;

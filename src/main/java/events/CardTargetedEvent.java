@@ -4,7 +4,7 @@ import cardgamelibrary.Card;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.Zone;
-import cards.templates.TargetsOtherCard;
+import templates.TargetsOtherCard;
 
 public class CardTargetedEvent extends Event {
 

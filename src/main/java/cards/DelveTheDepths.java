@@ -9,8 +9,8 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import cards.templates.PlayerChoosesCards;
 import game.Player;
+import templates.PlayerChoosesCards;
 
 public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 

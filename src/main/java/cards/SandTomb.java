@@ -8,9 +8,9 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
-import cards.templates.OnOwnDeathCard;
-import cards.templates.TargetsOtherCard;
 import game.Player;
+import templates.OnOwnDeathCard;
+import templates.TargetsOtherCard;
 
 public class SandTomb extends SpellCard implements TargetsOtherCard {
 

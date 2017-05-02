@@ -1,14 +1,14 @@
-package cards.templates.decorators;
+package templates.decorators;
 
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.Zone;
-import cards.templates.CantAttackCreature;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
 import game.Player;
+import templates.CantAttackCreature;
 
 
 //Proof of concept for the wrappers (of joy)

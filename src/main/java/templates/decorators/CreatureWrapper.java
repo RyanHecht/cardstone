@@ -1,4 +1,4 @@
-package cards.templates.decorators;
+package templates.decorators;
 
 import com.google.gson.JsonObject;
 

@@ -14,7 +14,6 @@ import java.util.Set;
 
 import com.google.gson.JsonObject;
 
-import cards.templates.decorators.CantAttackForTurnsCreature;
 import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
@@ -29,6 +28,7 @@ import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
 import server.CommsWebSocket;
+import templates.decorators.CantAttackForTurnsCreature;
 
 /**
  * Contains the entire state of a given game
