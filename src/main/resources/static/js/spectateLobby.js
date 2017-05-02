@@ -59,7 +59,7 @@ function onLobbyCancel() {
 
 function onGameStart() {
 	console.log("Game starting");
-	// no spectateSocket startGame()???
+	window.location.replace("/game");
 };
 
 $('input[type=radio][name=spectateRadio]').change(function() {
