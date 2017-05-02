@@ -35,7 +35,7 @@ public class RockShock extends SpellCard implements TargetsOtherCard{
 	// when the target is valid, produce some effect.
 	// this should usually also play the targetting card (move to appropriate zone
 	// i.e. graveyard).
-	public Effect impactCardTarget(Card target) {
+	public Effect impactCardTarget(Card target, Zone zone) {
 		return (Board board) -> {
 			if((target instanceof Creature)){
 				Creature c = (Creature) target;

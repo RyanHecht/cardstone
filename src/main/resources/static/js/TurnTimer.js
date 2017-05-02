@@ -15,10 +15,13 @@ class TurnTimer{
         this.timeLeft = this.maxTime;
         this.needsNewTurn = false;
         if(isTurn){
-            $(".centerClockRect").css("background-image","../images/EndTurn.png");
+            $(".centerClockRect").addClass("endTurnPng");
+            $(".centerClockRect").removeClass("enemyTurnPng");
         }
         else{
-            $(".centerClockRect").css("background-image","../images/EnemyTurn.png");
+            $(".centerClockRect").removeClass("endTurnPng");
+            $(".centerClockRect").addClass("enemyTurnPng");
+            
         }
         this.updateThread(this);
     }

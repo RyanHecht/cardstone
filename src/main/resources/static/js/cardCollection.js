@@ -202,7 +202,13 @@ class cardCollection extends drawableZone{
 	sizeCards(div){
         div.children().children('.cardBox').css({
 			'height':function(index, value){
-				return $(this).height() - 12;
+                let height = $(this).height();
+                if(height > 170){
+                    return 158;
+                }
+                else{
+                    return height - 12;
+                }
 			}
 		});
 		div.children().children('.cardBox').css({

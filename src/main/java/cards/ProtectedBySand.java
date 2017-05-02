@@ -27,7 +27,7 @@ public class ProtectedBySand extends SpellCard{
 	private static final CardType	defaultType		= CardType.SPELL;
 	
 	public boolean onProposedEvent(Event e, Zone z){
-		if(z == Zone.SPELL_GRAVE){
+		if(z == Zone.GRAVE){
 			if(this.spellsToPrevent > 0){
 				if(e.getType() == EventType.PLAYER_DAMAGED){
 					PlayerDamagedEvent pde = (PlayerDamagedEvent) e;
@@ -41,7 +41,7 @@ public class ProtectedBySand extends SpellCard{
 	}
 	
 	public Event getNewPropositon(Event e, Zone z){
-		if(z == Zone.SPELL_GRAVE){
+		if(z == Zone.GRAVE){
 			if(this.spellsToPrevent > 0){
 				if(e.getType() == EventType.PLAYER_DAMAGED){
 					PlayerDamagedEvent pde = (PlayerDamagedEvent) e;

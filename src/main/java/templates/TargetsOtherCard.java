@@ -13,9 +13,7 @@ public interface TargetsOtherCard extends Card {
 	// when the target is valid, produce some effect.
 	// this should usually also play the targetting card (move to appropriate zone
 	// i.e. graveyard).
-	default public Effect impactCardTarget(Card target, Zone targetIn) {
-		return EmptyEffect.create();
-	}
+	 public Effect impactCardTarget(Card target, Zone targetIn);
 
 	@Override
 	public default Effect onCardTarget(TargetsOtherCard targetter, Card targetted, Zone z, Zone targetIn) {

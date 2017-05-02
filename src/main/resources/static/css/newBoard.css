@@ -259,8 +259,16 @@ body .bigModal .modal-dialog {
     box-shadow: 0 -2px 20px 5px #9ecaed;
     background-size:contain;
     background-position:center;
-    background-image:url("../images/EndButton.png");
     background-repeat:no-repeat;
+    cursor:pointer;
+}
+
+.endTurnPng{
+    background-image:url("../images/EndButton.png");
+}
+
+.enemyTurnPng{
+    background-image:url("../images/EnemyTurn.png");
 }
 
 .board .zone{
