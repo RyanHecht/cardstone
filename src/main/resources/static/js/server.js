@@ -241,6 +241,7 @@ class Server{
 
 
 	chooseFrom(cards){
+        console.log(cards);
 		$("#chooseOneAsk").modal('show');
         cardCache.repairCardList(cards);
 		let collection = new chooseZone($("#chooseZoneDisplay"),cards);
