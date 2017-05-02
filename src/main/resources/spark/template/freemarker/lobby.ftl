@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="css/bootstrapalt.css">
   </head>
   <#include "lobby_display.ftl">
+  <#include "navbar.ftl">
   <body>
+     ${nav}
      <div class="container-fluid fullCont">
 	   <div class="row fullRow">
 	     ${lobby_display}
@@ -23,9 +25,7 @@
 	 <script type="text/javascript">
 		let isHost = ${isHost?string("true", "false")};
 	 </script>
-     <script src="js/jquery-2.1.1.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
-     <script src="js/jquery-cookie.js"></script>
      <script src="js/lobbySocket.js"></script>
      <script src="js/lobbydisplay.js"></script>
   </body>

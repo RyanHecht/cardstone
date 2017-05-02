@@ -1,29 +1,12 @@
 let selectedName;
 let selectedPriv;
 let selectedFull;
-let currList;
+let currNames;
+let currLobbies;
 let spectate = false;
 
 $(document).ready(() => {
 	const lobbyList = $("#lobby-table");
-	
-	
-//	setInterval(function() {
-//		$.get("/listLobbies", responseJSON => {
-//			const respObj = JSON.parse(responseJSON);
-//			console.log(respObj);
-//			
-//			for (let i = 0, len = respObj.length; i < len; i++) {
-//				const curr_lobby = respObj[i];
-//				if (currList.has(curr_lobby.name)) {
-//					continue;
-//				}
-//				
-//				currList
-//			}
-//		});
-//	}, 1000);
-	
 	
 	$.get("/listLobbies", responseJSON => {
 		const responseObject = JSON.parse(responseJSON);
