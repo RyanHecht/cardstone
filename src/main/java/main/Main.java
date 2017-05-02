@@ -1,11 +1,5 @@
 package main;
 
-
-import cardgamelibrary.Board;
-import cardgamelibrary.OrderedCardCollection;
-import cardgamelibrary.Zone;
-import cards.SkyWhaleCreature;
-import dummycards.StubCreature;
 import freemarker.template.Configuration;
 import java.io.File;
 import java.io.IOException;
