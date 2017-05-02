@@ -1,5 +1,7 @@
 package game;
 
+import java.io.Serializable;
+
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.ElementType;
@@ -11,7 +13,7 @@ import cardgamelibrary.ManaPool;
  * @author Raghu
  *
  */
-public class Player {
+public class Player implements Serializable {
 	private PlayerType				playerType;
 	private int								life;
 	private ManaPool					manaPool;
