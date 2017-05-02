@@ -3,6 +3,7 @@ package game;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,7 +43,7 @@ import templates.TargetsPlayer;
  * @author Raghu
  *
  */
-public class Game implements Jsonifiable {
+public class Game implements Jsonifiable, Serializable {
 	private static final int			PLAYER_START_LIFE	= 30;
 	private GameState							state							= GameState.IDLE;
 	private Board									board;
