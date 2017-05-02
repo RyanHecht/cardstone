@@ -42,7 +42,7 @@ public class Board implements Jsonifiable, Serializable {
 	 */
 	private static final long			serialVersionUID		= 1L;
 	private Queue<Event>					eventQueue;
-	private LinkedList<Effect>					effectQueue;
+	private LinkedList<Effect>		effectQueue;
 
 	private static final int			STARTING_HAND_SIZE	= 6;
 
@@ -220,7 +220,7 @@ public class Board implements Jsonifiable, Serializable {
 				while (effectQueue.size() != 0) {
 					Effect e = effectQueue.pop();
 					handleEffect(e);
-					if(e.hasNext()){
+					if (e.hasNext()) {
 						effectQueue.addFirst(e);
 					}
 				}
@@ -651,11 +651,28 @@ public class Board implements Jsonifiable, Serializable {
 
 	/**
 	 * Gets the turn index of the board.
-	 * 
+	 *
 	 * @return the turn index.
 	 */
 	public int getTurnIndex() {
 		return turnIndex;
+	}
+
+	/**
+	 * Gets the zone of a given card.
+	 * 
+	 * @param c
+	 *          the card we are looking for the zone of.
+	 * @return the zone of the card or an illegalargumentexception if the card
+	 *         wasn't found on the board.
+	 */
+	public Zone getZoneOfCard(Card c) {
+		for (OrderedCardCollection occ : cardsInGame) {
+			if (occ.contains(c)) {
+				return occ.getZone();
+			}
+		}
+		throw new IllegalArgumentException("Tried to get Zone of card that wasn't found in game");
 	}
 
 }

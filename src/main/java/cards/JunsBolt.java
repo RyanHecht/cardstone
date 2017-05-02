@@ -34,22 +34,22 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 	}
 
 	@Override
-	public boolean cardValidTarget(Card card) {
+	public boolean cardValidTarget(Card card, Zone targetIn) {
 		if (card.getOwner().equals(getOwner())) {
 			// can't cast on own creatures.
 			return false;
 		}
-		if (card instanceof Creature) {
-			// card must be a creature.
+		if (card instanceof Creature && targetIn == Zone.CREATURE_BOARD) {
+			// card must be a creature and on board.
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public Effect impactCardTarget(Card target) {
+	public Effect impactCardTarget(Card target, Zone targetIn) {
 		return (Board board) -> {
-			assert (cardValidTarget(target));
+			assert (cardValidTarget(target, targetIn));
 			// deal 3 damage to targeted creature.
 			board.damageCard((Creature) target, this, 3);
 

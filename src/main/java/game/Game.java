@@ -434,15 +434,17 @@ public class Game implements Jsonifiable {
 					return;
 				}
 
+				Zone targetIn = board.getZoneOfCard(targetee);
+
 				// the targeted card wasn't a valid target.
-				if (!(((TargetsOtherCard) targetter).cardValidTarget(targetee))) {
+				if (!(((TargetsOtherCard) targetter).cardValidTarget(targetee, targetIn))) {
 					sendPlayerActionBad(playerId, "Invalid target!");
 					return;
 				}
 
 				// targeted card was a valid card.
 				// construct appropriate event.
-				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee);
+				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee, targetIn);
 
 				// tell player the action was ok.
 				sendPlayerActionGood(playerId);
