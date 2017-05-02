@@ -29,6 +29,7 @@ class SpectateLobbySocket {
 
   onWebSocketOpen() {
 		const type = SPECTATE_MESSAGE_TYPE.SPECTATOR_CONNECT;
+		const payload = {"id": $.cookie('id')};
 		const obj = {"type": type, "payload": payload};
 	  	this.socket.send(JSON.stringify(obj));
 		console.log('opened');
