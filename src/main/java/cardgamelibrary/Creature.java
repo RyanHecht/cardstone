@@ -78,14 +78,24 @@ public class Creature extends PlayableCard {
 	}
 
 	@Override
-	public Effect onThisPlayed(Card c, Zone z) {
-		return (Board board) -> {
-			// note that cost payment is handled in default onCardPlayed so no need to
-			// do it here!
+	public Effect onCardPlayed(Card c, Zone z) {
+		// cards that have effects that trigger when THEY are played activate stuff
+		// via this.
+		if (c.equals(this) && z == Zone.HAND) {
+			// pay cost of the card.
+			getOwner().payCost(getCost());
 
-			// play the creature onto the board!
-			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
-		};
+			ConcatEffect effect = new ConcatEffect();
+			effect.addEffect((Board board) -> {
+				// effect to move creature to board.
+				board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
+			});
+
+			// add any specific effects for this creature being played.
+			effect.addEffect(onThisPlayed(c, z));
+			return effect;
+		}
+		return EmptyEffect.create();
 	}
 
 	@Override
