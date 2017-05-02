@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import com.google.gson.JsonObject;
 
@@ -40,7 +42,7 @@ public class Board implements Jsonifiable, Serializable {
 	 */
 	private static final long			serialVersionUID		= 1L;
 	private Queue<Event>					eventQueue;
-	private Queue<Effect>					effectQueue;
+	private LinkedList<Effect>					effectQueue;
 
 	private static final int			STARTING_HAND_SIZE	= 6;
 
@@ -63,6 +65,9 @@ public class Board implements Jsonifiable, Serializable {
 
 	// currently active player.
 	private Player								activePlayer;
+
+	// keeps track of turn counter.
+	private int										turnIndex						= 0;
 
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
 		// using LinkedLists but declaring using queue interface.
@@ -190,6 +195,8 @@ public class Board implements Jsonifiable, Serializable {
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
 				if (e.getType() == EventType.TURN_START) {
+					// increment turn index.
+					turnIndex++;
 					// give player who is starting turn their resources!
 					activePlayer.startTurn();
 					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
@@ -211,7 +218,11 @@ public class Board implements Jsonifiable, Serializable {
 			} else {
 				handleDead();
 				while (effectQueue.size() != 0) {
-					handleEffect(effectQueue.poll());
+					Effect e = effectQueue.pop();
+					handleEffect(e);
+					if(e.hasNext()){
+						effectQueue.addFirst(e);
+					}
 				}
 			}
 		}
@@ -249,16 +260,8 @@ public class Board implements Jsonifiable, Serializable {
 	}
 
 	private void handleEvent(Event event) {
-		List<Card> alreadyDone = new ArrayList<>();
+		event = preprocessEvent(event, new HashSet<Card>());
 		for (OrderedCardCollection occ : cardsInGame) {
-			System.out.println("this shoul appear 6x");
-			System.out.println(occ.size());
-			for (Card c : occ) {
-				if (alreadyDone.contains(c)) {
-					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
-				}
-				alreadyDone.add(c);
-			}
 			// collect effects from all cards in game!
 			for (Effect e : occ.handleCardBoardEvent(event)) {
 				// iterate through all cards in a collection and add their effects to
@@ -266,6 +269,37 @@ public class Board implements Jsonifiable, Serializable {
 				effectQueue.add(e);
 			}
 		}
+		Event e = event.getNext(this);
+		if (e.getType() != EventType.EMPTY) {
+			handleEvent(e);
+		}
+	}
+
+	public String legalityProcessEvent(Event event) {
+		String complaint = "ok";
+		for (OrderedCardCollection occ : cardsInGame) {
+			for (Card c : occ) {
+				if (c.onProposedLegalityEvent(event, occ.getZone())) {
+					complaint = c.getComplaint(event, occ.getZone());
+				}
+			}
+		}
+		return complaint;
+	}
+
+	private Event preprocessEvent(Event event, Set<Card> alreadyProcessed) {
+		for (OrderedCardCollection occ : cardsInGame) {
+			for (Card c : occ) {
+				if (!alreadyProcessed.contains(c)) {
+					if (c.onProposedEvent(event, occ.getZone())) {
+						alreadyProcessed.add(c);
+						event = c.getNewProposition(event, occ.getZone());
+						preprocessEvent(event, alreadyProcessed);
+					}
+				}
+			}
+		}
+		return event;
 	}
 
 	/**
@@ -472,7 +506,7 @@ public class Board implements Jsonifiable, Serializable {
 
 	/**
 	 * Gets the byte array form of a board.
-	 * 
+	 *
 	 * @return a byte array of the game.
 	 */
 	public byte[] getByteArray() {
@@ -613,6 +647,15 @@ public class Board implements Jsonifiable, Serializable {
 		p.setElement(type, curElem + amount);
 		eventQueue.add(event);
 
+	}
+
+	/**
+	 * Gets the turn index of the board.
+	 * 
+	 * @return the turn index.
+	 */
+	public int getTurnIndex() {
+		return turnIndex;
 	}
 
 }

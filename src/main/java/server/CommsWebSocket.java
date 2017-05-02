@@ -70,9 +70,9 @@ public class CommsWebSocket {
         if (type == MessageTypeEnum.UNDERSTOOD_BOARD_STATE.ordinal()) {
           GameManager.receiveUnderstoodBoardState(id, payload);
         } else if (type == MessageTypeEnum.TARGETED_CARD.ordinal()) {
-          GameManager.recieveTargetedCard(id, payload);
+          GameManager.receiveTargetedCard(id, payload);
         } else if (type == MessageTypeEnum.TARGETED_PLAYER.ordinal()) {
-          GameManager.recieveTargetedPlayer(id, payload);
+          GameManager.receiveTargetedPlayer(id, payload);
         } else if (type == MessageTypeEnum.ATTEMPTED_TO_PLAY.ordinal()) {
           GameManager.receiveAttemptedToPlay(id, payload);
         } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {

@@ -5,12 +5,13 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cards.templates.TargetsOtherCard;
 
-public class CardTargetedEvent implements Event {
+public class CardTargetedEvent extends Event {
 
 	private TargetsOtherCard	targetter;
 	private Card							targeted;
 
 	public CardTargetedEvent(TargetsOtherCard targetter, Card targeted) {
+		super();
 		this.targetter = targetter;
 		this.targeted = targeted;
 	}

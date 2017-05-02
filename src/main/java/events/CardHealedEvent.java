@@ -5,13 +5,14 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class CardHealedEvent implements Event {
+public class CardHealedEvent extends Event {
 
 	private Creature	target;
 	private Card			src;
 	private int				heal;
 
 	public CardHealedEvent(Creature target, Card src, int heal) {
+		super();
 		this.target = target;
 		this.src = src;
 		this.heal = heal;

@@ -5,13 +5,14 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class CardDamagedEvent implements Event {
+public class CardDamagedEvent extends Event {
 
 	private Creature	target;
 	private Card			src;
 	private int				dmg;
 
 	public CardDamagedEvent(Creature target, Card src, int dmg) {
+		super();
 		this.target = target;
 		this.src = src;
 		this.dmg = dmg;

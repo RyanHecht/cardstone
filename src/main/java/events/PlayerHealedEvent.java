@@ -5,13 +5,14 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
-public class PlayerHealedEvent implements Event {
+public class PlayerHealedEvent extends Event {
 
 	private Player	target;
 	private Card		src;
 	private int			heal;
 
 	public PlayerHealedEvent(Player target, Card src, int heal) {
+		super();
 		this.target = target;
 		this.src = src;
 		this.heal = heal;

@@ -5,13 +5,14 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.OrderedCardCollection;
 
-public class CardZoneChangeEvent implements Event {
+public class CardZoneChangeEvent extends Event {
 
 	private Card									card;
 	private OrderedCardCollection	start;
 	private OrderedCardCollection	destination;
 
 	public CardZoneChangeEvent(Card card, OrderedCardCollection destination, OrderedCardCollection start) {
+		super();
 		this.card = card;
 		this.start = start;
 		this.destination = destination;

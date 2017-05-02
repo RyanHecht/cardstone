@@ -5,12 +5,13 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cards.templates.PlayerChoosesCards;
 
-public class CardChosenEvent implements Event {
+public class CardChosenEvent extends Event {
 
 	private PlayerChoosesCards	chooser;
 	private Card								chosen;
 
 	public CardChosenEvent(PlayerChoosesCards chooser, Card chosen) {
+		super();
 		this.chooser = chooser;
 		this.chosen = chosen;
 	}

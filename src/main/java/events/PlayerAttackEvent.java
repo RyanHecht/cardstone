@@ -5,11 +5,12 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
-public class PlayerAttackEvent implements Event {
+public class PlayerAttackEvent extends Event {
 	private Player		target;
 	private Creature	attacker;
 
 	public PlayerAttackEvent(Player target, Creature attacker) {
+		super();
 		this.target = target;
 		this.attacker = attacker;
 	}

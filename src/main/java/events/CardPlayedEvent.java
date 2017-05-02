@@ -5,13 +5,14 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.OrderedCardCollection;
 
-public class CardPlayedEvent implements Event {
+public class CardPlayedEvent extends Event {
 
 	private Card									c;
 	private OrderedCardCollection	start;
 	private OrderedCardCollection	destination;
 
 	public CardPlayedEvent(Card c, OrderedCardCollection start, OrderedCardCollection destination) {
+		super();
 		this.c = c;
 		this.start = start;
 		this.destination = destination;

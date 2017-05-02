@@ -4,11 +4,12 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class CreatureDiedEvent implements Event {
+public class CreatureDiedEvent extends Event {
 
 	private Creature creature;
 
 	public CreatureDiedEvent(Creature cr) {
+		super();
 		creature = cr;
 	}
 

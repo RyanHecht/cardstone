@@ -81,13 +81,28 @@ public interface Card extends Jsonifiable {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
 		if (c.equals(this) && z == Zone.HAND) {
-			System.out.println("mebeb asd");
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 			// return effect specific to this card being played!
 			return onThisPlayed(c, z);
 		}
 		return EmptyEffect.create();
+	}
+	
+	default public boolean onProposedLegalityEvent(Event e, Zone z){
+		return false;
+	}
+	
+	public default String getComplaint(Event e, Zone z){
+		return "Invalid Event";
+	}
+	
+	default public boolean onProposedEvent(Event e, Zone z){
+		return false;
+	}
+	
+	default public Event getNewProposition(Event e, Zone z){
+		return e;
 	}
 
 	/**
