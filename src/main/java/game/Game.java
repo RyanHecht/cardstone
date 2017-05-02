@@ -334,7 +334,14 @@ public class Game implements Jsonifiable {
   }
 
   private void act(Event event) {
-    board.takeAction(event);
+   
+    String s = board.legalityProcessEvent(event);
+    if(!s.equals("ok")){
+    	sendPlayerActionBad(board.getActivePlayer().getId(),s);
+    }
+    else{
+    	 board.takeAction(event);
+    }
     checkWinners();
   }
 

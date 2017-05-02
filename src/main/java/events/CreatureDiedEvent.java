@@ -4,7 +4,7 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class CreatureDiedEvent implements Event {
+public class CreatureDiedEvent extends Event {
 
 	private Creature creature;
 

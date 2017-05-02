@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.Zone;
 
-public class CardZoneCreatedEvent implements Event{
+public class CardZoneCreatedEvent extends Event{
 
 	private Card card;
 	private Zone createdLocation;

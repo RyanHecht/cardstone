@@ -76,7 +76,7 @@ public class Creature extends PlayableCard {
 	public boolean isDead() {
 		return getHealth() <= 0;
 	}
-
+	
 	@Override
 	public Effect onThisPlayed(Card c, Zone z) {
 		return (Board board) -> {

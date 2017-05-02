@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.OrderedCardCollection;
 
-public class CardZoneChangeEvent implements Event {
+public class CardZoneChangeEvent extends Event {
 
 	private Card									card;
 	private OrderedCardCollection	start;

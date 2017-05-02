@@ -4,7 +4,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
-public class TurnEndEvent implements Event {
+public class TurnEndEvent extends Event {
 
 	private Player finished;
 

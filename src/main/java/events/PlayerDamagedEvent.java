@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
-public class PlayerDamagedEvent implements Event {
+public class PlayerDamagedEvent extends Event {
 
 	private Card		src;
 	private Player	p;

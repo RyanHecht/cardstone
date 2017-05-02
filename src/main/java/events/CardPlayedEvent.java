@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.OrderedCardCollection;
 
-public class CardPlayedEvent implements Event {
+public class CardPlayedEvent extends Event {
 
 	private Card									c;
 	private OrderedCardCollection	start;

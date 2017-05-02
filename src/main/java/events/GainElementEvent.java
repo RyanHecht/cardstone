@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
-public class GainElementEvent implements Event {
+public class GainElementEvent extends Event {
 
 	private Player			player;
 	private ElementType	type;

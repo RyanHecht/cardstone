@@ -2,10 +2,12 @@ package cardgamelibrary;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import com.google.gson.JsonObject;
 
@@ -15,6 +17,7 @@ import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
+import events.EmptyEvent;
 import events.GainElementEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
@@ -244,16 +247,8 @@ public class Board implements Jsonifiable {
 	}
 
 	private void handleEvent(Event event) {
-		List<Card> alreadyDone = new ArrayList<>();
+		event = preprocessEvent(event, new HashSet<Card>());
 		for (OrderedCardCollection occ : cardsInGame) {
-			System.out.println("this shoul appear 6x");
-			System.out.println(occ.size());
-			for (Card c : occ) {
-				if (alreadyDone.contains(c)) {
-					System.out.println("awdkjbbjhasdbjhb hjesfkjbbhjqwduvyuyv 1565125665213");
-				}
-				alreadyDone.add(c);
-			}
 			// collect effects from all cards in game!
 			for (Effect e : occ.handleCardBoardEvent(event)) {
 				// iterate through all cards in a collection and add their effects to
@@ -261,6 +256,37 @@ public class Board implements Jsonifiable {
 				effectQueue.add(e);
 			}
 		}
+		Event e = event.getNext(this);
+		if(e.getType() != EventType.EMPTY){
+			handleEvent(e);
+		}
+	}
+	
+	public String legalityProcessEvent(Event event) {
+		String complaint = "ok";
+		for(OrderedCardCollection occ : cardsInGame){
+			for(Card c : occ){
+				if(c.onProposedLegalityEvent(event, occ.getZone())){
+					complaint = c.getComplaint(event, occ.getZone());
+				}
+			}
+		}
+		return complaint; 
+	}
+
+	private Event preprocessEvent(Event event, Set<Card> alreadyProcessed){
+		for (OrderedCardCollection occ : cardsInGame) {
+			for(Card c : occ){
+				if(!alreadyProcessed.contains(c)){
+					if(c.onProposedEvent(event, occ.getZone())){
+						alreadyProcessed.add(c);
+						event = c.getNewProposition(event, occ.getZone());
+						preprocessEvent(event,alreadyProcessed);
+					}
+				}
+			}
+		}
+		return event;
 	}
 
 	/**

@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cards.templates.PlayerChoosesCards;
 
-public class CardChosenEvent implements Event {
+public class CardChosenEvent extends Event {
 
 	private PlayerChoosesCards	chooser;
 	private Card								chosen;

@@ -4,7 +4,7 @@ import cardgamelibrary.Card;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class CardDrawnEvent implements Event {
+public class CardDrawnEvent extends Event {
 
 	private Card drawn;
 

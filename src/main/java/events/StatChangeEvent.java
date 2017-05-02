@@ -6,7 +6,7 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
-public class StatChangeEvent implements Event{
+public class StatChangeEvent extends Event{
 
 	private EventType eventType;
 	private Creature target;

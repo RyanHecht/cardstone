@@ -9,9 +9,8 @@ import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
-import game.Player;
 
-public interface CantAttackCreature extends Card {
+public interface TauntCreature extends Card{
 
 	default public boolean onProposedLegalityEvent(Event e, Zone z){
 		if(e.getType() == EventType.CREATURE_ATTACKED){
@@ -25,21 +24,31 @@ public interface CantAttackCreature extends Card {
 		return false;
 	}
 	
+	default public boolean getAllowedAttack(Creature attacker){
+		if(attacker.getOwner() == this.getOwner()){
+			return false;
+		}
+		else{
+			return false;
+		}
+	}
+
+	default public boolean getAllowedAttack(Creature attacker, Creature target){
+		if(attacker.getOwner() == this.getOwner()){
+			return false;
+		}
+		else{
+			if(target instanceof TauntCreature){
+				return true;
+			}
+			return false;
+		}
+	}
+
 	default public String getComplaint(Event e, Zone z){
-		return "This creature may not attack";
-	}
-
-	public default boolean getAllowedAttack(Creature attacker, Creature target){
-		if(attacker == this){
-			return true;
+		if(onProposedLegalityEvent(e,z)){
+			return "Minions with taunt must be attacked first!";
 		}
-		return false;
-	}
-
-	public default boolean getAllowedAttack(Creature attacker){
-		if(attacker == this){
-			return true;
-		}
-		return false;
+		return "Invalid Event";
 	}
 }

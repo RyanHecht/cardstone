@@ -4,7 +4,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
-public class TurnStartEvent implements Event {
+public class TurnStartEvent extends Event {
 
 	// the player whose turn is beginning.
 	private Player starting;

@@ -5,7 +5,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cards.templates.TargetsOtherCard;
 
-public class CardTargetedEvent implements Event {
+public class CardTargetedEvent extends Event {
 
 	private TargetsOtherCard	targetter;
 	private Card							targeted;
