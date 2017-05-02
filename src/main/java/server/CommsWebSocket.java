@@ -4,7 +4,8 @@ import cardgamelibrary.Board;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
 import cards.SkyWhaleCreature;
-import cards.StubCreature;
+import dummycards.StubCreature;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import game.Game;

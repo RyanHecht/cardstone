@@ -60,6 +60,15 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return zone;
 	}
 
+	public boolean replace(Card a, Card b){
+		int ind = cards.indexOf(a);
+		if(ind != -1){
+			cards.set(ind, b);
+			return true;
+		}
+		return false;
+	}
+	
 	public Player getPlayer() {
 		return player;
 	}

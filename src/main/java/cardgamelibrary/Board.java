@@ -14,6 +14,7 @@ import java.util.Set;
 
 import com.google.gson.JsonObject;
 
+import cards.templates.decorators.CantAttackForTurnsCreature;
 import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
@@ -643,6 +644,14 @@ public class Board implements Jsonifiable, Serializable {
 		p.setElement(type, curElem + amount);
 		eventQueue.add(event);
 
+	}
+
+	public void applyToCard(Card toApply, Card newCard) {
+		for(OrderedCardCollection occ : cardsInGame){
+			if(occ.replace(toApply,newCard)){
+				break;
+			}
+		}
 	}
 
 }

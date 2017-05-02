@@ -1,0 +1,49 @@
+package cards;
+
+import cardgamelibrary.Board;
+import cardgamelibrary.Card;
+import cardgamelibrary.CardType;
+import cardgamelibrary.Creature;
+import cardgamelibrary.Effect;
+import cardgamelibrary.ManaPool;
+import cardgamelibrary.SpellCard;
+import cardgamelibrary.Zone;
+import cards.templates.TargetsOtherCard;
+import cards.templates.decorators.CantAttackForTurnsCreature;
+import effects.EmptyEffect;
+import game.Player;
+
+public class RockShock extends SpellCard implements TargetsOtherCard{
+
+	public RockShock(Player owner) {
+		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+	}
+	private static final ManaPool	defaultCost		= new ManaPool(15, 0, 0, 1, 0, 0);
+	private static final String		defaultImage	= "images/RockShock.jpg";
+	private static final String		defaultName		= "Rock Shock";
+	private static final String		defaultText		= "Deal two damage to target minion and prevent it from attacking next turn.";
+	private static final CardType	defaultType		= CardType.SPELL;
+	
+	
+	public boolean cardValidTarget(Card card, Zone z){
+		if(card.getType() == CardType.CREATURE && z == Zone.CREATURE_BOARD){
+			return true;
+		}
+		return false;
+	}
+
+	// when the target is valid, produce some effect.
+	// this should usually also play the targetting card (move to appropriate zone
+	// i.e. graveyard).
+	public Effect impactCardTarget(Card target) {
+		return (Board board) -> {
+			if((target instanceof Creature)){
+				Creature c = (Creature) target;
+				board.damageCard(c, this, 2);
+				board.applyToCard(target,new CantAttackForTurnsCreature(c,2));
+			}
+		};
+	}
+	
+	
+}

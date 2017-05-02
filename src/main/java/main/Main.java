@@ -4,7 +4,7 @@ import cardgamelibrary.Board;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
 import cards.SkyWhaleCreature;
-import cards.StubCreature;
+import dummycards.StubCreature;
 import freemarker.template.Configuration;
 import game.Player;
 import game.PlayerType;
