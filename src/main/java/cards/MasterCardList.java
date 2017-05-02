@@ -98,6 +98,11 @@ public final class MasterCardList {
 		}
 	}
 
+	/**
+	 * Gets the card list from the class.
+	 *
+	 * @return a list of all cards in the cards package.
+	 */
 	public List<Card> getAllCards() {
 		return masterList;
 	}

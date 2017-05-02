@@ -20,7 +20,6 @@ import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
-import events.EmptyEvent;
 import events.GainElementEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
@@ -66,6 +65,9 @@ public class Board implements Jsonifiable, Serializable {
 
 	// currently active player.
 	private Player								activePlayer;
+
+	// keeps track of turn counter.
+	private int										turnIndex						= 0;
 
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
 		// using LinkedLists but declaring using queue interface.
@@ -193,6 +195,8 @@ public class Board implements Jsonifiable, Serializable {
 				// cards that might depend on that info. Could be a mistake to do that
 				// here.
 				if (e.getType() == EventType.TURN_START) {
+					// increment turn index.
+					turnIndex++;
 					// give player who is starting turn their resources!
 					activePlayer.startTurn();
 					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
@@ -262,31 +266,31 @@ public class Board implements Jsonifiable, Serializable {
 			}
 		}
 		Event e = event.getNext(this);
-		if(e.getType() != EventType.EMPTY){
+		if (e.getType() != EventType.EMPTY) {
 			handleEvent(e);
 		}
 	}
-	
+
 	public String legalityProcessEvent(Event event) {
 		String complaint = "ok";
-		for(OrderedCardCollection occ : cardsInGame){
-			for(Card c : occ){
-				if(c.onProposedLegalityEvent(event, occ.getZone())){
+		for (OrderedCardCollection occ : cardsInGame) {
+			for (Card c : occ) {
+				if (c.onProposedLegalityEvent(event, occ.getZone())) {
 					complaint = c.getComplaint(event, occ.getZone());
 				}
 			}
 		}
-		return complaint; 
+		return complaint;
 	}
 
-	private Event preprocessEvent(Event event, Set<Card> alreadyProcessed){
+	private Event preprocessEvent(Event event, Set<Card> alreadyProcessed) {
 		for (OrderedCardCollection occ : cardsInGame) {
-			for(Card c : occ){
-				if(!alreadyProcessed.contains(c)){
-					if(c.onProposedEvent(event, occ.getZone())){
+			for (Card c : occ) {
+				if (!alreadyProcessed.contains(c)) {
+					if (c.onProposedEvent(event, occ.getZone())) {
 						alreadyProcessed.add(c);
 						event = c.getNewProposition(event, occ.getZone());
-						preprocessEvent(event,alreadyProcessed);
+						preprocessEvent(event, alreadyProcessed);
 					}
 				}
 			}
@@ -498,7 +502,7 @@ public class Board implements Jsonifiable, Serializable {
 
 	/**
 	 * Gets the byte array form of a board.
-	 * 
+	 *
 	 * @return a byte array of the game.
 	 */
 	public byte[] getByteArray() {
@@ -639,6 +643,15 @@ public class Board implements Jsonifiable, Serializable {
 		p.setElement(type, curElem + amount);
 		eventQueue.add(event);
 
+	}
+
+	/**
+	 * Gets the turn index of the board.
+	 * 
+	 * @return the turn index.
+	 */
+	public int getTurnIndex() {
+		return turnIndex;
 	}
 
 }
