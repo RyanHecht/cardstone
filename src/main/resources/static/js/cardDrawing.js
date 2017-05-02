@@ -92,7 +92,7 @@ function setupCanvas(){
 
 function customAlert(message){
     $("#customMessage").text(message);
-    $("messageModal").modal(show);
+    $("#messageModal").modal(show);
 }
 
 function setupBoard(){

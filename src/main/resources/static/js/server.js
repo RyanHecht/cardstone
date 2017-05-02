@@ -188,7 +188,7 @@ class Server{
 
 
   alertMessage(message) {
-    alert(message.message);
+    customAlert(message.message);
   }
 
   handleChat(message,flag) {
