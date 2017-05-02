@@ -1,5 +1,8 @@
 package cardgamelibrary;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import effects.EmptyEffect;
@@ -182,6 +185,7 @@ public interface Card extends Jsonifiable {
 
 	@Override
 	default public JsonObject jsonifySelf() {
+		List<String> states = new LinkedList<>();
 		JsonObject result = new JsonObject();
 		result.addProperty("text", this.getText());
 		result.addProperty("id", this.getId());
