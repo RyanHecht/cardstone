@@ -12,8 +12,11 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.Card;
+import cards.MasterCardList;
 import game.Game;
 import game.GameManager;
 import lobby.Lobby;
@@ -111,13 +114,13 @@ public class Gui {
   private class AllCardsHandler implements Route {
 	    @Override
 	    public String handle(Request req, Response res) {
-	      QueryParamsMap qm = req.queryMap();
+	      List<Card> cards = MasterCardList.master.getAllCards();
 	      
-	      
-
-	      Map<String, Object> variables = ImmutableMap.of("title",
-	          "Cardstone: The Shattering");
-	      return GSON.toJson(variables);
+	      JsonArray cardList = new JsonArray();
+	      for (Card c : cards) {
+	    	  cardList.add(c.jsonifySelf());
+	      }
+	      return cardList.toString();
 	    }
 	  }
 
@@ -135,7 +138,6 @@ public class Gui {
 					"error", "You are not currently in a game. Join one on this page.", 
 					"errorHeader", "Could not play game"), "lobbies.ftl");
 		  }
-
 		  return new ModelAndView(ImmutableMap.of(), "boardDraw.ftl");
 	  }
   }
