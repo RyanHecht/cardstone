@@ -80,6 +80,14 @@
 	text-align: center;
 }
 
+.taunt{
+    outline:6px solid grey;
+}
+
+.canAct::before{
+  box-shadow: -25px -4px 4px 0 rgba(255,255,51,0.75);
+}
+
 .imageArea img{
 	object-fit: cover;
 	width: 100%;
