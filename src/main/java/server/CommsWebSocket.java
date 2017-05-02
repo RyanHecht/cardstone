@@ -167,15 +167,9 @@ public class CommsWebSocket {
    */
   public static void sendWholeBoardSate(Game toSend, int userId)
       throws IOException {
-    if (idToSessions.containsKey(userId)) {
-      Session session = idToSessions.get(userId);
-      JsonObject obj = new JsonObject();
-      JsonObject payload = toSend.jsonifySelf();
-      obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
-      obj.add("payload", payload);
-      System.out.println("Sending board: " + payload.toString());
-      session.getRemote().sendString(GSON.toJson(obj));
-    }
+    JsonObject payload = toSend.jsonifySelf();
+    System.out.println("Sending board: " + payload.toString());
+    sendMessage(userId, MessageTypeEnum.BOARD_STATE, payload);
   }
 
   /**
@@ -292,6 +286,9 @@ public class CommsWebSocket {
   public static void setSpectators(int spectateeId,
       List<Integer> spectatorList) {
     spectators.put(spectateeId, spectatorList);
+    for (Integer i : spectatorList) {
+      System.out.println("setting " + i + " as spectator to " + spectateeId);
+    }
   }
 
   private static void sendMessage(int userId, MessageTypeEnum type,
@@ -306,7 +303,9 @@ public class CommsWebSocket {
     }
 
     for (Integer spectator : spectators.get(userId)) {
+      System.out.println(userId + " has a spectator!");
       if (idToSessions.containsKey(spectator)) {
+        System.out.println("The spectator has the page opened!");
         Session session = idToSessions.get(spectator);
         JsonObject obj = new JsonObject();
         obj.addProperty("type", type.ordinal());

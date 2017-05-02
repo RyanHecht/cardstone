@@ -28,7 +28,6 @@ import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
 import server.CommsWebSocket;
-import templates.decorators.CantAttackForTurnsCreature;
 
 /**
  * Contains the entire state of a given game
@@ -651,12 +650,13 @@ public class Board implements Jsonifiable, Serializable {
 	}
 
 	public void applyToCard(Card toApply, Card newCard) {
-		for(OrderedCardCollection occ : cardsInGame){
-			if(occ.replace(toApply,newCard)){
+		for (OrderedCardCollection occ : cardsInGame) {
+			if (occ.replace(toApply, newCard)) {
 				break;
 			}
 		}
 	}
+
 	/**
 	 * Gets the turn index of the board.
 	 *
@@ -668,7 +668,7 @@ public class Board implements Jsonifiable, Serializable {
 
 	/**
 	 * Gets the zone of a given card.
-	 * 
+	 *
 	 * @param c
 	 *          the card we are looking for the zone of.
 	 * @return the zone of the card or an illegalargumentexception if the card
