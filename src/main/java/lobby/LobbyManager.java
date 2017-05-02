@@ -237,13 +237,14 @@ public class LobbyManager {
         System.out.println("Beginning game...");
         lobby.beginGame();
         System.out.println("Sending messages...");
-        LobbyWebSocket.sendGameIsStarting(uId, oppId);
-        LobbyWebSocket.sendGameIsStarting(oppId, uId);
-
         for (Integer i : lobby.getAllSpectators()) {
           // TODO: figure out how this will work for spectators
           LobbyWebSocket.sendGameIsStarting(i, oppId);
         }
+
+        LobbyWebSocket.sendGameIsStarting(oppId, uId);
+        LobbyWebSocket.sendGameIsStarting(uId, oppId);
+
       } catch (IllegalArgumentException x) {
         try {
           LobbyWebSocket.sendChatMessage(uId,
