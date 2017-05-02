@@ -8,7 +8,7 @@ import events.EmptyEvent;
 
 public class Event {
 
-	public static AtomicInteger ids;
+	public static AtomicInteger ids = new AtomicInteger();
 	private int id;
 	private LinkedList<Event> nextEvents;
 	
