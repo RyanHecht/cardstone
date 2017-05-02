@@ -306,13 +306,16 @@ class Server{
     }
 
     requestCardCollection(callback){
+        let $this = this;
         $.get("/all_cards",function(responseJSON){
             const obj = JSON.parse(responseJSON);
-            this.receiveCardCollection(obj);
+            $this.receiveCardCollection(obj);
         })
     }
 
-    recieveCardCollection(collection){
+    receiveCardCollection(collection){
+        console.log(collection);
+        
         allCards = collection;
 		allCardsReady();
     }

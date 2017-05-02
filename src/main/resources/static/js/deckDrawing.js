@@ -9,6 +9,7 @@ let collect;
 let list;
 let DECK_SIZE = 50;
 let MAX_NON_ELEMENT = 4;
+let cardCache = new cardCacher();
 
 
 
