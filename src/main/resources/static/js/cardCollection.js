@@ -217,6 +217,12 @@ class cardCollection extends drawableZone{
 			}
 		});
 	}
+    
+    drawStates(){
+        for(let card of cards){
+            card.drawStates();
+        }
+    }
 
 	prepareHover(){
         this.div.find(".cardBox").hover(function(){

@@ -52,8 +52,6 @@ class cardCacher{
 	}
 	
 	addNewCard(card){
-        console.log(card.type);
-        console.log(card);
 		switch(card.type){
 			case "creature":
 				this.addNewCreature(card);
@@ -77,24 +75,32 @@ class cardCacher{
 		let pool = manaPool.buildPool(3,"&nbsp;",card.cost);
 		let cardCost = new cost(card.cost.resources,pool);
 		let newCard = new creatureCard(card.id,cardCost,card.name,card.text,card.image,card.attack,card.health);
-		this.setByIID(card.id,newCard);
+		parseStates(card,newCard);
+        this.setByIID(card.id,newCard);
 	}
     
     addNewSpell(card){
         let pool = manaPool.buildPool(3,"&nbsp;",card.cost);
         let cardCost = new cost(card.cost.resources,pool);
         let newCard = new spellCard(card.id,cardCost,card.name,card.text,card.image);
+        parseStates(card,newCard);
         this.setByIID(card.id,newCard);
     }
     
     addNewElement(card){
         let newCard = new elementCard(card.id,card.elementType);
         this.setByIID(card.id,newCard);
+        parseStates(card,newCard);
     }
     
     addNewBack(card){
         let newCard = new cardBack(card.id);
         this.setByIID(card.id,newCard);
+        parseStates(card,newCard);
+    }
+    
+    parseStates(card,newCard){
+        newCard.setStates(card.states);
     }
     
     addNewParsedCard(card){

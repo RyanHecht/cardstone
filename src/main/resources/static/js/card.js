@@ -28,9 +28,13 @@ class Card{
 		this.zone = zone;
 	}
 	
-	setState(state){
-		this.state = state;
+	setStates(states){
+		this.states = state;
 	}
+    
+    drawStates(){
+        
+    }
 	
 }
 
