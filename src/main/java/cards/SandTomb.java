@@ -25,19 +25,22 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 	private static final CardType	defaultType		= CardType.SPELL;
 
 	@Override
-	public boolean cardValidTarget(Card card) {
+	public boolean cardValidTarget(Card card, Zone targetIn) {
 		if (card.getType() != CardType.CREATURE) {
 			return false;
 		}
 		if (this.getOwner() == card.getOwner()) {
 			return false;
 		}
+		if (targetIn != Zone.CREATURE_BOARD) {
+			return false;
+		}
 		return true;
 	}
 
 	@Override
-	public Effect impactCardTarget(Card target) {
-		assert cardValidTarget(target);
+	public Effect impactCardTarget(Card target, Zone targetIn) {
+		assert cardValidTarget(target, targetIn);
 		Creature tomb = new Tomb(target, getOwner());
 		return (Board board) -> {
 			// transform the card.

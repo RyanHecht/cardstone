@@ -1,4 +1,4 @@
-package cards;
+package cardgamelibrary;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -6,12 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.reflect.ClassPath;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
-import cardgamelibrary.AuraCard;
-import cardgamelibrary.Card;
-import cardgamelibrary.Creature;
-import cardgamelibrary.Element;
-import cardgamelibrary.SpellCard;
 import game.Player;
 import game.PlayerType;
 
@@ -27,6 +24,7 @@ public final class MasterCardList {
 	public static MasterCardList	master			= new MasterCardList();
 	private List<Card>						masterList	= new LinkedList<>();
 	private Player								fakePlayer	= new Player(0, PlayerType.PLAYER_ONE, -1);
+	private static final Gson			GSON				= new Gson();
 
 	/**
 	 * Private constructor to defeat instantiation.
@@ -103,8 +101,13 @@ public final class MasterCardList {
 	 *
 	 * @return a list of all cards in the cards package.
 	 */
-	public List<Card> getAllCards() {
-		return masterList;
+	public String getAllCards() {
+		List<JsonObject> list = new LinkedList<>();
+
+		for (Card c : masterList) {
+			list.add(c.jsonifySelf());
+		}
+		return (GSON.toJson(list));
 	}
 
 }
