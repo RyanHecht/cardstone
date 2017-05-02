@@ -166,7 +166,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 	private List<Effect> handleCardTargeted(CardTargetedEvent event) {
 		List<Effect> results = new LinkedList<>();
 		for (Card c : cards) {
-			results.add(c.onCardTarget(event.getTargetter(), event.getTargeted(), getZone()));
+			results.add(c.onCardTarget(event.getTargetter(), event.getTargeted(), getZone(), event.getTargetZone()));
 		}
 		return results;
 	}
@@ -413,7 +413,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	/**
 	 * Gets the cards in the occ.
-	 * 
+	 *
 	 * @return the list of cards within the occ.
 	 */
 	public List<Card> getCards() {

@@ -1,10 +1,30 @@
 let selectedName;
 let selectedPriv;
 let selectedFull;
+let currList;
 let spectate = false;
 
 $(document).ready(() => {
 	const lobbyList = $("#lobby-table");
+	
+	
+//	setInterval(function() {
+//		$.get("/listLobbies", responseJSON => {
+//			const respObj = JSON.parse(responseJSON);
+//			console.log(respObj);
+//			
+//			for (let i = 0, len = respObj.length; i < len; i++) {
+//				const curr_lobby = respObj[i];
+//				if (currList.has(curr_lobby.name)) {
+//					continue;
+//				}
+//				
+//				currList
+//			}
+//		});
+//	}, 1000);
+	
+	
 	$.get("/listLobbies", responseJSON => {
 		const responseObject = JSON.parse(responseJSON);
 		console.log(responseObject);
@@ -15,7 +35,7 @@ $(document).ready(() => {
 
 			const privateAttr = curr_lobby.private ? "Yes" : "No";
 			const fullAttr = curr_lobby.full ? "Yes" : "No";
-
+		
 			const postParams = {id: curr_lobby.host};
 			$.post("/username", postParams, responseJSON => {
 				const hostUsername = JSON.parse(responseJSON).username;				
@@ -112,6 +132,7 @@ $("#pwSubmit").on('click', function() {
 	console.log(inputted);
 	if (inputted != "") {
 		$("#passwordModal").modal("hide");
+		$("#pwSubmit").val("");
 		const postParams = {name: selectedName, password: inputted};
 		console.log(postParams);
 		

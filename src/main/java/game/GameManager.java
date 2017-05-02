@@ -44,24 +44,21 @@ public class GameManager {
     }
   }
 
-  public static void recieveTargetedCard(int playerId,
-      JsonObject message) {
+  public static void receiveTargetedCard(int playerId, JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handleCardTargeted(message, playerId);
     }
   }
 
-  public static void recieveTargetedPlayer(int playerId,
-      JsonObject message) {
+  public static void receiveTargetedPlayer(int playerId, JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handlePlayerTargeted(message, playerId);
     }
   }
 
-  public static void receiveAttemptedToPlay(int playerId,
-      JsonObject message) {
+  public static void receiveAttemptedToPlay(int playerId, JsonObject message) {
     System.out.println("got attempt to play.");
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
@@ -69,8 +66,7 @@ public class GameManager {
     }
   }
 
-  public static void receiveChooseResponse(int playerId,
-      JsonObject message) {
+  public static void receiveChooseResponse(int playerId, JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
       game.handleChosen(message, playerId);
@@ -100,8 +96,7 @@ public class GameManager {
 
   public static void playerIsReady(int uId) {
     try {
-      CommsWebSocket
-          .sendWholeBoardSate(games.getGameByPlayerId(uId), uId);
+      CommsWebSocket.sendWholeBoardSate(games.getGameByPlayerId(uId), uId);
     } catch (IOException e) {
       e.printStackTrace();
     }

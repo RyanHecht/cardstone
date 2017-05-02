@@ -88,20 +88,20 @@ public interface Card extends Jsonifiable {
 		}
 		return EmptyEffect.create();
 	}
-	
-	default public boolean onProposedLegalityEvent(Event e, Zone z){
+
+	default public boolean onProposedLegalityEvent(Event e, Zone z) {
 		return false;
 	}
-	
-	public default String getComplaint(Event e, Zone z){
+
+	public default String getComplaint(Event e, Zone z) {
 		return "Invalid Event";
 	}
-	
-	default public boolean onProposedEvent(Event e, Zone z){
+
+	default public boolean onProposedEvent(Event e, Zone z) {
 		return false;
 	}
-	
-	default public Event getNewProposition(Event e, Zone z){
+
+	default public Event getNewProposition(Event e, Zone z) {
 		return e;
 	}
 
@@ -139,7 +139,7 @@ public interface Card extends Jsonifiable {
 	}
 
 	// when a card targets another card
-	default public Effect onCardTarget(TargetsOtherCard targetter, Card target, Zone z) {
+	default public Effect onCardTarget(TargetsOtherCard targetter, Card target, Zone z, Zone targetIn) {
 		return EmptyEffect.create();
 	}
 

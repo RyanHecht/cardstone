@@ -12,8 +12,11 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.Card;
+import cards.MasterCardList;
 import game.Game;
 import game.GameManager;
 import lobby.Lobby;
@@ -61,6 +64,7 @@ public class Gui {
     
     Spark.post("/spectate", new SpectateHandler(), fm);
     Spark.get("/game", new GameHandler(), fm);
+    Spark.get("/all_cards", new AllCardsHandler());
   }
 
   public void init() {
@@ -107,15 +111,26 @@ public class Gui {
     }
   }
 
+  private class AllCardsHandler implements Route {
+	    @Override
+	    public String handle(Request req, Response res) {
+	      List<Card> cards = MasterCardList.master.getAllCards();
+	      
+	      JsonArray cardList = new JsonArray();
+	      for (Card c : cards) {
+	    	  cardList.add(c.jsonifySelf());
+	      }
+	      return cardList.toString();
+	    }
+	  }
+
   /**
    * Handles requests to the lobby page.
    * @author wriley1
    */
   private class GameHandler implements TemplateViewRoute {
 	  @Override
-	  public ModelAndView handle(Request req, Response res) {
-		  System.out.println("Gabbagoo");
-		  
+	  public ModelAndView handle(Request req, Response res) {		  
 		  int uid = Integer.parseInt(req.cookie("id"));
 		  Game g = GameManager.getGameByPlayerId(uid);
 		  if (g == null) {
@@ -123,7 +138,6 @@ public class Gui {
 					"error", "You are not currently in a game. Join one on this page.", 
 					"errorHeader", "Could not play game"), "lobbies.ftl");
 		  }
-
 		  return new ModelAndView(ImmutableMap.of(), "boardDraw.ftl");
 	  }
   }
@@ -135,7 +149,6 @@ public class Gui {
   private class SpectateHandler implements TemplateViewRoute {
 	  @Override
 	  public ModelAndView handle(Request req, Response res) {
-		  System.out.println("I IS SPECTATIN AND HANDLIN");
 		  String lname = req.queryMap().value("lobby");
 		  Lobby l = LobbyManager.getLobbyByName(lname);
 		  
@@ -224,7 +237,6 @@ public class Gui {
 		  Map<String, Object> vars = ImmutableMap.of("title",
 		          "Cardstone: The Shattering", "decks", decks, 
 		          "isHost", l.isHost(uid), "opp", opp, "oppMsg", oppMsg);
-		  System.out.println(Arrays.toString(vars.values().toArray()));
 		  return new ModelAndView(vars, "lobby.ftl");
 	  }
   }
@@ -282,7 +294,6 @@ public class Gui {
 	  @Override
 	  public ModelAndView handle(Request req, Response res) {
 		  String username = req.cookie("username");
-		  System.out.println("Have username: " + username);
 		  Map<String, Object> vars = ImmutableMap.of("title",
 		          "Cardstone: The Shattering", "username", username);
 		  return new ModelAndView(vars, "menu.ftl");
@@ -298,14 +309,12 @@ public class Gui {
 		  List<String> decks = new ArrayList<>();
 		  try (ResultSet rs = Db.query("select name from deck where user=?;", userId)) {
 			while (rs.next()) {
-				System.out.println("Adding " + rs.getString(1) + " to deck list");
 				decks.add(rs.getString(1));
 			}
 		  } catch (NullPointerException | SQLException e) {
 			e.printStackTrace();
 		  } 
 		  
-		  System.out.println("Have username: " + username);
 		  Map<String, Object> vars = ImmutableMap.of("title",
 		          "Cardstone: The Shattering", "username", username, "decks", decks);
 		  return new ModelAndView(vars, "decks.ftl");
@@ -319,17 +328,13 @@ public class Gui {
 		  String queryString = req.queryString();
 		  
 		  int deckIndex = queryString.lastIndexOf('=');
-		  System.out.println(queryString + " has LI of " + deckIndex); 
 		  if (deckIndex == -1) {
-			  System.out.println("I's in here massah");
 			  return new ModelAndView(ImmutableMap.of("title",
 			          "Cardstone: The Shattering"), "deck.ftl");
 		  }
-		  
-		  
+		 
 		  String deckName = queryString.substring(deckIndex + 1).replace('_', ' ');
 		  String cards = "Deck " + deckName + " doesn't exist.";  
-		  System.out.println("Deck name is: " + deckName);
 		  
 		  String deckQuery = "select cards from deck where user=? and name=?;";
 		  try (ResultSet rs = Db.query(deckQuery, userId, deckName)) {
@@ -345,8 +350,6 @@ public class Gui {
 		  
 		  Map<String, Object> vars = ImmutableMap.of("title",
 		          "Cardstone: The Shattering", "deckname", deckName, "deck", cards);
-		  System.out.println(Arrays.toString(vars.values().toArray()));
-		  System.out.println(Arrays.toString(vars.keySet().toArray()));
 		  return new ModelAndView(vars, "deck.ftl");
 	  }
   }
@@ -364,11 +367,9 @@ public class Gui {
 		  }
 		  
 		  String errorHead = qm.value("errorHead");
-		  
 		  Map<String, Object> vars = ImmutableMap.of("title",
 		          "Cardstone: The Shattering", "error", errorMsg, 
 		          "errorHeader", errorHead);
-		  System.out.println(Arrays.toString(vars.values().toArray()));
 		  return new ModelAndView(vars, "lobbies.ftl");
 	  }
   }
@@ -385,8 +386,6 @@ public class Gui {
       String deck = qm.value("deck");
       String deckName = qm.value("name");
       String uid = req.cookie("id");
-      System.out.println("Have deck named " + deckName);
-      System.out.println("Inserting muh deck " + deck);
       
       String deckSearch = "select id from deck where name = ? and user = ?;";
       try (ResultSet rs = Db.query(deckSearch, deckName, uid)) {
@@ -419,7 +418,6 @@ public class Gui {
       
       String id = qm.value("id");
       String username;
-      System.out.println("Have id: " + id);
       String userQuery = "select username from user where id = ?;";
       try (ResultSet rs = Db.query(userQuery, id)) {
     	  rs.next();
@@ -447,7 +445,6 @@ public class Gui {
       
       String deckName = qm.value("deck");
       String uid = req.cookie("id");
-      System.out.println("Have deckname: " + deckName + " " + deckName.length());
       String deckQuery = "select cards from deck where name = ? and user = ?;";
       try (ResultSet rs = Db.query(deckQuery, deckName, uid)) {
     	  rs.next();
