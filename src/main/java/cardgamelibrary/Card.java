@@ -3,6 +3,7 @@ package cardgamelibrary;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import effects.EmptyEffect;
@@ -185,7 +186,6 @@ public interface Card extends Jsonifiable {
 
 	@Override
 	default public JsonObject jsonifySelf() {
-		List<String> states = new LinkedList<>();
 		JsonObject result = new JsonObject();
 		result.addProperty("text", this.getText());
 		result.addProperty("id", this.getId());
@@ -199,6 +199,17 @@ public interface Card extends Jsonifiable {
 
 	@Override
 	JsonObject jsonifySelfChanged();
+
+	default public JsonObject jsonifySelfWithZone(Zone inThisZone) {
+		List<String> states = new LinkedList<>();
+		JsonObject result = jsonifySelf();
+
+		Gson gson = new Gson();
+
+		result.addProperty("states", gson.toJson(states));
+
+		return result;
+	}
 
 	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone) {
 		return EmptyEffect.create();
