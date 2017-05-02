@@ -30,7 +30,6 @@ import spark.template.freemarker.FreeMarkerEngine;
 
 /**
  * For the GUI and such.
- *
  * @author wriley1
  */
 public class Gui {
@@ -96,13 +95,19 @@ public class Gui {
 	}
 
 	/**
-	 * Handles requests to the lobby page.
-	 *
+	 * Handles requests to the game page.
 	 * @author wriley1
 	 */
 	private class GameHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
+			String uString = req.cookie("id");
+			if (!loggedIn(uString)) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}
+			
 			int uid = Integer.parseInt(req.cookie("id"));
 			Game g = GameManager.getGameByPlayerId(uid);
 			if (g == null) {
@@ -117,12 +122,17 @@ public class Gui {
 
 	/**
 	 * Handles requests to spectate.
-	 *
 	 * @author wriley1
 	 */
 	private class SpectateHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
+			if (!loggedIn(req.cookie("id"))) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}			
+			
 			String lname = req.queryMap().value("lobby");
 			Lobby l = LobbyManager.getLobbyByName(lname);
 
@@ -166,15 +176,20 @@ public class Gui {
 
 	/**
 	 * Handles requests to the lobby page.
-	 *
 	 * @author wriley1
 	 */
 	private class LobbyHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
-			int uid = Integer.parseInt(req.cookie("id"));
+			String uString = req.cookie("id");
+			if (!loggedIn(uString)) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}
+			
+			int uid = Integer.parseInt(uString);
 			Lobby l = LobbyManager.getLobbyByPlayerId(uid);
-
 			if (l == null) {
 				return new ModelAndView(ImmutableMap.of("title", "Cardstone: The Shattering"), "lobbies.ftl");
 			}
@@ -210,6 +225,12 @@ public class Gui {
 	private class GameReplayHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
+			if (!loggedIn(req.cookie("id"))) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}
+			
 			String queryString = req.queryString();
 			String gameId = queryString.substring(queryString.lastIndexOf('=') + 1);
 			System.out.println("Have game id: " + gameId);
@@ -234,6 +255,11 @@ public class Gui {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
 			String uid = req.cookie("id");
+			if (!loggedIn(uid)) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}
 
 			String gameQuery = "select g.id, g.winner, g.moves from finished_games as g, user_game"
 					+ " as ug where g.id = ug.game and ug.user = ?;";
@@ -255,6 +281,12 @@ public class Gui {
 	private class MenuHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
+			if (!loggedIn(req.cookie("id"))) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}			
+			
 			String username = req.cookie("username");
 			Map<String, Object> vars = ImmutableMap.of("title", "Cardstone: The Shattering", "username", username);
 			return new ModelAndView(vars, "menu.ftl");
@@ -265,8 +297,13 @@ public class Gui {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
 			String userId = req.cookie("id");
+			if (!loggedIn(userId)) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}
+			
 			String username = req.cookie("username");
-
 			List<String> decks = new ArrayList<>();
 			try (ResultSet rs = Db.query("select name from deck where user=?;", userId)) {
 				while (rs.next()) {
@@ -286,8 +323,13 @@ public class Gui {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
 			String userId = req.cookie("id");
+			if (!loggedIn(userId)) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");				
+			}
+			
 			String queryString = req.queryString();
-
 			int deckIndex = queryString.lastIndexOf('=');
 			if (deckIndex == -1) {
 				return new ModelAndView(ImmutableMap.of("title", "Cardstone: The Shattering"), "deck.ftl");
@@ -316,16 +358,23 @@ public class Gui {
 	private class LobbiesHandler implements TemplateViewRoute {
 		@Override
 		public ModelAndView handle(Request req, Response res) {
+			if (!loggedIn(req.cookie("id"))) {
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"login.ftl");
+			}
+			
 			QueryParamsMap qm = req.queryMap();
 			String errorMsg = qm.value("errorMsg");
-
 			if (errorMsg == null) {
-				return new ModelAndView(ImmutableMap.of("title", "Cardstone: The Shattering"), "lobbies.ftl");
+				return new ModelAndView(
+						ImmutableMap.of("title", "Cardstone: The Shattering"), 
+						"lobbies.ftl");
 			}
 
 			String errorHead = qm.value("errorHead");
-			Map<String, Object> vars = ImmutableMap.of("title", "Cardstone: The Shattering", "error", errorMsg, "errorHeader",
-					errorHead);
+			Map<String, Object> vars = ImmutableMap.of("title", "Cardstone: The Shattering", 
+					"error", errorMsg, "errorHeader", errorHead);
 			return new ModelAndView(vars, "lobbies.ftl");
 		}
 	}
@@ -392,7 +441,6 @@ public class Gui {
 
 	/**
 	 * Finds cards in deck given deck's name.
-	 *
 	 * @wriley1
 	 */
 	private class DeckFinder implements Route {
@@ -418,7 +466,6 @@ public class Gui {
 
 	/**
 	 * Login page.
-	 *
 	 * @author wriley1
 	 */
 	private class LoginHandler implements TemplateViewRoute {
@@ -458,7 +505,6 @@ public class Gui {
 
 	/**
 	 * Creating accounts.
-	 *
 	 * @author wriley1
 	 */
 	private class RegisterHandler implements TemplateViewRoute {
@@ -474,10 +520,6 @@ public class Gui {
 			String insertion = "insert into user values(null, ?, ?);";
 			Map<String, Object> vars = ImmutableMap.of("title", "Cardstone: The Shattering", "username", username);
 
-			// Try to make this username/password combo
-			// if there's no issue, allow them through; otherwise,
-			// if there's someone with that username already, or
-			// some other error, keep them at the login screen
 			System.out.println("I'm here with password " + password);
 			try {
 				Db.update(insertion, username, password);
@@ -495,5 +537,10 @@ public class Gui {
 				return new ModelAndView(vars, "login.ftl");
 			}
 		}
+	}
+	
+	private boolean loggedIn(String cookie) {
+		System.out.println("Have cookie: " + cookie);
+		return cookie != null;
 	}
 }

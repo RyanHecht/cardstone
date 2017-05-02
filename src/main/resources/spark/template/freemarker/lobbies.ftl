@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="css/bootstrapalt.css">
   </head>
   <#include "lobbies_table.ftl">
+  <#include "navbar.ftl">
   <body>
+  	 ${nav}
      <div class="container">
 	 <h3> Join a game... </h3>
 	   <div class="row">
@@ -25,7 +27,6 @@
 		  let errorHeader = "${errorHeader}";
 	   </#if>
 	 </script>
-     <script src="js/jquery-2.1.1.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/lobbiesdisplay.js"></script>
   </body>
