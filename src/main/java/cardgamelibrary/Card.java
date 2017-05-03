@@ -207,7 +207,7 @@ public interface Card extends Jsonifiable, Serializable {
 
 		Gson gson = new Gson();
 
-		if (this.is(Creature.class)) {
+		if (this.isA(Creature.class)) {
 			if (((Creature) this).getNumAttacks() > 0) {
 				states.add("canAttack");
 			}
@@ -226,7 +226,7 @@ public interface Card extends Jsonifiable, Serializable {
 	 *          the class we are checking.
 	 * @return a boolean representing whether the given card is another class.
 	 */
-	default public boolean is(Class c) {
+	default public boolean isA(Class<?> c) {
 		return this.getClass() == c;
 	}
 
