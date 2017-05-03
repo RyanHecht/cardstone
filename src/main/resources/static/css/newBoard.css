@@ -79,17 +79,20 @@ body{
     height:100%;
 }
 
+
+
 body .bigModal .modal-dialog {
-    width:80%;
-	max-width:80%;
-	height:80%;
+    width:90%;
+	max-width:90%;
+	height:90%;
 }
 
 .bigModal .modal-content {
 	background:rgba(0,0,0,0);
 	width:100%;
 	height:100%;
-	max-height:300px;
+    min-height:100%;
+	max-height:100%;
 	text-align: center;
 	border:none;
 }
