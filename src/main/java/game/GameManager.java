@@ -1,26 +1,45 @@
 package game;
 
-import com.google.gson.JsonObject;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import logins.Db;
 import server.CommsWebSocket;
 
 /**
  * Class to keep track of all games currently running and handle playing them.
- *
- * @author Raghu
- *
+ * Can handle an arbitrary amount of games at once. Also stashes replay info.
+ * @author Raghu and Willayyy
  */
 public class GameManager {
+  private static final Gson GSON = new Gson();
   private static GamePool games = new GamePool();
+  private static Map<Integer, Integer> gamesToEventNums
+                                  = new ConcurrentHashMap<>();
 
   // some sort of method to add games.
-  public static void addGame(int uId1, int uId2, Game game) {
-    games.addGame(uId1, uId2, game);
-
+  public static void addGame(Game game) {
+    if (games.updateGame(game)) {
+      gamesToEventNums.put(game.getId(), 1);
+    }
   }
 
   // remove games when they complete.
-  public static void removeGame(Game game) {
+  public static void endGame(GameStats ended) {
+    Game g = ended.getGame();
+    int turns = ended.getNumTurns();
+    int winner = ended.getWinnerId();
+
+    // delete from db or cache
+    // delete from event number map
+    // get metadata
+    // insert into user_game for both players
 
   }
 
@@ -30,10 +49,6 @@ public class GameManager {
 
   public static Game getGameByPlayerId(int playerId) {
     return games.getGameByPlayerId(playerId);
-  }
-
-  public static Game getGameById(int gameId) {
-    return null;
   }
 
   public static void receiveUnderstoodBoardState(int playerId,
@@ -102,4 +117,44 @@ public class GameManager {
     }
   }
 
+  /**
+   * Caches board states and inserts their JSON into the Db
+   * for replay purposes.
+   * @param g the game
+   */
+  public static void pushToDb(Game g) {
+    // add game to cache
+    if (games.updateGame(g)) {
+      String eventInsert = "insert into game_event values(?, ?, ?);";
+      int gId = g.getId();
+      int eventNum = gamesToEventNums.get(gId);
+      // insert JSON board state into Db for replay purposes
+      // and increment the event number
+      try {
+        Db.update(eventInsert, gId, eventNum, g.jsonifySelf());
+      } catch (SQLException | NullPointerException e) {
+        throw new RuntimeException();
+      }
+      gamesToEventNums.put(gId, eventNum++);
+    }
+  }
+
+  /**
+   * Returns the board state for a game event as a JsonObject.
+   * @param gameId the game id.
+   * @param eventNum the event number
+   * @return a JsonObject of gameId's board state at eventNum
+   */
+  public static JsonObject boardFrom(int gameId, int eventNum) {
+    String eventQuery = "select board from game_event where "
+        + "game = ? and event = ?;";
+    try (ResultSet rs = Db.query(eventQuery, gameId, eventNum)) {
+      rs.next();
+      String board = rs.getString(1);
+      assert !rs.next();
+      return GSON.fromJson(board, JsonObject.class);
+    } catch (SQLException | NullPointerException e) {
+      return null;
+    }
+  }
 }

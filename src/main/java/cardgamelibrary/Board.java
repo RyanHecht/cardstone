@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -141,6 +142,10 @@ public class Board implements Jsonifiable, Serializable {
 			return deckOne.getPlayer();
 		}
 	}
+
+  public String getCards() {
+    return Arrays.toString(cardsInGame.toArray());
+  }
 
 	// This will be used whenever a player
 	// wants to perform an event.
@@ -744,5 +749,9 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		throw new IllegalArgumentException("Tried to get Zone of card that wasn't found in game");
 	}
+
+  public String toString() {
+    return cardsInGame.toString();
+  }
 
 }

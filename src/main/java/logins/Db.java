@@ -72,7 +72,6 @@ public final class Db {
     if (instances.get() == null) {
       instances.set(new CachedConnection(PATH));
     }
-    System.out.println("Made it here");
     instances.get().update(update, options);
   }
 
@@ -138,13 +137,10 @@ public final class Db {
       try {
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection(url);
-        System.out.println("I gotta connection");
         Statement stat = conn.createStatement();
         stat.executeUpdate("PRAGMA foreign_keys = ON;");
         stat.close();
-        System.out.println("I successfully connected");
       } catch (SQLException | ClassNotFoundException e) {
-        System.out.println("I couldn't connect");
         e.printStackTrace();
         conn = null;
       }

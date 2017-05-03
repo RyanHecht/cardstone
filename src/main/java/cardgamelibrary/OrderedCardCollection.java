@@ -462,5 +462,4 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		result.add("backs", gson.toJsonTree(cardBacks));
 		return result;
 	}
-
 }
