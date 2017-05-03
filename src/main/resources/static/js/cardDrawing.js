@@ -211,8 +211,6 @@ function setupKeypress(){
 			redrawChanged();
 		}
 		else if(e.which == 88){
-			animations.push(animationsMaker.getAttackAnimation(-6,-20).create());
-			quedAnims.push(animationsMaker.getDamagedAnimation(-20).create());
             quedAnims.push(animationsMaker.getDrawnCardAnimation(true).create());
 			quedAnims.push(animationsMaker.getDrawnCardAnimation(false).create());
 		}
