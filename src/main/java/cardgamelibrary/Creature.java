@@ -142,6 +142,12 @@ public class Creature extends PlayableCard {
 		if (p.equals(this.getOwner()) && z == Zone.CREATURE_BOARD) {
 			this.attacks = 1;
 			System.out.println(getId() + " has updated their attack count.");
+		} else {
+			// the other player has started their turn.
+			if (z == Zone.CREATURE_BOARD) {
+				// reset attacks to 0 on opponents turn.
+				this.attacks = 0;
+			}
 		}
 		return super.onTurnStart(p, z);
 	}

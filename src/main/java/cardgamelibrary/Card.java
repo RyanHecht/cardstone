@@ -12,6 +12,7 @@ import game.Player;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
+import templates.decorators.TauntCreature;
 
 /**
  * A card in the game.
@@ -207,10 +208,19 @@ public interface Card extends Jsonifiable, Serializable {
 
 		Gson gson = new Gson();
 
-		if (this.isA(Creature.class)) {
+		// if you can pay the card's cost and it's in your hand.
+		if (this.getOwner().validateCost(getCost()) && inThisZone == Zone.HAND) {
+			states.add("canPlay");
+		}
+
+		if (this.isA(Creature.class) && inThisZone == Zone.CREATURE_BOARD) {
 			if (((Creature) this).getNumAttacks() > 0) {
 				states.add("canAttack");
 			}
+		}
+
+		if (this.isA(TauntCreature.class) && inThisZone == Zone.CREATURE_BOARD) {
+			states.add("taunt");
 		}
 
 		result.addProperty("states", gson.toJson(states));
