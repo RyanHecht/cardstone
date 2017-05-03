@@ -92,6 +92,9 @@ public class CommsWebSocket {
             CommsWebSocket.sendIsSpectator(id, spectatee);
             CommsWebSocket.sendWholeBoardSate(
                 GameManager.getGameByPlayerId(spectatee), id);
+            CommsWebSocket.sendTurnStart(id,
+                GameManager.getGameByPlayerId(spectatee)
+                    .isActivePlayer(spectatee));
           } else {
             GameManager.playerIsReady(id);
           }
@@ -277,6 +280,21 @@ public class CommsWebSocket {
     obj.addProperty("message", message);
     System.out.println("Sending chat message: " + message);
     sendMessage(userId, MessageTypeEnum.RECEIVE_CHAT, obj);
+  }
+
+  /**
+   * Alert the user given by userId (and his spectators) that the game has
+   * ended.
+   * @param userId Id of recipient.
+   * @param message Message characterizing condition that made the game end.
+   * @throws IOException thrown by websocket.
+   */
+  public static void sendGameEnd(int userId, String message)
+      throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("message", message);
+    System.out.println("Sending game end: " + message);
+    sendMessage(userId, MessageTypeEnum.GAME_END, obj);
   }
 
   public static void closeSession(int userId) {

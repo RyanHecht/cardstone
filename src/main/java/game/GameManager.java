@@ -96,7 +96,9 @@ public class GameManager {
 
   public static void playerIsReady(int uId) {
     try {
-      CommsWebSocket.sendWholeBoardSate(games.getGameByPlayerId(uId), uId);
+      Game game = games.getGameByPlayerId(uId);
+      CommsWebSocket.sendWholeBoardSate(game, uId);
+      CommsWebSocket.sendTurnStart(uId, game.isActivePlayer(uId));
     } catch (IOException e) {
       e.printStackTrace();
     }
