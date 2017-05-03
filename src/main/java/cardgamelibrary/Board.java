@@ -465,6 +465,13 @@ public class Board implements Jsonifiable, Serializable {
 		CreatureDiedEvent cd = new CreatureDiedEvent(c);
 		// add to event queue.
 		eventQueue.add(cd);
+
+		// send animations.
+		JsonObject animation = new JsonObject();
+		animation.addProperty("eventType", "cardDied");
+		animation.add("id1", c.jsonifySelf());
+
+		sendAnimation(animation);
 	}
 
 	public OrderedCardCollection getPlayerOneCreatures() {
@@ -630,6 +637,50 @@ public class Board implements Jsonifiable, Serializable {
 		// System.out.println("DOG " + start.size());
 		start.remove(c);
 		// System.out.println("CAT " + start.size());
+
+		// animation sending:
+		if (destination.getZone() == Zone.HAND) {
+			JsonObject animation = new JsonObject();
+
+			// this is card going to hand.
+			animation.addProperty("eventType", "cardDrawn");
+			animation.add("card", c.jsonifySelf());
+
+			sendAnimation(animation);
+		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.CREATURE_BOARD && c.isA(Creature.class)) {
+			JsonObject animation = new JsonObject();
+
+			// creature was played
+			animation.addProperty("eventType", "cardPlayed");
+			animation.add("card", c.jsonifySelf());
+
+			sendAnimation(animation);
+		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.AURA_BOARD && c.isA(AuraCard.class)) {
+			JsonObject animation = new JsonObject();
+
+			// aura was played.
+			animation.addProperty("eventType", "cardPlayed");
+			animation.add("card", c.jsonifySelf());
+
+			sendAnimation(animation);
+		} else if (start.getZone() == Zone.AURA_BOARD && destination.getZone() == Zone.GRAVE && c.isA(AuraCard.class)) {
+			JsonObject animation = new JsonObject();
+
+			// an aura is destroyed here.
+			animation.addProperty("eventType", "cardDied");
+			animation.add("card", c.jsonifySelf());
+
+			sendAnimation(animation);
+		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.GRAVE && c.isA(SpellCard.class)) {
+			JsonObject animation = new JsonObject();
+
+			// spell was played.
+			animation.addProperty("eventType", "cardPlayed");
+			animation.add("card", c.jsonifySelf());
+
+			sendAnimation(animation);
+		}
+
 		eventQueue.add(event);
 	}
 
