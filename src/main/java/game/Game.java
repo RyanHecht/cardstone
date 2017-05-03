@@ -781,6 +781,15 @@ public class Game implements Jsonifiable, Serializable {
 		return board.getActivePlayer().getId() == playerId;
 	}
 
+	/**
+	 * gets how many turns have elapsed in a game.
+	 * 
+	 * @return the number of turns in a game.
+	 */
+	public int getNumTurns() {
+		return board.getTurnIndex();
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject payload = new JsonObject();
