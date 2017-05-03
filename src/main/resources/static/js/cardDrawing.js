@@ -172,7 +172,7 @@ function setupMouseListen(){
     mouseSystem = new MouseManagerSystem();
     $(document).mousemove(function(event){
       mouseSystem.mousemoved(event);  
-    })
+    });
     $(document).mouseup(function(event){
        mouseSystem.mouseup(event); 
     });

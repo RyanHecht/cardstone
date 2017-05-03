@@ -234,10 +234,10 @@ class Server{
                 break;
             case "cardDrawn":
                 if(message.playerId == $.cookie("id")){
-                    quedAnims.push(animationsMaker.getDrawnCardAnimation(true).create());
+                    quedAnims.push(getDrawnCardAnimation(true).create());
                 }
                 else{
-                    quedAnims.push(animationsMaker.getDrawnCardAnimation(false).create());
+                    quedAnims.push(getDrawnCardAnimation(false).create());
                 }
                 break;
             case "cardPlayed":

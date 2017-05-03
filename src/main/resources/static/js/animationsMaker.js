@@ -4,6 +4,12 @@ function killAnimBox(){
     box.hide();
 }
 
+function getDrawnCardAnimation(isMe){
+    let anim = new cardDrawnAnimation();
+    anim.setTarget(isMe);
+    return anim;
+}
+
 class animationsMaker{	
 
     static playCardAnimation(card){
@@ -19,11 +25,7 @@ class animationsMaker{
         box.click(killAnimBox);
     }
     
-    static getDrawnCardAnimation(isMe){
-        let anim = new cardDrawnAnimation();
-		anim.setTarget(isMe);
-		return anim;
-    }
+
 
 	static getAttackAnimation(attacker,defender){
 		let anim = new linearAnimation();
