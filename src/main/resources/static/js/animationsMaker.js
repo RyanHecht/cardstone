@@ -5,7 +5,8 @@ function killAnimBox(){
 }
 
 function getDrawnCardAnimation(isMe){
-    let anim = new cardDrawnAnimation();
+    let anim;
+    anim = new cardDrawnAnimation();
     anim.setTarget(isMe);
     return anim;
 }
