@@ -222,7 +222,6 @@ class spellCard extends Card{
         this.drawStates(div);
 		div = div.children(".card");
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);
-		this.cost.draw(div.children(".cost"));
 		div[0].style.background = this.cost.getColor();
 	}
 	drawSmall(div){
@@ -427,7 +426,6 @@ let bigCardHtml = '<div class="card creatureCard bigCard">' +
 			'</div>';
 
 let tinySpellCardHtml = '<div class="card tinyCard spellCard hasTooltip">' + 
-				'<div class="cardpart cost"></div>' + 
 				'<div class="cardpart imageArea"><image class="cardImage" src="fail.jpg"></image></div>' + 
 			'</div>';
 
