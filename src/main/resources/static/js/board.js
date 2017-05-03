@@ -116,7 +116,6 @@ class board{
 	
 	draw(){
 		for(let zone of this.allZones.values()){
-            console.log("drawing zone", zone);
 			zone.draw();
 		}
 		this.setupCardClick();
@@ -124,7 +123,6 @@ class board{
 	
 	forceRedraw(){
 		for(let zone of this.allZones.values()){
-            console.log("drawing zone", zone);
 			zone.forceRedraw();
 		}
 		this.setupCardClick();

@@ -52,11 +52,8 @@ function updateAndDrawAnimations(){
 	}
 	if(animations.length <= 0){
 		if(quedAnims.length > 0){
-            console.log(quedAnims, quedAnims.length);
             let popped = popFirst(quedAnims);
-            console.log(popped.length);
 			animations.push(popped);
-			console.log(quedAnims);
 		}
 	}
     if(mouseSystem.isClicked){
@@ -198,7 +195,6 @@ function setupOptionsMenu(){
 
 function setupKeypress(){
     	$(document).keyup(function(e) {
-		console.log("pressed" + e.which);
         if(canAct){
             if(e.which == 32) {
                 $('#endTurnAsk').modal('show');
