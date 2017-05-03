@@ -197,8 +197,41 @@ public class Game implements Jsonifiable, Serializable {
 		return -1;
 	}
 
+	/**
+	 * ends the game.
+	 *
+	 * @param i
+	 *          the result of the game (see checkWinners for how this works).
+	 */
 	public void endGame(int i) {
+		// move game to finished games somehow.
 		ClassByJosh.endGame(this, i);
+
+		// set up messages for players to receive.
+		String messageOne;
+		String messageTwo;
+
+		if (i == 1) {
+			messageOne = "You win!";
+			messageTwo = "You lose...";
+		} else if (i == 2) {
+			messageOne = "You lose...!";
+			messageTwo = "You win!";
+		} else if (i == 0) {
+			messageOne = "It's a tie!";
+			messageTwo = "It's a tie!";
+		} else {
+			throw new IllegalArgumentException("Passed invalid value to endGame: " + i);
+		}
+
+		// send off messages to players about game being over.
+		try {
+			CommsWebSocket.sendGameEnd(playerOne.getId(), messageOne);
+			CommsWebSocket.sendGameEnd(playerTwo.getId(), messageTwo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
