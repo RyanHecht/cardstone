@@ -16,12 +16,10 @@ class cardDrawnAnimation extends animation{
         drawables.push(drawable);
         return drawables;
     }
-    
     setStartLoc(startX, startY){
         this.startX = startX;
         this.startY = startY;
     }
-    
     setTarget(isMe){
         let wind = $(window);
         this.goalX = wind.width() / 2;
@@ -32,5 +30,4 @@ class cardDrawnAnimation extends animation{
             this.goalY = 0;
         }
     }
-    
 }
