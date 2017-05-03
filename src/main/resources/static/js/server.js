@@ -266,8 +266,16 @@ class Server{
         console.log(cards);
 		$("#chooseOneAsk").modal('show');
         cardCache.repairCardList(cards);
-		let collection = new chooseZone($("#chooseZoneDisplay"),cards);
-		collection.forceRedrawLater(500);
+        let cardIdList = [];
+        for(let card of cards){
+            cardIdList.push(card.id);
+        }
+        let cardList = [];
+        for(let id of cardIdList){
+            cardList.push(cardCache.getByIID(id));
+        }
+		let collection = new chooseZone($("#chooseZoneDisplay"),cardList);
+		collection.forceRedrawLater(300);
 	}
 
 
