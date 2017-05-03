@@ -1,8 +1,6 @@
 package cardgamelibrary;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -537,26 +535,6 @@ public class Board implements Jsonifiable, Serializable {
 	}
 
 	/**
-	 * Gets the byte array form of a board.
-	 *
-	 * @return a byte array of the game.
-	 */
-	public byte[] getByteArray() {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos;
-		try {
-			oos = new ObjectOutputStream(baos);
-			oos.writeObject(this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		byte[] boardAsBytes = baos.toByteArray();
-
-		return boardAsBytes;
-	}
-
-	/**
 	 * Transforms a card from one card to another.
 	 *
 	 * @param target
@@ -757,6 +735,30 @@ public class Board implements Jsonifiable, Serializable {
 			}
 		}
 		throw new IllegalArgumentException("Tried to get Zone of card that wasn't found in game");
+	}
+
+	/**
+	 * Gets all cards on the board.
+	 *
+	 * @return a list of all orderedcardcollections in the game.
+	 */
+	public List<OrderedCardCollection> getAllCards() {
+		return cardsInGame;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this != null && obj != null && obj instanceof Board) {
+			Board board = (Board) obj;
+			// check card equality in all ordered card collections.
+			for (int i = 0; i < cardsInGame.size(); i++) {
+				if (!(cardsInGame.get(i).equals(board.getAllCards().get(i)))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

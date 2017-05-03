@@ -480,4 +480,23 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return result;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this != null && obj != null && obj instanceof OrderedCardCollection) {
+			OrderedCardCollection otherCollection = (OrderedCardCollection) obj;
+
+			if (otherCollection.size() != size()) {
+				return false;
+			}
+
+			for (int i = 0; i < size(); i++) {
+				if (!(getCards().get(i).equals(otherCollection.getCards().get(i)))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 }
