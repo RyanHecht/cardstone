@@ -19,7 +19,7 @@ function onOpponentJoin(oppId) {
 		const respObj = JSON.parse(responseJSON);
 		const u = respObj.username;
 		console.log(u);
-		
+
 		$("#oppname").text(u);
 		$("#message").text(u + " has joined the game.");
 		setTimeout(function() {
@@ -36,7 +36,7 @@ function onOpponentLeave() {
 	setTimeout(function() {
 		$("#message").text("Waiting for another player to join...");
 	}, 1000);
-	
+
 	// if they were spectating user and they leave,
 	// update radio button's value and who they're
 	// spectating

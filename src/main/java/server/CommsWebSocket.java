@@ -302,18 +302,21 @@ public class CommsWebSocket {
       session.getRemote().sendString(GSON.toJson(obj));
     }
 
-    for (Integer spectator : spectators.get(userId)) {
-      System.out.println(userId + " has a spectator!");
-      if (idToSessions.containsKey(spectator)) {
-        System.out.println("The spectator has the page opened!");
-        Session session = idToSessions.get(spectator);
-        JsonObject obj = new JsonObject();
-        obj.addProperty("type", type.ordinal());
-        obj.add("payload", payload);
+    if (spectators.get(userId) != null && spectators.get(userId).size() > 0) {
+      for (Integer spectator : spectators.get(userId)) {
+        System.out.println(userId + " has a spectator!");
+        if (idToSessions.containsKey(spectator)) {
+          System.out.println("The spectator has the page opened!");
+          Session session = idToSessions.get(spectator);
+          JsonObject obj = new JsonObject();
+          obj.addProperty("type", type.ordinal());
+          obj.add("payload", payload);
 
-        session.getRemote().sendString(GSON.toJson(obj));
+          session.getRemote().sendString(GSON.toJson(obj));
+        }
       }
     }
+
   }
 
 }

@@ -1,26 +1,17 @@
 package templates.decorators;
 
-import com.google.gson.JsonObject;
-
-import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
-import cardgamelibrary.Effect;
-import cardgamelibrary.Zone;
-import effects.CardDamageEffect;
-import effects.EmptyEffect;
-import effects.PlayerDamageEffect;
-import game.Player;
 
-public class CreatureWrapper extends CardWrapper{
+public class CreatureWrapper extends CardWrapper {
 
 	private Creature creatureInternal;
 
-	public CreatureWrapper(Creature internal){
+	public CreatureWrapper(Creature internal) {
 		super(internal);
 		creatureInternal = internal;
 	}
-	
+
 	public int getHealth() {
 		return creatureInternal.getHealth();
 	}
@@ -68,7 +59,7 @@ public class CreatureWrapper extends CardWrapper{
 	public boolean isDead() {
 		return creatureInternal.isDead();
 	}
-	
+
 	public void setAttacks(int attacks) {
 		creatureInternal.setAttacks(attacks);
 	}
@@ -80,5 +71,5 @@ public class CreatureWrapper extends CardWrapper{
 	public void changeAttackBy(int amount) {
 		creatureInternal.changeAttackBy(amount);
 	}
-	
+
 }
