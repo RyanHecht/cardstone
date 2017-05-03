@@ -101,6 +101,3 @@ class animationsMaker{
     }
 }
 
-const CARD_DRAW_ANIM_HEIGHT_OFFSET = 80;
-const CARD_DRAW_ANIM_HEIGHT = 140;
-
