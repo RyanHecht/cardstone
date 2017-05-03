@@ -21,6 +21,7 @@ import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
+import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.StatChangeEvent;
@@ -184,11 +185,20 @@ public class Board implements Jsonifiable, Serializable {
 				// send animation for player attacked.
 				if (e.getType() == EventType.PLAYER_ATTACKED) {
 					// TODO
+					PlayerAttackEvent event = (PlayerAttackEvent) e;
+					animation.addProperty("eventType", "playerAttacked");
+					animation.addProperty("id1", event.getAttacker().getId());
+					animation.addProperty("target", event.getTarget().getId());
+					sendAnimation(animation);
 				}
 
 				// if send animation for player damaged.
 				if (e.getType() == EventType.PLAYER_DAMAGED) {
 					// TODO
+					PlayerDamagedEvent event = (PlayerDamagedEvent) e;
+					animation.addProperty("eventType", "playerDamaged");
+					animation.addProperty("playerId", event.getPlayer().getId());
+					sendAnimation(animation);
 				}
 
 				// TODO go over logic in how changing active player here will work with
