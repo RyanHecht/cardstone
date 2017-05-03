@@ -736,6 +736,18 @@ public class Game implements Jsonifiable, Serializable {
 		}
 	}
 
+	/**
+	 * Tells you if a player with a certain id is the active player.
+	 *
+	 * @param playerId
+	 *          the id of a player we want to check.
+	 * @return a boolean that tells us if the playerId input belongs to the
+	 *         current active player.
+	 */
+	public boolean isActivePlayer(int playerId) {
+		return board.getActivePlayer().getId() == playerId;
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject payload = new JsonObject();
