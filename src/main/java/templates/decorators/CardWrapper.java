@@ -243,4 +243,9 @@ public class CardWrapper implements Card {
 		return internal.jsonifySelfBack();
 	}
 
+	@Override
+	public boolean isA(Class<?> c) {
+		return this.getClass() == c || internal.isA(c);
+	}
+
 }
