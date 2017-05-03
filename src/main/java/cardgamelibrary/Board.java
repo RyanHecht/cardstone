@@ -644,6 +644,7 @@ public class Board implements Jsonifiable, Serializable {
 
 			// this is card going to hand.
 			animation.addProperty("eventType", "cardDrawn");
+			animation.addProperty("playerId", c.getOwner().getId());
 			animation.add("card", c.jsonifySelf());
 
 			sendAnimation(animation);
