@@ -167,8 +167,7 @@ class creatureCard extends Card {
 		div.hide();
 	}
 	
-	drawGivenSpace(){
-		let div = this.div;
+	drawGivenSpace(div = this.div){
 		if(div.height() > 125){
 			this.drawForTip();
 		}

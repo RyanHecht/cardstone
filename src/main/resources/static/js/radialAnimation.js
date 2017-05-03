@@ -7,6 +7,10 @@ class radialAnimation extends animation{
 	
 	setCenterDivById(divID){
 		let $divElem = $("#"+divID);
+        this.setCenterDiv($divElem);
+	}
+    
+    setCenterDiv($divElem){
         let rect = $divElem[0].getBoundingClientRect();
         console.log(rect);
 		let left = rect.left;
@@ -17,7 +21,7 @@ class radialAnimation extends animation{
 		let centerX = left + (width / 2);
 		let centerY = top + (height / 2);
 		this.setCenter(centerX,centerY);
-	}
+    }
 	
 	buildFromOptions(options){
 		super.buildFromOptions(options);

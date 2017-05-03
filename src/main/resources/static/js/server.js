@@ -138,11 +138,11 @@ class Server{
                     this.badMessage(message.payload);
                     break;
                 case MESSAGE_TYPE.ANIMATION://
-                    console.log(message);
                     this.animationEventReceived(message.payload);
                     break;
                 case MESSAGE_TYPE.CHOOSE_REQUEST:
                     this.chooseFrom(message.payload.cards);
+                    console.log(message);
                     break;
                 case MESSAGE_TYPE.TARGET_REQUEST:
                     this.chooseTarget();
@@ -214,7 +214,7 @@ class Server{
   }
 
     badMessage(message){
-        alert(message.message);
+        customAlert(message.message);
     }
 
     animationEventReceived(message){
@@ -227,12 +227,34 @@ class Server{
                 quedAnims.push(animationsMaker.getDamagedAnimation(message.id1).create());
                 break;
             case "playerAttacked":
-                if(message.playerId == $.cookie("id")){
-                    quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health1"));
+                if(message.target == $.cookie("id")){
+                    quedAnims.push(animationsMaker.getPlayerAttackedAnimation(message.id1,true).create());
                 }
                 else{
-                    quedAnims.push(quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health2")));
+                    quedAnims.push(animationsMaker.getPlayerAttackedAnimation(message.id1,false).create());
                 }
+                break;
+            case "playerDamaged":
+                if(message.playerId == $.cookie("id")){
+                    quedAnims.push(animationsMaker.getPlayerDamagedAnimation(true).create());
+                }
+                else{
+                    quedAnims.push(animationsMaker.getPlayerDamagedAnimation(false).create());
+                }
+                break;
+            case "cardDrawn":
+                if(message.playerId == $.cookie("id")){
+                    quedAnims.push(animationsMaker.getDrawnCardAnimation(true).create());
+                }
+                else{
+                    quedAnims.push(animationsMaker.getDrawnCardAnimation(false).create());
+                }
+                break;
+            case "cardPlayed":
+                animationMaker.playCardAnimation(message.card);
+                break;
+            case "cardDied":
+                quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());
                 break;
             default:
                 console.log("unknown animation type");
@@ -244,8 +266,16 @@ class Server{
         console.log(cards);
 		$("#chooseOneAsk").modal('show');
         cardCache.repairCardList(cards);
-		let collection = new chooseZone($("#chooseZoneDisplay"),cards);
-		collection.forceRedrawLater(500);
+        let cardIdList = [];
+        for(let card of cards){
+            cardIdList.push(card.id);
+        }
+        let cardList = [];
+        for(let id of cardIdList){
+            cardList.push(cardCache.getByIID(id));
+        }
+		let collection = new chooseZone($("#chooseZoneDisplay"),cardList);
+		collection.forceRedrawLater(300);
 	}
 
 

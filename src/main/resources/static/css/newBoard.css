@@ -263,6 +263,29 @@ body .bigModal .modal-dialog {
     cursor:pointer;
 }
 
+.animBox{
+    height:40%;
+    position:absolute;
+    top:2%;
+    left:2%;
+    width:15%;
+    background-color:rgba(230,230,240,1.0);
+    padding:3px;
+    display:none;
+}
+
+.cardDrawnAnim{
+    position:absolute;
+    top:10px;
+    left:10px;
+    height:150px;
+    width:105px;
+    background-image:url("../images/cardBack.jpg");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
 .endTurnPng{
     background-image:url("../images/EndButton.png");
 }
