@@ -11,15 +11,6 @@ import effects.EmptyEffect;
 
 public interface PlayerChoosesCards extends Card {
 
-	@Override
-	default public Effect onThisPlayed(Card c, Zone z) {
-		return (Board board) -> {
-
-			// send card to graveyard.
-			board.addCardToOcc(c, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
-		};
-	}
-
 	/**
 	 * Gets the options the person who played this card must choose from.
 	 *

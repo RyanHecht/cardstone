@@ -31,6 +31,7 @@ import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
 import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
+import events.TurnStartEvent;
 import logins.ClassByJosh;
 import server.CommsWebSocket;
 import templates.PlayerChoosesCards;
@@ -167,6 +168,12 @@ public class Game implements Jsonifiable, Serializable {
 
 		// Some sort of board constructor goes here.
 		board = new Board(deckOne, deckTwo);
+
+		// send turnstart to kick off the fun!
+
+		// create turn start event for starting player (active player)
+		TurnStartEvent event = new TurnStartEvent(board.getActivePlayer());
+		act(event);
 	}
 
 	public void setBoard(Board board) {
