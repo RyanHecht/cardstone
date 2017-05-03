@@ -4,7 +4,7 @@ function killAnimBox(){
     box.hide();
 }
 
-class cardDrawnAnimation extends animation{
+class CardDrawnAnimation extends animation{
     
     constructor(){
 		super();
@@ -36,7 +36,7 @@ class cardDrawnAnimation extends animation{
 }
 
 function getDrawnCardAnimation(isMe){
-    let anim = new cardDrawnAnimation();
+    let anim = new CardDrawnAnimation();
     anim.setTarget(isMe);
     return anim;
 }
