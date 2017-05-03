@@ -52,6 +52,7 @@ class Card{
                     break;
             }
         }
+        console.log(this.name, taunt, canPlay, canAttack, this.states, this.div);
         if(taunt){
             div.addClass("taunt");
         }
@@ -59,6 +60,7 @@ class Card{
             div.removeClass("taunt");
         }
         if(canPlay || canAttack){
+            console.log("acted", canPlay, canAct);
             div.addClass("canAct");
         }
         else{
@@ -220,6 +222,7 @@ class spellCard extends Card{
         this.drawStates(div);
 		div = div.children(".card");
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);
+		this.cost.draw(div.children(".cost"));
 		div[0].style.background = this.cost.getColor();
 	}
 	drawSmall(div){
@@ -297,8 +300,8 @@ class cardBack extends Card{
 		}
 		else{
 			if(info.type == null){
-				console.log("must have either a TID or a type to reveal a card");
-			}
+				
+            }
 			else{
 				return info.createAlone();
 			}
@@ -424,6 +427,7 @@ let bigCardHtml = '<div class="card creatureCard bigCard">' +
 			'</div>';
 
 let tinySpellCardHtml = '<div class="card tinyCard spellCard hasTooltip">' + 
+				'<div class="cardpart cost"></div>' + 
 				'<div class="cardpart imageArea"><image class="cardImage" src="fail.jpg"></image></div>' + 
 			'</div>';
 

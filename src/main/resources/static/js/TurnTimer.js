@@ -23,7 +23,7 @@ class TurnTimer{
             $(".centerClockRect").addClass("enemyTurnPng");
             
         }
-        $this.lineLeft.show();
+        this.lineLeft.show();
         this.updateThread(this);
     }
     
