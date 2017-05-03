@@ -420,6 +420,23 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		return cards;
 	}
 
+	public JsonObject jsonifyCreatureZoneWithTargets() {
+		// should only call on creature zones.
+		assert (getZone() == Zone.CREATURE_BOARD);
+		JsonObject result = new JsonObject();
+		result.addProperty("changed", hasChanged());
+		result.addProperty("size", this.size());
+		List<JsonObject> cardObjects = new ArrayList<>();
+		System.out.println(cards + " " + cards.size());
+		for (Card c : cards) {
+			System.out.println("card checked");
+			cardObjects.add(c.jsonifySelf());
+		}
+		Gson gson = new Gson();
+		result.add("cards", gson.toJsonTree(cardObjects));
+		return result;
+	}
+
 	@Override
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();

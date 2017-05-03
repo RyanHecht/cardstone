@@ -29,6 +29,7 @@ import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
 import server.CommsWebSocket;
+import templates.decorators.TauntCreature;
 
 /**
  * Contains the entire state of a given game
@@ -112,9 +113,6 @@ public class Board implements Jsonifiable, Serializable {
 		// set up starting hands.
 		assignStartingHands();
 
-		// create turn start event for starting player (active player)
-		TurnStartEvent event = new TurnStartEvent(activePlayer);
-		takeAction(event);
 	}
 
 	/**
@@ -504,6 +502,23 @@ public class Board implements Jsonifiable, Serializable {
 		result.add("aura2", auraTwo.jsonifySelf());
 		result.add("creature1", creatureOne.jsonifySelf());
 		result.add("creature2", creatureTwo.jsonifySelf());
+
+		// creatures that we must send state to front end about.
+		OrderedCardCollection inactivePlayerCreatures = getOcc(getInactivePlayer(), Zone.CREATURE_BOARD);
+		boolean hasTaunt = false;
+		for (Card c : inactivePlayerCreatures) {
+			if (c.isA(TauntCreature.class)) {
+				hasTaunt = true;
+			}
+		}
+
+		JsonObject object = new JsonObject();
+		if (hasTaunt) {
+
+		} else {
+
+		}
+
 		return result;
 	}
 
@@ -645,7 +660,6 @@ public class Board implements Jsonifiable, Serializable {
 			// this is card going to hand.
 			animation.addProperty("eventType", "cardDrawn");
 			animation.addProperty("playerId", c.getOwner().getId());
-			animation.add("card", c.jsonifySelf());
 
 			sendAnimation(animation);
 		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.CREATURE_BOARD && c.isA(Creature.class)) {
