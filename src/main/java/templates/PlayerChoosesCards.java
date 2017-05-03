@@ -33,14 +33,14 @@ public interface PlayerChoosesCards extends Card {
 
 	/**
 	 * Gets the number of choices the player will have to make.
-	 * 
+	 *
 	 * @return the number of choices the player will make.
 	 */
 	public int getNumChoices();
 
 	@Override
 	default public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
-		if (this.equals(chooser) && z == Zone.HAND) {
+		if (this.equals(chooser)) {
 			return getChooseEffect(chooser, chosen);
 		}
 		return EmptyEffect.create();
