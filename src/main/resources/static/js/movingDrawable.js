@@ -6,7 +6,6 @@ class movingDrawable extends drawable{
 		this.goalX = x2;
 		this.goalY = y2;
         if(this.shape == "card"){
-            console.log("card move made");
             let mover = this.getMover(x1,y1,x2,y2,speed);
             this.update = function(drawable,delta){
                 let res = mover(drawable,delta);
@@ -29,7 +28,6 @@ class movingDrawable extends drawable{
 		let mag = Math.sqrt(xDelt * xDelt + yDelt * yDelt);
 		let dX = xDelt / mag;
 		let dY = yDelt / mag;
-        console.log(x1,x2,y1,y2 + " mag");
 		if(x1 == x2 && y1 == y2){
 			return function(){
 				return true;

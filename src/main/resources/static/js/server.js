@@ -25,7 +25,6 @@ class Server{
 
   sendChosen(id){
 	 const payload = {"IID1": id};
-     console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.websocket.send(JSON.stringify(obj));
     console.log("sent choose reponse");
@@ -38,12 +37,6 @@ class Server{
        console.log("sent turn end");
     }
 
-    // cardSelected(cardDiv){
-		// console.log(cardDiv);
-		// // $(".card").removeClass("cardSelected");
-		// // cardDiv.addClass("cardSelected");
-		// // selectedCard = cardDiv.attr("id");
-	// }
 
     cardClicked(id){
         if(inputState == StateEnum.IDLE){
@@ -66,7 +59,6 @@ class Server{
     }
 
   cardTargeted(cardID,targetID){
-      console.log(cardID, targetID);
    const payload = {"IID1": cardID, "IID2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
 	 this.websocket.send(JSON.stringify(obj));
@@ -101,7 +93,7 @@ class Server{
 		const payload = {"id": $.cookie("id")};
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
-		console.log('opened')
+		console.log('opened');
 	}
 
 	onWebSocketMessage(event) {
@@ -137,12 +129,11 @@ class Server{
                 case MESSAGE_TYPE.ACTION_BAD:
                     this.badMessage(message.payload);
                     break;
-                case MESSAGE_TYPE.ANIMATION://
+                case MESSAGE_TYPE.ANIMATION:
                     this.animationEventReceived(message.payload);
                     break;
                 case MESSAGE_TYPE.CHOOSE_REQUEST:
                     this.chooseFrom(message.payload.cards);
-                    console.log(message);
                     break;
                 case MESSAGE_TYPE.TARGET_REQUEST:
                     this.chooseTarget();
@@ -153,14 +144,13 @@ class Server{
                 case MESSAGE_TYPE.RECEIVE_CHAT:
                     this.handleChat(message.payload);
                     break;
-                case MESSAGE_TYPE.TURN_START://
-                    turnTimer.startTurn(message.payload.isSelf);//
+                case MESSAGE_TYPE.TURN_START:
+                    turnTimer.startTurn(message.payload.isSelf);
                     break;
                 case MESSAGE_TYPE.SET_SPECTATOR:
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
-                    console.log("i'm a spectator");
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);
@@ -263,7 +253,6 @@ class Server{
 
 
 	chooseFrom(cards){
-        console.log(cards);
 		$("#chooseOneAsk").modal('show');
         cardCache.repairCardList(cards);
         let cardIdList = [];
@@ -281,7 +270,6 @@ class Server{
 
 
 	setPlayers(player1,player2){
-		console.log(player1)
 		wholeBoard.changeFeature("p1Health",player1.health);
 		wholeBoard.changeFeature("p1RegRes",player1.resources);
 		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(1,'',player1.element));
@@ -291,7 +279,6 @@ class Server{
 	}
 
 	boardReceived(data){
-        console.log(data);
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
             window.setTimeout(function(){
@@ -347,7 +334,6 @@ class Server{
     }
 
     receiveCardCollection(collection){
-        console.log(collection);
         cardCache.repairCardList(collection);
         for(let card of collection){
             allCards.push(cardCache.getByIID(card.id));

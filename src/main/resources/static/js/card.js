@@ -52,7 +52,6 @@ class Card{
                     break;
             }
         }
-        console.log(this.name, taunt, canPlay, canAttack, this.states, this.div);
         if(taunt){
             div.addClass("taunt");
         }
@@ -60,7 +59,6 @@ class Card{
             div.removeClass("taunt");
         }
         if(canPlay || canAttack){
-            console.log("acted", canPlay, canAct);
             div.addClass("canAct");
         }
         else{
