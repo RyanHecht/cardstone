@@ -92,7 +92,7 @@ function setupCanvas(){
 
 function customAlert(message){
     $("#customMessage").text(message);
-    $("#messageModal").modal(show);
+    $("#messageModal").modal("show");
 }
 
 function setupBoard(){
@@ -217,6 +217,8 @@ function setupKeypress(){
 		else if(e.which == 88){
 			animations.push(animationsMaker.getAttackAnimation(-6,-20).create());
 			quedAnims.push(animationsMaker.getDamagedAnimation(-20).create());
+            quedAnims.push(animationsMaker.getDrawnCardAnimation(true).create());
+			quedAnims.push(animationsMaker.getDrawnCardAnimation(false).create());
 		}
         else if(e.which == 27){
             popOptionsMenu();
@@ -268,10 +270,10 @@ $(document).ready(function(){
     });
 	updateAndDrawAnimations();
 	wholeBoard.draw();
+    prepTurnTimers();
     setupServer();
     setupOptionsMenu();
     $(".boxOuter").addClass("cursorTarget");
-    prepTurnTimers();
     mouseSystem.redraw();
     redrawAll();
 });
