@@ -18,14 +18,14 @@ TEXT_MESSAGE: 15,
 PLAYER_SEND_CHAT: 16,
 RECEIVE_CHAT: 17,
 TURN_START: 18,
-SET_SPECTATOR: 19
+SET_SPECTATOR: 19,
+GAME_END: 20
 };
 
 class Server{
 
   sendChosen(id){
 	 const payload = {"IID1": id};
-     console.log(id);
  	 const obj = {"type": MESSAGE_TYPE.CHOOSE_RESPONSE, "payload": payload};
  	 this.websocket.send(JSON.stringify(obj));
     console.log("sent choose reponse");
@@ -38,12 +38,6 @@ class Server{
        console.log("sent turn end");
     }
 
-    // cardSelected(cardDiv){
-		// console.log(cardDiv);
-		// // $(".card").removeClass("cardSelected");
-		// // cardDiv.addClass("cardSelected");
-		// // selectedCard = cardDiv.attr("id");
-	// }
 
     cardClicked(id){
         if(inputState == StateEnum.IDLE){
@@ -66,7 +60,6 @@ class Server{
     }
 
   cardTargeted(cardID,targetID){
-      console.log(cardID, targetID);
    const payload = {"IID1": cardID, "IID2": targetID};
 	 const obj = {"type": MESSAGE_TYPE.TARGETED_CARD, "payload": payload};
 	 this.websocket.send(JSON.stringify(obj));
@@ -101,7 +94,7 @@ class Server{
 		const payload = {"id": $.cookie("id")};
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
-		console.log('opened')
+		console.log('opened');
 	}
 
 	onWebSocketMessage(event) {
@@ -137,8 +130,7 @@ class Server{
                 case MESSAGE_TYPE.ACTION_BAD:
                     this.badMessage(message.payload);
                     break;
-                case MESSAGE_TYPE.ANIMATION://
-                    console.log(message);
+                case MESSAGE_TYPE.ANIMATION:
                     this.animationEventReceived(message.payload);
                     break;
                 case MESSAGE_TYPE.CHOOSE_REQUEST:
@@ -153,14 +145,16 @@ class Server{
                 case MESSAGE_TYPE.RECEIVE_CHAT:
                     this.handleChat(message.payload);
                     break;
-                case MESSAGE_TYPE.TURN_START://
-                    turnTimer.startTurn(message.payload.isSelf);//
+                case MESSAGE_TYPE.TURN_START:
+                    turnTimer.startTurn(message.payload.isSelf);
                     break;
                 case MESSAGE_TYPE.SET_SPECTATOR:
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
-                    console.log("i'm a spectator");
+                    break;
+                case MESSAGE_TYPE.GAME_END:
+                    // TODO: Josh...handle this?
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);
@@ -214,7 +208,7 @@ class Server{
   }
 
     badMessage(message){
-        alert(message.message);
+        customAlert(message.message);
     }
 
     animationEventReceived(message){
@@ -227,12 +221,34 @@ class Server{
                 quedAnims.push(animationsMaker.getDamagedAnimation(message.id1).create());
                 break;
             case "playerAttacked":
-                if(message.playerId == $.cookie("id")){
-                    quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health1"));
+                if(message.target == $.cookie("id")){
+                    quedAnims.push(animationsMaker.getPlayerAttackedAnimation(message.id1,true).create());
                 }
                 else{
-                    quedAnims.push(quedAnims.push(animationsMaker.getAttackAnimation(message.id1,"health2")));
+                    quedAnims.push(animationsMaker.getPlayerAttackedAnimation(message.id1,false).create());
                 }
+                break;
+            case "playerDamaged":
+                if(message.playerId == $.cookie("id")){
+                    quedAnims.push(animationsMaker.getPlayerDamagedAnimation(true).create());
+                }
+                else{
+                    quedAnims.push(animationsMaker.getPlayerDamagedAnimation(false).create());
+                }
+                break;
+            case "cardDrawn":
+                if(message.playerId == $.cookie("id")){
+                    quedAnims.push(getDrawnCardAnimation(true).create());
+                }
+                else{
+                    quedAnims.push(getDrawnCardAnimation(false).create());
+                }
+                break;
+            case "cardPlayed":
+                animationMaker.playCardAnimation(message.card);
+                break;
+            case "cardDied":
+                quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());
                 break;
             default:
                 console.log("unknown animation type");
@@ -241,17 +257,23 @@ class Server{
 
 
 	chooseFrom(cards){
-        console.log(cards);
 		$("#chooseOneAsk").modal('show');
         cardCache.repairCardList(cards);
-		let collection = new chooseZone($("#chooseZoneDisplay"),cards);
-		collection.forceRedrawLater(500);
+        let cardIdList = [];
+        for(let card of cards){
+            cardIdList.push(card.id);
+        }
+        let cardList = [];
+        for(let id of cardIdList){
+            cardList.push(cardCache.getByIID(id));
+        }
+		let collection = new chooseZone($("#chooseZoneDisplay"),cardList);
+		collection.forceRedrawLater(300);
 	}
 
 
 
 	setPlayers(player1,player2){
-		console.log(player1)
 		wholeBoard.changeFeature("p1Health",player1.health);
 		wholeBoard.changeFeature("p1RegRes",player1.resources);
 		wholeBoard.changeFeature("p1Mana",manaPool.buildPool(1,'',player1.element));
@@ -261,7 +283,6 @@ class Server{
 	}
 
 	boardReceived(data){
-        console.log(data);
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
             window.setTimeout(function(){
@@ -317,7 +338,6 @@ class Server{
     }
 
     receiveCardCollection(collection){
-        console.log(collection);
         cardCache.repairCardList(collection);
         for(let card of collection){
             allCards.push(cardCache.getByIID(card.id));

@@ -106,6 +106,10 @@ public class GamePool {
     }
   }
 
+  public void removeGame(int pid) {
+    playersToGames.invalidate(pid);
+  }
+
   public Game getGameByPlayerId(int id) {
     try {
       return playersToGames.get(id);

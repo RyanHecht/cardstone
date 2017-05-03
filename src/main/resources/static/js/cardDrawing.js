@@ -52,11 +52,8 @@ function updateAndDrawAnimations(){
 	}
 	if(animations.length <= 0){
 		if(quedAnims.length > 0){
-            console.log(quedAnims, quedAnims.length);
             let popped = popFirst(quedAnims);
-            console.log(popped.length);
 			animations.push(popped);
-			console.log(quedAnims);
 		}
 	}
     if(mouseSystem.isClicked){
@@ -92,7 +89,7 @@ function setupCanvas(){
 
 function customAlert(message){
     $("#customMessage").text(message);
-    $("#messageModal").modal(show);
+    $("#messageModal").modal("show");
 }
 
 function setupBoard(){
@@ -175,7 +172,7 @@ function setupMouseListen(){
     mouseSystem = new MouseManagerSystem();
     $(document).mousemove(function(event){
       mouseSystem.mousemoved(event);  
-    })
+    });
     $(document).mouseup(function(event){
        mouseSystem.mouseup(event); 
     });
@@ -198,7 +195,6 @@ function setupOptionsMenu(){
 
 function setupKeypress(){
     	$(document).keyup(function(e) {
-		console.log("pressed" + e.which);
         if(canAct){
             if(e.which == 32) {
                 $('#endTurnAsk').modal('show');
@@ -215,8 +211,8 @@ function setupKeypress(){
 			redrawChanged();
 		}
 		else if(e.which == 88){
-			animations.push(animationsMaker.getAttackAnimation(-6,-20).create());
-			quedAnims.push(animationsMaker.getDamagedAnimation(-20).create());
+            quedAnims.push(animationsMaker.getDrawnCardAnimation(true).create());
+			quedAnims.push(animationsMaker.getDrawnCardAnimation(false).create());
 		}
         else if(e.which == 27){
             popOptionsMenu();
@@ -268,10 +264,10 @@ $(document).ready(function(){
     });
 	updateAndDrawAnimations();
 	wholeBoard.draw();
+    prepTurnTimers();
     setupServer();
     setupOptionsMenu();
     $(".boxOuter").addClass("cursorTarget");
-    prepTurnTimers();
     mouseSystem.redraw();
     redrawAll();
 });

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fileset-config file-format-version="1.2.0" simple-config="true" sync-formatter="false">
+  <local-check-config name="32" location="internal_config_1493784844226.xml" type="internal" description=""/>
+  <fileset name="all" enabled="true" check-config-name="32" local="true">
+    <file-match-pattern match-pattern="." include-pattern="true"/>
+  </fileset>
+  <filter name="NonSrcDirs" enabled="false"/>
+  <filter name="UnOpenedFiles" enabled="true"/>
+</fileset-config>

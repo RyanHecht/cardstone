@@ -31,7 +31,7 @@ import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
 import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
-import logins.ClassByJosh;
+import events.TurnStartEvent;
 import server.CommsWebSocket;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
@@ -175,6 +175,12 @@ public class Game implements Jsonifiable, Serializable {
 
     // Some sort of board constructor goes here.
     board = new Board(deckOne, deckTwo);
+
+    // send turnstart to kick off the fun!
+
+    // create turn start event for starting player (active player)
+    TurnStartEvent event = new TurnStartEvent(board.getActivePlayer());
+    act(event);
   }
 
   public void setBoard(Board board) {
@@ -196,14 +202,44 @@ public class Game implements Jsonifiable, Serializable {
       return playerOne.getId();
     }
     return -1;
-  }
+    }
 
-  public int getActivePlayerId() {
-    return board.getActivePlayer().getId();
-  }
-
+  /**
+   * ends the game.
+   *
+   * @param i
+   *          the result of the game (see checkWinners for how this works).
+   */
   public void endGame(int i) {
+    // move game to finished games somehow.
     ClassByJosh.endGame(this, i);
+
+    // set up messages for players to receive.
+    String messageOne;
+    String messageTwo;
+
+    if (i == 1) {
+      messageOne = "You win!";
+      messageTwo = "You lose...";
+    } else if (i == 2) {
+      messageOne = "You lose...!";
+      messageTwo = "You win!";
+    } else if (i == 0) {
+      messageOne = "It's a tie!";
+      messageTwo = "It's a tie!";
+    } else {
+      throw new IllegalArgumentException(
+          "Passed invalid value to endGame: " + i);
+    }
+
+    // send off messages to players about game being over.
+    try {
+      CommsWebSocket.sendGameEnd(playerOne.getId(), messageOne);
+      CommsWebSocket.sendGameEnd(playerTwo.getId(), messageTwo);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -292,15 +328,16 @@ public class Game implements Jsonifiable, Serializable {
     try {
       CommsWebSocket.sendWholeBoardSate(this, playerOne.getId());
     } catch (IOException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
     try {
       CommsWebSocket.sendWholeBoardSate(this, playerTwo.getId());
     } catch (IOException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
     GameManager.pushToDb(this);
   }
 
@@ -760,6 +797,27 @@ public class Game implements Jsonifiable, Serializable {
     } else {
       sendPlayerActionBad(playerId, "Acting out of turn.");
     }
+  }
+
+  /**
+   * Tells you if a player with a certain id is the active player.
+   *
+   * @param playerId
+   *          the id of a player we want to check.
+   * @return a boolean that tells us if the playerId input belongs to the
+   *         current active player.
+   */
+  public boolean isActivePlayer(int playerId) {
+    return board.getActivePlayer().getId() == playerId;
+  }
+
+  /**
+   * gets how many turns have elapsed in a game.
+   * 
+   * @return the number of turns in a game.
+   */
+  public int getNumTurns() {
+    return board.getTurnIndex();
   }
 
   @Override

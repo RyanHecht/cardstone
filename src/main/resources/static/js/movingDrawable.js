@@ -1,12 +1,23 @@
-class movingDrawable extends drawable{
-	
+class movingDrawable extends drawable{     
 	constructor(shape,x1,y1,x2,y2,color,speed,radius){
 		super(shape,speed,color,radius);
 		this.x = x1;
 		this.y = y1;
 		this.goalX = x2;
 		this.goalY = y2;
-		this.update = this.getMover(x1,y1,x2,y2,speed);
+        if(this.shape == "card"){
+            let mover = this.getMover(x1,y1,x2,y2,speed);
+            this.update = function(drawable,delta){
+                let res = mover(drawable,delta);
+                if(res){
+                    CARD_DRAW_SHAPE_BOX.hide();
+                }
+                return res;
+            }
+        }
+        else{
+            this.update = this.getMover(x1,y1,x2,y2,speed);
+        }
 		this.update(this,10);
 		
 	}

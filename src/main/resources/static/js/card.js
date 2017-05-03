@@ -167,8 +167,7 @@ class creatureCard extends Card {
 		div.hide();
 	}
 	
-	drawGivenSpace(){
-		let div = this.div;
+	drawGivenSpace(div = this.div){
 		if(div.height() > 125){
 			this.drawForTip();
 		}
@@ -301,8 +300,8 @@ class cardBack extends Card{
 		}
 		else{
 			if(info.type == null){
-				console.log("must have either a TID or a type to reveal a card");
-			}
+				
+            }
 			else{
 				return info.createAlone();
 			}

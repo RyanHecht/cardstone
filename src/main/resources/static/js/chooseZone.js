@@ -70,7 +70,6 @@ class chooseZone extends drawableZone{
 	
 	prepareChoosing(div){
 		div.find('.card').click(function(){
-            console.log($(this))
 			server.sendChosen($(this).attr('id'));
             $("#chooseOneAsk").modal('hide');
 		})

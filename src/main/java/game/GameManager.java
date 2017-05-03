@@ -33,14 +33,27 @@ public class GameManager {
   // remove games when they complete.
   public static void endGame(GameStats ended) {
     Game g = ended.getGame();
-    int turns = ended.getNumTurns();
+    int gId = g.getId();
     int winner = ended.getWinnerId();
+    int turns = ended.getNumTurns();
 
-    // delete from db or cache
-    // delete from event number map
-    // get metadata
-    // insert into user_game for both players
+    int firstUser = g.getActivePlayerId();
+    int secondUser = g.getOpposingPlayerId(firstUser);
 
+
+    try {
+      Db.update("delete from in_progress where id = ?;", gId);
+      Db.update("insert into finished_game values(?, ?, ?)", gId, winner,
+          turns);
+      Db.update("insert into user_game values(?, ?);", firstUser, gId);
+      Db.update("insert into user_game values(?, ?);", secondUser, gId);
+
+      games.removeGame(firstUser);
+      games.removeGame(secondUser);
+      gamesToEventNums.remove(gId);
+    } catch (SQLException | NullPointerException e) {
+      throw new RuntimeException();
+    }
   }
 
   public static boolean playerIsInGame(int playerId) {
@@ -111,7 +124,9 @@ public class GameManager {
 
   public static void playerIsReady(int uId) {
     try {
-      CommsWebSocket.sendWholeBoardSate(games.getGameByPlayerId(uId), uId);
+      Game game = games.getGameByPlayerId(uId);
+      CommsWebSocket.sendWholeBoardSate(game, uId);
+      CommsWebSocket.sendTurnStart(uId, game.isActivePlayer(uId));
     } catch (IOException e) {
       e.printStackTrace();
     }
