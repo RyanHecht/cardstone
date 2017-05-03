@@ -142,6 +142,7 @@ class Server{
                     break;
                 case MESSAGE_TYPE.CHOOSE_REQUEST:
                     this.chooseFrom(message.payload.cards);
+                    console.log(message);
                     break;
                 case MESSAGE_TYPE.TARGET_REQUEST:
                     this.chooseTarget();
