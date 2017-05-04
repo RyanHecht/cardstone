@@ -1,6 +1,18 @@
 package main;
 
+import cardgamelibrary.MasterCardList;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import game.Game;
+import game.GameManager;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,14 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import cardgamelibrary.MasterCardList;
-import game.Game;
-import game.GameManager;
 import lobby.Lobby;
 import lobby.LobbyManager;
 import logins.Db;
@@ -148,8 +152,28 @@ public class Gui {
               "lobbies.ftl");
         }
       }
-      return new ModelAndView(ImmutableMap.of(), "boardDraw.ftl");
+      return new ModelAndView(ImmutableMap.of(),
+          renderContent("static/boardDraw.html"));
+
     }
+  }
+
+  private String renderContent(String htmlFile) {
+    try {
+      // If you are using maven then your files
+      // will be in a folder called resources.
+      // getResource() gets that folder
+      // and any files you specify.
+      URL url = getClass().getResource(htmlFile);
+
+      // Return a String which has all
+      // the contents of the file.
+      Path path = Paths.get(url.toURI());
+      return new String(Files.readAllBytes(path), Charset.defaultCharset());
+    } catch (IOException | URISyntaxException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   /**
