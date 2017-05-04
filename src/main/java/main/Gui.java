@@ -99,7 +99,7 @@ public class Gui {
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists game_event("
           + "game integer not null, event integer not null,"
-          + "board text not null, UNIQUE(game, event);");
+          + "board text not null, UNIQUE(game, event));");
     } catch (SQLException e) {
       e.printStackTrace();
     }

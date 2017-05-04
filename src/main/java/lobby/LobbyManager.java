@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import game.GameManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,13 @@ public class LobbyManager {
     } else if (priv && password.length() < 1) {
       throw new IllegalArgumentException(
           "Private lobbies must have non-empty passwords");
+    } else if (LobbyManager.playerIsInLobby(hostUId)) {
+      throw new IllegalArgumentException(
+          "You're already in a lobby!");
+
+    } else if (GameManager.playerIsInGame(hostUId)) {
+      throw new IllegalArgumentException(
+          "You're currently in a game, and cannot create a lobby.");
     } else {
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
       System.out.println("Made lobby: " + lobby);
@@ -82,6 +90,12 @@ public class LobbyManager {
       String password)
       throws IllegalArgumentException {
     try {
+      if (LobbyManager.playerIsInLobby(playerId)) {
+        throw new IllegalArgumentException("You're already in a lobby!");
+      } else if (GameManager.playerIsInGame(playerId)) {
+        throw new IllegalArgumentException(
+            "You're currently in a game, and cannot join a lobby.");
+      }
       System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId,
           lobbyName, password));
       Lobby l = lobbies.get(lobbyName);
@@ -93,6 +107,9 @@ public class LobbyManager {
         for (Integer i : l.getAllSpectators()) {
           LobbyWebSocket.sendOpponentEnteredLobby(i, playerId);
         }
+      } else {
+        throw new IllegalArgumentException(
+            "Lobby no longer exists. Pick another!");
       }
 
     } catch (IllegalArgumentException x) {
@@ -104,6 +121,14 @@ public class LobbyManager {
   public static void spectatorJoinLobby(int playerId, String lobbyName,
       String password)
       throws IllegalArgumentException {
+    if (LobbyManager.playerIsInLobby(playerId)) {
+      throw new IllegalArgumentException(
+          "You're already in a lobby!");
+
+    } else if (GameManager.playerIsInGame(playerId)) {
+      throw new IllegalArgumentException(
+          "You're currently in a game, and cannot create a lobby.");
+    }
     Lobby l = lobbies.get(lobbyName);
     if (l != null) {
       try {
