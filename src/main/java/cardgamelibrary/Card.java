@@ -243,6 +243,17 @@ public interface Card extends Jsonifiable, Serializable {
 	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone) {
 		return EmptyEffect.create();
 	}
+	
+	static boolean recursiveIs(Object c, Class goal){
+		Class curClass = c.getClass();
+		while(curClass != Object.class){
+			if(curClass == goal){
+				return true;
+			}
+			curClass = curClass.getSuperclass();
+		}
+		return false;
+	}
 
 	JsonObject jsonifySelfBack();
 }
