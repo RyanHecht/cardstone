@@ -45,20 +45,20 @@ import templates.TargetsPlayer;
  */
 public class Game implements Jsonifiable, Serializable {
 
-	private static final long			serialVersionUID	= 1L;
-	private static final int			PLAYER_START_LIFE	= 30;
-	private GameState							state							= GameState.IDLE;
-	private Board									board;
-	private Player								playerOne;
-	private Player								playerTwo;
-	private int										id;
-	private static AtomicInteger	idGenerator				= new AtomicInteger(GameManager.getStartingId());
-	private static final String		PACKAGE_PATH			= "cards.";
+	private static final long serialVersionUID = 1L;
+	private static final int PLAYER_START_LIFE = 30;
+	private GameState state = GameState.IDLE;
+	private Board board;
+	private Player playerOne;
+	private Player playerTwo;
+	private int id;
+	private static AtomicInteger idGenerator = new AtomicInteger(GameManager.getStartingId());
+	private static final String PACKAGE_PATH = "cards.";
 
 	// used to keep track of the card that spawns a choose request so we can
 	// handle
 	// specific behavior once we get a response from the user.
-	private PlayerChoosesCards		chooserCard				= null;
+	private PlayerChoosesCards chooserCard = null;
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
 			boolean isTutorial) {
@@ -530,7 +530,7 @@ public class Game implements Jsonifiable, Serializable {
 				// well the card that attempted to target something isn't
 				// allowed to
 				// target stuff. Error time!
-				sendPlayerActionBad(playerId, "The card you attempted to use to target something isn't allowed to do that.");
+				sendPlayerActionBad(playerId, "The card you tried to play doesn't need a target!");
 			}
 		} else {
 			// player acting out of turn.
