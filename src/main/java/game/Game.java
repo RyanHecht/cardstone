@@ -773,6 +773,13 @@ public class Game implements Jsonifiable, Serializable {
 				lockState();
 			}
 
+			if (card instanceof TargetsOtherCard || card instanceof TargetsPlayer) {
+				// their card needs a target!
+				sendPlayerActionBad(playerId,
+						"That card needs a target to be played! Try dragging it onto a valid target to play it.");
+				return;
+			}
+
 			Zone z;
 			if (card instanceof Creature) {
 				z = Zone.CREATURE_BOARD;
