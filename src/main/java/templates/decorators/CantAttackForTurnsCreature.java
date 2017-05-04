@@ -1,6 +1,7 @@
 package templates.decorators;
 
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
@@ -16,8 +17,8 @@ public class CantAttackForTurnsCreature extends CreatureWrapper{
 
 	private int turns;
 
-	public CantAttackForTurnsCreature(Creature internal, int turns){
-		super(internal);
+	public CantAttackForTurnsCreature(CreatureInterface c, int turns){
+		super(c);
 		this.turns = turns;
 	}
 	

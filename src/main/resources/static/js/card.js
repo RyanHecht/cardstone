@@ -176,21 +176,22 @@ class creatureCard extends Card {
 	}
 	
 	drawGivenSpace(div = this.div){
+        console.log(div);
 		if(div.height() > 125){
-			this.drawForTip();
+			this.drawForTip(div);
 		}
 		else{
-			this.drawTinyForTip();
+			this.drawTinyForTip(div);
 		}
-		super.addIdAndState(this.div);
+		super.addIdAndState(div);
 	}
 	
-	drawForTip(){
-		this.drawSmallAndHiddenBig(this.div);
+	drawForTip(div = this.div){
+		this.drawSmallAndHiddenBig(div);
 
 	}
-	drawTinyForTip(){
-		this.drawTinyAndHiddenBig(this.div);
+	drawTinyForTip(div = this.div){
+		this.drawTinyAndHiddenBig(div);
 	}
 	
 	

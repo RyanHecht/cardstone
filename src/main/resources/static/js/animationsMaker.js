@@ -2,12 +2,14 @@ function killAnimBox(){
     let box = $(".animBox");
     box.empty();
     box.hide();
+    $(".chat").show();
 }
 
 function getDrawnCardAnimation(isMe){
     let anim;
     anim = new cardDrawnAnimation();
     anim.setTarget(isMe);
+    
     return anim;
 }
 
@@ -15,15 +17,17 @@ class animationsMaker{
 
     static playCardAnimation(card){
         cardCache.repairCard(card);
-        eventQueue.add(card.id);
         let box = $(".animBox");
         box.empty();
         let cardFromCache = cardCache.getByIID(card.id);
+        console.log(cardFromCache);
         box.append("<div class='cardBox'></div>");
         cardFromCache.drawGivenSpace(box.find(".cardBox"));
-        cardFromCache.changeId(box.find(".cardBox"));
+        //cardFromCache.changeId(box.find(".cardBox"));
         box.show();
-        window.setTimeout(killAnimBox,1500);
+        $(".chat").hide();
+        box.find("#" + cardFromCache.IID).attr("id",-180);
+        window.setTimeout(killAnimBox,2000);
         box.click(killAnimBox);
     }
     

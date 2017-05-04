@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.Event;
@@ -20,8 +21,8 @@ public class CardWrapper implements Card {
 
 	protected Card internal;
 
-	public CardWrapper(Creature internal) {
-		this.internal = internal;
+	public CardWrapper(Card c) {
+		this.internal = c;
 	}
 
 	// Doesn't have to be unique
