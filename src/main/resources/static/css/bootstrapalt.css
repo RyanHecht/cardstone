@@ -5906,7 +5906,8 @@ button.close {
 }
 .modal-content {
   position: relative;
-  background-color: rgba(0,0,0,0);
+  background-color: white;
+  color:black;
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
   border: 1px solid #999;
@@ -5915,6 +5916,11 @@ button.close {
   outline: 0;
   box-shadow: 0 -1px 20px 5px #9ecaed;
 }
+
+.modal .btn{
+    color:black;
+    border-color:black;
+}
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -5922,7 +5928,7 @@ button.close {
   bottom: 0;
   left: 0;
   z-index: 1040;
-  background-color: lightgrey;
+  background-color: rgba(0,0,0,0);
 }
 .modal-backdrop.fade {
   filter: alpha(opacity=0);

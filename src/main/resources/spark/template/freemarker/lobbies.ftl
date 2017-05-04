@@ -10,8 +10,8 @@
   <#include "lobbies_table.ftl">
   <#include "navbar.ftl">
   <body>
-  	 ${nav}
      <div class="container">
+     ${nav}
 	 <h3> Join a game... </h3>
 	   <div class="row">
 	     <div class="col-sm-8" id="lobbytable">
