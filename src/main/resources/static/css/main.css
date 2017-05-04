@@ -2,7 +2,6 @@ html{
     height:100%;
     background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
     color:lightblue;
-    text-align:center;
 }
 
 h3{
@@ -18,6 +17,7 @@ h3{
 .shadowedButton:hover{
     box-shadow: 0 -1px 20px 5px #9ecaed;
     background-color:rgba(0,0,0,0);
+    color:lightblue;
 }
 
 div::hover{
