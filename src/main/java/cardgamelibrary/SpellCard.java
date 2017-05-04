@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import effects.EmptyEffect;
 import game.Player;
 
-public class SpellCard extends PlayableCard {
+public class SpellCard extends PlayableCard implements SpellInterface {
 
 	public SpellCard(ManaPool cost, String image, Player owner, String name, String text, CardType type) {
 		super(cost, image, owner, name, text, type);
