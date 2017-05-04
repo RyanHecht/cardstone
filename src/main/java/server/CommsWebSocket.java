@@ -83,22 +83,30 @@ public class CommsWebSocket {
         if (type == MessageTypeEnum.ID_RESPONSE.ordinal()) {
           // Let's get the Id and put it in the map!
           int id = payload.get("id").getAsInt();
-          sessions.put(session, id);
-          idToSessions.put(id, session);
 
-          if (isSpectator(id)) {
-            System.out.println(id + " is a spectator!!");
-            int spectatee = getSpectatee(id);
-            CommsWebSocket.sendIsSpectator(id, spectatee);
-            CommsWebSocket.sendWholeBoardSate(
-                GameManager.getGameByPlayerId(spectatee), id);
-            CommsWebSocket.sendTurnStart(id,
-                GameManager.getGameByPlayerId(spectatee)
-                    .isActivePlayer(spectatee));
+          if (idToSessions.containsKey(id)) {
+            System.out.println(id + " is already connected. sending message.");
+            JsonObject obj = new JsonObject();
+            obj.addProperty("message",
+                "You already have the game window open!");
+            sendMessageToSession(session, MessageTypeEnum.GAME_END, obj);
           } else {
-            GameManager.playerIsReady(id);
-          }
+            sessions.put(session, id);
+            idToSessions.put(id, session);
 
+            if (isSpectator(id)) {
+              System.out.println(id + " is a spectator!!");
+              int spectatee = getSpectatee(id);
+              CommsWebSocket.sendIsSpectator(id, spectatee);
+              CommsWebSocket.sendWholeBoardSate(
+                  GameManager.getGameByPlayerId(spectatee), id);
+              CommsWebSocket.sendTurnStart(id,
+                  GameManager.getGameByPlayerId(spectatee)
+                      .isActivePlayer(spectatee));
+            } else {
+              GameManager.playerIsReady(id);
+            }
+          }
         }
       }
     } catch (Exception ex) {
@@ -327,6 +335,15 @@ public class CommsWebSocket {
       }
     }
 
+  }
+
+  private static void sendMessageToSession(Session session,
+      MessageTypeEnum type, JsonObject payload) throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("type", type.ordinal());
+    obj.add("payload", payload);
+    System.out.println("a message is being sent now.");
+    session.getRemote().sendString(GSON.toJson(obj));
   }
 
 }

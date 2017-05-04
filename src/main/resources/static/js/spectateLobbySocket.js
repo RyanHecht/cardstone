@@ -15,16 +15,17 @@ class SpectateLobbySocket {
 	// onGameStart does????
 	// onLobbyCancel same as before
 
-  constructor(userId, onOpponentJoin, onOpponentLeave, onGameStart, onLobbyCancel) {
+  constructor(userId, onOpponentJoinZ, onOpponentLeaveZ, onGameStartZ, onLobbyCancelZ) {
+		console.log(onOpponentJoinZ)
     this.websocket = new WebSocket("ws://" + window.location.host + "/lobbySocket");
     this.websocket.server = this;
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
-    this.websocket.server.onOpponentJoin = onOpponentJoin;
-		this.websocket.onOpponentLeave = onOpponentLeave;
-    this.websocket.onGameStart = onGameStart;
-		this.websocket.onLobbyCancel = onLobbyCancel;
+    this.websocket.onOpponentJoin = onOpponentJoinZ;
+		this.websocket.onOpponentLeave = onOpponentLeaveZ;
+    this.websocket.onGameStart = onGameStartZ;
+		this.websocket.onLobbyCancel = onLobbyCancelZ;
   }
 
   onWebSocketOpen() {
