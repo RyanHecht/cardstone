@@ -1,6 +1,6 @@
 let allCards;
 let josh;
-const CARDS_PER_PAGE = 12;
+const CARDS_PER_PAGE = 100;
 let pages;
 let curPage;
 let server;
@@ -141,7 +141,7 @@ function drawProgressBar(){
 }
 
 function checkForGlobals(){
-     if(cardNames != null){
+     if(typeof cardNames != "undefined"){
         list.fillWithNames(cardNames);
         $("#deckName").val(nameOfDeck);
 		list.draw();
@@ -154,7 +154,6 @@ function allCardsReady(){
 
     curPage = 0;
     collect = new cardCollectionDeck($('.collectionDisplay'),pages.get(curPage),allCards);
-    collect.forceRedraw();
     list = new deckList($(".deckList"));
     $(window).resize(function() {
          redrawAll();
@@ -162,7 +161,9 @@ function allCardsReady(){
 	});
     setupPaging();
     setupInput();
+    redrawAll();
 	checkForGlobals();
+    
 }
 
 $('document').ready(function(){

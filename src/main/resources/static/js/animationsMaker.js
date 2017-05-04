@@ -76,7 +76,6 @@ class animationsMaker{
         else{
             anim.setCenterDiv($(".overlayHUD2"));
         }
-		anim.setCenterDivById(damaged);
 		anim.setCount(3);
 		return anim;
     }
