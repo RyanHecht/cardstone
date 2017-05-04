@@ -270,4 +270,7 @@ $(document).ready(function(){
     $(".boxOuter").addClass("cursorTarget");
     mouseSystem.redraw();
     redrawAll();
+    window.onbeforeunload = function() {
+        return "Do you really want to leave the page? Doing so will end the game";
+    };
 });

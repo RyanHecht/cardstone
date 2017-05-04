@@ -184,7 +184,7 @@ class Server{
       alertMessage(message);
       $('#messageModal').bind('hide', function () {
           window.location.replace("/lobbies");
-      }
+      });
   }
     
   alertMessage(message) {
