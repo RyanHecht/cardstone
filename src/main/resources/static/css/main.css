@@ -8,6 +8,32 @@ h3{
     color:lightblue;
 }
 
+.whiteBg{
+    background-color: rgba(240,240,240,.9);
+}
+
+.blackColor{
+    color:black;
+    border-color:black;
+}
+
+.blackColor:hover{
+    color:black;
+    border-color:black;
+}
+
+.blackColor::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    black;
+}
+
+.loginContainer{
+    background-image: url("../images/splashBg.png");
+    background-size:contain;
+    background-position:center;
+    height:100%;
+    width:100%;
+}
+
 .shadowedButton{
     box-shadow: 0 -2px 20px 5px white;
     background-color:rgba(0,0,0,0);
@@ -45,6 +71,7 @@ body {
     height:95%;
     display:inline-block;
     width:31%;
+    text-align:center;
 }
 
 .fullCont{

@@ -66,15 +66,15 @@ class linearAnimation extends animation{
 	}
 	
 	setStartDivById(id){
-		this.setStartDiv($("#" + id)[0]);
+		this.setStartDiv($("#" + id));
 	}
 	
 	setEndDivById(id){
-		this.setEndDiv($("#" + id)[0]);
+		this.setEndDiv($("#" + id));
 	}
 	
 	setStartDiv(divElem){
-        
+        divElem = divElem[0];
         let pos = $(divElem).offset();
 		let left = pos.left - $(document).scrollLeft();
 		let top = pos.top - $(document).scrollTop();
@@ -84,6 +84,7 @@ class linearAnimation extends animation{
 	}
 	
 	setEndDiv(divElem){
+        divElem = divElem[0];
 		let pos = $(divElem).offset();
 		let left = pos.left - $(document).scrollLeft();
 		let top = pos.top - $(document).scrollTop();

@@ -12,17 +12,17 @@ import events.TurnEndEvent;
 
 public class DemoGame extends Game {
 
-	private static final int	AI_ID			= -10;
+	private static final int AI_ID = -10;
 
-	private int								actionId	= 1;
+	private int actionId = 1;
 
-	private final String[]		messages	= new String[11];
+	private final String[] messages = new String[11];
 
-	private TurnEndEvent			turnEnd;
+	private TurnEndEvent turnEnd;
 
-	private CardPlayedEvent		aiPlayedElement;
+	private CardPlayedEvent aiPlayedElement;
 
-	private CardPlayedEvent		aiPlayedWaterSpirit;
+	private CardPlayedEvent aiPlayedWaterSpirit;
 
 	public DemoGame(int playerOneId) {
 		// superclass constructor with "true" flag passed to indicate that it is a

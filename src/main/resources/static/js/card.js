@@ -111,6 +111,14 @@ class creatureCard extends Card {
 	
 	drawTiny(div){
 		div.html(tinyCardHtml);
+         if(div.height() >= 80){
+           div.find(".statArea").addClass("statAreaSmall");
+           div.find(".imageArea").addClass("imageAreaSmall");
+        }
+        else{
+            div.find(".statArea").addClass("statAreaBig");
+           div.find(".imageArea").addClass("imageAreaBig");
+        }
         this.drawStates(div);
 		div = div.children(".card");
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);
@@ -219,6 +227,14 @@ class spellCard extends Card{
 	drawTiny(div){
 		div.empty();
 		div.html(tinySpellCardHtml);
+        if(div.height() >= 80){
+           div.find(".cost").addClass("costSmall");
+           div.find(".imageArea").addClass("imageAreaSmall");
+        }
+        else{
+            div.find(".cost").addClass("costBig");
+           div.find(".imageArea").addClass("imageAreaBig");
+        }
         this.drawStates(div);
 		div = div.children(".card");
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);

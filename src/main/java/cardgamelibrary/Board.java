@@ -41,34 +41,34 @@ public class Board implements Jsonifiable, Serializable {
 	/**
 	 * Default value for serial version that eclipse generated.
 	 */
-	private static final long			serialVersionUID		= 1L;
-	private Queue<Event>					eventQueue;
-	private LinkedList<Effect>		effectQueue;
+	private static final long serialVersionUID = 1L;
+	private Queue<Event> eventQueue;
+	private LinkedList<Effect> effectQueue;
 
-	private static final int			STARTING_HAND_SIZE	= 6;
+	private static final int STARTING_HAND_SIZE = 6;
 
 	// player one stuff;
-	private OrderedCardCollection	deckOne;
-	private OrderedCardCollection	handOne;
-	private OrderedCardCollection	auraOne;
-	private OrderedCardCollection	graveOne;
-	private OrderedCardCollection	creatureOne;
+	private OrderedCardCollection deckOne;
+	private OrderedCardCollection handOne;
+	private OrderedCardCollection auraOne;
+	private OrderedCardCollection graveOne;
+	private OrderedCardCollection creatureOne;
 
 	// player two stuff;
-	private OrderedCardCollection	deckTwo;
-	private OrderedCardCollection	handTwo;
-	private OrderedCardCollection	auraTwo;
-	private OrderedCardCollection	graveTwo;
-	private OrderedCardCollection	creatureTwo;
+	private OrderedCardCollection deckTwo;
+	private OrderedCardCollection handTwo;
+	private OrderedCardCollection auraTwo;
+	private OrderedCardCollection graveTwo;
+	private OrderedCardCollection creatureTwo;
 
 	// everything in the game;
-	List<OrderedCardCollection>		cardsInGame					= new ArrayList<>();
+	List<OrderedCardCollection> cardsInGame = new ArrayList<>();
 
 	// currently active player.
-	private Player								activePlayer;
+	private Player activePlayer;
 
 	// keeps track of turn counter.
-	private int										turnIndex						= 0;
+	private int turnIndex = 0;
 
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
 		// using LinkedLists but declaring using queue interface.

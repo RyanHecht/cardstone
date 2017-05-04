@@ -16,7 +16,7 @@
   </div>
 </div>
 <div class="col-md-4 tallCol">
-	eio q
+	<h4>Versus</h4>
 </div>
 <div class="col-md-4 tallCol pull-right">
   <div class="panel panel-default tallPanel">
