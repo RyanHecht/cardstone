@@ -14,7 +14,7 @@ import templates.PlayerChoosesCards;
 
 public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 
-	private static final ManaPool	defaultCost		= new ManaPool(25, 0, 3, 0, 0, 0);
+	private static final ManaPool	defaultCost		= new ManaPool(15, 0, 3, 0, 0, 0);
 	private static final String		defaultImage	= "images/DelveTheDepths.jpg";
 	private static final String		defaultName		= "Delve The Depths";
 	private static final String		defaultText		= "Select any card from your deck and add it to your hand.";

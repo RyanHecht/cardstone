@@ -10,7 +10,7 @@ public class CheapJoshCreature extends Creature {
 	private static final ManaPool	defaultCost		= new ManaPool(10, 0, 0, 1, 0, 0);
 	private static final String		defaultImage	= "images/creature.jpg";
 	private static final String		defaultName		= "Cheap Josh Creature";
-	private static final String		defaultText		= "BS TESTING THINGY";
+	private static final String		defaultText		= "It's pretty broken";
 	private static final int			defaultHealth	= 5;
 	private static final int			defaultAttack	= 4;
 	private static final CardType	defaultType		= CardType.CREATURE;
