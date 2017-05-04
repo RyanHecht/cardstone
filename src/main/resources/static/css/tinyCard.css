@@ -1,4 +1,20 @@
 
+.creatureCard.tinyCard .costSmall{
+	position:absolute;
+	width:100%;
+	height:15%;
+	top:0%;
+	left:0%;
+}
+
+.creatureCard.tinyCard .costBig{
+	position:absolute;
+	top:0%;
+	left:0%;
+	width:100%;
+	height:30%;
+}
+
 
 .creatureCard.tinyCard .statAreaBig{
 	position:absolute;
@@ -19,18 +35,18 @@
 
 .creatureCard.tinyCard .imageAreaBig{
 	position:absolute;
-	top:0%;
+	top:30%;
 	left:0%;
 	width:100%;
-	height:60%;
+	height:30%;
 }
 
 .creatureCard.tinyCard .imageAreaSmall{
 	position:absolute;
-	top:0%;
+	top:15%;
 	left:0%;
 	width:100%;
-	height:80%;
+	height:65%;
 }
 
 .spellCard.tinyCard .imageAreaBig{
@@ -52,7 +68,7 @@
 .spellCard.tinyCard {
 }
 
-.tinyCard .costBig{
+.spellCard.tinyCard .costBig{
 	position:absolute;
 	top:0%;
 	left:0%;
