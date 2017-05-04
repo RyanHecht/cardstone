@@ -1,14 +1,12 @@
 package game;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import logins.Db;
 import server.CommsWebSocket;
 
@@ -20,8 +18,7 @@ import server.CommsWebSocket;
 public class GameManager {
   private static final Gson GSON = new Gson();
   private static GamePool games = new GamePool();
-  private static Map<Integer, Integer> gamesToEventNums
-                                  = new ConcurrentHashMap<>();
+  private static Map<Integer, Integer> gamesToEventNums = new ConcurrentHashMap<>();
 
   // some sort of method to add games.
   public static void addGame(Game game) {
@@ -39,7 +36,6 @@ public class GameManager {
 
     int firstUser = g.getActivePlayerId();
     int secondUser = g.getOpposingPlayerId(firstUser);
-
 
     try {
       Db.update("delete from in_progress where id = ?;", gId);
@@ -133,8 +129,7 @@ public class GameManager {
   }
 
   /**
-   * Caches board states and inserts their JSON into the Db
-   * for replay purposes.
+   * Caches board states and inserts their JSON into the Db for replay purposes.
    * @param g the game
    */
   public static void pushToDb(Game g) {
@@ -148,7 +143,7 @@ public class GameManager {
       try {
         Db.update(eventInsert, gId, eventNum, g.jsonifySelf());
       } catch (SQLException | NullPointerException e) {
-        throw new RuntimeException();
+        e.printStackTrace();
       }
       gamesToEventNums.put(gId, eventNum++);
     }
