@@ -295,7 +295,7 @@ public class Game implements Jsonifiable, Serializable {
 	 * @param playerId
 	 *          the id of the player we are sending the message to.
 	 */
-	private void sendPlayerActionGood(int playerId) {
+	public void sendPlayerActionGood(int playerId) {
 		try {
 			CommsWebSocket.sendActionOk(playerId);
 		} catch (IOException e) {
@@ -311,7 +311,7 @@ public class Game implements Jsonifiable, Serializable {
 	 * @param message
 	 *          the message we are sending them.
 	 */
-	private void sendPlayerActionBad(int playerId, String message) {
+	public void sendPlayerActionBad(int playerId, String message) {
 		try {
 			CommsWebSocket.sendActionBad(playerId, message);
 		} catch (IOException e) {
@@ -813,6 +813,10 @@ public class Game implements Jsonifiable, Serializable {
 
 	public int getActivePlayerId() {
 		return board.getActivePlayer().getId();
+	}
+
+	public Board getBoard() {
+		return board;
 	}
 
 	@Override
