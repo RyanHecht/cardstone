@@ -233,7 +233,7 @@ public class CommsWebSocket {
 
   /**
    * Inform the user that their action was incorrect.
-   * @param uderId The id of the recipient user.
+   * @param userId The id of the recipient user.
    * @param message The message of why the action was bad.
    * @throws IOException thrown by websocket.
    */

@@ -1,11 +1,13 @@
 package lobby;
 
-import cardgamelibrary.Jsonifiable;
-import com.google.gson.JsonObject;
-import game.Game;
-import game.GameManager;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.JsonObject;
+
+import cardgamelibrary.Jsonifiable;
+import game.Game;
+import game.GameManager;
 import server.CommsWebSocket;
 
 /**
@@ -163,7 +165,7 @@ public class Lobby implements Jsonifiable {
       System.out.println("making game...");
       Game game = new Game(p1deck, p2deck, uId1, uId2);
       System.out.println("game made.");
-      GameManager.addGame(uId1, uId2, game);
+      GameManager.addGame(game);
       CommsWebSocket.setSpectators(uId1, uId1Spectators);
       CommsWebSocket.setSpectators(uId2, uId2Spectators);
     } else {
