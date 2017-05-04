@@ -1,12 +1,14 @@
 package game;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import logins.Db;
 import server.CommsWebSocket;
 
@@ -135,17 +137,23 @@ public class GameManager {
   public static void pushToDb(Game g) {
     // add game to cache
     if (games.updateGame(g)) {
+      System.out.println("Successfully updated game state");
+
       String eventInsert = "insert into game_event values(?, ?, ?);";
       int gId = g.getId();
       int eventNum = gamesToEventNums.get(gId);
       // insert JSON board state into Db for replay purposes
       // and increment the event number
       try {
+        System.out.println(
+            "Trying to insert event num " + eventNum + " for game " + gId);
         Db.update(eventInsert, gId, eventNum, g.jsonifySelf());
+        gamesToEventNums.put(gId, ++eventNum);
+        System.out.println("Event num now " + gamesToEventNums.get(gId));
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
       }
-      gamesToEventNums.put(gId, eventNum++);
+
     }
   }
 
@@ -166,5 +174,15 @@ public class GameManager {
     } catch (SQLException | NullPointerException e) {
       return null;
     }
+  }
+
+  public static int getStartingId() {
+    int ret;
+    try (ResultSet rs = Db.query("select max(id) from finished_game;")) {
+      ret = rs.getInt(1);
+    } catch (SQLException | NullPointerException e) {
+      ret = 1;
+    }
+    return ret;
   }
 }
