@@ -3,7 +3,7 @@ package cardgamelibrary;
 import effects.EmptyEffect;
 import game.Player;
 
-public class AuraCard extends PlayableCard {
+public class AuraCard extends PlayableCard implements AuraInterface {
 
 	public AuraCard(ManaPool cost, String image, Player owner, String name, String text, CardType type) {
 		super(cost, image, owner, name, text, type);

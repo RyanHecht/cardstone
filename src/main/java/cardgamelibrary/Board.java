@@ -258,7 +258,7 @@ public class Board implements Jsonifiable, Serializable {
 		Iterator<Card> it = creatureOne.iterator();
 		Iterator<Card> itTwo = creatureTwo.iterator();
 		while (it.hasNext()) {
-			Creature c = (Creature) it.next();
+			CreatureInterface c = (Creature) it.next();
 			if (c.isDead()) {
 				// creatureDies should create some sort of creatureDied event
 				// and use takeAction to set it in motion.
@@ -267,7 +267,7 @@ public class Board implements Jsonifiable, Serializable {
 			}
 		}
 		while (itTwo.hasNext()) {
-			Creature c = (Creature) itTwo.next();
+			CreatureInterface c = (Creature) itTwo.next();
 			if (c.isDead()) {
 				// creatureDies should create some sort of creatureDied event
 				// and use takeAction to set it in motion.
@@ -472,7 +472,7 @@ public class Board implements Jsonifiable, Serializable {
 	 * @param c
 	 *          the creature that died.
 	 */
-	private void creatureDies(Creature c) {
+	private void creatureDies(CreatureInterface c) {
 		// construct creature died event.
 		CreatureDiedEvent cd = new CreatureDiedEvent(c);
 		// add to event queue.
@@ -600,7 +600,7 @@ public class Board implements Jsonifiable, Serializable {
 	 * @param dmg
 	 *          the amount of damage.
 	 */
-	public void damageCard(Creature target, Card src, int dmg) {
+	public void damageCard(CreatureInterface target, Card src, int dmg) {
 		CardDamagedEvent event = new CardDamagedEvent(target, src, dmg);
 		target.takeDamage(dmg, src);
 		eventQueue.add(event);
@@ -612,7 +612,7 @@ public class Board implements Jsonifiable, Serializable {
 		eventQueue.add(event);
 	}
 
-	public void healCard(Creature target, Card src, int heal) {
+	public void healCard(CreatureInterface target, Card src, int heal) {
 		CardHealedEvent event = new CardHealedEvent(target, src, heal);
 		target.heal(heal, src);
 		eventQueue.add(event);
@@ -624,7 +624,7 @@ public class Board implements Jsonifiable, Serializable {
 		eventQueue.add(event);
 	}
 
-	public void changeCreatureHealth(Creature target, int amount, Zone z) {
+	public void changeCreatureHealth(CreatureInterface target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE, target, amount);
 		target.changeMaxHealthBy(amount);
 		eventQueue.add(event);
@@ -703,7 +703,7 @@ public class Board implements Jsonifiable, Serializable {
 	 * @param z
 	 *          the zone the card is in.
 	 */
-	public void changeCreatureAttack(Creature target, int amount, Zone z) {
+	public void changeCreatureAttack(CreatureInterface target, int amount, Zone z) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
 		eventQueue.add(event);

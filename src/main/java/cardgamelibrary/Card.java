@@ -74,11 +74,11 @@ public interface Card extends Jsonifiable, Serializable {
 
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
-	default public Effect onCreatureDamage(Creature target, Card src, int dmg, Zone z) {
+	default public Effect onCreatureDamage(CreatureInterface target, Card src, int dmg, Zone z) {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onCreatureHeal(Creature target, Card src, int heal, Zone z) {
+	default public Effect onCreatureHeal(CreatureInterface target, Card src, int heal, Zone z) {
 		return EmptyEffect.create();
 	}
 
@@ -135,7 +135,7 @@ public interface Card extends Jsonifiable, Serializable {
 	}
 
 	// creature dies
-	default public Effect onCreatureDeath(Creature cr, Zone z) {
+	default public Effect onCreatureDeath(CreatureInterface cr, Zone z) {
 		return EmptyEffect.create();
 	}
 
@@ -155,24 +155,24 @@ public interface Card extends Jsonifiable, Serializable {
 	}
 
 	// creature attacks another creature
-	default public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
+	default public Effect onCreatureAttack(CreatureInterface attacker, CreatureInterface target, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// creature attacks player
-	default public Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+	default public Effect onPlayerAttack(CreatureInterface attacker, Player target, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// when a creature's attack is changed.
 	// note that amtChange can be negative or positive.
-	default public Effect onAttackChange(Creature changed, int amtChange, Zone z) {
+	default public Effect onAttackChange(CreatureInterface changed, int amtChange, Zone z) {
 		return EmptyEffect.create();
 	}
 
 	// when a creature's health is changed.
 	// note that amtChange can be negative or positive.
-	default public Effect onHealthChange(Creature changed, int amtChange, Zone z) {
+	default public Effect onHealthChange(CreatureInterface creatureInterface, int amtChange, Zone z) {
 		return EmptyEffect.create();
 	}
 
