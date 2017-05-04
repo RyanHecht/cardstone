@@ -181,7 +181,7 @@ class Server{
 
 
   gameEnded(message){
-      alertMessage(message);
+      this.alertMessage(message);
       $('#messageModal').bind('hide', function () {
           window.location.replace("/lobbies");
       });
