@@ -181,7 +181,7 @@ class Server{
 
 
   gameEnded(message){
-      alertMessage(message);
+      this.alertMessage(message);
       $('#messageModal').bind('hide', function () {
           window.location.replace("/lobbies");
       });
@@ -252,6 +252,7 @@ class Server{
                 break;
             case "cardPlayed":
                 animationMaker.playCardAnimation(message.card);
+                console.log("Aibfwe i wiu wd i hh iu dwiih dw ihu iu");
                 break;
             case "cardDied":
                 quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());

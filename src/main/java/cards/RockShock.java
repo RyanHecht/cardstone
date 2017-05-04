@@ -4,6 +4,7 @@ import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
@@ -37,8 +38,8 @@ public class RockShock extends SpellCard implements TargetsOtherCard{
 	// i.e. graveyard).
 	public Effect impactCardTarget(Card target, Zone zone) {
 		return (Board board) -> {
-			if((target instanceof Creature)){
-				Creature c = (Creature) target;
+			if((target instanceof CreatureInterface)){
+				CreatureInterface c = (CreatureInterface) target;
 				board.damageCard(c, this, 2);
 				board.applyToCard(target,new CantAttackForTurnsCreature(c,2));
 			}

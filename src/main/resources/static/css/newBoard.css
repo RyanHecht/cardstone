@@ -271,14 +271,14 @@ body .bigModal .modal-dialog {
 }
 
 .animBox{
-    height:40%;
+    height:200px;
     position:absolute;
     top:2%;
     left:2%;
-    width:15%;
-    background-color:rgba(230,230,240,1.0);
+    width:140px;
+    background-color:rgba(230,230,240,0.0);
     padding:3px;
-    display:none;
+    /* display:none; */
 }
 
 .cardDrawnAnim{
@@ -291,6 +291,7 @@ body .bigModal .modal-dialog {
     background-size:contain;
     background-repeat:no-repeat;
     background-position:center;
+    display:none;
 }
 
 .endTurnPng{

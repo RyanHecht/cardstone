@@ -21,8 +21,8 @@ public class CardWrapper implements Card {
 
 	protected Card internal;
 
-	public CardWrapper(Creature internal) {
-		this.internal = internal;
+	public CardWrapper(Card c) {
+		this.internal = c;
 	}
 
 	// Doesn't have to be unique

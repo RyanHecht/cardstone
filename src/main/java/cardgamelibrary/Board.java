@@ -28,7 +28,6 @@ import events.TurnStartEvent;
 import game.Player;
 import game.PlayerType;
 import server.CommsWebSocket;
-import templates.decorators.TauntCreature;
 
 /**
  * Contains the entire state of a given game
@@ -258,7 +257,7 @@ public class Board implements Jsonifiable, Serializable {
 		Iterator<Card> it = creatureOne.iterator();
 		Iterator<Card> itTwo = creatureTwo.iterator();
 		while (it.hasNext()) {
-			CreatureInterface c = (Creature) it.next();
+			CreatureInterface c = (CreatureInterface) it.next();
 			if (c.isDead()) {
 				// creatureDies should create some sort of creatureDied event
 				// and use takeAction to set it in motion.
@@ -267,7 +266,7 @@ public class Board implements Jsonifiable, Serializable {
 			}
 		}
 		while (itTwo.hasNext()) {
-			CreatureInterface c = (Creature) itTwo.next();
+			CreatureInterface c = (CreatureInterface) itTwo.next();
 			if (c.isDead()) {
 				// creatureDies should create some sort of creatureDied event
 				// and use takeAction to set it in motion.
@@ -510,27 +509,23 @@ public class Board implements Jsonifiable, Serializable {
 		JsonObject result = new JsonObject();
 		result.addProperty("deckOne", deckOne.size());
 		result.addProperty("deckTwo", deckTwo.size());
-		result.add("hand1", handOne.jsonifySelfWithBack());
-		result.add("hand2", handTwo.jsonifySelfWithBack());
-		result.add("aura1", auraOne.jsonifySelf());
-		result.add("aura2", auraTwo.jsonifySelf());
-		result.add("creature1", creatureOne.jsonifySelf());
-		result.add("creature2", creatureTwo.jsonifySelf());
 
-		// creatures that we must send state to front end about.
-		OrderedCardCollection inactivePlayerCreatures = getOcc(getInactivePlayer(), Zone.CREATURE_BOARD);
-		boolean hasTaunt = false;
-		for (Card c : inactivePlayerCreatures) {
-			if (c.isA(TauntCreature.class)) {
-				hasTaunt = true;
-			}
-		}
-
-		JsonObject object = new JsonObject();
-		if (hasTaunt) {
-
+		// player one is the active player!
+		if (activePlayer.getPlayerType() == PlayerType.PLAYER_ONE) {
+			result.add("hand1", handOne.jsonifySelfWithZone());
+			result.add("hand2", handTwo.jsonifySelfWithBack());
+			result.add("aura1", auraOne.jsonifySelfWithZone());
+			result.add("aura2", auraTwo.jsonifySelf());
+			result.add("creature1", creatureOne.jsonifySelfWithZone());
+			result.add("creature2", creatureTwo.jsonifySelfWithZone());
 		} else {
-
+			// player two is the active player.
+			result.add("hand1", handOne.jsonifySelfWithBack());
+			result.add("hand2", handTwo.jsonifySelfWithZone());
+			result.add("aura1", auraOne.jsonifySelf());
+			result.add("aura2", auraTwo.jsonifySelfWithZone());
+			result.add("creature1", creatureOne.jsonifySelfWithZone());
+			result.add("creature2", creatureTwo.jsonifySelfWithZone());
 		}
 
 		return result;

@@ -2,14 +2,15 @@ package templates.decorators;
 
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 
-public class CreatureWrapper extends CardWrapper {
+public class CreatureWrapper extends CardWrapper implements CreatureInterface{
 
-	private Creature creatureInternal;
+	private CreatureInterface creatureInternal;
 
-	public CreatureWrapper(Creature internal) {
-		super(internal);
-		creatureInternal = internal;
+	public CreatureWrapper(CreatureInterface c) {
+		super(c);
+		creatureInternal = c;
 	}
 
 	public int getHealth() {

@@ -111,16 +111,21 @@ class creatureCard extends Card {
 	
 	drawTiny(div){
 		div.html(tinyCardHtml);
+        
          if(div.height() >= 80){
            div.find(".statArea").addClass("statAreaSmall");
            div.find(".imageArea").addClass("imageAreaSmall");
+           div.find(".cost").addClass("costSmall");
         }
         else{
-            div.find(".statArea").addClass("statAreaBig");
+           div.find(".statArea").addClass("statAreaBig");
            div.find(".imageArea").addClass("imageAreaBig");
+           div.find(".cost").addClass("costBig");
         }
+        
         this.drawStates(div);
 		div = div.children(".card");
+        this.cost.draw(div.children(".cost"));
 		div.children(".imageArea").children(".cardImage").attr("src", this.imagePath);
 		let stats = div.children(".statArea");
 		stats.children(".health").html(this.health);
@@ -176,21 +181,22 @@ class creatureCard extends Card {
 	}
 	
 	drawGivenSpace(div = this.div){
+        console.log(div);
 		if(div.height() > 125){
-			this.drawForTip();
+			this.drawForTip(div);
 		}
 		else{
-			this.drawTinyForTip();
+			this.drawTinyForTip(div);
 		}
-		super.addIdAndState(this.div);
+		super.addIdAndState(div);
 	}
 	
-	drawForTip(){
-		this.drawSmallAndHiddenBig(this.div);
+	drawForTip(div = this.div){
+		this.drawSmallAndHiddenBig(div);
 
 	}
-	drawTinyForTip(){
-		this.drawTinyAndHiddenBig(this.div);
+	drawTinyForTip(div = this.div){
+		this.drawTinyAndHiddenBig(div);
 	}
 	
 	
@@ -417,7 +423,8 @@ let cardBackHtml = '<div class="card cardBack hasTooltip">' +
 			'</div>';
 
 let tinyCardHtml = '<div class="card tinyCard creatureCard hasTooltip">' + 
-				'<div class="cardpart imageArea"><image class="cardImage" src="fail.jpg"></image></div>' + 
+				'<div class="cardpart cost"></div>' + 
+                '<div class="cardpart imageArea"><image class="cardImage" src="fail.jpg"></image></div>' + 
 				'<div class="cardpart statArea">'+
 				'<div class="stat attack"></div><div class="stat health"></div>' +
 				'</div>'+
