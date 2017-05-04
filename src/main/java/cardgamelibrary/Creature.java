@@ -7,7 +7,7 @@ import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
 import game.Player;
 
-public class Creature extends PlayableCard {
+public class Creature extends PlayableCard implements CreatureInterface{
 
 	private int	maxHealth;
 	private int	health;

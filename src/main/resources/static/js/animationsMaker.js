@@ -21,6 +21,7 @@ class animationsMaker{
         let cardFromCache = cardCache.getByIID(card.id);
         box.append("<div class='cardBox'></div>");
         cardFromCache.drawGivenSpace(box.find(".cardBox"));
+        cardFromCache.changeId(box.find(".cardBox"));
         box.show();
         window.setTimeout(killAnimBox,1500);
         box.click(killAnimBox);
