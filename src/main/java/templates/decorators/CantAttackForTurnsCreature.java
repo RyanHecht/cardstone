@@ -14,7 +14,6 @@ import templates.CantAttackCreature;
 //Proof of concept for the wrappers (of joy)
 public class CantAttackForTurnsCreature extends CreatureWrapper{
 
-	private Creature internal;
 	private int turns;
 
 	public CantAttackForTurnsCreature(Creature internal, int turns){
