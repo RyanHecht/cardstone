@@ -1,24 +1,24 @@
 package events;
 
 import cardgamelibrary.Card;
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
 public class CardDamagedEvent extends Event {
 
-	private Creature	target;
-	private Card			src;
-	private int				dmg;
+	private CreatureInterface target;
+	private Card src;
+	private int dmg;
 
-	public CardDamagedEvent(Creature target, Card src, int dmg) {
+	public CardDamagedEvent(CreatureInterface target2, Card src, int dmg) {
 		super();
-		this.target = target;
+		this.target = target2;
 		this.src = src;
 		this.dmg = dmg;
 	}
 
-	public Creature getTarget() {
+	public CreatureInterface getTarget() {
 		return target;
 	}
 

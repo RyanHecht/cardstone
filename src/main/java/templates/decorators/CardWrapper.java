@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.Event;
@@ -104,12 +105,12 @@ public class CardWrapper implements Card {
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
 	@Override
-	public Effect onCreatureDamage(Creature target, Card src, int dmg, Zone z) {
+	public Effect onCreatureDamage(CreatureInterface target, Card src, int dmg, Zone z) {
 		return internal.onCreatureDamage(target, src, dmg, z);
 	}
 
 	@Override
-	public Effect onCreatureHeal(Creature target, Card src, int heal, Zone z) {
+	public Effect onCreatureHeal(CreatureInterface target, Card src, int heal, Zone z) {
 		return internal.onCreatureHeal(target, src, heal, z);
 	}
 
@@ -163,7 +164,7 @@ public class CardWrapper implements Card {
 
 	// creature dies
 	@Override
-	public Effect onCreatureDeath(Creature cr, Zone z) {
+	public Effect onCreatureDeath(CreatureInterface cr, Zone z) {
 		return internal.onCreatureDeath(cr, z);
 	}
 
@@ -187,27 +188,27 @@ public class CardWrapper implements Card {
 
 	// creature attacks another creature
 	@Override
-	public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
+	public Effect onCreatureAttack(CreatureInterface attacker, CreatureInterface target, Zone z) {
 		return internal.onCreatureAttack(attacker, target, z);
 	}
 
 	// creature attacks player
 	@Override
-	public Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+	public Effect onPlayerAttack(CreatureInterface attacker, Player target, Zone z) {
 		return internal.onPlayerAttack(attacker, target, z);
 	}
 
 	// when a creature's attack is changed.
 	// note that amtChange can be negative or positive.
 	@Override
-	public Effect onAttackChange(Creature changed, int amtChange, Zone z) {
+	public Effect onAttackChange(CreatureInterface changed, int amtChange, Zone z) {
 		return internal.onAttackChange(changed, amtChange, z);
 	}
 
 	// when a creature's health is changed.
 	// note that amtChange can be negative or positive.
 	@Override
-	public Effect onHealthChange(Creature changed, int amtChange, Zone z) {
+	public Effect onHealthChange(CreatureInterface changed, int amtChange, Zone z) {
 		return internal.onHealthChange(changed, amtChange, z);
 	}
 

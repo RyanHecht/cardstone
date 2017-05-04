@@ -7,12 +7,12 @@ import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
 import game.Player;
 
-public class Creature extends PlayableCard implements CreatureInterface{
+public class Creature extends PlayableCard implements CreatureInterface {
 
-	private int	maxHealth;
-	private int	health;
-	private int	attack;
-	private int	attacks;
+	private int maxHealth;
+	private int health;
+	private int attack;
+	private int attacks;
 
 	public Creature(int maxHealth, int attack, ManaPool cost, String image, Player owner, String name, String text,
 			CardType type) {
@@ -99,7 +99,7 @@ public class Creature extends PlayableCard implements CreatureInterface{
 	}
 
 	@Override
-	public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
+	public Effect onCreatureAttack(CreatureInterface attacker, CreatureInterface target, Zone z) {
 		if (attacker.equals(this)) {
 			// assert we can still attack.
 			assert (getNumAttacks() > 0);
@@ -114,7 +114,7 @@ public class Creature extends PlayableCard implements CreatureInterface{
 	}
 
 	@Override
-	public Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+	public Effect onPlayerAttack(CreatureInterface attacker, Player target, Zone z) {
 		if (attacker.equals(this)) {
 			// assert we can still attack.
 			assert (getNumAttacks() > 0);

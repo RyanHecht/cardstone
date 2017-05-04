@@ -2,16 +2,16 @@ package effects;
 
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 
 public class CardDamageEffect implements Effect {
 
-	private Card			source;
-	private Creature	cardDamaged;
-	private int				dmg;
+	private Card source;
+	private CreatureInterface cardDamaged;
+	private int dmg;
 
-	public CardDamageEffect(Card c, Creature target, int dmg) {
+	public CardDamageEffect(Card c, CreatureInterface target, int dmg) {
 		source = c;
 		cardDamaged = target;
 		this.dmg = dmg;
