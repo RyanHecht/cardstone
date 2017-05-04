@@ -10,10 +10,10 @@ public interface OnOwnDeathCard extends Card {
 
 	@Override
 	default public Effect onCreatureDeath(Creature cr, Zone z) {
-		if (cr != this) {
-			return EmptyEffect.create();
-		} else {
+		if (cr.equals(this)) {
 			return this.onDeathEffect(z);
+		} else {
+			return EmptyEffect.create();
 		}
 	}
 
