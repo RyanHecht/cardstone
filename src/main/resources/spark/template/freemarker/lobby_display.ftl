@@ -19,7 +19,7 @@
 	eio q
 </div>
 <div class="col-md-4 tallCol pull-right">
-  <div class="panel panel-default">
+  <div class="panel panel-default tallPanel">
     <div class="panel-heading">
       <h3 class="panel-title" id="oppname">${opp}</h3>
     </div>
