@@ -258,7 +258,7 @@ public class Board implements Jsonifiable, Serializable {
 		Iterator<Card> it = creatureOne.iterator();
 		Iterator<Card> itTwo = creatureTwo.iterator();
 		while (it.hasNext()) {
-			CreatureInterface c = (Creature) it.next();
+			CreatureInterface c = (CreatureInterface) it.next();
 			if (c.isDead()) {
 				// creatureDies should create some sort of creatureDied event
 				// and use takeAction to set it in motion.
@@ -267,7 +267,7 @@ public class Board implements Jsonifiable, Serializable {
 			}
 		}
 		while (itTwo.hasNext()) {
-			CreatureInterface c = (Creature) itTwo.next();
+			CreatureInterface c = (CreatureInterface) itTwo.next();
 			if (c.isDead()) {
 				// creatureDies should create some sort of creatureDied event
 				// and use takeAction to set it in motion.
