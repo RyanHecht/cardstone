@@ -202,7 +202,7 @@ public class Game implements Jsonifiable, Serializable {
       return playerOne.getId();
     }
     return -1;
-    }
+  }
 
   /**
    * ends the game.
@@ -212,7 +212,7 @@ public class Game implements Jsonifiable, Serializable {
    */
   public void endGame(int i) {
     // move game to finished games somehow.
-    ClassByJosh.endGame(this, i);
+    
 
     // set up messages for players to receive.
     String messageOne;
@@ -240,6 +240,7 @@ public class Game implements Jsonifiable, Serializable {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    // GameManager.endGame(new GameStats(this, ));
   }
 
   /**
@@ -818,6 +819,10 @@ public class Game implements Jsonifiable, Serializable {
    */
   public int getNumTurns() {
     return board.getTurnIndex();
+  }
+
+  public int getActivePlayerId() {
+    return board.getActivePlayer().getId();
   }
 
   @Override
