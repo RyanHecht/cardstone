@@ -42,6 +42,8 @@ public class LobbyManager {
       throw new IllegalArgumentException(
           "You're currently in a game, and cannot create a lobby.");
     } else {
+      System.out.println("adding2: ");
+
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
       System.out.println("Made lobby: " + lobby);
       return lobby;

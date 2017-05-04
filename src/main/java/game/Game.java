@@ -720,13 +720,6 @@ public class Game implements Jsonifiable, Serializable {
 				return;
 			}
 
-			if (card instanceof TargetsOtherCard) {
-				// send player a target request b/c their card requires a
-				// target.
-				CommsWebSocket.sendTargetRequest(playerId);
-				return;
-			}
-
 			// the user must make some sort of choice here.
 			if (card instanceof PlayerChoosesCards) {
 				// get possible options.

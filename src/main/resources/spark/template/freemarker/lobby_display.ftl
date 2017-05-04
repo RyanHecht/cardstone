@@ -16,14 +16,7 @@
   </div>
 </div>
 <div class="col-md-4 tallCol">
-	eio qwinu qwdiun qwidu qwidub qwdb qwd
-	 qwd 
-	 qwd
-	  qwd
-	   qwd
-	    qw
-	    d q
-	    wdhjbqwdib
+	eio q
 </div>
 <div class="col-md-4 tallCol pull-right">
   <div class="panel panel-default">

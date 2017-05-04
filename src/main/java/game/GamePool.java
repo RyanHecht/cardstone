@@ -1,5 +1,11 @@
 package game;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,13 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.concurrent.ExecutionException;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
-
 import logins.Db;
 
 /**
@@ -28,6 +27,7 @@ public class GamePool {
       .newBuilder()
       .maximumSize(POOL_SIZE)
       .removalListener(new RemovalListener<Integer, Game>() {
+        @Override
         public void onRemoval(RemovalNotification<Integer, Game> removal) {
           if (removal.wasEvicted()) {
             int id = removal.getKey();
@@ -55,16 +55,19 @@ public class GamePool {
           }
         }
       }).build(new CacheLoader<Integer, Game>() {
+        @Override
         public Game load(Integer key) {
           String gameFinder = "select board from in_progress where "
               + "player1 = ? or player2 = ?;";
-          try (ResultSet rs = Db.query(gameFinder, key)) {
-            rs.next();
-            Game found = deserialize(rs.getString(1));
-            assert !rs.next();
-            return found;
+          try (ResultSet rs = Db.query(gameFinder, key, key)) {
+            if (rs.next()) {
+              return deserialize(rs.getString(1));
+            } else {
+              return null;
+            }
           } catch (SQLException | NullPointerException | ClassNotFoundException
               | IOException e) {
+            e.printStackTrace();
             return null;
           }
         }
@@ -85,15 +88,11 @@ public class GamePool {
 
     int g1;
     int g2;
-    try {
-      g1 = playersToGames.get(u1) == null ? gId
-          : playersToGames.get(u1).getId();
-      g2 = playersToGames.get(u2) == null ? gId
-          : playersToGames.get(u2).getId();
-    } catch (ExecutionException e) {
-      g1 = gId;
-      g2 = g1;
-    }
+
+    g1 = getGameByPlayerId(u1) == null ? gId
+        : getGameByPlayerId(u1).getId();
+    g2 = getGameByPlayerId(u1) == null ? gId
+        : getGameByPlayerId(u1).getId();
 
     if (g1 != gId || g2 != gId) {
       System.out.println("already in game!");
@@ -113,7 +112,7 @@ public class GamePool {
   public Game getGameByPlayerId(int id) {
     try {
       return playersToGames.get(id);
-    } catch (ExecutionException e) {
+    } catch (ExecutionException | InvalidCacheLoadException e) {
       return null;
     }
   }

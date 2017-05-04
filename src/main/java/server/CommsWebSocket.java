@@ -212,14 +212,6 @@ public class CommsWebSocket {
   }
 
   /**
-   * Ask the user to target something.
-   * @param userId The id of the recipient user.
-   */
-  public static void sendTargetRequest(int userId) {
-
-  }
-
-  /**
    * Inform the user that their action was correct.
    * @param userId The id of the recipient user.
    * @throws IOException thrown by websocket.
@@ -233,7 +225,7 @@ public class CommsWebSocket {
 
   /**
    * Inform the user that their action was incorrect.
-   * @param userId The id of the recipient user.
+   * @param uderId The id of the recipient user.
    * @param message The message of why the action was bad.
    * @throws IOException thrown by websocket.
    */

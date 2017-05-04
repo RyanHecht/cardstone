@@ -1,5 +1,11 @@
 package main;
 
+import cardgamelibrary.MasterCardList;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import game.Game;
+import game.GameManager;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,14 +15,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import cardgamelibrary.MasterCardList;
-import game.Game;
-import game.GameManager;
 import lobby.Lobby;
 import lobby.LobbyManager;
 import logins.Db;
@@ -148,7 +146,9 @@ public class Gui {
               "lobbies.ftl");
         }
       }
-      return new ModelAndView(ImmutableMap.of(), "boardDraw.ftl");
+      return new ModelAndView(ImmutableMap.of(),
+          "boardDraw.ftl");
+
     }
   }
 
