@@ -18,7 +18,7 @@ let isReplayMode = false;
 let mouseSystem;
 let canvasLine = new DrawnLine(0,0,0,0);
 let turnTimer;
-let tooltipDisplay = false;
+let tooltipDisplay = true;
 let spectator = false;
 let canAct = true;
 let spectating = 0;
