@@ -44,13 +44,15 @@ import templates.TargetsPlayer;
  *
  */
 public class Game implements Jsonifiable, Serializable {
+
+	private static final long			serialVersionUID	= 1L;
 	private static final int			PLAYER_START_LIFE	= 30;
 	private GameState							state							= GameState.IDLE;
 	private Board									board;
 	private Player								playerOne;
 	private Player								playerTwo;
 	private int										id;
-	private static AtomicInteger	idGenerator				= new AtomicInteger(0);
+	private static AtomicInteger	idGenerator				= new AtomicInteger(GameManager.getStartingId());
 	private static final String		PACKAGE_PATH			= "cards.";
 
 	// used to keep track of the card that spawns a choose request so we can
@@ -771,6 +773,13 @@ public class Game implements Jsonifiable, Serializable {
 
 				// state should now set to awaiting response.
 				lockState();
+			}
+
+			if (card instanceof TargetsOtherCard || card instanceof TargetsPlayer) {
+				// their card needs a target!
+				sendPlayerActionBad(playerId,
+						"That card needs a target to be played! Try dragging it onto a valid target to play it.");
+				return;
 			}
 
 			Zone z;

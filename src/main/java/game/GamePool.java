@@ -1,11 +1,5 @@
 package game;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.concurrent.ExecutionException;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
+
 import logins.Db;
 
 /**
@@ -34,6 +36,7 @@ public class GamePool {
             Game g = removal.getValue();
 
             int otherId = g.getOpposingPlayerId(id);
+            // ensure id is less than otherId for db consistency
             if (id > otherId) {
               id = id ^ otherId ^ (otherId = id); // swaps values
             }
@@ -60,11 +63,14 @@ public class GamePool {
           String gameFinder = "select board from in_progress where "
               + "player1 = ? or player2 = ?;";
           try (ResultSet rs = Db.query(gameFinder, key, key)) {
-            if (rs.next()) {
-              return deserialize(rs.getString(1));
-            } else {
+            if (!rs.next()) {
+              System.out
+                  .print("Could not load game from database for user " + key);
               return null;
             }
+            System.out
+                .println("Successfully retrieved game from db for user " + key);
+            return deserialize(rs.getString(1));
           } catch (SQLException | NullPointerException | ClassNotFoundException
               | IOException e) {
             e.printStackTrace();
