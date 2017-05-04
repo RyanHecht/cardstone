@@ -154,7 +154,7 @@ class Server{
                     spectating = message.payload.watching;
                     break;
                 case MESSAGE_TYPE.GAME_END:
-                    // TODO: Josh...handle this?
+                    this.gameEnded(message.payload);
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);
@@ -180,7 +180,13 @@ class Server{
 	}
 
 
-
+  gameEnded(message){
+      alertMessage(message);
+      $('#messageModal').bind('hide', function () {
+          window.location.replace("/lobbies");
+      }
+  }
+    
   alertMessage(message) {
     customAlert(message.message);
   }
