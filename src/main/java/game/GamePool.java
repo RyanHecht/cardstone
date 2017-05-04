@@ -60,10 +60,11 @@ public class GamePool {
           String gameFinder = "select board from in_progress where "
               + "player1 = ? or player2 = ?;";
           try (ResultSet rs = Db.query(gameFinder, key, key)) {
-            rs.next();
-            Game found = deserialize(rs.getString(1));
-            assert !rs.next();
-            return found;
+            if (rs.next()) {
+              return deserialize(rs.getString(1));
+            } else {
+              return null;
+            }
           } catch (SQLException | NullPointerException | ClassNotFoundException
               | IOException e) {
             e.printStackTrace();
@@ -87,15 +88,11 @@ public class GamePool {
 
     int g1;
     int g2;
-    try {
-      g1 = playersToGames.get(u1) == null ? gId
-          : playersToGames.get(u1).getId();
-      g2 = playersToGames.get(u2) == null ? gId
-          : playersToGames.get(u2).getId();
-    } catch (ExecutionException e) {
-      g1 = gId;
-      g2 = g1;
-    }
+
+    g1 = getGameByPlayerId(u1) == null ? gId
+        : getGameByPlayerId(u1).getId();
+    g2 = getGameByPlayerId(u1) == null ? gId
+        : getGameByPlayerId(u1).getId();
 
     if (g1 != gId || g2 != gId) {
       System.out.println("already in game!");

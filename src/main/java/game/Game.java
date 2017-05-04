@@ -2,17 +2,6 @@ package game;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import cardgamelibrary.AuraCard;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
@@ -24,6 +13,8 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import events.CardChosenEvent;
 import events.CardPlayedEvent;
 import events.CardTargetedEvent;
@@ -32,6 +23,13 @@ import events.PlayerAttackEvent;
 import events.PlayerTargetedEvent;
 import events.TurnEndEvent;
 import events.TurnStartEvent;
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import server.CommsWebSocket;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
@@ -190,8 +188,7 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * gets the id of the player who ISN'T the player w/the input id.
    *
-   * @param playerId
-   *          the id of the player we're trying to find the opponent of.
+   * @param playerId the id of the player we're trying to find the opponent of.
    * @return the opposing player's id, or -1 if the input id doesn't belong to
    *         either player.
    */
@@ -207,12 +204,10 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * ends the game.
    *
-   * @param i
-   *          the result of the game (see checkWinners for how this works).
+   * @param i the result of the game (see checkWinners for how this works).
    */
   public void endGame(int i) {
     // move game to finished games somehow.
-    
 
     // set up messages for players to receive.
     String messageOne;
@@ -255,8 +250,7 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Checks to see if a player with a certain Id is in the game.
    *
-   * @param playerId
-   *          the id of the player we are looking for.
+   * @param playerId the id of the player we are looking for.
    * @return a boolean that represents whether a player with the input id is in
    *         the game.
    */
@@ -267,8 +261,7 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Checks to see if it's a player with a certain id's turn.
    *
-   * @param playerId
-   *          the player id.
+   * @param playerId the player id.
    * @return a boolean representing whether the the player with the input id is
    *         the current active player. Outputs false if the input playerId is
    *         not in the game.
@@ -294,8 +287,7 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Used to send a message to a player saying their action was valid.
    *
-   * @param playerId
-   *          the id of the player we are sending the message to.
+   * @param playerId the id of the player we are sending the message to.
    */
   private void sendPlayerActionGood(int playerId) {
     try {
@@ -308,10 +300,8 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Used to send messages to players telling them their actions are bad.
    *
-   * @param playerId
-   *          the id of the player we are sending a message to.
-   * @param message
-   *          the message we are sending them.
+   * @param playerId the id of the player we are sending a message to.
+   * @param message the message we are sending them.
    */
   private void sendPlayerActionBad(int playerId, String message) {
     try {
@@ -352,10 +342,8 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Handles receiving turn end inputs from front end.
    *
-   * @param userInput
-   *          a JsonObject representing the user's input.
-   * @param playerId
-   *          the id of the player who sent the action.
+   * @param userInput a JsonObject representing the user's input.
+   * @param playerId the id of the player who sent the action.
    */
   public void handleTurnend(JsonObject userInput, int playerId) {
     if (!(isTurn(playerId))) {
@@ -417,10 +405,8 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Handles receiving card targeted inputs from front end.
    *
-   * @param userInput
-   *          a JsonObject representing the user's input.
-   * @param playerId
-   *          the id of the player who sent the action.
+   * @param userInput a JsonObject representing the user's input.
+   * @param playerId the id of the player who sent the action.
    */
   public void handleCardTargeted(JsonObject userInput, int playerId) {
     if (isTurn(playerId)) {
@@ -526,10 +512,8 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Handles players being targeted.
    *
-   * @param userInput
-   *          a JsonObject representing the user's input.
-   * @param playerId
-   *          the player who submitted the action.
+   * @param userInput a JsonObject representing the user's input.
+   * @param playerId the player who submitted the action.
    */
   public void handlePlayerTargeted(JsonObject userInput, int playerId) {
     if (isTurn(playerId)) {
@@ -698,10 +682,8 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Handles a card being played.
    *
-   * @param userInput
-   *          a JSON representing the user's input.
-   * @param playerId
-   *          the player who submitted the action.
+   * @param userInput a JSON representing the user's input.
+   * @param playerId the player who submitted the action.
    */
   public void handleCardPlayed(JsonObject userInput, int playerId) {
     System.out.println("asdiujqwiuihqwiuibuqwdqiubiua");
@@ -728,12 +710,6 @@ public class Game implements Jsonifiable, Serializable {
       if (!(board.getActivePlayer().validateCost(card.getCost()))) {
         // in this case they can't play the card.
         sendPlayerActionBad(playerId, "Cannot pay card's cost.");
-        return;
-      }
-
-      if (card instanceof TargetsOtherCard) {
-        // send player a target request b/c their card requires a target.
-        CommsWebSocket.sendTargetRequest(playerId);
         return;
       }
 
@@ -803,8 +779,7 @@ public class Game implements Jsonifiable, Serializable {
   /**
    * Tells you if a player with a certain id is the active player.
    *
-   * @param playerId
-   *          the id of a player we want to check.
+   * @param playerId the id of a player we want to check.
    * @return a boolean that tells us if the playerId input belongs to the
    *         current active player.
    */
@@ -814,7 +789,7 @@ public class Game implements Jsonifiable, Serializable {
 
   /**
    * gets how many turns have elapsed in a game.
-   * 
+   *
    * @return the number of turns in a game.
    */
   public int getNumTurns() {
