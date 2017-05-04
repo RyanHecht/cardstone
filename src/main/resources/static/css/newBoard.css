@@ -9,7 +9,6 @@ html{
 
 img{
     -webkit-user-drag: none;
-    
 }
 
 .blue-font{
@@ -79,7 +78,7 @@ body{
     height:100%;
 }
 
-
+ 
 
 body .bigModal .modal-dialog {
     width:90%;
