@@ -192,4 +192,13 @@ public class LobbyWebSocket {
     }
   }
 
+  private static void sendMessageToSession(Session session,
+      LobbyMessageTypeEnum type, JsonObject payload) throws IOException {
+    JsonObject obj = new JsonObject();
+    obj.addProperty("type", type.ordinal());
+    obj.add("payload", payload);
+    System.out.println("a lobby message is being sent now.");
+    session.getRemote().sendString(GSON.toJson(obj));
+  }
+
 }

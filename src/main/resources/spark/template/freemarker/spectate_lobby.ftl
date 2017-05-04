@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>${title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link rel="stylesheet" href="css/bootstrapalt.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
@@ -23,8 +23,8 @@
 		  </div>
 		</div>
 		<div class="col-md-4 tallCol">
-			eio qwinu qwdiun qwidu 
-			 qwd 
+			eio qwinu qwdiun qwidu
+			 qwd
 			 qwd
 			  qwd
 			   qwd
@@ -50,7 +50,7 @@
 	       <button type="button" class="btn btn-default" id="leave">Leave</button>
 	     </div>
 	</div>
-	
+
      <script src="js/jquery-2.1.1.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/jquery-cookie.js"></script>
