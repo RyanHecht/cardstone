@@ -101,7 +101,7 @@ public class LobbyHandlers {
             password);
         auth = true;
       } catch (IllegalArgumentException e) {
-        e.printStackTrace();
+        // e.printStackTrace();
         obj.addProperty("message", e.getMessage());
       }
       obj.addProperty("auth", auth);
@@ -132,7 +132,7 @@ public class LobbyHandlers {
             name, password);
         auth = true;
       } catch (IllegalArgumentException e) {
-        e.printStackTrace();
+        // e.printStackTrace();
         obj.addProperty("message", e.getMessage());
       }
       obj.addProperty("auth", auth);
