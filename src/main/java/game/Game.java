@@ -321,6 +321,23 @@ public class Game implements Jsonifiable, Serializable {
 	}
 
 	/**
+	 * Sends text messages to a player in the game!
+	 * 
+	 * @param playerId
+	 *          the id of the player to send to.
+	 * @param message
+	 *          the message to send that player.
+	 */
+	public void sendPlayerTextMessage(int playerId, String message) {
+		try {
+			CommsWebSocket.sendTextMessage(playerId, message);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Sends the board state to both players in the game.
 	 */
 	protected void sendWholeBoardToAllAndDb() {
