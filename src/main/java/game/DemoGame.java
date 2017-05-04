@@ -16,7 +16,7 @@ public class DemoGame extends Game {
 
 	private int								actionId	= 1;
 
-	private final String[]		messages	= new String[10];
+	private final String[]		messages	= new String[11];
 
 	private TurnEndEvent			turnEnd;
 
@@ -43,6 +43,7 @@ public class DemoGame extends Game {
 		messages[8] = "End your turn.";
 		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the heart representing your"
 				+ "opponent's health in the top right corner.";
+		messages[10] = "Congrats! You have finished the tutorial.";
 
 		// create the AI events.
 		Player ai = getBoard().getInactivePlayer();
@@ -88,6 +89,8 @@ public class DemoGame extends Game {
 			}
 
 			actionId++;
+			// tell player what to do next.
+			sendPlayerTextMessage(playerId, messages[actionId]);
 		}
 	}
 
@@ -120,6 +123,8 @@ public class DemoGame extends Game {
 				}
 				break;
 			}
+			// tell player what to do next.
+			sendPlayerTextMessage(playerId, messages[actionId]);
 		}
 	}
 
@@ -136,6 +141,8 @@ public class DemoGame extends Game {
 			}
 			super.handlePlayerTargeted(userInput, playerId);
 			actionId++;
+			// tell player what to do next.
+			sendPlayerTextMessage(playerId, messages[actionId]);
 		}
 	}
 
@@ -212,6 +219,8 @@ public class DemoGame extends Game {
 				}
 				break;
 			}
+			// tell player what to do next.
+			sendPlayerTextMessage(playerId, messages[actionId]);
 		}
 	}
 
