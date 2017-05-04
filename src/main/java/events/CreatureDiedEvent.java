@@ -1,16 +1,16 @@
 package events;
 
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
 public class CreatureDiedEvent extends Event {
 
-	private Creature creature;
+	private CreatureInterface creature;
 
-	public CreatureDiedEvent(Creature cr) {
+	public CreatureDiedEvent(CreatureInterface c) {
 		super();
-		creature = cr;
+		creature = c;
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class CreatureDiedEvent extends Event {
 		return EventType.CREATURE_DIED;
 	}
 
-	public Creature getCreature() {
+	public CreatureInterface getCreature() {
 		return creature;
 	}
 

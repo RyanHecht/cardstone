@@ -1,24 +1,24 @@
 package events;
 
 import cardgamelibrary.Card;
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 
 public class CardHealedEvent extends Event {
 
-	private Creature	target;
-	private Card			src;
-	private int				heal;
+	private CreatureInterface target;
+	private Card src;
+	private int heal;
 
-	public CardHealedEvent(Creature target, Card src, int heal) {
+	public CardHealedEvent(CreatureInterface target2, Card src, int heal) {
 		super();
-		this.target = target;
+		this.target = target2;
 		this.src = src;
 		this.heal = heal;
 	}
 
-	public Creature getTarget() {
+	public CreatureInterface getTarget() {
 		return target;
 	}
 
