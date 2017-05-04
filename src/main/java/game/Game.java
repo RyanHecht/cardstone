@@ -388,7 +388,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 	}
 
-	private void act(Event event) {
+	protected void act(Event event) {
 
 		String s = board.legalityProcessEvent(event);
 		if (!s.equals("ok")) {

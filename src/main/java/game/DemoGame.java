@@ -6,6 +6,9 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.Card;
+import cardgamelibrary.Zone;
+import events.CardPlayedEvent;
+import events.TurnEndEvent;
 
 public class DemoGame extends Game {
 
@@ -14,6 +17,12 @@ public class DemoGame extends Game {
 	private int								actionId	= 1;
 
 	private final String[]		messages	= new String[10];
+
+	private TurnEndEvent			turnEnd;
+
+	private CardPlayedEvent		aiPlayedElement;
+
+	private CardPlayedEvent		aiPlayedWaterSpirit;
 
 	public DemoGame(int playerOneId) {
 		// superclass constructor with "true" flag passed to indicate that it is a
@@ -34,6 +43,19 @@ public class DemoGame extends Game {
 		messages[8] = "End your turn.";
 		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the heart representing your"
 				+ "opponent's health in the top right corner.";
+
+		// create the AI events.
+		Player ai = getBoard().getInactivePlayer();
+		turnEnd = new TurnEndEvent(ai);
+		// these are the two cards the ai plays.
+		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.DECK).getCards().get(5);
+		Card aiWaterElement = getBoard().getOcc(ai, Zone.DECK).getFirstCard();
+
+		// events that reflect the cards played are constructed.
+		aiPlayedElement = new CardPlayedEvent(aiWaterElement, getBoard().getOcc(ai, Zone.HAND),
+				getBoard().getOcc(ai, Zone.GRAVE));
+		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND),
+				getBoard().getOcc(ai, Zone.CREATURE_BOARD));
 	}
 
 	@Override
@@ -47,6 +69,18 @@ public class DemoGame extends Game {
 			}
 			// in this case the turn end was correct so we should execute it.
 			super.handleTurnend(userInput, playerId);
+
+			// now we must decide what the ai needs to dp.
+			if (actionId == 2) {
+				// ai plays element, then spirit, then ends turn.
+				act(aiPlayedElement);
+				act(aiPlayedWaterSpirit);
+				act(turnEnd);
+			} else if (actionId == 8) {
+				// in this case the AI just ends their turn.
+				act(turnEnd);
+			}
+
 			actionId++;
 		}
 	}
