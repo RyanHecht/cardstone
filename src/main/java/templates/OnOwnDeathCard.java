@@ -1,7 +1,7 @@
 package templates;
 
 import cardgamelibrary.Card;
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Zone;
 import effects.EmptyEffect;
@@ -9,7 +9,7 @@ import effects.EmptyEffect;
 public interface OnOwnDeathCard extends Card {
 
 	@Override
-	default public Effect onCreatureDeath(Creature cr, Zone z) {
+	default public Effect onCreatureDeath(CreatureInterface cr, Zone z) {
 		if (cr.equals(this)) {
 			return this.onDeathEffect(z);
 		} else {

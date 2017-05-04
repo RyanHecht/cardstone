@@ -2,22 +2,17 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
-import effects.CardDamageEffect;
-import effects.EmptyEffect;
-import effects.PlayerDamageEffect;
 import game.Player;
 
-public interface CreatureInterface extends Card{
+public interface CreatureInterface extends Card {
 
-	
+	public int getHealth();
 
-	public int getHealth() ;
+	public int getMaxHealth();
 
-	public int getMaxHealth() ;
+	public int getAttack();
 
-	public int getAttack() ;
-
-	public int getNumAttacks() ;
+	public int getNumAttacks();
 
 	/**
 	 * Tells you if a given creature can still attack.
@@ -25,13 +20,13 @@ public interface CreatureInterface extends Card{
 	 * @return a boolean representing whether or not the creature can still
 	 *         attack.
 	 */
-	public boolean canAttack() ;
+	public boolean canAttack();
 
-	public void takeDamage(int damage, Card src) ;
+	public void takeDamage(int damage, Card src);
 
-	public void heal(int heal, Card src) ;
+	public void heal(int heal, Card src);
 
-	public void setHealth(int newHealth) ;
+	public void setHealth(int newHealth);
 
 	/**
 	 * gets whether the creature is dead. By default just returns if health < 0,
@@ -39,26 +34,26 @@ public interface CreatureInterface extends Card{
 	 *
 	 * @return a boolean representing whether the creature is dead or not.
 	 */
-	public boolean isDead() ;
+	public boolean isDead();
 
 	@Override
-	public Effect onCardPlayed(Card c, Zone z) ;
+	public Effect onCardPlayed(Card c, Zone z);
 
 	@Override
-	public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) ;
+	public Effect onCreatureAttack(CreatureInterface attacker, CreatureInterface target, Zone z);
 
 	@Override
-	public Effect onPlayerAttack(Creature attacker, Player target, Zone z) ;
+	public Effect onPlayerAttack(CreatureInterface attacker, Player target, Zone z);
 
 	@Override
-	public JsonObject jsonifySelf() ;
+	public JsonObject jsonifySelf();
 
 	@Override
-	public Effect onTurnStart(Player p, Zone z) ;
+	public Effect onTurnStart(Player p, Zone z);
 
-	public void setAttacks(int attacks) ;
+	public void setAttacks(int attacks);
 
-	public void changeMaxHealthBy(int amount) ;
+	public void changeMaxHealthBy(int amount);
 
-	public void changeAttackBy(int amount) ;
+	public void changeAttackBy(int amount);
 }
