@@ -64,7 +64,8 @@ public class LobbyHandlers {
         int uid = Integer.parseInt(req.cookie("id"));
         LobbyManager.addLobby(name, priv, password, uid);
         auth = true;
-      } catch (IllegalArgumentException e) {
+      } catch (Exception e) {
+        e.printStackTrace();
         json.addProperty("message", e.getMessage());
       }
       json.addProperty("auth", auth);
