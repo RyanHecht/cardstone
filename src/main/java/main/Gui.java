@@ -7,12 +7,6 @@ import com.google.gson.JsonObject;
 import game.Game;
 import game.GameManager;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -153,27 +147,9 @@ public class Gui {
         }
       }
       return new ModelAndView(ImmutableMap.of(),
-          renderContent("static/boardDraw.html"));
+          "boardDraw.ftl");
 
     }
-  }
-
-  private String renderContent(String htmlFile) {
-    try {
-      // If you are using maven then your files
-      // will be in a folder called resources.
-      // getResource() gets that folder
-      // and any files you specify.
-      URL url = getClass().getResource(htmlFile);
-
-      // Return a String which has all
-      // the contents of the file.
-      Path path = Paths.get(url.toURI());
-      return new String(Files.readAllBytes(path), Charset.defaultCharset());
-    } catch (IOException | URISyntaxException e) {
-      e.printStackTrace();
-    }
-    return null;
   }
 
   /**
