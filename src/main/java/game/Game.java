@@ -323,7 +323,7 @@ public class Game implements Jsonifiable, Serializable {
 	/**
 	 * Sends the board state to both players in the game.
 	 */
-	private void sendWholeBoardToAllAndDb() {
+	protected void sendWholeBoardToAllAndDb() {
 		try {
 			CommsWebSocket.sendWholeBoardSate(this, playerOne.getId());
 		} catch (IOException e) {

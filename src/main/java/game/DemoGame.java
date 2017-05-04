@@ -76,9 +76,15 @@ public class DemoGame extends Game {
 				act(aiPlayedElement);
 				act(aiPlayedWaterSpirit);
 				act(turnEnd);
+
+				// have to manually send board.
+				sendWholeBoardToAllAndDb();
 			} else if (actionId == 8) {
 				// in this case the AI just ends their turn.
 				act(turnEnd);
+
+				// mangually send board.
+				sendWholeBoardToAllAndDb();
 			}
 
 			actionId++;
