@@ -18,7 +18,8 @@ TEXT_MESSAGE: 15,
 PLAYER_SEND_CHAT: 16,
 RECEIVE_CHAT: 17,
 TURN_START: 18,
-SET_SPECTATOR: 19
+SET_SPECTATOR: 19,
+GAME_END: 20
 };
 
 class Server{
@@ -151,6 +152,9 @@ class Server{
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
+                    break;
+                case MESSAGE_TYPE.GAME_END:
+                    // TODO: Josh...handle this?
                     break;
                 default:
                     console.log("Unknown message type: " + message.type);

@@ -40,10 +40,12 @@ public enum MessageTypeEnum {
 
   // the server asks a player to target something (Server -> Client)
   // 9
+  @Deprecated
   TARGET_REQUEST, // \\
 
   // client responds to target request (Client -> Server)
   // 10
+  @Deprecated
   TARGET_RESPONSE, // \\
 
   // A client's action was okay (Server -> Client)
@@ -80,6 +82,10 @@ public enum MessageTypeEnum {
 
   // Become a spectator (Server -> Client)
   // 19
-  SET_SPECTATOR
+  SET_SPECTATOR,
+
+  // Alert player of game end (Server -> Client)
+  // 20
+  GAME_END
 
 }

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import lobby.LobbyHandlers;
-import logins.Gui;
 import server.CommsWebSocket;
 import server.LobbyWebSocket;
 import spark.ExceptionHandler;

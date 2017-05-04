@@ -1,11 +1,5 @@
-package logins;
+package main;
 
-import cardgamelibrary.MasterCardList;
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import game.Game;
-import game.GameManager;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +9,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import cardgamelibrary.MasterCardList;
+import game.Game;
+import game.GameManager;
 import lobby.Lobby;
 import lobby.LobbyManager;
+import logins.Db;
+import logins.MetaGame;
 import server.CommsWebSocket;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -52,6 +56,7 @@ public class Gui {
 
     Spark.get("/games", new GameDisplayHandler(), fm);
     Spark.get("/replay", new GameReplayHandler(), fm);
+    Spark.post("/replay", new ReplayEventHandler());
 
     Spark.get("/lobbies", new LobbiesHandler(), fm);
     Spark.post("/lobbies", new LobbiesHandler(), fm);
@@ -73,14 +78,14 @@ public class Gui {
           + "UNIQUE(name, user), "
           + "FOREIGN KEY (user) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
-      Db.update("create table if not exists finished_games("
+      Db.update("create table if not exists finished_game("
           + "id integer primary key, "
           + "winner integer, moves integer, " + "UNIQUE(id, winner), "
           + "FOREIGN KEY (winner) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
-      Db.update("create table if not exists all_games("
+      Db.update("create table if not exists in_progress("
           + "id integer primary key autoincrement,"
-          + "player1 integer, player2 integer, "
+          + "player1 integer, player2 integer, board blob, "
           + "FOREIGN KEY (player1) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE,"
           + "FOREIGN KEY (player2) REFERENCES user(id)"
@@ -94,11 +99,20 @@ public class Gui {
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists game_event("
           + "game integer not null, event integer not null,"
-          + "board text not null, UNIQUE(game, event),"
-          + "FOREIGN KEY (game) REFERENCES all_games(id)"
-          + "ON DELETE CASCADE ON UPDATE CASCADE);");
+          + "board text not null, UNIQUE(game, event);");
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+  }
+
+  private class ReplayEventHandler implements Route {
+    @Override
+    public String handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      int game = Integer.parseInt(qm.value("game"));
+      int event = Integer.parseInt(qm.value("event"));
+
+      return GameManager.boardFrom(game, event).toString();
     }
   }
 

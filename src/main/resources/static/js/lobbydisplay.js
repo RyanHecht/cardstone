@@ -52,14 +52,10 @@ function onOpponentSetDeck() {
 
 function onGameStart() {
 	window.location.replace("/game");
-	// in game route, determine whether player 
-	// is supposed to be in game or nah
 };
 
 function onLobbyCancel() {
 	console.log("Lobby cancel");
-	// redirect to lobbies page with
-	// modal saying their lobby was canceled
 	const form = $("<form action='/lobbies' method='POST'>" +
 				   " <input type='text' name='errorMsg' value='Please find another lobby'/> <input type='text' name='errorHead' value='Lobby canceled'/>");
 	$('body').append(form);
