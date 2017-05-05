@@ -1,6 +1,8 @@
 package cardgamelibrary;
 
-public class PlayerBoardView {
+import java.io.Serializable;
+
+public class PlayerBoardView implements Serializable{
 
 	
 	

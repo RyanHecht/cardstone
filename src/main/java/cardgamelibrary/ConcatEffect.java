@@ -1,8 +1,9 @@
 package cardgamelibrary;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class ConcatEffect implements Effect{
+public class ConcatEffect implements Effect, Serializable{
 
 	private LinkedList<Effect> effects;
 

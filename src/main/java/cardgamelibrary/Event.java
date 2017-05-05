@@ -1,12 +1,13 @@
 package cardgamelibrary;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import events.EmptyEvent;
 
-public class Event {
+public class Event implements Serializable{
 
 	public static AtomicInteger ids = new AtomicInteger();
 	private int id;

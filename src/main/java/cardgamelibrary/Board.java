@@ -72,7 +72,6 @@ public class Board implements Jsonifiable, Serializable {
 
 	// keeps track of turn counter.
 	private int turnIndex = 0;
-	private JsonArray animBox;
 
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo, int gameId) {
 		// using LinkedLists but declaring using queue interface.
@@ -113,8 +112,6 @@ public class Board implements Jsonifiable, Serializable {
 		} else {
 			activePlayer = deckTwo.getPlayer();
 		}
-
-		animBox = new JsonArray();
 		// set up starting hands.
 		assignStartingHands();
 
@@ -127,14 +124,6 @@ public class Board implements Jsonifiable, Serializable {
 	 */
 	public Player getActivePlayer() {
 		return activePlayer;
-	}
-	
-	public JsonArray getAnimBox(){
-		return animBox;
-	}
-	
-	public void cleanAnimBox(){
-		animBox = new JsonArray();
 	}
 
 	/**
@@ -347,7 +336,7 @@ public class Board implements Jsonifiable, Serializable {
 	private void sendAnimation(JsonObject message) {
 		try {
 			// send animation to both players.
-			GameManager.addAnim(message,gameId);
+			//GameManager.addAnim(message,gameId);
 			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
 			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
 		} catch (IOException e1) {

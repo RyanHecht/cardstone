@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import java.io.Serializable;
+
 import effects.EmptyEffect;
 
 /**
@@ -7,7 +9,7 @@ import effects.EmptyEffect;
  * @author 42jpa
  *
  */
-public interface Effect {
+public interface Effect extends Serializable{
 
 	/**
 	 * Perform whatever the effect is on the board.
