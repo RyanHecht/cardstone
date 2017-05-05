@@ -100,7 +100,7 @@ public class Gui {
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists game_event("
           + "game integer not null, event integer not null,"
-          + "board text not null, UNIQUE(game, event));");
+          + "board text not null, aminations text not null, UNIQUE(game, event));");
 
       // loop through in_progress, stash in finished_game
       ResultSet rs = Db.query("select * from in_progress;");
@@ -133,7 +133,7 @@ public class Gui {
       JsonObject response = new JsonObject();
       JsonObject board = GameManager.boardFrom(game, event);
       response.add("board", board);
-      response.addProperty("exists", board == null);
+      response.addProperty("exists", board != null);
 
       return response.toString();
     }

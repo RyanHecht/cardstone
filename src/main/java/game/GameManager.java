@@ -142,6 +142,8 @@ public class GameManager {
    * @param g the game
    */
   public static void pushToDb(Game g) {
+    // DOWN THE LINE, GET ANIMATIONS FROM GAME AS WELL
+
     // add game to cache
     if (games.updateGame(g)) {
       System.out.println("Successfully updated game state");
