@@ -89,7 +89,7 @@ public class ElementTest {
 		g.handleCardPlayed(waterPlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.WATER), 3);
 
-		g.handleCardPlayed(airPlayed, activeId);
+		g.handleCardPlayed(earthPlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.EARTH), 3);
 
 		g.handleCardPlayed(airPlayed, activeId);
