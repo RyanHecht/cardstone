@@ -11,12 +11,17 @@ $('input[type="submit"]').click(function() {
 	 console.log("I was clicked");
 	 console.log($(this).attr('id'));
 	 const id = $(this).attr('id');
-	 const formText = "<form action=" + id + " method='POST'>" + 
-		"<input type='text' name='username' value=" + valOf("#username") + " />" +
-		"<input type='password' name='password' value=" + valOf("#password") + " />" +
+	
+	 const username = valOf("#username");
+	 const pw = valOf("#password");
+	 if (username != "" && pw != "") {
+		 const formText = "<form action=" + id + " method='POST'>" + 
+		"<input type='text' name='username' value=" + username + " />" +
+		"<input type='password' name='password' value=" + pw + " />" +
 		" />";
 	
-	 const form = $(formText);
-	 $('body').append(form);
-	 form.submit();
+		 const form = $(formText);
+		 $('body').append(form);
+		 form.submit();
+	 }
  });

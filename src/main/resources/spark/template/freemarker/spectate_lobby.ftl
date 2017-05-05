@@ -7,48 +7,42 @@
     <link rel="stylesheet" href="css/bootstrapalt.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
+<#include "navbar.ftl">
   <body>
+  	${nav}
      <div class="container-fluid fullCont">
 	   <div class="row fullRow">
-	     <div class="col-md-4 tallCol">
+	   <div class="col-md-4 tallCol">
 		  <div class="panel panel-default tallPanel" id="blah">
 		    <div class="panel-heading">
 		      <h3 class="panel-title">${p1}</h3>
 		    </div>
 		    <div class="panel-body">
 				<div class="radio">
-  					<label><input type="radio" id="hostRadio" name="spectateRadio" value=${id1} checked>Spectate </label>
+		  			<label><input type="radio" id="hostRadio" name="spectateRadio" value=${id1} checked>Spectate </label>
 				</div>
 		    </div>
 		  </div>
 		</div>
 		<div class="col-md-4 tallCol">
-			eio qwinu qwdiun qwidu
-			 qwd
-			 qwd
-			  qwd
-			   qwd
-			    qw
-			    d q
-			    wdhjbqwdib
+			<h4>Versus</h4>
 		</div>
 		<div class="col-md-4 tallCol pull-right">
-		  <div class="panel panel-default">
+		  <div class="panel panel-default tallPanel">
 		    <div class="panel-heading">
 		      <h3 class="panel-title" id="oppname">${p2}</h3>
 		    </div>
 		    <div class="panel-body">
-				<div class="radio">
-  					<label><input type="radio" id="otherRadio" name="spectateRadio" value=${id2}>Spectate </label>
+			    <div class="radio">
+		  			<label><input type="radio" id="otherRadio" name="spectateRadio" value=${id2}>Spectate </label>
 				</div>
-			    <p id="message"><#if msg??> ${msg} </#if> </p>
+				<p id="message"><#if msg??> ${msg} </#if> </p>
 		    </div>
 		  </div>
 		</div>
-	   </div>
 	   <div class="col-md-2 centerText">
 	       <button type="button" class="btn btn-default" id="leave">Leave</button>
-	     </div>
+	   </div>
 	</div>
 
      <script src="js/jquery-2.1.1.js"></script>
