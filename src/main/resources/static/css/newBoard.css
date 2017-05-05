@@ -323,6 +323,10 @@ body .bigModal .modal-dialog {
     background-image:url("../images/EnemyTurn.png");
 }
 
+.replayModePng{
+    background-image:url("../images/ReplayMode.png");
+}
+
 .board .zone{
 	/* border: 3px solid lightblue; */
 	text-align: center;
