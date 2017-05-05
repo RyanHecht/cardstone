@@ -57,7 +57,6 @@ public class GamePool {
                 .println(String.format(
                     "Successfully retrieved game id %d for user %d", g.getId(),
                     key));
-            System.out.println(g.getState());
             return g;
           } catch (SQLException | NullPointerException | ClassNotFoundException
               | IOException e) {
