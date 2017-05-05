@@ -183,7 +183,8 @@ public class Lobby implements Jsonifiable {
 		if (isFull() && decksSet()) {
 			System.out.println("making game...");
 			Game game = new Game(p1deck, p2deck, uId1, uId2, false);
-			System.out.println("game made.");
+			System.out.println(String.format("Game made with id %d and users %d and %d", 
+			    game.getId(), uId1, uId2));
 			GameManager.addGame(game);
 			CommsWebSocket.setSpectators(uId1, uId1Spectators);
 			CommsWebSocket.setSpectators(uId2, uId2Spectators);

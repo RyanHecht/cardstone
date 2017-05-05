@@ -186,7 +186,7 @@ public class GameManager {
   public static int getStartingId() {
     int ret;
     try (ResultSet rs = Db.query("select max(id) from in_progress;")) {
-      ret = rs.getInt(1) + 1;
+      ret = rs.getInt(1);
     } catch (SQLException | NullPointerException e) {
       ret = 1;
     }

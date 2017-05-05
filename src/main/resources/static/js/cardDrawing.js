@@ -23,7 +23,6 @@ let spectator = false;
 let canAct = true;
 let spectating = 0;
 let replayStep = 0;
-let isReplay = false;
 
 function redrawAll(){
 	redrawChanged();
