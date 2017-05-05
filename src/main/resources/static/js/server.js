@@ -293,8 +293,8 @@ class Server{
 
     boardGotten(data){
         this.recentestBoard = data;
-        if(!animating){
-            boardReceived();
+        if(!this.animating){
+            this.boardReceived();
         }
     }
     
