@@ -1,7 +1,7 @@
 class cardCollection extends drawableZone{
 	
 	
-	constructor(div,cards,expandInto){
+	constructor(div,cards,expandInto,drawAsBacks){
 		super();
 		this.div = div;
 		this.cards = cards;
@@ -10,6 +10,7 @@ class cardCollection extends drawableZone{
 		this.expandInto = expandInto;
 		this.zone = div.attr("id");
         this.count = 0;
+        this.drawAsBacks = drawAsBacks;
 	}
 	
 	prepareForExpand(){
@@ -94,6 +95,7 @@ class cardCollection extends drawableZone{
 				let cur = curChild.children().last();
 				cur.css('height', (curDiv.height() / rows) + "px");
 				$this.cards[total].setDiv(cur);
+                $this.cards[total].setBacks($this.drawAsBacks);
 				$this.cards[total].drawGivenSpace(cur);
 				total++;
 			}
