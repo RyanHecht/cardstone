@@ -13,7 +13,7 @@ public interface OnAnyAttackCard extends Card{
 	}
 	
 	public default Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
-		return this.onAnyAttack(attacker,z);
+		return this.onAnyAttack(attacker, z);
 	}
 
 	public Effect onAnyAttack(Creature attacker, Zone z);

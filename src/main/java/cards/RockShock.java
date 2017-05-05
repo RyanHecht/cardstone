@@ -28,6 +28,7 @@ public class RockShock extends SpellCard implements TargetsOtherCard{
 	
 	public boolean cardValidTarget(Card card, Zone z){
 		if(card.getType() == CardType.CREATURE && z == Zone.CREATURE_BOARD){
+			System.out.println("was valid");
 			return true;
 		}
 		return false;
@@ -38,7 +39,8 @@ public class RockShock extends SpellCard implements TargetsOtherCard{
 	// i.e. graveyard).
 	public Effect impactCardTarget(Card target, Zone zone) {
 		return (Board board) -> {
-			if((target instanceof CreatureInterface)){
+			System.out.println("tryna");
+			if((target.isA(CreatureInterface.class))){
 				CreatureInterface c = (CreatureInterface) target;
 				board.damageCard(c, this, 2);
 				board.applyToCard(target,new CantAttackForTurnsCreature(c,2));

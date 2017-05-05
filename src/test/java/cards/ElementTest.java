@@ -52,15 +52,15 @@ public class ElementTest {
 		Integer balId = null;
 		for (Card c : activePlayerHand) {
 			System.out.println("CARD NAME: " + c.getName());
-			if (c.getName().equals("Fire Element")) {
+			if (c.getName().equals("fire")) {
 				fireId = c.getId();
-			} else if (c.getName().equals("Water Element")) {
+			} else if (c.getName().equals("water")) {
 				waterId = c.getId();
-			} else if (c.getName().equals("Earth Element")) {
+			} else if (c.getName().equals("earth")) {
 				earthId = c.getId();
-			} else if (c.getName().equals("Air Element")) {
+			} else if (c.getName().equals("air")) {
 				airId = c.getId();
-			} else if (c.getName().equals("Balance Element")) {
+			} else if (c.getName().equals("balance")) {
 				balId = c.getId();
 			}
 		}
