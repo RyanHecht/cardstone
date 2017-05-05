@@ -6,10 +6,11 @@ class TurnTimer{
         this.maxTime = maxTime * 10000;
         this.lineRight = $(".lineRight");
         this.lineLeft = $(".lineLeft");
-        this.startTurn(isTurn);
+        
         this.clockRect = $(".centerClockRect");
         if(!isReplay){
             this.updateThread(this);
+            this.startTurn(isTurn);
         }
     }
     
