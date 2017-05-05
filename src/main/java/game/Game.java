@@ -211,6 +211,10 @@ public class Game implements Jsonifiable, Serializable {
 		}
 		return -1;
 	}
+	
+	public String getState(){
+		return state.name();
+	}
 
 	/**
 	 * ends the game.
@@ -390,6 +394,7 @@ public class Game implements Jsonifiable, Serializable {
 		} else {
 
 			if (state != GameState.IDLE) {
+				System.out.println(state.name());
 				// if the game state isn't idle, we are awaiting some other
 				// input from
 				// the user so they can't end their turn.
@@ -698,7 +703,7 @@ public class Game implements Jsonifiable, Serializable {
 
 			act(cEvent);
 
-			sendWholeBoardToAllAndDb();
+			
 
 			// reset the choosing card.
 			chooserCard = null;
@@ -706,6 +711,8 @@ public class Game implements Jsonifiable, Serializable {
 			// done responding to choose request so change game state again.
 			
 			unlockState();
+			
+			sendWholeBoardToAllAndDb();
 		} else {
 			// yeah i'm not sure how this would even happen but better safe than
 			// sorry.
