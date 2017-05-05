@@ -164,15 +164,15 @@ public class LobbyManager {
 
       if (l.isHost(playerId)) {
         // If host, cancel the lobby, alert other player and all spectators.
+        if (!l.isStarting()) {
+          if (other != null) {
+            LobbyWebSocket.sendLobbyCancelled(other);
+          }
 
-        if (other != null) {
-          LobbyWebSocket.sendLobbyCancelled(other);
+          for (Integer i : spectators) {
+            LobbyWebSocket.sendLobbyCancelled(i);
+          }
         }
-
-        for (Integer i : spectators) {
-          LobbyWebSocket.sendLobbyCancelled(i);
-        }
-
       } else {
         LobbyWebSocket.sendOpponentLeftLobby(other);
 
@@ -265,7 +265,6 @@ public class LobbyManager {
         lobby.beginGame();
         System.out.println("Sending messages...");
         for (Integer i : lobby.getAllSpectators()) {
-          // TODO: figure out how this will work for spectators
           LobbyWebSocket.sendGameIsStarting(i, oppId);
         }
 
