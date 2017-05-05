@@ -101,6 +101,7 @@ class cardCacher{
     
     parseStates(card,newCard){
         if(card.states != null){
+            console.log(card.states);
             newCard.setStates(card.states);
         }
     }
