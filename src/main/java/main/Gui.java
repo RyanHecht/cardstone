@@ -139,10 +139,11 @@ public class Gui {
       JsonObject response = new JsonObject();
 
       ReplayEvent gameState = GameManager.boardFrom(game, event);
-      JsonObject board = gameState.getBoard();
-      response.add("board", board);
-      response.add("animations", gameState.getAnimations());
-      response.addProperty("exists", board != null);
+      if (gameState != null) {
+        response.add("board", gameState.getBoard());
+        response.add("animations", gameState.getAnimations());
+      }
+      response.addProperty("exists", gameState != null);
 
       return response.toString();
     }
@@ -574,6 +575,11 @@ public class Gui {
       String password = qm.value("password");
       System.out.println("First username " + username);
       username = username == null ? "" : username;
+
+      if (username.split(" ").length > 1) {
+        return new ModelAndView(
+            ImmutableMap.of("title", "Cardstone: The Shattering"), "login.ftl");
+      }
 
       String insertion = "insert into user values(null, ?, ?);";
       Map<String, Object> vars = ImmutableMap.of("title",
