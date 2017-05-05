@@ -253,14 +253,15 @@ class cardCollection extends drawableZone{
 				style: {
 					height: height,
 					width: width,
+                    pointer-events: none,
 					classes: 'qtip-bootstrap',
 				},
 				position: { 
 					viewport: $(window),
 					adjust: {
 						method: 'flipinvert shift'
-					}
-					
+					},
+                    target: 'mouse',
 				}
 			});
 		});

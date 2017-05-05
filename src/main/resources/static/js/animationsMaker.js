@@ -22,11 +22,12 @@ class animationsMaker{
         let cardFromCache = cardCache.getByIID(card.id);
         console.log(cardFromCache);
         box.append("<div class='cardBox'></div>");
-        cardFromCache.drawGivenSpace(box.find(".cardBox"));
-        //cardFromCache.changeId(box.find(".cardBox"));
+        console.log(box);
+        console.log(box.children());
+        cardFromCache.drawGivenSpace(box.children(".cardBox"));
         box.show();
         $(".chat").hide();
-        ("#" + card.id).first().attr("id",-180);
+        $("#" + card.id).first().attr("id",-180);
         window.setTimeout(killAnimBox,3000);
         box.click(killAnimBox);
     }

@@ -273,7 +273,6 @@ class spellCard extends Card{
 		div = div.children('.bigCardBox');
 		this.drawBig(div);
 		div.hide();
-		
 	}
 	
 	drawTinyAndHiddenBig(div){
@@ -284,23 +283,22 @@ class spellCard extends Card{
 		div.hide();
 	}
 	
-	drawGivenSpace(){
-		let div = this.div;
+	drawGivenSpace(div = this.div){
 		if(div.height() > 125){
-			this.drawForTip();
+			this.drawForTip(div);
 		}
 		else{
-			this.drawTinyForTip();
+			this.drawTinyForTip(div);
 		}
-		super.addIdAndState(this.div);
+		super.addIdAndState(div);
 	}
 	
-	drawForTip(){
-		this.drawSmallAndHiddenBig(this.div);
+	drawForTip(div = this.div){
+		this.drawSmallAndHiddenBig(div);
 
 	}
-	drawTinyForTip(){
-		this.drawTinyAndHiddenBig(this.div);
+	drawTinyForTip(div = this.div){
+		this.drawTinyAndHiddenBig(div);
 	}
 }
 
@@ -310,10 +308,9 @@ class cardBack extends Card{
 		super(IID);
 	}
 	
-	drawGivenSpace(){
-		let div = this.div;
+	drawGivenSpace(div = this.div){
 		this.drawSmallAndBig(div);
-		super.addIdAndState(this.div);
+		super.addIdAndState(div);
 	}
 	
 	modifyWith(info){
@@ -391,9 +388,9 @@ class elementCard extends Card{
 		div.children(".card")[0].style.background = this.color;
     }
 	
-	drawGivenSpace(){
-		this.drawSmallAndBig(this.div);
-		super.addIdAndState(this.div);
+	drawGivenSpace(div = this.div){
+		this.drawSmallAndBig(div);
+		super.addIdAndState(div);
 	}
 	
 	drawSmallAndBig(div){
