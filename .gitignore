@@ -9,7 +9,8 @@
 *.war
 *.ear
 hs_err_pid*
-
+*.sqlite3
+*.exe
 
 #########
 # Maven #
