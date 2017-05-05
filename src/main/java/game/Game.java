@@ -67,11 +67,9 @@ public class Game implements Jsonifiable, Serializable {
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
 			boolean isTutorial) {
-		
+
 		this.id = idGenerator.incrementAndGet();
-		System.out.println(
-		    String.format("Making new game with id %d and players %d and %d", 
-		        id, playerOneId, playerTwoId));
+		System.out.println(String.format("Making new game with id %d and players %d and %d", id, playerOneId, playerTwoId));
 		// Initialize both players with starting life.
 		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
 		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
@@ -533,6 +531,12 @@ public class Game implements Jsonifiable, Serializable {
 				// execute action on board.
 				act(event);
 
+				// make card played event.
+				CardPlayedEvent cEvent = new CardPlayedEvent(targetter, board.getOcc(board.getActivePlayer(), Zone.HAND),
+						board.getOcc(board.getActivePlayer(), Zone.GRAVE));
+
+				act(cEvent);
+
 				// send board to both players.
 				sendWholeBoardToAllAndDb();
 			} else {
@@ -546,6 +550,7 @@ public class Game implements Jsonifiable, Serializable {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
 	}
+
 	/**
 	 * Handles players being targeted.
 	 *
@@ -601,6 +606,12 @@ public class Game implements Jsonifiable, Serializable {
 
 					// execute event.
 					act(event);
+
+					// make card played event.
+					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
+							board.getOcc(board.getActivePlayer(), Zone.GRAVE));
+
+					act(cEvent);
 
 					// send board.
 					sendWholeBoardToAllAndDb();
