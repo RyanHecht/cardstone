@@ -101,7 +101,6 @@ class cardCollection extends drawableZone{
 	}
 	
 	draw(){
-        console.log(this.zone, this);
 		this.drawInDiv(this.div);
         this.changed = false;
         
@@ -166,13 +165,11 @@ class cardCollection extends drawableZone{
     
     getX(){
         this.count+=100;
-        console.log(this.count);
         return this.count;
     }
 	
     getY(){
        this.count+=100;
-       console.log(this.count);
        return this.count;
     }
     
@@ -253,8 +250,7 @@ class cardCollection extends drawableZone{
 				style: {
 					height: height,
 					width: width,
-                    pointer-events: none,
-					classes: 'qtip-bootstrap',
+					classes: 'qtip-bootstrap no-mouse',
 				},
 				position: { 
 					viewport: $(window),

@@ -330,11 +330,22 @@ class Server{
 	}
 
     replayRequestStepBack(){
-
+        replayStep--;
+        this.replayRequest();
     }
 
     replayRequestStepForward(){
-
+        replayStep++;
+        this.replayRequest();
+    }
+    
+    replayRequest(){
+        $.post("/replay",param,function(responseObj){
+            const response = JSON.parse(responseObj);
+            if(response.exists){
+                boardReceived(response);
+            }
+        })
     }
 
     requestCardCollection(callback){

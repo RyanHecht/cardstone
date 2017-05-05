@@ -2,16 +2,13 @@ let socket;
 let toSpectate;
 
 $(document).ready(() => {
-	console.log(onOpponentJoin)
 	socket = new SpectateLobbySocket(parseInt($.cookie("id")), onOpponentJoin, onOpponentLeave, onGameStart, onLobbyCancel);
 	toSpectate = parseInt($("#hostRadio").val());
 });
 
 function onOpponentJoin(oppId) {
-	console.log("Opponent joined");
 	if (toSpectate == -1) {
 		toSpectate = oppId;
-		console.log(toSpectate);
 		socket.updateSpectatee(toSpectate);
 	}
 	$("#otherRadio").val(oppId);
@@ -19,7 +16,6 @@ function onOpponentJoin(oppId) {
 	$.post("/username", postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
 		const u = respObj.username;
-		console.log(u);
 
 		$("#oppname").text(u);
 		$("#message").text(u + " has joined the game.");
@@ -30,7 +26,6 @@ function onOpponentJoin(oppId) {
 };
 
 function onOpponentLeave() {
-	console.log("Opponent left");
 	const leaver = $("#oppname").text();
 	$("#oppname").text("Opponent");
 	$("#message").text(leaver + " left the game");
@@ -48,7 +43,6 @@ function onOpponentLeave() {
 };
 
 function onLobbyCancel() {
-	console.log("Lobby cancel");
 	// redirect to lobbies page with
 	// modal saying their lobby was canceled
 	const form = $("<form action='/lobbies' method='POST'>" +
@@ -59,13 +53,11 @@ function onLobbyCancel() {
 
 
 function onGameStart() {
-	console.log("Game starting");
 	window.location.replace("/game");
 };
 
 $('input[type=radio][name=spectateRadio]').change(function() {
 	toSpectate = parseInt($(this).val());
-	console.log(toSpectate);
 	if (toSpectate != -1) {
 		socket.updateSpectatee(toSpectate);
 	}

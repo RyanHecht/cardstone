@@ -102,7 +102,6 @@ class cardCollectionDeck extends drawableZone{
     
     prepClicking(){
         $(".card").click(function(){
-            console.log($(this).attr("id"));
             list.addCardByIID($(this).attr("id"));
             redrawAll();
             $('div.qtip:visible').qtip('hide');

@@ -9,7 +9,6 @@ class hudZone extends drawableZone{
     }
     
     draw(){
-        console.log("started draw" + this.div);
         let $this = this;
         let totalHeight = 50;
         this.div.children(".healthBox").text($this.health);
@@ -21,7 +20,6 @@ class hudZone extends drawableZone{
 				return (totalHeight * $this.health / MAX_HEALTH); 
 		}});
         this.div.children(".resBox").text($this.res);
-        console.log("completed draw" + this);
         $("#optionsPopperGear").click(popOptionsMenu);
     }
     

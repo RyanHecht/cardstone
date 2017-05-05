@@ -23,7 +23,6 @@ class drawable{
         else if(this.shape ="card"){
             if(!this.toggled){
                 this.toggled = true;
-                console.log("shown");
                 CARD_DRAW_SHAPE_BOX.show();
             }
             CARD_DRAW_SHAPE_BOX.css("top",this.y);
