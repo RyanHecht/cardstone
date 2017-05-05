@@ -356,6 +356,11 @@ class Server{
             const response = JSON.parse(responseObj);
 			console.log(response);
             if(response.exists){
+                if(forwards){
+                    for(let anim of animations){
+                        server.messageReceived(anim);
+                    }
+                }
                 server.boardGotten(response.board);
             }
         })

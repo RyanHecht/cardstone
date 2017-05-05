@@ -52,6 +52,7 @@ public class GamePool {
               return null;
             }
             Game g = Game.deserialize(rs.getString(1));
+            
             System.out
                 .println(String.format(
                     "Successfully retrieved game id %d for user %d", g.getId(),
