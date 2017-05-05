@@ -127,10 +127,15 @@ public class Gui {
     @Override
     public String handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
-      int game = Integer.parseInt(qm.value("game"));
-      int event = Integer.parseInt(qm.value("event"));
+      int game = Integer.parseInt(qm.value("gameId"));
+      int event = Integer.parseInt(qm.value("eventNum"));
 
-      return GameManager.boardFrom(game, event).toString();
+      JsonObject response = new JsonObject();
+      JsonObject board = GameManager.boardFrom(game, event);
+      response.add("board", board);
+      response.addProperty("exists", board == null);
+
+      return response.toString();
     }
   }
 

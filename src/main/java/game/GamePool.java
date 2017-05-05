@@ -29,7 +29,8 @@ public class GamePool {
           if (removal.wasEvicted()) {
             int id = removal.getKey();
             Game g = removal.getValue();
-            System.out.println("Game with id " + id + " was evicted!");
+            System.out
+                .println(String.format("(%d, %d) was evicted!", id, g.getId()));
             int otherId = g.getOpposingPlayerId(id);
             // ensure id is less than otherId for db consistency
             if (id > otherId) {
@@ -41,13 +42,16 @@ public class GamePool {
               String serialG = g.serialize();
               // if this game isn't in db, insert it; otherwise, update it
               if (!rs.next()) {
+                System.out.println("I'm inserting");
                 Db.update("insert into in_progress values(null, ?, ?, ?);", id,
                     otherId, serialG);
               } else {
+                System.out.println("I'm updating");
                 Db.update("update in_progress set board = ? where player1 = ?;",
                     serialG, id);
               }
-              System.out.println("Successfully stashed game " + id + " in db");
+              System.out.println(
+                  String.format("Stashed (%d, %d) in db", id, g.getId()));
             } catch (IOException | SQLException | NullPointerException e) {
               e.printStackTrace();
             }
@@ -56,12 +60,13 @@ public class GamePool {
       }).build(new CacheLoader<Integer, Game>() {
         @Override
         public Game load(Integer key) {
+          System.out.println("Trying to load game for user " + key);
           String gameFinder = "select board from in_progress where "
               + "player1 = ? or player2 = ?;";
           try (ResultSet rs = Db.query(gameFinder, key, key)) {
             if (!rs.next()) {
               System.out
-                  .print("Could not load game from database for user " + key);
+                  .println("Could not load game from database for user " + key);
               return null;
             }
             System.out
