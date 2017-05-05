@@ -113,9 +113,11 @@ public final class Db {
     }
 
     private PreparedStatement prepFrom(String query) throws SQLException {
+
       PreparedStatement base = queries.get(query);
       if (base == null) {
         base = conn.prepareStatement(query);
+
       }
       return base;
     }

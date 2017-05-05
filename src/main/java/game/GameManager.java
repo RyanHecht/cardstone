@@ -198,7 +198,7 @@ public class GameManager {
   public static void registerFinishedGame(int gId, int p1, int p2, int winner,
       int turns) throws NullPointerException, SQLException {
     Db.update("delete from in_progress where id = ?;", gId);
-    Db.update("insert into finished_game values(?, ?, ?)", gId, winner, turns);
+    Db.update("insert into finished_game values(?, ?, ?);", gId, winner, turns);
     Db.update("insert into user_game values(?, ?);", p1, gId);
     Db.update("insert into user_game values(?, ?);", p2, gId);
   }

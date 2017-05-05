@@ -106,7 +106,7 @@ public class Gui {
       ResultSet rs = Db.query("select * from in_progress;");
       while (rs.next()) {
         int turns;
-        String board = rs.getString(3);
+        String board = rs.getString(4);
         try {
           Game g = Game.deserialize(board);
           turns = g.getNumTurns();
@@ -115,9 +115,8 @@ public class Gui {
           turns = 0;
         }
 
-        // winner id of 0 indicates tie game
         GameManager.registerFinishedGame(rs.getInt(1), rs.getInt(2),
-            rs.getInt(3), 0, turns);
+            rs.getInt(3), rs.getInt(2), turns);
       }
     } catch (SQLException e) {
       e.printStackTrace();

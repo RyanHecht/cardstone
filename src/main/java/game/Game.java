@@ -881,9 +881,9 @@ public class Game implements Jsonifiable, Serializable {
     return Base64.getEncoder().encodeToString(baos.toByteArray());
   }
 
-  public static Game deserialize(String s)
+  public static Game deserialize(String object)
       throws IOException, ClassNotFoundException {
-    byte[] data = Base64.getDecoder().decode(s);
+    byte[] data = Base64.getDecoder().decode(object);
     ObjectInputStream ois = new ObjectInputStream(
         new ByteArrayInputStream(data));
     Object o = ois.readObject();
