@@ -1,7 +1,7 @@
 class cardCollection extends drawableZone{
 	
 	
-	constructor(div,cards,expandInto,drawAsBacks){
+	constructor(div,cards,expandInto,drawAsBacks,drawStates = true){
 		super();
 		this.div = div;
 		this.cards = cards;
@@ -11,6 +11,7 @@ class cardCollection extends drawableZone{
 		this.zone = div.attr("id");
         this.count = 0;
         this.drawAsBacks = drawAsBacks;
+        this.drawStates = drawStates;
 	}
 	
 	prepareForExpand(){
@@ -52,6 +53,12 @@ class cardCollection extends drawableZone{
 		for(let id of cardIDs){
 			cards.push(cache.getByIID(id));
 		}
+        if(!this.drawStates){
+            for(let card of cards){
+                card.setShouldState(false);
+            }
+        }
+        
 		this.cards = cards;
         this.changed = true;
 	}

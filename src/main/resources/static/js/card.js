@@ -5,8 +5,13 @@ class Card{
 	constructor(IID){
 		this.IID = IID;
 		this.states = [];
+        this.shouldState = true;
 	}
 	
+    setShouldState(should){
+        this.shouldState = should;
+    }
+    
 	setDiv(div){
 		this.div = div;
 	}
@@ -37,7 +42,7 @@ class Card{
 	}
     
     drawStates(div){
-        if(!this.back){
+        if(!this.back  && this.shouldState){
         let taunt = false;
         let canPlay = false;
         let canAttack = false;

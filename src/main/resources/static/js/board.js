@@ -29,7 +29,7 @@ class board{
         this.allZones.set("aura1",new cardCollection($(AURA_1_DIV),aura1,$(EXPAND_1_DIV),false));
 		this.allZones.set("aura2",new cardCollection($(AURA_2_DIV),aura2,$(EXPAND_2_DIV),false));
 		this.allZones.set("creature1", new cardCollection($(CREATURE_1_DIV),creature1,$(EXPAND_1_DIV),false));
-		this.allZones.set("creature2", new cardCollection($(CREATURE_2_DIV),creature2,$(EXPAND_2_DIV),false));
+		this.allZones.set("creature2", new cardCollection($(CREATURE_2_DIV),creature2,$(EXPAND_2_DIV),false,false));
 		this.features = new Map();
 		this.features.set("p2Health",p2Health);
 		this.features.set("p1Health",p1Health);
