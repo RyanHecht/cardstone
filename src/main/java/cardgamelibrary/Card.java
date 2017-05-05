@@ -223,7 +223,7 @@ public interface Card extends Jsonifiable, Serializable {
 			states.add("taunt");
 		}
 
-		result.addProperty("states", gson.toJson(states));
+		result.add("states", gson.toJsonTree(states));
 
 		return result;
 	}
