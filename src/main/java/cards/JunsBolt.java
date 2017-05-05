@@ -52,9 +52,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 			assert (cardValidTarget(target, targetIn));
 			// deal 3 damage to targeted creature.
 			board.damageCard((Creature) target, this, 3);
-
-			// send card to graveyard from hand.
-			};
+		};
 	}
 
 	@Override

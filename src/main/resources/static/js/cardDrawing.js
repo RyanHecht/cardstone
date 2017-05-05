@@ -199,6 +199,9 @@ function setupOptionsMenu(){
         tooltipDisplay = this.checked;
         redrawAll();
     });
+    $("#concedeButton").click(function(){
+       window.location.replace("/lobbies"); 
+    });
 }
 
 function setupKeypress(){
