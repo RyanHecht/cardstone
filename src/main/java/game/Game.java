@@ -396,7 +396,6 @@ public class Game implements Jsonifiable, Serializable {
 				// if the game state isn't idle, we are awaiting some other
 				// input from
 				// the user so they can't end their turn.
-				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
 				return;
@@ -459,7 +458,6 @@ public class Game implements Jsonifiable, Serializable {
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other
 				// input from the user.
-				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
 				return;
@@ -568,7 +566,6 @@ public class Game implements Jsonifiable, Serializable {
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other
 				// input from the user.
-				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
 				return;
@@ -738,7 +735,6 @@ public class Game implements Jsonifiable, Serializable {
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other
 				// input from the user.
-				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
 
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
