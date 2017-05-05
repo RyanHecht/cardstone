@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -532,6 +534,7 @@ public class Gui {
       String username = qm.value("username");
       username = username == null ? "" : username.trim();
       String password = qm.value("password");
+      // getSalted(qm.value("password"));
 
       Map<String, Object> vars = new HashMap<>();
       vars.put("title", "Cardstone: The Shattering");
@@ -573,21 +576,20 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
       String username = qm.value("username");
       String password = qm.value("password");
+      // getSalted(qm.value("password"));
       System.out.println("First username " + username);
       username = username == null ? "" : username;
 
-      if (username.split(" ").length > 1) {
+      if (username.split("\\s+(?=\\p{Punct})").length > 1) {
         return new ModelAndView(
             ImmutableMap.of("title", "Cardstone: The Shattering"), "login.ftl");
       }
 
-      String insertion = "insert into user values(null, ?, ?);";
       Map<String, Object> vars = ImmutableMap.of("title",
           "Cardstone: The Shattering", "username", username);
-
       System.out.println("I'm here with password " + password);
       try {
-        Db.update(insertion, username, password);
+        Db.update("insert into user values(null, ?, ?);", username, password);
         res.cookie("username", username);
 
         ResultSet rs = Db.query("select id from user where username = ?;",
@@ -608,5 +610,10 @@ public class Gui {
   private boolean loggedIn(String cookie) {
     System.out.println("Have cookie: " + cookie);
     return cookie != null;
+  }
+
+  private String getSalted(String password) {
+    return Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
+        .toString();
   }
 }
