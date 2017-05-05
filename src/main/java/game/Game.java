@@ -2,10 +2,15 @@ package game;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -867,4 +872,22 @@ public class Game implements Jsonifiable, Serializable {
 		toMod.get("board").getAsJsonObject().get("hand1").getAsJsonObject().remove("cards");
 		return toMod;
 	}
+
+  public String serialize() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(this);
+    oos.close();
+    return Base64.getEncoder().encodeToString(baos.toByteArray());
+  }
+
+  public static Game deserialize(String s)
+      throws IOException, ClassNotFoundException {
+    byte[] data = Base64.getDecoder().decode(s);
+    ObjectInputStream ois = new ObjectInputStream(
+        new ByteArrayInputStream(data));
+    Object o = ois.readObject();
+    ois.close();
+    return (Game) o;
+  }
 }

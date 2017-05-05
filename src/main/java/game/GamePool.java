@@ -1,13 +1,8 @@
 package game;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Base64;
 import java.util.concurrent.ExecutionException;
 
 import com.google.common.cache.CacheBuilder;
@@ -34,7 +29,7 @@ public class GamePool {
           if (removal.wasEvicted()) {
             int id = removal.getKey();
             Game g = removal.getValue();
-
+            System.out.println("Game with id " + id + " was evicted!");
             int otherId = g.getOpposingPlayerId(id);
             // ensure id is less than otherId for db consistency
             if (id > otherId) {
@@ -43,7 +38,7 @@ public class GamePool {
 
             String dbCheck = "select id from in_progress where player1 = ?;";
             try (ResultSet rs = Db.query(dbCheck, id)) {
-              String serialG = serialize(g);
+              String serialG = g.serialize();
               // if this game isn't in db, insert it; otherwise, update it
               if (!rs.next()) {
                 Db.update("insert into in_progress values(null, ?, ?, ?);", id,
@@ -52,6 +47,7 @@ public class GamePool {
                 Db.update("update in_progress set board = ? where player1 = ?;",
                     serialG, id);
               }
+              System.out.println("Successfully stashed game " + id + " in db");
             } catch (IOException | SQLException | NullPointerException e) {
               e.printStackTrace();
             }
@@ -70,7 +66,7 @@ public class GamePool {
             }
             System.out
                 .println("Successfully retrieved game from db for user " + key);
-            return deserialize(rs.getString(1));
+            return Game.deserialize(rs.getString(1));
           } catch (SQLException | NullPointerException | ClassNotFoundException
               | IOException e) {
             e.printStackTrace();
@@ -121,23 +117,5 @@ public class GamePool {
     } catch (ExecutionException | InvalidCacheLoadException e) {
       return null;
     }
-  }
-
-  private static String serialize(Game g) throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ObjectOutputStream oos = new ObjectOutputStream(baos);
-    oos.writeObject(g);
-    oos.close();
-    return Base64.getEncoder().encodeToString(baos.toByteArray());
-  }
-
-  private static Game deserialize(String s)
-      throws IOException, ClassNotFoundException {
-    byte[] data = Base64.getDecoder().decode(s);
-    ObjectInputStream ois = new ObjectInputStream(
-        new ByteArrayInputStream(data));
-    Object o = ois.readObject();
-    ois.close();
-    return (Game) o;
   }
 }
