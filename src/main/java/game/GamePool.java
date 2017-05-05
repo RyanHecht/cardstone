@@ -29,34 +29,13 @@ public class GamePool {
           if (removal.wasEvicted()) {
             int id = removal.getKey();
             Game g = removal.getValue();
-            System.out
-                .println(String.format("Game %d for player %d was evicted!", id,
+            System.out.println(String.format("Game %d for player %d was evicted!",
+                    g.getId(), id));
+            try {
+              GameManager.conditionalInsert(g);
+            } catch (IllegalStateException e) {
+              System.out.println(String.format("Game %d for player %d was evicted!", id,
                     g.getId()));
-            int otherId = g.getOpposingPlayerId(id);
-            // ensure id is less than otherId for db consistency
-            if (id > otherId) {
-              id = id ^ otherId ^ (otherId = id); // swaps values
-            }
-
-            String dbCheck = "select id from in_progress where id = ?;";
-            try (ResultSet rs = Db.query(dbCheck, g.getId())) {
-              String serialG = g.serialize();
-              // if this game isn't in db, insert it; otherwise, update it
-              if (!rs.next()) {
-                System.out.println("I'm inserting");
-                Db.update("insert into in_progress values(?, ?, ?, ?);",
-                    g.getId(), id,
-                    otherId, serialG);
-              } else {
-                System.out.println("I'm updating");
-                Db.update("update in_progress set board = ? where player1 = ?;",
-                    serialG, id);
-              }
-              System.out.println(
-                  String.format("Stashed game %d with player %d in db", id,
-                      g.getId()));
-            } catch (IOException | SQLException | NullPointerException e) {
-              e.printStackTrace();
             }
           }
         }

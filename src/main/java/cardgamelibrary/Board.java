@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import events.CardDamagedEvent;
@@ -336,7 +335,7 @@ public class Board implements Jsonifiable, Serializable {
 	private void sendAnimation(JsonObject message) {
 		try {
 			// send animation to both players.
-			//GameManager.addAnim(message,gameId);
+		    GameManager.addAnim(message, gameId);
 			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
 			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
 		} catch (IOException e1) {
