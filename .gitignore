@@ -72,4 +72,3 @@ local.properties
 
 .DS_Store
 /bin/
-*.sqlite3
