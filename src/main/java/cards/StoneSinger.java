@@ -23,7 +23,7 @@ public class StoneSinger extends Creature{
 	
 	
 	
-	private static class StoneGolem extends TauntCreature{
+	private static class StoneGolem extends Creature{
 		private static final ManaPool	defaultCost		= new ManaPool(10, 0, 0, 1, 0, 0);
 		private static final String		defaultImage	= "images/StoneSinger.jpg";
 		private static final String		defaultName		= "Stone Golem";
