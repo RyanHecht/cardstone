@@ -257,7 +257,7 @@ $(document).ready(function(){
     setupMouseListen();
 	setupCanvas();
     cardCache = new cardCacher();
-	setupBoard();
+	//setupBoard();
     setupKeypress();
 	$(window).resize(function() {
 		clearAnimations();

@@ -19,6 +19,10 @@ class Card{
 	modifyWith(card){
 		
 	}
+    
+    setBacks(backs){
+        this.drawAsBack = backs;
+    }
 	
 	getZone(){
 		return this.zone;
@@ -179,6 +183,10 @@ class creatureCard extends Card {
 	}
 	
 	drawGivenSpace(div = this.div){
+        if(this.back){
+            cardBack.drawGivenSpace(div,this);
+            return;
+        }
 		if(div.height() > 125){
 			this.drawForTip(div);
 		}
@@ -281,6 +289,10 @@ class spellCard extends Card{
 	}
 	
 	drawGivenSpace(div = this.div){
+        if(this.back){
+            cardBack.drawGivenSpace(div,this);
+            return;
+        }
 		if(div.height() > 125){
 			this.drawForTip(div);
 		}
@@ -305,9 +317,9 @@ class cardBack extends Card{
 		super(IID);
 	}
 	
-	drawGivenSpace(div = this.div){
-		this.drawSmallAndBig(div);
-		super.addIdAndState(div);
+	static drawGivenSpace(div,card){
+		cardBack.drawSmallAndBig(div,card);
+		div.children(".card").attr("id",card.IID);
 	}
 	
 	modifyWith(info){
@@ -324,9 +336,9 @@ class cardBack extends Card{
 		}
 	}
 	
-	drawSmallAndBig(div){
+	static drawSmallAndBig(div,card){
 		div.html(cardBackHtml);
-        this.drawStates(div);
+        card.drawStates(div);
 		div.append('<div class="bigCardBox"></div>');
 		div = div.children('.bigCardBox');
 		div.html(cardBackHtml);
@@ -386,6 +398,10 @@ class elementCard extends Card{
     }
 	
 	drawGivenSpace(div = this.div){
+        if(this.back){
+            cardBack.drawGivenSpace(div,this);
+            return;
+        }
 		this.drawSmallAndBig(div);
 		super.addIdAndState(div);
 	}
