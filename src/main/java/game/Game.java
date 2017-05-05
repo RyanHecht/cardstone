@@ -287,6 +287,7 @@ public class Game implements Jsonifiable, Serializable {
 	 * Used to tell the game to wait for a choice input from the user.
 	 */
 	public void lockState() {
+		System.out.println("locked state");
 		state = GameState.AWAITING_CHOICE;
 	}
 
@@ -294,6 +295,7 @@ public class Game implements Jsonifiable, Serializable {
 	 * Used to tell the game to stop waiting for a choice input.
 	 */
 	public void unlockState() {
+		System.out.println("unlocked state");
 		state = GameState.IDLE;
 	}
 
