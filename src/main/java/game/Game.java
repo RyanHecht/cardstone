@@ -221,15 +221,19 @@ public class Game implements Jsonifiable, Serializable {
 		String messageOne;
 		String messageTwo;
 
+		int winnerId;
 		if (i == 1) {
 			messageOne = "You win!";
 			messageTwo = "You lose...";
+			winnerId = playerOne.getId();
 		} else if (i == 2) {
 			messageOne = "You lose...!";
 			messageTwo = "You win!";
+			winnerId = playerTwo.getId();
 		} else if (i == 0) {
 			messageOne = "It's a tie!";
 			messageTwo = "It's a tie!";
+			winnerId = 0;
 		} else {
 			throw new IllegalArgumentException("Passed invalid value to endGame: " + i);
 		}
@@ -242,7 +246,8 @@ public class Game implements Jsonifiable, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// GameManager.endGame(new GameStats(this, ));
+
+		GameManager.endGame(new GameStats(this, winnerId));
 	}
 
 	/**
