@@ -162,6 +162,7 @@ public class Gui {
       Game g = GameManager.getGameByPlayerId(uid);
       if (g == null) {
         if (!CommsWebSocket.isSpectator(uid)) {
+          res.redirect("/lobbies");
           return new ModelAndView(
               ImmutableMap.of("title", "Cardstone: The Shattering", "error",
                   "You are not currently in a game. Join one on this page.",
