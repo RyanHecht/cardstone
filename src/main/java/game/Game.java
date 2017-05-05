@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
@@ -181,7 +180,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 
 		// Some sort of board constructor goes here.
-		board = new Board(deckOne, deckTwo,id);
+		board = new Board(deckOne, deckTwo, id);
 
 		// if we are a DemoGame we want to ensure that player one goes first.
 		board.setActivePlayer(playerOne);
@@ -211,8 +210,8 @@ public class Game implements Jsonifiable, Serializable {
 		}
 		return -1;
 	}
-	
-	public String getState(){
+
+	public String getState() {
 		return state.name();
 	}
 
@@ -371,7 +370,6 @@ public class Game implements Jsonifiable, Serializable {
 		GameManager.pushToDb(this);
 	}
 
-
 	/**
 	 * Sends the board to spectators of the current game.
 	 */
@@ -399,6 +397,8 @@ public class Game implements Jsonifiable, Serializable {
 				// input from
 				// the user so they can't end their turn.
 				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
 				return;
 			}
 			sendPlayerActionGood(playerId);
@@ -458,9 +458,10 @@ public class Game implements Jsonifiable, Serializable {
 
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other
-				// input from
-				// the user so they can't end their turn.
+				// input from the user.
 				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
 				return;
 			}
 
@@ -566,9 +567,10 @@ public class Game implements Jsonifiable, Serializable {
 
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other
-				// input from
-				// the user so they can't end their turn.
+				// input from the user.
 				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
 				return;
 			}
 
@@ -703,15 +705,13 @@ public class Game implements Jsonifiable, Serializable {
 
 			act(cEvent);
 
-			
-
 			// reset the choosing card.
 			chooserCard = null;
 
 			// done responding to choose request so change game state again.
-			
+
 			unlockState();
-			
+
 			sendWholeBoardToAllAndDb();
 		} else {
 			// yeah i'm not sure how this would even happen but better safe than
@@ -737,9 +737,11 @@ public class Game implements Jsonifiable, Serializable {
 			// check to see if game is in a state where cards can be played.
 			if (state != GameState.IDLE) {
 				// if the game state isn't idle, we are awaiting some other
-				// input from
-				// the user so they can't end their turn.
+				// input from the user.
 				sendPlayerActionBad(playerId, "Please make a choice from the presented cards!");
+
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
 				return;
 			}
 
@@ -828,6 +830,45 @@ public class Game implements Jsonifiable, Serializable {
 	}
 
 	/**
+	 * Used to send a player a choose request (i.e. choose from some cards).
+	 * Should only be called when player messes up a choose request i.e. doesn't
+	 * select something or reloads the page when there's a choose box.
+	 * 
+	 * @param playerId
+	 *          the id of the player who is making the choice.
+	 */
+	private void sendPlayerChooseRequest(int playerId) {
+		// should only ever get called if the chooserCard isn't null AND the game is
+		// awaiting a choice from the user.
+		assertNotNull(chooserCard);
+		assert (state == GameState.AWAITING_CHOICE);
+
+		// get possible options.
+		List<Card> options = chooserCard.getOptions(board);
+
+		// create JsonObject to send to front end for user to make a
+		// choice.
+		JsonObject result = new JsonObject();
+		result.addProperty("size", options.size());
+		List<JsonObject> cardObjects = new ArrayList<>();
+		System.out.println("Number of Options: " + options.size());
+		for (Card c : options) {
+			System.out.println("card checked");
+			cardObjects.add(c.jsonifySelf());
+		}
+		Gson gson = new Gson();
+		result.add("cards", gson.toJsonTree(cardObjects));
+
+		// send to front end.
+		try {
+			CommsWebSocket.sendChooseRequest(playerId, result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Tells you if a player with a certain id is the active player.
 	 *
 	 * @param playerId
@@ -885,21 +926,19 @@ public class Game implements Jsonifiable, Serializable {
 		return toMod;
 	}
 
-  public String serialize() throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    ObjectOutputStream oos = new ObjectOutputStream(baos);
-    oos.writeObject(this);
-    oos.close();
-    return Base64.getEncoder().encodeToString(baos.toByteArray());
-  }
+	public String serialize() throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(this);
+		oos.close();
+		return Base64.getEncoder().encodeToString(baos.toByteArray());
+	}
 
-  public static Game deserialize(String object)
-      throws IOException, ClassNotFoundException {
-    byte[] data = Base64.getDecoder().decode(object);
-    ObjectInputStream ois = new ObjectInputStream(
-        new ByteArrayInputStream(data));
-    Object o = ois.readObject();
-    ois.close();
-    return (Game) o;
-  }
+	public static Game deserialize(String object) throws IOException, ClassNotFoundException {
+		byte[] data = Base64.getDecoder().decode(object);
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+		Object o = ois.readObject();
+		ois.close();
+		return (Game) o;
+	}
 }
