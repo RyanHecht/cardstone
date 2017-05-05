@@ -102,8 +102,8 @@ function customAlert(message){
 
 function setupBoard(){
 	let joshPool = new manaPool(1,'');
-	joshPool.setFire(5);
-	joshPool.setAir(5);
+	joshPool.setFire(0);
+	joshPool.setAir(0);
 	// let smallJoshPool = new manaPool(3,'&nbsp;');
 	// //smallJoshPool.setEarth(1);
     // smallJoshPool.setAir(1);
@@ -167,7 +167,7 @@ function setupBoard(){
     // cardCache.addNewParsedCard(balance);
     // cardCache.addNewParsedCard(purge);
 
-	wholeBoard = new board([],[],[],[],[],[],20,30,10,15,joshPool,joshPool,30,30);
+	wholeBoard = new board([],[],[],[],[],[],30,30,10,10,joshPool,joshPool,30,30);
 }
 
 function setupServer(){

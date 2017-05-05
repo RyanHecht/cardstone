@@ -6,22 +6,31 @@ class TurnTimer{
         this.maxTime = maxTime * 10000;
         this.lineRight = $(".lineRight");
         this.lineLeft = $(".lineLeft");
-        this.startTurn(isTurn);
-        this.updateThread(this);
+        
+        this.clockRect = $(".centerClockRect");
+        if(!isReplay){
+            this.updateThread(this);
+            this.startTurn(isTurn);
+        }
     }
     
     startTurn(isTurn){
         this.isTurn = isTurn;
         this.timeLeft = this.maxTime;
         this.needsNewTurn = false;
-        if(isTurn){
-            $(".centerClockRect").addClass("endTurnPng");
-            $(".centerClockRect").removeClass("enemyTurnPng");
+        if(isReplay){
+            this.clockRect.addClass("replayModePng")
         }
         else{
-            $(".centerClockRect").removeClass("endTurnPng");
-            $(".centerClockRect").addClass("enemyTurnPng");
+        if(isTurn){
+            this.clockRect.addClass("endTurnPng");
+            this.clockRect.removeClass("enemyTurnPng");
+        }
+        else{
+            this.clockRect.removeClass("endTurnPng");
+            this.clockRect.addClass("enemyTurnPng");
             
+        }
         }
         this.lineLeft.show();
     }
