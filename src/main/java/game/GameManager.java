@@ -82,7 +82,7 @@ public class GameManager {
       // game.h
     }
   }
-
+  
   public static void receiveTargetedCard(int playerId, JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
