@@ -83,19 +83,40 @@ public class ElementTest {
 		airPlayed.addProperty("IID1", airId);
 		balPlayed.addProperty("IID1", balId);
 
+		// for every element we check to make sure that before the card was played
+		// both players
+		// have 0 of the element (as they should) and that after the card is played
+		// only the player who
+		// played the card has the appropriate amount of element for that type (3).
+
+		assertEquals(b.getActivePlayer().getElem(ElementType.FIRE), 0);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.FIRE), 0);
 		g.handleCardPlayed(firePlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.FIRE), 3);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.FIRE), 0);
 
+		assertEquals(b.getActivePlayer().getElem(ElementType.WATER), 0);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.WATER), 0);
 		g.handleCardPlayed(waterPlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.WATER), 3);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.WATER), 0);
 
+		assertEquals(b.getActivePlayer().getElem(ElementType.EARTH), 0);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.EARTH), 0);
 		g.handleCardPlayed(earthPlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.EARTH), 3);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.EARTH), 0);
 
+		assertEquals(b.getActivePlayer().getElem(ElementType.AIR), 0);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.AIR), 0);
 		g.handleCardPlayed(airPlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.AIR), 3);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.AIR), 0);
 
+		assertEquals(b.getActivePlayer().getElem(ElementType.BALANCE), 0);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.BALANCE), 0);
 		g.handleCardPlayed(balPlayed, activeId);
 		assertEquals(b.getActivePlayer().getElem(ElementType.BALANCE), 3);
+		assertEquals(b.getInactivePlayer().getElem(ElementType.BALANCE), 0);
 	}
 }

@@ -433,7 +433,7 @@ public class Game implements Jsonifiable, Serializable {
 	}
 
 	private void checkWinners() {
-		if (playerOne.getLife() < 0 || playerTwo.getLife() < 0) {
+		if (playerOne.getLife() <= 0 || playerTwo.getLife() <= 0) {
 			if (playerOne.getLife() > 0) {
 				endGame(1);
 			} else if (playerTwo.getLife() > 0) {
