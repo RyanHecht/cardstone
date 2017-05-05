@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import logins.Db;
@@ -21,19 +22,21 @@ public class GameManager {
   private static final Gson GSON = new Gson();
   private static GamePool games = new GamePool();
   private static Map<Integer, Integer> gamesToEventNums = new ConcurrentHashMap<>();
+  private static Map<Integer, JsonArray> gamesToAnimations = new ConcurrentHashMap<>();
 
   // some sort of method to add games.
   public static void addGame(Game game) {
+
     if (games.updateGame(game)) {
       int p1 = game.getActivePlayerId();
       int p2 = game.getOpposingPlayerId(p1);
       if (p1 > p2) {
         p1 = p1 ^ p2 ^ (p2 = p1);
       }
-      System.out.println("adawd");
       try {
         String serialG = game.serialize();
-        Db.update("insert into in_progress values(null, ?, ?, ?);", p1, p2, serialG);
+        Db.update("insert into in_progress values(?, ?, ?, ?);",
+            game.getId(), p1, p2, serialG);
       } catch (SQLException | IOException e) {
         e.printStackTrace();
       }
@@ -142,27 +145,25 @@ public class GameManager {
    * @param g the game
    */
   public static void pushToDb(Game g) {
-    // DOWN THE LINE, GET ANIMATIONS FROM GAME AS WELL
-
     // add game to cache
     if (games.updateGame(g)) {
       System.out.println("Successfully updated game state");
-
-      String eventInsert = "insert into game_event values(?, ?, ?);";
+      String eventInsert = "insert into game_event values(?, ?, ?, ?);";
       int gId = g.getId();
       int eventNum = gamesToEventNums.get(gId);
-      // insert JSON board state into Db for replay purposes
+      // insert JSON board state and animations into Db for replay purposes
       // and increment the event number
       try {
         System.out.println(
             "Trying to insert event num " + eventNum + " for game " + gId);
-        Db.update(eventInsert, gId, eventNum, g.jsonifySelf());
+        Db.update(eventInsert, gId, eventNum, g.jsonifySelf(),
+            gamesToAnimations.get(gId));
         gamesToEventNums.put(gId, ++eventNum);
+        gamesToAnimations.remove(gId);
         System.out.println("Event num now " + gamesToEventNums.get(gId));
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
       }
-
     }
   }
 
@@ -172,14 +173,18 @@ public class GameManager {
    * @param eventNum the event number
    * @return a JsonObject of gameId's board state at eventNum
    */
-  public static JsonObject boardFrom(int gameId, int eventNum) {
-    String eventQuery = "select board from game_event where "
+  public static ReplayEvent boardFrom(int gameId, int eventNum) {
+    String eventQuery = "select board, animations from game_event where "
         + "game = ? and event = ?;";
     try (ResultSet rs = Db.query(eventQuery, gameId, eventNum)) {
       rs.next();
-      String board = rs.getString(1);
+      String boardString = rs.getString(1);
+      String animationString = rs.getString(2);
       assert !rs.next();
-      return GSON.fromJson(board, JsonObject.class);
+
+      JsonObject board = GSON.fromJson(boardString, JsonObject.class);
+      JsonArray animations = GSON.fromJson(animationString, JsonArray.class);
+      return new ReplayEvent(board, animations);
     } catch (SQLException | NullPointerException e) {
       return null;
     }
@@ -196,9 +201,19 @@ public class GameManager {
     return ret;
   }
 
+  public static void addAnim(JsonObject anim, int gameId) {
+    JsonArray anims = gamesToAnimations.get(gameId);
+    if (anims == null) {
+      anims = new JsonArray();
+      gamesToAnimations.put(gameId, anims);
+    }
+    anims.add(anim);
+  }
+
   // Transitions game from in_progress to finished_game
   public static void registerFinishedGame(int gId, int p1, int p2, int winner,
       int turns) throws NullPointerException, SQLException {
+
     Db.update("delete from in_progress where id = ?;", gId);
     Db.update("insert into finished_game values(?, ?, ?);", gId, winner, turns);
     Db.update("insert into user_game values(?, ?);", p1, gId);

@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import cardgamelibrary.MasterCardList;
 import game.Game;
 import game.GameManager;
+import game.ReplayEvent;
 import lobby.Lobby;
 import lobby.LobbyManager;
 import logins.Db;
@@ -110,6 +111,11 @@ public class Gui {
         try {
           Game g = Game.deserialize(board);
           turns = g.getNumTurns();
+          int p1 = g.getActivePlayerId();
+          int p2 = g.getOpposingPlayerId(p1);
+          System.out.println(
+              String.format("Cleaning out game %d with players %d and %d",
+                  g.getId(), p1, p2));
         } catch (ClassNotFoundException | IOException e) {
           e.printStackTrace();
           turns = 0;
@@ -131,8 +137,11 @@ public class Gui {
       int event = Integer.parseInt(qm.value("eventNum"));
 
       JsonObject response = new JsonObject();
-      JsonObject board = GameManager.boardFrom(game, event);
+
+      ReplayEvent gameState = GameManager.boardFrom(game, event);
+      JsonObject board = gameState.getBoard();
       response.add("board", board);
+      response.add("animations", gameState.getAnimations());
       response.addProperty("exists", board != null);
 
       return response.toString();

@@ -30,20 +30,22 @@ public class GamePool {
             int id = removal.getKey();
             Game g = removal.getValue();
             System.out
-                .println(String.format("(%d, %d) was evicted!", id, g.getId()));
+                .println(String.format("Game %d for player %d was evicted!", id,
+                    g.getId()));
             int otherId = g.getOpposingPlayerId(id);
             // ensure id is less than otherId for db consistency
             if (id > otherId) {
               id = id ^ otherId ^ (otherId = id); // swaps values
             }
 
-            String dbCheck = "select id from in_progress where player1 = ?;";
-            try (ResultSet rs = Db.query(dbCheck, id)) {
+            String dbCheck = "select id from in_progress where game = ?;";
+            try (ResultSet rs = Db.query(dbCheck, g.getId())) {
               String serialG = g.serialize();
               // if this game isn't in db, insert it; otherwise, update it
               if (!rs.next()) {
                 System.out.println("I'm inserting");
-                Db.update("insert into in_progress values(null, ?, ?, ?);", id,
+                Db.update("insert into in_progress values(?, ?, ?, ?);",
+                    g.getId(), id,
                     otherId, serialG);
               } else {
                 System.out.println("I'm updating");
@@ -51,7 +53,8 @@ public class GamePool {
                     serialG, id);
               }
               System.out.println(
-                  String.format("Stashed (%d, %d) in db", id, g.getId()));
+                  String.format("Stashed game %d with player %d in db", id,
+                      g.getId()));
             } catch (IOException | SQLException | NullPointerException e) {
               e.printStackTrace();
             }
@@ -69,8 +72,11 @@ public class GamePool {
                   .println("Could not load game from database for user " + key);
               return null;
             }
+            Game g = Game.deserialize(rs.getString(1));
             System.out
-                .println("Successfully retrieved game from db for user " + key);
+                .println(String.format(
+                    "Successfully retrieved game id %d for user %d", g.getId(),
+                    key));
             return Game.deserialize(rs.getString(1));
           } catch (SQLException | NullPointerException | ClassNotFoundException
               | IOException e) {
