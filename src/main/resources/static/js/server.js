@@ -341,10 +341,12 @@ class Server{
     }
     
     replayRequest(){
-        $.post("/replay",param,function(responseObj){
+		const postParams = {gameId: gameId, eventNum: replayStep};
+        $.post("/replay",postParams,function(responseObj){
             const response = JSON.parse(responseObj);
+			console.log(response);
             if(response.exists){
-                boardReceived(response);
+                server.boardReceived(response.board);
             }
         })
     }
