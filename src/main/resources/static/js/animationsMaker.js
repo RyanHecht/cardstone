@@ -20,10 +20,7 @@ class animationsMaker{
         let box = $(".animBox");
         box.empty();
         let cardFromCache = cardCache.getByIID(card.id);
-        console.log(cardFromCache);
         box.append("<div class='cardBox'></div>");
-        console.log(box);
-        console.log(box.children());
         cardFromCache.drawGivenSpace(box.children(".cardBox"));
         box.show();
         $(".chat").hide();

@@ -16,7 +16,6 @@ class SpectateLobbySocket {
 	// onLobbyCancel same as before
 
   constructor(userId, onOpponentJoinZ, onOpponentLeaveZ, onGameStartZ, onLobbyCancelZ) {
-		console.log(onOpponentJoinZ)
     this.websocket = new WebSocket("ws://" + window.location.host + "/lobbySocket");
     this.websocket.server = this;
 		this.websocket.socket = this.websocket;
@@ -33,18 +32,15 @@ class SpectateLobbySocket {
 		const payload = {"id": $.cookie('id')};
 		const obj = {"type": type, "payload": payload};
 	  this.socket.send(JSON.stringify(obj));
-		console.log('opened');
 	}
 
 	onWebSocketMessage(event) {
-		console.log(event.data)
 		this.server.messageReceived(JSON.parse(event.data));
 	}
 
   updateSpectatee(id) {
     const obj = {"type": SPECTATE_MESSAGE_TYPE.SPECTATEE_UPDATE, "payload": {"id": id}};
     this.websocket.send(JSON.stringify(obj));
-    console.log("sent update: " + obj);
   }
 
   messageReceived(message) {

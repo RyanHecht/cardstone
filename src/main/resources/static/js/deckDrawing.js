@@ -26,7 +26,6 @@ function setPage(){
 }
 
 function pageRight(){
-    console.log("paging");
     if(pages.has(curPage + 1)){
         curPage++;
         setPage();
@@ -95,7 +94,6 @@ function filter(cards,filterBy){
 
 function setupInput(){
     $(document).keypress(function(e) {
-        console.log(e.which);
         if(e.which == 122){
 			collect.pushCard(josh);
 			redrawAll();
@@ -116,14 +114,11 @@ function setupInput(){
 }
 
 function submitDeck(){
-	console.log($("#deckName").val());
     const post_params = {
         name:$("#deckName").val(),
         deck: JSON.stringify(list.getCardArray())
     }
     $.post("/deck_upload",post_params, responseJSON => {
-		console.log(post_params.name);
-		console.log(post_params.deck);
         window.location.replace("/decks");
     });
     

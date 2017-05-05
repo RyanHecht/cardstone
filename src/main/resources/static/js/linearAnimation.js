@@ -105,7 +105,6 @@ class linearAnimation extends animation{
 		this.endX2 = x2;
 		this.endY1 = y1;
 		this.endY2 = y2;
-		console.log(x1,x2,y1,y2);
 	}
 	
 	

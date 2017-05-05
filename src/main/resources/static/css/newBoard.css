@@ -11,6 +11,10 @@ img{
     -webkit-user-drag: none;
 }
 
+.no-mouse{
+    pointer-events: none;
+}
+
 .blue-font{
     width:50%;
     margin:auto;

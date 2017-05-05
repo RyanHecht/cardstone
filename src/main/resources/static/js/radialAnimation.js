@@ -12,10 +12,8 @@ class radialAnimation extends animation{
     
     setCenterDiv($divElem){
         let rect = $divElem[0].getBoundingClientRect();
-        console.log(rect);
 		let left = rect.left;
 		let top = rect.top;
-        console.log(left,top);
         let width = rect.width;
         let height = rect.height;
 		let centerX = left + (width / 2);

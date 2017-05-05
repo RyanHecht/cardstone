@@ -22,9 +22,15 @@ let tooltipDisplay = true;
 let spectator = false;
 let canAct = true;
 let spectating = 0;
+let replayStep = 0;
 
 function redrawAll(){
-	wholeBoard.forceRedraw();
+	wholeBoard.redraw();
+    mouseSystem.redraw();
+}
+
+function resizeRedrawAll(){
+    wholeBoard.forceRedraw();
     mouseSystem.redraw();
 	setupCanvas();
 }
@@ -256,7 +262,7 @@ $(document).ready(function(){
     setupKeypress();
 	$(window).resize(function() {
 		clearAnimations();
-		redrawAll();
+		resizeRedrawAll();
 	});
      $(".endTurnButton").click(function(){
             server.endTurn();
@@ -269,8 +275,11 @@ $(document).ready(function(){
     setupOptionsMenu();
     $(".boxOuter").addClass("cursorTarget");
     mouseSystem.redraw();
-    redrawAll();
+    resizeRedrawAll();
     window.onbeforeunload = function() {
         return "Do you really want to leave the page? Doing so will end the game";
     };
+    if(isReplay){
+        canAct = false;
+    }
 });

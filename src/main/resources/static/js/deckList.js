@@ -28,7 +28,6 @@ class deckList extends drawableZone{
             alert("Deck can only hold " + DECK_SIZE + " cards. Remove some first!");
             return;
         }
-        console.log(this.getNumCards());
         if(this.hasCard(card)){
             this.getWrapper(card).increment();
         }

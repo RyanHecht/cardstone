@@ -3,13 +3,10 @@ jQuery.fn.outerHTML = function() {
 }; 
 
 function valOf(id) {
-	console.log($(id).val());
 	return $(id).val();
 }
 
 $('input[type="submit"]').click(function() {
-	 console.log("I was clicked");
-	 console.log($(this).attr('id'));
 	 const id = $(this).attr('id');
 	
 	 const username = valOf("#username");

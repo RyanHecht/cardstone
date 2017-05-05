@@ -41,24 +41,20 @@ class LobbySocket {
 
 		const obj = {"type": type, "payload": payload};
 			this.socket.send(JSON.stringify(obj));
-			console.log('opened');
 	}
 
 	onWebSocketMessage(event) {
-		console.log(event.data)
 		this.server.messageReceived(JSON.parse(event.data));
 	}
 
   sendChat(chat) {
     const obj = {"type": LOBBY_MESSAGE_TYPE.PLAYER_SEND_CHAT, "payload": {"message": chat}};
     this.websocket.send(JSON.stringify(obj));
-    console.log("sent chat: " + chat);
   }
 
   setDeck(deck) {
     const obj = {"type": LOBBY_MESSAGE_TYPE.SELF_SET_DECK, "payload": deck};
     this.websocket.send(JSON.stringify(obj));
-    console.log("sent deck: " + deck);
   }
 
   startGame() {
@@ -66,23 +62,18 @@ class LobbySocket {
       const obj = {"type": LOBBY_MESSAGE_TYPE.START_GAME_REQUEST,
                     "payload": {}};
       this.websocket.send(JSON.stringify(obj));
-      console.log("start game request");
     }
   }
 
   messageReceived(message) {
-		console.log(message);
     switch(message.type) {
       case LOBBY_MESSAGE_TYPE.OPPONENT_ENTERED_LOBBY:
-				console.log("opp joined")
         this.onOpponentJoin(message.payload.id);
         break;
       case LOBBY_MESSAGE_TYPE.OPPONENT_LEFT_LOBBY:
-				console.log("opp left");
         this.onOpponentLeave();
         break;
       case LOBBY_MESSAGE_TYPE.OPPONENT_SET_DECK:
-				console.log("opp set deck");
         this.onOpponentSetDeck(message.payload.name);
         break;
       case LOBBY_MESSAGE_TYPE.GAME_IS_STARTING:

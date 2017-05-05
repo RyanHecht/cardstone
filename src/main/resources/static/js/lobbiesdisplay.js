@@ -10,11 +10,9 @@ $(document).ready(() => {
 	
 	$.get("/listLobbies", responseJSON => {
 		const responseObject = JSON.parse(responseJSON);
-		console.log(responseObject);
 		lobbyList.empty();
 		for (let i = 0, len = responseObject.length; i < len; i++) {
 			const curr_lobby = responseObject[i];
-			console.log(curr_lobby);
 
 			const privateAttr = curr_lobby.private ? "Yes" : "No";
 			const fullAttr = curr_lobby.full ? "Yes" : "No";
@@ -53,7 +51,6 @@ function formSubmit() {
 function lobbyRequest(route, postParams, headerMsg) {
 	$.post(route, postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
-		console.log(respObj);
 
 		if (respObj.auth) {
 			window.location.replace("/lobby");
@@ -93,7 +90,6 @@ $("#join").on('click', function() {
 	if (!isFull) {
 		if (!isPriv) {
 			const postParams = {name: selectedName, password: ""};
-			console.log(postParams);
 			lobbyRequest("/joinLobby", postParams, "Error joining lobby");
 		} else {
 			$("#passwordModal").modal("show");
@@ -123,12 +119,10 @@ $("#spectate").on('click', function() {
 
 $("#pwSubmit").on('click', function() {
 	const inputted = $("#pw").val();
-	console.log(inputted);
 	if (inputted != "") {
 		$("#passwordModal").modal("hide");
 		$("#pwSubmit").val("");
 		const postParams = {name: selectedName, password: inputted};
-		console.log(postParams);
 		
 		if (spectate) {
 			spectateRequest(postParams);
@@ -152,7 +146,6 @@ $("#createlobby").on('click', function() {
 	if (lobby_name != "") {
 		$("#hostLobby").modal("hide");
 		const postParams = {name: lobby_name, private: isPriv, password: pw};
-		console.log(postParams);
 		lobbyRequest("/makeLobby", postParams);
 	}
 });
