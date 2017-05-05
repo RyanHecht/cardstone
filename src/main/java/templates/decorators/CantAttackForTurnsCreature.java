@@ -23,7 +23,7 @@ public class CantAttackForTurnsCreature extends CreatureWrapper{
 	}
 	
 	public Effect onTurnEnd(Player p, Zone z) {
-		if(turns > 0){
+		if(turns >= 0){
 			turns--;
 		}
 		return super.onTurnEnd(p, z);

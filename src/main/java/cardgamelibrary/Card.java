@@ -255,5 +255,7 @@ public interface Card extends Jsonifiable, Serializable {
 		return false;
 	}
 
+
+	
 	JsonObject jsonifySelfBack();
 }
