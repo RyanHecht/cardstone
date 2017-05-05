@@ -46,47 +46,52 @@ public class LobbyWebSocket {
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
     // These types of messages can only be operated on fully added sessions
-    if (sessions.containsKey(session)) {
+    try {
 
-      int id = sessions.get(session);
+      if (sessions.containsKey(session)) {
 
-      if (type == LobbyMessageTypeEnum.SELF_SET_DECK.ordinal()) {
-        LobbyManager.handleSelfSetDeck(id, payload);
-      } else if (type == LobbyMessageTypeEnum.START_GAME_REQUEST.ordinal()) {
-        LobbyManager.handleStartGameRequest(id, payload);
-      } else if (type == LobbyMessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
-        LobbyManager.receivePlayerChat(id, payload);
-      } else if (type == LobbyMessageTypeEnum.SPECTATEE_UPDATE.ordinal()) {
-        LobbyManager.spectatorUpdate(id, payload.get("id").getAsInt());
-      }
+        int id = sessions.get(session);
 
-    } else {
-      // These are the message types that happen on connection.
-      if (type == LobbyMessageTypeEnum.LOBBY_CONNECT.ordinal()) {
-        // Let's get the Id and put it in the map!
-        int id = payload.get("id").getAsInt();
-        sessions.put(session, id);
-        idToSessions.put(id, session);
-        Lobby l = LobbyManager.getLobbyByPlayerId(id);
-
-        if (l.hostDeckSet()) {
-          LobbyWebSocket.sendOpponentSetDeck(id);
-        } else {
-          LobbyWebSocket.sendOpponentEnteredLobby(id,
-              l.getOtherPlayer(id));
+        if (type == LobbyMessageTypeEnum.SELF_SET_DECK.ordinal()) {
+          LobbyManager.handleSelfSetDeck(id, payload);
+        } else if (type == LobbyMessageTypeEnum.START_GAME_REQUEST.ordinal()) {
+          LobbyManager.handleStartGameRequest(id, payload);
+        } else if (type == LobbyMessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
+          LobbyManager.receivePlayerChat(id, payload);
+        } else if (type == LobbyMessageTypeEnum.SPECTATEE_UPDATE.ordinal()) {
+          LobbyManager.spectatorUpdate(id, payload.get("id").getAsInt());
         }
 
-      } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
-        int id = payload.get("id").getAsInt();
-        sessions.put(session, id);
-        idToSessions.put(id, session);
-      } else if (type == LobbyMessageTypeEnum.SPECTATOR_CONNECT.ordinal()) {
-        int id = payload.get("id").getAsInt();
-        sessions.put(session, id);
-        idToSessions.put(id, session);
-      }
-    }
+      } else {
+        // These are the message types that happen on connection.
+        if (type == LobbyMessageTypeEnum.LOBBY_CONNECT.ordinal()) {
+          // Let's get the Id and put it in the map!
+          int id = payload.get("id").getAsInt();
+          sessions.put(session, id);
+          idToSessions.put(id, session);
+          Lobby l = LobbyManager.getLobbyByPlayerId(id);
 
+          if (l.hostDeckSet()) {
+            LobbyWebSocket.sendOpponentSetDeck(id);
+          } else {
+            LobbyWebSocket.sendOpponentEnteredLobby(id,
+                l.getOtherPlayer(id));
+          }
+
+        } else if (type == LobbyMessageTypeEnum.LOBBY_CREATE.ordinal()) {
+          int id = payload.get("id").getAsInt();
+          sessions.put(session, id);
+          idToSessions.put(id, session);
+        } else if (type == LobbyMessageTypeEnum.SPECTATOR_CONNECT.ordinal()) {
+          int id = payload.get("id").getAsInt();
+          sessions.put(session, id);
+          idToSessions.put(id, session);
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("ERROR in Lobby message handling");
+      e.printStackTrace();
+    }
   }
 
   public static void closeSession(int userId) {
@@ -199,6 +204,10 @@ public class LobbyWebSocket {
     obj.add("payload", payload);
     System.out.println("a lobby message is being sent now.");
     session.getRemote().sendString(GSON.toJson(obj));
+  }
+
+  public static boolean isConnected(int uId) {
+    return idToSessions.containsKey(uId);
   }
 
 }

@@ -20,6 +20,7 @@ import lobby.LobbyManager;
 import logins.Db;
 import logins.MetaGame;
 import server.CommsWebSocket;
+import server.LobbyWebSocket;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
@@ -130,9 +131,7 @@ public class Gui {
     public ModelAndView handle(Request req, Response res) {
       String uString = req.cookie("id");
       if (!loggedIn(uString)) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       int uid = Integer.parseInt(req.cookie("id"));
@@ -160,20 +159,14 @@ public class Gui {
     @Override
     public ModelAndView handle(Request req, Response res) {
       if (!loggedIn(req.cookie("id"))) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       String lname = req.queryMap().value("lobby");
       Lobby l = LobbyManager.getLobbyByName(lname);
 
       if (l == null) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering", "error",
-                "Please find another lobby", "errorHeader",
-                "Lobby " + lname + " does not exist"),
-            "lobbies.ftl");
+        res.redirect("/lobbies");
       }
 
       System.out.println("Got lobby " + l);
@@ -220,17 +213,16 @@ public class Gui {
     public ModelAndView handle(Request req, Response res) {
       String uString = req.cookie("id");
       if (!loggedIn(uString)) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       int uid = Integer.parseInt(uString);
+      if (LobbyWebSocket.isConnected(uid)) {
+        res.redirect("/lobbies");
+      }
       Lobby l = LobbyManager.getLobbyByPlayerId(uid);
       if (l == null) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "lobbies.ftl");
+        res.redirect("/lobbies");
       }
 
       System.out.println("Got lobby " + l);
@@ -267,9 +259,7 @@ public class Gui {
     @Override
     public ModelAndView handle(Request req, Response res) {
       if (!loggedIn(req.cookie("id"))) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       String queryString = req.queryString();
@@ -298,9 +288,7 @@ public class Gui {
     public ModelAndView handle(Request req, Response res) {
       String uid = req.cookie("id");
       if (!loggedIn(uid)) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       String gameQuery = "select g.id, g.winner, g.moves from finished_games as g, user_game"
@@ -325,9 +313,7 @@ public class Gui {
     @Override
     public ModelAndView handle(Request req, Response res) {
       if (!loggedIn(req.cookie("id"))) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       String username = req.cookie("username");
@@ -342,9 +328,7 @@ public class Gui {
     public ModelAndView handle(Request req, Response res) {
       String userId = req.cookie("id");
       if (!loggedIn(userId)) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       String username = req.cookie("username");
@@ -370,9 +354,7 @@ public class Gui {
     public ModelAndView handle(Request req, Response res) {
       String userId = req.cookie("id");
       if (!loggedIn(userId)) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       String queryString = req.queryString();
@@ -407,9 +389,7 @@ public class Gui {
     @Override
     public ModelAndView handle(Request req, Response res) {
       if (!loggedIn(req.cookie("id"))) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"),
-            "login.ftl");
+        res.redirect("/login");
       }
 
       QueryParamsMap qm = req.queryMap();

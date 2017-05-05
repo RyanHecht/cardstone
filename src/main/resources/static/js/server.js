@@ -182,11 +182,12 @@ class Server{
 
   gameEnded(message){
       this.alertMessage(message);
-      $('#messageModal').bind('hide', function () {
+      $('#messageModal').on('hidden.bs.modal', function () {
+          window.onbeforeunload = function() {};
           window.location.replace("/lobbies");
       });
   }
-    
+
   alertMessage(message) {
     customAlert(message.message);
   }
@@ -251,7 +252,7 @@ class Server{
                 }
                 break;
             case "cardPlayed":
-                animationMaker.playCardAnimation(message.card);
+                animationsMaker.playCardAnimation(message.card);
                 console.log("Aibfwe i wiu wd i hh iu dwiih dw ihu iu");
                 break;
             case "cardDied":
