@@ -253,8 +253,7 @@ class Server{
                 }
                 break;
             case "cardPlayed":
-                animationsMaker.playCardAnimation(message.card);
-                console.log("Aibfwe i wiu wd i hh iu dwiih dw ihu iu");
+                quedAnims.push(animationsMaker.playCardAnimation(message.card).create());
                 break;
             case "cardDied":
                 quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());

@@ -276,12 +276,12 @@ body .bigModal .modal-dialog {
 .animBox{
     height:200px;
     position:absolute;
-    top:2%;
-    left:2%;
+    top:30%;
+    left:30%;
     width:140px;
     background-color:rgba(230,230,240,0.0);
     padding:3px;
-    /* display:none; */
+    pointer-events: none;
 }
 
 .cardDrawnAnim{
