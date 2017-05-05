@@ -38,13 +38,46 @@ $(document).ready(() => {
 	}
 });
 
+function drawLobbies() {
+	
+};
+
 function formSubmit() {
 	const form = $("<form action='/spectate' method='POST'>" +
 				   " <input type='text' name='lobby' value=" +
 				   selectedName + " /> />");
 	$('body').append(form);
 	form.submit();
-}
+};
+
+function lobbyRequest(route, postParams, headerMsg) {
+	$.post(route, postParams, responseJSON => {
+		const respObj = JSON.parse(responseJSON);
+		console.log(respObj);
+
+		if (respObj.auth) {
+			window.location.replace("/lobby");
+		} else {
+			$("#messageModal").modal("show");
+			$("#messageheader").text("Error creating lobby");
+			$("#message").text(respObj.message);
+		}
+	});
+};
+
+function spectateRequest(postParams) {
+	$.post("/spectateJoin", postParams, responseJSON => {
+		const respObj = JSON.parse(responseJSON);
+		
+		if (respObj.auth) {
+			formSubmit();
+		} else {
+			$("#messageModal").modal("show");
+			$("#messageheader").text("Error spectating lobby");
+			$("#message").text(respObj.message);	
+		}
+	});	
+};
 
 $("#lobby-table").on("click", "tr", function() {
 	selectedName = $(this).find("td.name").text();
@@ -61,19 +94,7 @@ $("#join").on('click', function() {
 		if (!isPriv) {
 			const postParams = {name: selectedName, password: ""};
 			console.log(postParams);
-			$.post("/joinLobby", postParams, responseJSON => {
-				const respObj = JSON.parse(responseJSON);
-				console.log(respObj);
-
-				if (respObj.auth) {
-					window.location.replace("/lobby");
-					console.log("Made it here dawggie");
-				} else {
-					$("#messageModal").modal("show");
-					$("#messageheader").text("Error joining lobby");
-					$("#message").text(respObj.message);
-				}
-			});
+			lobbyRequest("/joinLobby", postParams, "Error joining lobby");
 		} else {
 			$("#passwordModal").modal("show");
 			$("#pwTitle").text("Lobby " + selectedName +
@@ -90,17 +111,7 @@ $("#spectate").on('click', function() {
 	$("#clickModal").modal("hide");
 	if (!isPriv) {
 		const postParams = {name: selectedName, password: ""};
-		$.post("/spectateJoin", postParams, responseJSON => {
-			const respObj = JSON.parse(responseJSON);
-			
-			if (respObj.auth) {
-				formSubmit();
-			} else {
-				$("#messageModal").modal("show");
-				$("#messageheader").text("Error joining lobby");
-				$("#message").text(respObj.message);	
-			}
-		});
+		spectateRequest(postParams);
 	} else {
 		$("#passwordModal").modal("show");
 		$("#pwTitle").text("Spectating lobby " + selectedName +
@@ -120,32 +131,13 @@ $("#pwSubmit").on('click', function() {
 		console.log(postParams);
 		
 		if (spectate) {
-			$.post("/spectateJoin", postParams, responseJSON => {
-				const respObj = JSON.parse(responseJSON);
-			
-				if (respObj.auth) {
-					formSubmit();
-				} else {
-					$("#messageModal").modal("show");
-					$("#messageheader").text("Error spectating lobby");
-					$("#message").text(respObj.message);	
-				}
-			});
+			spectateRequest(postParams);
 		} else {
-			$.post("/joinLobby", postParams, responseJSON => {
-				const respObj = JSON.parse(responseJSON);
-			
-				if (respObj.auth) {
-					window.location.replace("/lobby");
-				} else {
-					$("#messageModal").modal("show");
-					$("#messageheader").text("Error joining lobby");
-					$("#message").text(respObj.message);	
-				}
-			});
+			lobbyRequest("/joinLobby", postParams, "Error joining lobby");
 		}
+		spectate = false;
 	}
-	spectate = false;
+	
 });
 
 $("#hostbutton").on('click', function() {
@@ -161,17 +153,10 @@ $("#createlobby").on('click', function() {
 		$("#hostLobby").modal("hide");
 		const postParams = {name: lobby_name, private: isPriv, password: pw};
 		console.log(postParams);
-		$.post("/makeLobby", postParams, responseJSON => {
-			const respObj = JSON.parse(responseJSON);
-			console.log(respObj);
-
-			if (respObj.auth) {
-				window.location.replace("/lobby");
-			} else {
-				$("#messageModal").modal("show");
-				$("#messageheader").text("Error creating lobby");
-				$("#message").text(respObj.message);
-			}
-		});
+		lobbyRequest("/makeLobby", postParams);
 	}
+});
+
+$("#messageModal").on('hidden.bs.modal', function() {
+	drawLobbies();
 });

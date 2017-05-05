@@ -25,6 +25,18 @@ public class GameManager {
   // some sort of method to add games.
   public static void addGame(Game game) {
     if (games.updateGame(game)) {
+      int p1 = game.getActivePlayerId();
+      int p2 = game.getOpposingPlayerId(p1);
+      if (p1 > p2) {
+        p1 = p1 ^ p2 ^ (p2 = p1);
+      }
+      
+      try {
+        String serialG = game.serialize();
+        Db.update("insert into in_progress values(null, ?, ?, ?);", p1, p2, serialG);
+      } catch (SQLException | IOException e) {
+        e.printStackTrace();
+      }
       gamesToEventNums.put(game.getId(), 1);
     }
   }
@@ -38,13 +50,8 @@ public class GameManager {
 
     int firstUser = g.getActivePlayerId();
     int secondUser = g.getOpposingPlayerId(firstUser);
-
     try {
-      Db.update("delete from in_progress where id = ?;", gId);
-      Db.update("insert into finished_game values(?, ?, ?)", gId, winner,
-          turns);
-      Db.update("insert into user_game values(?, ?);", firstUser, gId);
-      Db.update("insert into user_game values(?, ?);", secondUser, gId);
+      registerFinishedGame(gId, firstUser, secondUser, winner, turns);
 
       games.removeGame(firstUser);
       games.removeGame(secondUser);
@@ -178,11 +185,21 @@ public class GameManager {
 
   public static int getStartingId() {
     int ret;
-    try (ResultSet rs = Db.query("select max(id) from finished_game;")) {
-      ret = rs.getInt(1);
+    try (ResultSet rs = Db.query("select max(id) from in_progress;")) {
+      ret = rs.getInt(1) + 1;
     } catch (SQLException | NullPointerException e) {
       ret = 1;
     }
+    System.out.println("Recommended starting id " + ret);
     return ret;
+  }
+
+  // Transitions game from in_progress to finished_game
+  public static void registerFinishedGame(int gId, int p1, int p2, int winner,
+      int turns) throws NullPointerException, SQLException {
+    Db.update("delete from in_progress where id = ?;", gId);
+    Db.update("insert into finished_game values(?, ?, ?)", gId, winner, turns);
+    Db.update("insert into user_game values(?, ?);", p1, gId);
+    Db.update("insert into user_game values(?, ?);", p2, gId);
   }
 }

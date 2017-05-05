@@ -1,11 +1,5 @@
 package main;
 
-import cardgamelibrary.MasterCardList;
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import game.Game;
-import game.GameManager;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +9,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import cardgamelibrary.MasterCardList;
+import game.Game;
+import game.GameManager;
 import lobby.Lobby;
 import lobby.LobbyManager;
 import logins.Db;
@@ -98,6 +100,24 @@ public class Gui {
       Db.update("create table if not exists game_event("
           + "game integer not null, event integer not null,"
           + "board text not null, UNIQUE(game, event));");
+
+      // loop through in_progress, stash in finished_game
+      ResultSet rs = Db.query("select * from in_progress;");
+      while (rs.next()) {
+        int turns;
+        String board = rs.getString(3);
+        try {
+          Game g = Game.deserialize(board);
+          turns = g.getNumTurns();
+        } catch (ClassNotFoundException | IOException e) {
+          e.printStackTrace();
+          turns = 0;
+        }
+
+        // winner id of 0 indicates tie game
+        GameManager.registerFinishedGame(rs.getInt(1), rs.getInt(2),
+            rs.getInt(3), 0, turns);
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
