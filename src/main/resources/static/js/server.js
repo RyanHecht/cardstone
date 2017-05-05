@@ -126,7 +126,7 @@ class Server{
         if(!spectator){
             switch(message.type){
                 case MESSAGE_TYPE.BOARD_STATE:
-                    this.boardReceived(message.payload);
+                    this.boardGotten(message.payload);
                     break;
                 case MESSAGE_TYPE.ACTION_BAD:
                     this.badMessage(message.payload);
@@ -165,7 +165,7 @@ class Server{
           console.log("i'm a spectator and i got a message of type " + message.type);
             switch(message.type){
                 case MESSAGE_TYPE.BOARD_STATE:
-                    this.boardReceived(message.payload);
+                    this.boardGotten(message.payload);
                     break;
                 case MESSAGE_TYPE.TURN_START://
                     turnTimer.startTurn(message.payload.isSelf);//
@@ -291,14 +291,24 @@ class Server{
 		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(1,'',player2.element));
 	}
 
-	boardReceived(data){
+    boardGotten(data){
+        this.recentestBoard = data;
+        if(!animating){
+            boardReceived();
+        }
+    }
+    
+	boardReceived(){
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
+            this.animating = true;
             window.setTimeout(function(){
-                $this.boardReceived(data)
+                $this.boardReceived()
             }, UPDATE_RATE * 2);
             return;
         }
+        this.animating = false;
+        let data = this.recentestBoard;
         if(spectator){
             if(data.player1.playerId != spectating){
                 wholeBoard.flipTry();
