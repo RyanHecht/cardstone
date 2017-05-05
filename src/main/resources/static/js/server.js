@@ -356,7 +356,7 @@ class Server{
             const response = JSON.parse(responseObj);
 			console.log(response);
             if(response.exists){
-                server.boardReceived(response.board);
+                server.boardGotten(response.board);
             }
         })
     }
