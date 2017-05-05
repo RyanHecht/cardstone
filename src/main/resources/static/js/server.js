@@ -82,12 +82,13 @@ class Server{
     }
 
 	constructor() {
+        if(!isReplay){
 		this.websocket = new WebSocket("ws://" + window.location.host + "/socket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
-
+        }
 	}
 
 	onWebSocketOpen() {

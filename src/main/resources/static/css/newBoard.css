@@ -239,11 +239,10 @@ body .bigModal .modal-dialog {
 .overlayHand2{
     position:absolute;
     top:0%;
-    left:10%;
+    left:20%;
     width:80%;
    /*  border: 3px solid yellow; */
-    height:15%;
-    display:none;
+    height:10%;
 }
 
 .boardOverlay{
