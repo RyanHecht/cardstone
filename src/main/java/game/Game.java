@@ -546,7 +546,6 @@ public class Game implements Jsonifiable, Serializable {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
 	}
-
 	/**
 	 * Handles players being targeted.
 	 *
