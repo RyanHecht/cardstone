@@ -11,7 +11,7 @@ import game.Player;
  * @author Raghu
  *
  */
-public class SkyWhaleCreature extends Creature {
+public class SkyWhale extends Creature {
 	private static final int			defaultMaxHealth	= 30;
 	private static final int			defaultAttack		= 5;
 	private static final ManaPool	defaultCost			= new ManaPool(30, 0, 2, 0, 1, 0);
@@ -19,7 +19,7 @@ public class SkyWhaleCreature extends Creature {
 	private static final String		defaultName			= "Sky Whale";
 	private static final String		defaultText			= "Im flying!";
 
-	public SkyWhaleCreature(Player owner) {
+	public SkyWhale(Player owner) {
 		super(defaultMaxHealth, defaultAttack, defaultCost, defaultImage, owner, defaultName, defaultText, CardType.CREATURE);
 	}
 
