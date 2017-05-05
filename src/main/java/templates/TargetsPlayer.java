@@ -24,9 +24,6 @@ public interface TargetsPlayer extends Card {
 			// card AND the card is being played from the hand (though this could be
 			// any zone).
 
-			// pay cost of the card.
-			getOwner().payCost(getCost());
-
 			// produce specific effect on target.
 			return impactPlayerTarget(targetted);
 		}
