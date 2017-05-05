@@ -7,7 +7,7 @@ class TurnTimer{
         this.lineRight = $(".lineRight");
         this.lineLeft = $(".lineLeft");
         this.startTurn(isTurn);
-       
+        this.updateThread(this);
     }
     
     startTurn(isTurn){
@@ -24,7 +24,6 @@ class TurnTimer{
             
         }
         this.lineLeft.show();
-        this.updateThread(this);
     }
     
     updateThread($this){

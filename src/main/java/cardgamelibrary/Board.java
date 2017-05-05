@@ -689,10 +689,9 @@ public class Board implements Jsonifiable, Serializable {
 			sendAnimation(animation);
 		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.GRAVE && c instanceof Element) {
 			JsonObject animation = new JsonObject();
-
-			// element was played.
 			animation.addProperty("eventType", "cardPlayed");
 			animation.add("card", c.jsonifySelf());
+			sendAnimation(animation);
 		}
 
 		eventQueue.add(event);
