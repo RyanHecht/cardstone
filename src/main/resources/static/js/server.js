@@ -361,7 +361,7 @@ class Server{
                     
                     for(let anim of response.animations){
                         console.log(anim);
-                        server.messageReceived(anim);
+                        server.animationEventReceived(anim);
                     }
                 }
                 server.boardGotten(response.board);
