@@ -2,7 +2,8 @@ let socket;
 let toSpectate;
 
 $(document).ready(() => {
-	socket = new SpectateLobbySocket(parseInt($.cookie("id"), onOpponentJoin, onOpponentLeave, onGameStart, onLobbyCancel));
+	console.log(onOpponentJoin)
+	socket = new SpectateLobbySocket(parseInt($.cookie("id")), onOpponentJoin, onOpponentLeave, onGameStart, onLobbyCancel);
 	toSpectate = parseInt($("#hostRadio").val());
 });
 

@@ -27,7 +27,7 @@ class animationsMaker{
         box.show();
         $(".chat").hide();
         box.find("#" + cardFromCache.IID).attr("id",-180);
-        window.setTimeout(killAnimBox,2000);
+        window.setTimeout(killAnimBox,3000);
         box.click(killAnimBox);
     }
     
