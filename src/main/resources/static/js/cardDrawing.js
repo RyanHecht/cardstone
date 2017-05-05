@@ -23,6 +23,7 @@ let spectator = false;
 let canAct = true;
 let spectating = 0;
 let replayStep = 0;
+let playedQueue = new PlayedQueue;
 
 function redrawAll(){
 	redrawChanged();
@@ -32,11 +33,13 @@ function resizeRedrawAll(){
     wholeBoard.forceRedraw();
     mouseSystem.redraw();
 	setupCanvas();
+    playedQueue.redraw();
 }
 
 function redrawChanged(){
     wholeBoard.draw();
     mouseSystem.redraw();
+    playedQueue.redraw();
 }
 
 //I don't know how to kill elements from an array

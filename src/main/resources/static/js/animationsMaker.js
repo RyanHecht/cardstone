@@ -2,7 +2,7 @@ function killAnimBox(){
     let box = $(".animBox");
     box.empty();
     box.hide();
-    $(".chat").show();
+    //$(".chat").show();
 }
 
 function getDrawnCardAnimation(isMe){
@@ -47,12 +47,13 @@ class animationsMaker{
         let box = $(".animBox");
         box.empty();
         let cardFromCache = cardCache.getByIID(card.id);
+        playedQueue.add(cardFromCache);
         box.append("<div class='cardBox'></div>");
         cardFromCache.drawGivenSpace(box.children(".cardBox"));
         box.show();
-        $(".chat").hide();
+        //$(".chat").hide();
         $("#" + card.id).first().attr("id",-180);
-        let abt = new animBoxTimer(1500);
+        let abt = new animBoxTimer(500);
         return abt;
     }
     

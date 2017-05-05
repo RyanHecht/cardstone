@@ -362,6 +362,7 @@ class elementCard extends Card{
 		super();
 		this.IID = IID;
 		this.elementType = elementType;
+        this.imagePath = "images/elements/"+elementType+"Big.jpg";
 		switch(elementType){
 			case("water"):
 				this.color = waterText;
@@ -400,7 +401,7 @@ class elementCard extends Card{
     drawBig(div){
         div.html(elementHtml);
 		div.children(".card").children(".imageArea").children(".cardImage").attr("src", "images/elements/"+this.elementType+"Big.jpg");
-		div.addClass("hasToolTip");
+		//div.addClass("hasToolTip");
 		div.children(".card")[0].style.background = this.color;
     }
 	

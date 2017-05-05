@@ -1,11 +1,11 @@
-/*  */
-
 html{
     background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
 	width:98%;
 	height:100%;   
     user-select: none;
 }
+
+
 
 img{
     -webkit-user-drag: none;
@@ -37,6 +37,24 @@ body{
     display : none !important;
     opacity:0% !important;
     visibility:hidden;
+}
+
+.cardQueue{
+    position:absolute;
+    bottom:25%;
+    right:2%;
+    height:40%;
+    border:1px solid grey;
+    width:10%;
+}
+
+.queueBox{
+    width:100%;
+    height:18%;
+    margin-bottom:2%;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
 }
 
 .boxOuter{

@@ -5,13 +5,13 @@
   <#if isReplay>
     let gameId = ${gameId};
   </#if>
-  console.log("yoyoyoy i set game id and isReplay");
 </script>
 		<script src="js/jquery-2.1.1.js"></script>
 		<script src="js/jquery-cookie.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="js/MouseManagerSystem.js"></script>
 		<script src="js/animation.js"></script>
+        <script src="js/PlayedQueue.js"></script>
         <script src="js/cardDrawnAnimation.js"></script>
 		<script src="js/animationsMaker.js"></script>
         <script src="js/Enums.js"></script>

@@ -32,6 +32,7 @@ const StateEnum = {
 const WIDTH_RATIO = .7;
 const STAT_ALPHA = .8;
 const UPDATE_RATE = 25;
+const PQ_SIZE = 5;
 
 const fire = {r : 106, g : 4, b : 30};
 const water = {r : 128, g : 188, b : 163};
