@@ -305,7 +305,7 @@ public class Gui {
         res.redirect("/login");
       }
 
-      String gameQuery = "select g.id, g.winner, g.moves from finished_games as g, user_game"
+      String gameQuery = "select g.id, g.winner, g.moves from finished_game as g, user_game"
           + " as ug where g.id = ug.game and ug.user = ?;";
       List<MetaGame> toDisplay = new ArrayList<>();
       try (ResultSet rs = Db.query(gameQuery, uid)) {
