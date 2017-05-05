@@ -101,70 +101,70 @@ function setupBoard(){
 	let joshPool = new manaPool(1,'');
 	joshPool.setFire(5);
 	joshPool.setAir(5);
-	let smallJoshPool = new manaPool(3,'&nbsp;');
-	//smallJoshPool.setEarth(1);
-    smallJoshPool.setAir(1);
+	// let smallJoshPool = new manaPool(3,'&nbsp;');
+	// //smallJoshPool.setEarth(1);
+    // smallJoshPool.setAir(1);
 
-	let smallSkyWhalePool = new manaPool(3,'&nbsp;');
-	let bigWhalePool = new manaPool(3,'&nbsp;');
+	// let smallSkyWhalePool = new manaPool(3,'&nbsp;');
+	// let bigWhalePool = new manaPool(3,'&nbsp;');
 
-	smallSkyWhalePool.setWater(1);
-	smallSkyWhalePool.setAir(1);
-	bigWhalePool.setWater(4);
-	let skyCost = new cost(20,smallSkyWhalePool);
-	let joshCost = new cost(10,smallJoshPool);
-	let whaleCost = new cost(30, bigWhalePool);
+	// smallSkyWhalePool.setWater(1);
+	// smallSkyWhalePool.setAir(1);
+	// bigWhalePool.setWater(4);
+	// let skyCost = new cost(20,smallSkyWhalePool);
+	// let joshCost = new cost(10,smallJoshPool);
+	// let whaleCost = new cost(30, bigWhalePool);
 
 
-	josh = new creatureCard(-6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
-		" These may include dancing, singing, or just generally having a good time." +
-		"At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
-    let stateList1 = [];
+	// josh = new creatureCard(-6,joshCost, "Josh Pattiz", "Perform a long sequence of actions." +
+		// " These may include dancing, singing, or just generally having a good time." +
+		// "At the end of this sequence, win the game.", "images/creature.jpg", 5,6);
+    // let stateList1 = [];
 
-    stateList1.push("taunt");
-    josh.setStates(stateList1);
-    let stateList2 = [];
-    stateList2.push("canAttack");
-    let skyWhale = new creatureCard(-5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
-	skyWhale.setStates(stateList2);
-    let whale = new creatureCard(-20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
-	"images/giantWhale.png",5,12);
+    // stateList1.push("taunt");
+    // josh.setStates(stateList1);
+    // let stateList2 = [];
+    // stateList2.push("canAttack");
+    // let skyWhale = new creatureCard(-5,skyCost, "Sky Whale", "Deal 3 damage", "images/magicSkyWhale.jpg", 2, 10);
+	// skyWhale.setStates(stateList2);
+    // let whale = new creatureCard(-20,whaleCost, "Sea Leviathan", "At the end of every turn, destroy all minions with less than 3 attack",
+	// "images/giantWhale.png",5,12);
 
-	let purgePool = new manaPool(3,'&nbsp;');
-	purgePool.setBalance(2);
-	let purgeCost = new cost(30,purgePool);
+	// let purgePool = new manaPool(3,'&nbsp;');
+	// purgePool.setBalance(2);
+	// let purgeCost = new cost(30,purgePool);
 
-	let purge = new spellCard(-4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
-	"images/purge.jpg");
+	// let purge = new spellCard(-4,purgeCost, "Purge the Unbelievers", "Destroy all creatures with attack not equal to their health. Ordering: And distribute the destroyed minions stats among surviving minions.",
+	// "images/purge.jpg");
 
-	let water = new elementCard(-55,"water");
-	let balance = new elementCard(-15,"balance");
-	let earth = new elementCard(-16,"earth");
-	let fire = new elementCard(-17,"fire");
-	let air = new elementCard(-18,"air");
+	// let water = new elementCard(-55,"water");
+	// let balance = new elementCard(-15,"balance");
+	// let earth = new elementCard(-16,"earth");
+	// let fire = new elementCard(-17,"fire");
+	// let air = new elementCard(-18,"air");
 
-	let back = new cardBack(-121);
+	// let back = new cardBack(-121);
 
-	let hand1Joshs = [fire, water, earth, air, balance, purge];
-	let hand2Joshs = [back,back,back,back,back];
+	// let hand1Joshs = [fire, water, earth, air, balance, purge];
+	// let hand2Joshs = [back,back,back,back,back];
 
-	let aura1Joshs = [whale, skyWhale, skyWhale, skyWhale, skyWhale];
-	let aura2Joshs = [whale, whale, whale, whale, whale];
+	// let aura1Joshs = [whale, skyWhale, skyWhale, skyWhale, skyWhale];
+	// let aura2Joshs = [whale, whale, whale, whale, whale];
 
-	let creature1Joshs = [josh, whale, skyWhale, skyWhale, whale];
-	let creature2Joshs = [whale, whale, skyWhale, skyWhale, whale];
-    cardCache.addNewParsedCard(josh);
-    cardCache.addNewParsedCard(whale);
-    cardCache.addNewParsedCard(skyWhale);
-    cardCache.addNewParsedCard(back);
-    cardCache.addNewParsedCard(fire);
-    cardCache.addNewParsedCard(water);
-    cardCache.addNewParsedCard(earth);
-    cardCache.addNewParsedCard(air);
-    cardCache.addNewParsedCard(balance);
-    cardCache.addNewParsedCard(purge);
+	// let creature1Joshs = [josh, whale, skyWhale, skyWhale, whale];
+	// let creature2Joshs = [whale, whale, skyWhale, skyWhale, whale];
+    // cardCache.addNewParsedCard(josh);
+    // cardCache.addNewParsedCard(whale);
+    // cardCache.addNewParsedCard(skyWhale);
+    // cardCache.addNewParsedCard(back);
+    // cardCache.addNewParsedCard(fire);
+    // cardCache.addNewParsedCard(water);
+    // cardCache.addNewParsedCard(earth);
+    // cardCache.addNewParsedCard(air);
+    // cardCache.addNewParsedCard(balance);
+    // cardCache.addNewParsedCard(purge);
 
-	wholeBoard = new board(hand1Joshs,hand2Joshs,aura1Joshs,aura2Joshs,creature1Joshs,creature2Joshs,20,30,10,15,joshPool,joshPool,30,30);
+	wholeBoard = new board([],[],[],[],[],[],20,30,10,15,joshPool,joshPool,30,30);
 }
 
 function setupServer(){
@@ -222,7 +222,7 @@ function setupKeypress(){
         else if(e.which == 27){
             popOptionsMenu();
         }
-        if(isReplayMode){
+        if(isReplay){
             if(e.which == 37){
                 server.replayRequestStepBack();
             }
@@ -257,7 +257,7 @@ $(document).ready(function(){
     setupMouseListen();
 	setupCanvas();
     cardCache = new cardCacher();
-	//setupBoard();
+	setupBoard();
     setupKeypress();
 	$(window).resize(function() {
 		clearAnimations();

@@ -116,8 +116,9 @@ class chooseZone extends drawableZone{
 					viewport: $(window),
 					adjust: {
 						method: 'flipinvert shift'
-					}
-                    target: 'mouse',
+					},
+                    
+                    target: 'mouse'
 					
 				}
 			});
