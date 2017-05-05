@@ -247,15 +247,13 @@ public interface Card extends Jsonifiable, Serializable {
 	static boolean recursiveIs(Object c, Class goal) {
 		Class curClass = c.getClass();
 		while (curClass != Object.class) {
-			if (curClass == goal) {
+			if (curClass.equals(goal)) {
 				return true;
 			}
 			curClass = curClass.getSuperclass();
 		}
 		return false;
 	}
-
-
 	
 	JsonObject jsonifySelfBack();
 }
