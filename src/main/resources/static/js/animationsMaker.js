@@ -26,7 +26,7 @@ class animationsMaker{
         //cardFromCache.changeId(box.find(".cardBox"));
         box.show();
         $(".chat").hide();
-        box.find("#" + cardFromCache.IID).attr("id",-180);
+        ("#" + card.id).first().attr("id",-180);
         window.setTimeout(killAnimBox,3000);
         box.click(killAnimBox);
     }
