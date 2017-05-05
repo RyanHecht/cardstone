@@ -37,6 +37,7 @@ function resizeRedrawAll(){
 }
 
 function redrawChanged(){
+    $(".hasTooltip").qtip("destroy");
     wholeBoard.draw();
     mouseSystem.redraw();
     playedQueue.redraw();
@@ -197,7 +198,7 @@ function popOptionsMenu(){
 function setupOptionsMenu(){
     $("#tooltipsToggle").change(function() {
         tooltipDisplay = this.checked;
-        redrawAll();
+        resizeRedrawAll();
     });
     $("#concedeButton").click(function(){
        window.location.replace("/lobbies"); 
