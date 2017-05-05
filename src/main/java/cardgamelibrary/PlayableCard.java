@@ -94,14 +94,13 @@ public class PlayableCard implements Card {
 		// TODO Auto-generated method stub
 		return type;
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this != null && o != null && o instanceof PlayableCard) {
-			PlayableCard c = (PlayableCard) o;
-			return c.getId() == this.getId();
+	
+	public boolean equals(Object other){
+		if(!(other instanceof Card)){
+			return false;
 		}
-		return false;
+		Card c = (Card) other;
+		return this.getId() == c.getId();
 	}
 
 	@Override

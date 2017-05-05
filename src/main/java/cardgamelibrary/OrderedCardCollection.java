@@ -62,7 +62,11 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	public boolean replace(Card a, Card b) {
 		int ind = cards.indexOf(a);
+		System.out.println("trying to replace");
 		if (ind != -1) {
+			System.out.println(this.player.getId() + this.zone.name());
+			System.out.println("the id is " + a.getId() + " " + a.getName());
+			System.out.println(cards.get(ind).getName());
 			cards.set(ind, b);
 			return true;
 		}

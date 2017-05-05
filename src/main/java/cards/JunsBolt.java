@@ -54,8 +54,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 			board.damageCard((Creature) target, this, 3);
 
 			// send card to graveyard from hand.
-			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
-		};
+			};
 	}
 
 	@Override
@@ -65,9 +64,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 			// deal 3 damage to targeted player.
 			board.damagePlayer(p, this, 3);
 
-			// send card to graveyard from hand.
-			board.addCardToOcc(this, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
-		};
+			};
 	}
 
 }

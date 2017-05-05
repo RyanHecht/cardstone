@@ -239,6 +239,14 @@ public class CardWrapper implements Card {
 		return internal.onCardZoneCreated(card, location, zone);
 	}
 
+	public boolean equals(Object other){
+		if(!(other instanceof Card)){
+			return false;
+		}
+		Card c = (Card) other;
+		return this.getId() == c.getId() || internal.equals(other);
+	}
+	
 	@Override
 	public JsonObject jsonifySelfBack() {
 		return internal.jsonifySelfBack();
