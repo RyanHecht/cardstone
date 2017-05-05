@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import events.CardDamagedEvent;
@@ -68,7 +69,7 @@ public class Board implements Jsonifiable, Serializable {
 
 	// keeps track of turn counter.
 	private int turnIndex = 0;
-	private List<JsonObject> animBox;
+	private JsonArray animBox;
 
 	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
 		// using LinkedLists but declaring using queue interface.
@@ -109,7 +110,7 @@ public class Board implements Jsonifiable, Serializable {
 			activePlayer = deckTwo.getPlayer();
 		}
 
-		animBox = new LinkedList<JsonObject>();
+		animBox = new JsonArray();
 		// set up starting hands.
 		assignStartingHands();
 
@@ -124,12 +125,12 @@ public class Board implements Jsonifiable, Serializable {
 		return activePlayer;
 	}
 	
-	public List<JsonObject> getAnimBox(){
+	public JsonArray getAnimBox(){
 		return animBox;
 	}
 	
 	public void cleanAnimBox(){
-		animBox.clear();
+		animBox = new JsonArray();
 	}
 
 	/**

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
@@ -365,7 +366,7 @@ public class Game implements Jsonifiable, Serializable {
 		board.cleanAnimBox();
 	}
 	
-	public List<JsonObject> getAnimBox(){
+	public JsonArray getAnimBox(){
 		return board.getAnimBox();
 	}
 
