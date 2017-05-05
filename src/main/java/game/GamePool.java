@@ -38,7 +38,7 @@ public class GamePool {
               id = id ^ otherId ^ (otherId = id); // swaps values
             }
 
-            String dbCheck = "select id from in_progress where game = ?;";
+            String dbCheck = "select id from in_progress where id = ?;";
             try (ResultSet rs = Db.query(dbCheck, g.getId())) {
               String serialG = g.serialize();
               // if this game isn't in db, insert it; otherwise, update it

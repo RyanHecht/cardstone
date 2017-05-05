@@ -82,7 +82,7 @@ class Server{
     }
 
 	constructor() {
-        if(!isReplay){
+        if(typeof isReplay == "undefined" || !isReplay){
 		this.websocket = new WebSocket("ws://" + window.location.host + "/socket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
@@ -351,15 +351,14 @@ class Server{
         })
     }
 
-    requestCardCollection(callback){
-        let $this = this;
+    static requestCardCollection(callback){
         $.get("/all_cards",function(responseJSON){
             const obj = JSON.parse(responseJSON);
-            $this.receiveCardCollection(obj);
+            server.receiveCardCollection(obj);
         })
     }
 
-    receiveCardCollection(collection){
+    static receiveCardCollection(collection){
         cardCache.repairCardList(collection);
         for(let card of collection){
             allCards.push(cardCache.getByIID(card.id));

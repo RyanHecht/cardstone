@@ -163,6 +163,5 @@ function allCardsReady(){
 
 $('document').ready(function(){
     allCards = [];
-    server = new Server();
     server.requestCardCollection();
 })
