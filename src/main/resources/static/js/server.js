@@ -296,7 +296,7 @@ class Server{
             let $this = this;
             window.setTimeout(function(){
                 $this.boardReceived(data)
-            }, UPDATE_RATE);
+            }, UPDATE_RATE * 2);
             return;
         }
         if(spectator){
@@ -332,15 +332,15 @@ class Server{
 
     replayRequestStepBack(){
         replayStep--;
-        this.replayRequest();
+        this.replayRequest(false);
     }
 
     replayRequestStepForward(){
         replayStep++;
-        this.replayRequest();
+        this.replayRequest(true);
     }
     
-    replayRequest(){
+    replayRequest(forwards){
 		const postParams = {gameId: gameId, eventNum: replayStep};
         $.post("/replay",postParams,function(responseObj){
             const response = JSON.parse(responseObj);

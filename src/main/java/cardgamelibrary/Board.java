@@ -26,6 +26,7 @@ import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
+import game.GameManager;
 import game.Player;
 import game.PlayerType;
 import server.CommsWebSocket;
@@ -46,6 +47,8 @@ public class Board implements Jsonifiable, Serializable {
 	private LinkedList<Effect> effectQueue;
 
 	private static final int STARTING_HAND_SIZE = 6;
+	
+	private final int gameId;
 
 	// player one stuff;
 	private OrderedCardCollection deckOne;
@@ -71,7 +74,7 @@ public class Board implements Jsonifiable, Serializable {
 	private int turnIndex = 0;
 	private JsonArray animBox;
 
-	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo) {
+	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo, int gameId) {
 		// using LinkedLists but declaring using queue interface.
 		// Seems like the best way to handle the queues.
 		eventQueue = new LinkedList<Event>();
@@ -79,6 +82,7 @@ public class Board implements Jsonifiable, Serializable {
 
 		this.deckOne = deckOne;
 		this.deckTwo = deckTwo;
+		this.gameId = gameId;
 
 		// initialize all other fields here.
 		handOne = new OrderedCardCollection(Zone.HAND, deckOne.getPlayer());
@@ -343,7 +347,7 @@ public class Board implements Jsonifiable, Serializable {
 	private void sendAnimation(JsonObject message) {
 		try {
 			// send animation to both players.
-			animBox.add(message);
+			GameManager.addAnim(message,gameId);
 			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
 			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
 		} catch (IOException e1) {

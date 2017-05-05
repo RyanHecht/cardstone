@@ -181,7 +181,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 
 		// Some sort of board constructor goes here.
-		board = new Board(deckOne, deckTwo);
+		board = new Board(deckOne, deckTwo,id);
 
 		// if we are a DemoGame we want to ensure that player one goes first.
 		board.setActivePlayer(playerOne);
@@ -363,12 +363,8 @@ public class Game implements Jsonifiable, Serializable {
 			e.printStackTrace();
 		}
 		GameManager.pushToDb(this);
-		board.cleanAnimBox();
 	}
-	
-	public JsonArray getAnimBox(){
-		return board.getAnimBox();
-	}
+
 
 	/**
 	 * Sends the board to spectators of the current game.
