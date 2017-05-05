@@ -1,6 +1,6 @@
 let allCards;
 let josh;
-const CARDS_PER_PAGE = 100;
+const CARDS_PER_PAGE = 12;
 let pages;
 let curPage;
 let server;
