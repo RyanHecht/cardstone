@@ -110,13 +110,14 @@ class chooseZone extends drawableZone{
 				style: {
 					height: height,
 					width: width,
-					classes: 'qtip-bootstrap',
+					classes: 'qtip-bootstrap no-mouse',
 				},
 				position: { 
 					viewport: $(window),
 					adjust: {
 						method: 'flipinvert shift'
 					}
+                    target: 'mouse',
 					
 				}
 			});
