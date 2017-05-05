@@ -66,8 +66,8 @@ class Server{
    console.log("sent card targeted");
 	}
 
-	cardPlayed(cardID,zoneID){
-		const payload = {"IID1": cardID, "zoneID": zoneID};
+	cardPlayed(cardID){
+		const payload = {"IID1": cardID};
  	 const obj = {"type": MESSAGE_TYPE.ATTEMPTED_TO_PLAY, "payload": payload};
  	 this.websocket.send(JSON.stringify(obj));
    console.log("sent card played");

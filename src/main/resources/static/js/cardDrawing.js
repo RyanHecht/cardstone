@@ -25,8 +25,7 @@ let spectating = 0;
 let replayStep = 0;
 
 function redrawAll(){
-	wholeBoard.redraw();
-    mouseSystem.redraw();
+	redrawChanged();
 }
 
 function resizeRedrawAll(){
