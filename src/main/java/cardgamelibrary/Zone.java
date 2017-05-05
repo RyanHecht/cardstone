@@ -1,12 +1,14 @@
 package cardgamelibrary;
 
+import java.io.Serializable;
+
 /**
  * Represents the notion of a location in the game.
  *
  * @author 42jpa
  *
  */
-public enum Zone {
+public enum Zone implements Serializable{
 
 	BOARD, HAND, DECK, CREATURE_BOARD, AURA_BOARD, EXILE, GRAVE;
 

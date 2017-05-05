@@ -1,8 +1,10 @@
 package cardgamelibrary;
 
+import java.io.Serializable;
+
 import com.google.gson.JsonObject;
 
-public interface Jsonifiable {
+public interface Jsonifiable extends Serializable{
 
 	
 	/**

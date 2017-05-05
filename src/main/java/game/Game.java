@@ -702,6 +702,7 @@ public class Game implements Jsonifiable, Serializable {
 			chooserCard = null;
 
 			// done responding to choose request so change game state again.
+			
 			unlockState();
 		} else {
 			// yeah i'm not sure how this would even happen but better safe than

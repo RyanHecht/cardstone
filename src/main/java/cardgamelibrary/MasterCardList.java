@@ -1,6 +1,7 @@
 package cardgamelibrary;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +21,11 @@ import game.PlayerType;
  * @author Raghu
  *
  */
-public final class MasterCardList {
+public final class MasterCardList implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static MasterCardList	master			= new MasterCardList();
 	private LinkedList<Card>			masterList	= new LinkedList<>();
 	private Player								fakePlayer	= new Player(0, PlayerType.PLAYER_ONE, -1);

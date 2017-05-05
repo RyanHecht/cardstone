@@ -1,6 +1,8 @@
 package cardgamelibrary;
 
-public enum EventType {
+import java.io.Serializable;
+
+public enum EventType implements Serializable{
 
 	// etc. The nice thing here is we can add them whenever we want, without
 	// causing any problematic behavior for events that already exist.

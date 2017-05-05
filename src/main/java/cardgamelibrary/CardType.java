@@ -1,6 +1,8 @@
 package cardgamelibrary;
 
-public enum CardType {
+import java.io.Serializable;
+
+public enum CardType implements Serializable{
 
 	SPELL, CREATURE, AURA, PLAYER, ELEMENT,
 
