@@ -46,7 +46,7 @@ public class Board implements Jsonifiable, Serializable {
 	private LinkedList<Effect> effectQueue;
 
 	private static final int STARTING_HAND_SIZE = 6;
-	
+
 	private final int gameId;
 
 	// player one stuff;
@@ -335,7 +335,7 @@ public class Board implements Jsonifiable, Serializable {
 	private void sendAnimation(JsonObject message) {
 		try {
 			// send animation to both players.
-		    GameManager.addAnim(message, gameId);
+			GameManager.addAnim(message, gameId);
 			CommsWebSocket.sendAnimation(deckOne.getPlayer().getId(), message);
 			CommsWebSocket.sendAnimation(deckTwo.getPlayer().getId(), message);
 		} catch (IOException e1) {
@@ -687,7 +687,7 @@ public class Board implements Jsonifiable, Serializable {
 			animation.add("card", c.jsonifySelf());
 
 			sendAnimation(animation);
-		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.GRAVE && c.isA(Element.class)) {
+		} else if (start.getZone() == Zone.HAND && destination.getZone() == Zone.GRAVE && c instanceof Element) {
 			JsonObject animation = new JsonObject();
 
 			// element was played.
