@@ -153,6 +153,7 @@ public class GameManager {
         JsonArray anims = gamesToAnimations.get(gId);
         String animString = anims == null ? "null" : anims.toString();
         System.out.println("Have some fuckin animations: " + animString);
+        System.out.println("Also have event " + g.jsonifySelf());
 
         Db.update(eventInsert, gId, eventNum, g.jsonifySelf(),
             anims);
@@ -160,6 +161,8 @@ public class GameManager {
         gamesToAnimations.replace(gId, new JsonArray());
         System.out.println("Event num now " + gamesToEventNums.get(gId));
       } catch (SQLException | NullPointerException e) {
+        System.out.println(String.format("Game %d event %d is a duplicate",
+            g.getId(), gamesToEventNums.get(g.getId())));
         e.printStackTrace();
       }
     }
@@ -214,7 +217,8 @@ public class GameManager {
   // Transitions game from in_progress to finished_game
   public static void registerFinishedGame(int gId, int p1, int p2, int winner,
       int turns) throws NullPointerException, SQLException {
-
+    System.out.println(String
+        .format("Trying to stash %d with players %d and %d", gId, p1, p2));
     Db.update("delete from in_progress where id = ?;", gId);
     Db.update("insert into finished_game values(?, ?, ?);", gId, winner, turns);
     Db.update("insert into user_game values(?, ?);", p1, gId);

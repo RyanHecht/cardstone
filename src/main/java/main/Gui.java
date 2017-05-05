@@ -105,27 +105,32 @@ public class Gui {
           + "game integer not null, event integer not null,"
           + "board text not null, animations text not null, UNIQUE(game, event));");
 
-      // loop through in_progress, stash in finished_game
-      ResultSet rs = Db.query("select * from in_progress;");
-      while (rs.next()) {
-        int turns;
-        String board = rs.getString(4);
-        try {
-          Game g = Game.deserialize(board);
-          turns = g.getNumTurns();
-          int p1 = g.getActivePlayerId();
-          int p2 = g.getOpposingPlayerId(p1);
-          System.out.println(
-              String.format("Cleaning out game %d with players %d and %d",
-                  g.getId(), p1, p2));
-        } catch (ClassNotFoundException | IOException e) {
-          e.printStackTrace();
-          turns = 0;
-        }
+      // loop through in_progress and stash in finished_game
+      try (ResultSet rs = Db.query("select * from in_progress;")) {
+        while (rs.next()) {
+          int turns;
+          String board = rs.getString(4);
+          try {
+            Game g = Game.deserialize(board);
+            turns = g.getNumTurns();
+            int p1 = g.getActivePlayerId();
+            int p2 = g.getOpposingPlayerId(p1);
+            System.out.println(
+                String.format("Cleaning out game %d with players %d and %d",
+                    g.getId(), p1, p2));
+          } catch (ClassNotFoundException | IOException e) {
+            System.out.println("Already have");
+            e.printStackTrace();
+            turns = 0;
+          }
 
-        GameManager.registerFinishedGame(rs.getInt(1), rs.getInt(2),
-            rs.getInt(3), rs.getInt(2), turns);
+          GameManager.registerFinishedGame(rs.getInt(1), rs.getInt(2),
+              rs.getInt(3), rs.getInt(2), turns);
+        }
+      } catch (SQLException | NullPointerException e) {
+        e.printStackTrace();
       }
+
     } catch (SQLException e) {
       e.printStackTrace();
     }

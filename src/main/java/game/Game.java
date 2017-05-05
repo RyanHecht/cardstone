@@ -67,8 +67,11 @@ public class Game implements Jsonifiable, Serializable {
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
 			boolean isTutorial) {
-		// this.id = ClassByJosh.createNewGame(playerOneId, playerTwoId);
+		
 		this.id = idGenerator.incrementAndGet();
+		System.out.println(
+		    String.format("Making new game with id %d and players %d and %d", 
+		        id, playerOneId, playerTwoId));
 		// Initialize both players with starting life.
 		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
 		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
@@ -95,14 +98,6 @@ public class Game implements Jsonifiable, Serializable {
 		// for second player
 		List<PlayableCard> sCards = new ArrayList<>();
 
-		// but how do we register players for all the cards?
-
-		// maybe take in list of card names? Can invoke constructors like so.
-		// some card names won't be class names b/c they have punctuation/long
-		// names
-		// so will probably have to build some sort of map for this.
-		// yeah judging by the number of exceptions this is probably no good
-		// lmao.
 		try {
 			// so declare players, then loop over lists of strings for card
 			// names,
@@ -433,7 +428,7 @@ public class Game implements Jsonifiable, Serializable {
 	}
 
 	private void checkWinners() {
-		if (playerOne.getLife() < 0 || playerTwo.getLife() < 0) {
+		if (playerOne.getLife() <= 0 || playerTwo.getLife() <= 0) {
 			if (playerOne.getLife() > 0) {
 				endGame(1);
 			} else if (playerTwo.getLife() > 0) {
