@@ -214,7 +214,7 @@ public interface Card extends Jsonifiable, Serializable {
 		}
 
 		if (this.isA(Creature.class) && inThisZone == Zone.CREATURE_BOARD) {
-			if (((Creature) this).getNumAttacks() > 0) {
+			if (((CreatureInterface) this).getNumAttacks() > 0) {
 				states.add("canAttack");
 			}
 		}
