@@ -26,8 +26,8 @@ public class GameManager {
 
   // some sort of method to add games.
   public static void addGame(Game game) {
-
     if (games.updateGame(game)) {
+      int gId = game.getId();
       int p1 = game.getActivePlayerId();
       int p2 = game.getOpposingPlayerId(p1);
       if (p1 > p2) {
@@ -35,15 +35,14 @@ public class GameManager {
       }
       System.out
           .println(String.format("Trying to add game %d with players %d and %d",
-              game.getId(), p1, p2));
+              gId, p1, p2));
       try {
-        String serialG = game.serialize();
-        Db.update("insert into in_progress values(?, ?, ?, ?);",
-            game.getId(), p1, p2, serialG);
-      } catch (SQLException | IOException e) {
+        conditionalInsert(game);
+        gamesToEventNums.put(gId, 1);
+        gamesToAnimations.put(gId, new JsonArray());
+      } catch (IllegalStateException e) {
         e.printStackTrace();
       }
-      gamesToEventNums.put(game.getId(), 1);
     }
   }
 
@@ -159,10 +158,14 @@ public class GameManager {
       try {
         System.out.println(
             "Trying to insert event num " + eventNum + " for game " + gId);
+        JsonArray anims = gamesToAnimations.get(gId);
+        String animString = anims == null ? "null" : anims.toString();
+        System.out.println("Have some fuckin animations: " + animString);
+
         Db.update(eventInsert, gId, eventNum, g.jsonifySelf(),
-            gamesToAnimations.get(gId));
+            anims);
         gamesToEventNums.put(gId, ++eventNum);
-        gamesToAnimations.remove(gId);
+        gamesToAnimations.replace(gId, new JsonArray());
         System.out.println("Event num now " + gamesToEventNums.get(gId));
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
@@ -206,6 +209,9 @@ public class GameManager {
 
   public static void addAnim(JsonObject anim, int gameId) {
     JsonArray anims = gamesToAnimations.get(gameId);
+    String animString = anims == null ? "null" : anims.toString();
+    System.out.println("Have some fuckin anims: " + animString);
+    System.out.println("Adding animation " + anim.toString());
     if (anims == null) {
       anims = new JsonArray();
       gamesToAnimations.put(gameId, anims);
@@ -221,5 +227,30 @@ public class GameManager {
     Db.update("insert into finished_game values(?, ?, ?);", gId, winner, turns);
     Db.update("insert into user_game values(?, ?);", p1, gId);
     Db.update("insert into user_game values(?, ?);", p2, gId);
+  }
+
+  static void conditionalInsert(Game g) {
+    int gId = g.getId();
+    int p1 = g.getActivePlayerId();
+    int p2 = g.getOpposingPlayerId(p1);
+    p1 = p1 > p2 ? p1 ^ p2 ^ (p2 = p1) : p1; // swap values if p1 > p2
+
+    try (ResultSet rs = Db.query("select id from in_progress where id = ?;",
+        gId)) {
+      String serialG = g.serialize();
+      if (!rs.next()) {
+        System.out.println("I'm inserting");
+        Db.update("insert into in_progress values(?, ?, ?, ?);", g.getId(), p1,
+            p2, serialG);
+      } else {
+        System.out.println("I'm updating");
+        Db.update("update in_progress set board = ? where player1 = ?;",
+            serialG, p1);
+      }
+      System.out.println(String
+          .format("Stashed game %d with players %d and %d in db", gId, p1, p2));
+    } catch (IOException | SQLException | NullPointerException e) {
+      e.printStackTrace();
+    }
   }
 }
