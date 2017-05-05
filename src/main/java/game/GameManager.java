@@ -30,7 +30,7 @@ public class GameManager {
       if (p1 > p2) {
         p1 = p1 ^ p2 ^ (p2 = p1);
       }
-      
+      System.out.println("adawd");
       try {
         String serialG = game.serialize();
         Db.update("insert into in_progress values(null, ?, ?, ?);", p1, p2, serialG);
