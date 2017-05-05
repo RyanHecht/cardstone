@@ -13,6 +13,33 @@ function getDrawnCardAnimation(isMe){
     return anim;
 }
 
+class animBoxTimer{
+    constructor(time){
+        this.timeLeft = time;
+    }
+    
+    update(a,delta){
+        this.timeLeft -= delta;
+        console.log(this.timeLeft);
+        if(this.timeLeft <= 0){
+            killAnimBox();
+            console.log("tried to kill box");
+            return true;
+        }
+        return false;
+    }
+    
+    create(){
+        let list = [];
+        list.push(this);
+        return list;
+    }
+    
+    draw(){
+        
+    }
+}
+
 class animationsMaker{	
 
     static playCardAnimation(card){
@@ -25,8 +52,8 @@ class animationsMaker{
         box.show();
         $(".chat").hide();
         $("#" + card.id).first().attr("id",-180);
-        window.setTimeout(killAnimBox,3000);
-        box.click(killAnimBox);
+        let abt = new animBoxTimer(1500);
+        return abt;
     }
     
 

@@ -12,11 +12,11 @@ import game.Player;
 
 public class FireElement extends Element {
 
-	private static final ManaPool	defaultCost		= ManaPool.emptyPool();
-	private static final String		defaultImage	= "images/waterChoices/fireBig.jpg";
-	private static final String		defaultName		= "fire";
-	private static final String		defaultText		= "";
-	private static final CardType	defaultType		= CardType.ELEMENT;
+	private static final ManaPool defaultCost = ManaPool.emptyPool();
+	private static final String defaultImage = "images/waterChoices/fireBig.jpg";
+	private static final String defaultName = "Fire Element";
+	private static final String defaultText = "";
+	private static final CardType defaultType = CardType.ELEMENT;
 
 	public FireElement(Player owner) {
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);

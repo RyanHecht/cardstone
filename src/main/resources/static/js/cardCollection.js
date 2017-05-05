@@ -222,6 +222,7 @@ class cardCollection extends drawableZone{
 
 	prepareHover(){
         this.div.find(".cardBox").hover(function(){
+            $('div.qtip:visible').qtip('hide');
           $(this).addClass("cardBoxHighlighted");  
         },
         function(){
@@ -255,7 +256,6 @@ class cardCollection extends drawableZone{
 				content: {
 					text: $(this).next('div') 
 				},
-                prerender: true,
 				style: {
 					height: height,
 					width: width,

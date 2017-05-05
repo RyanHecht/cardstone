@@ -12,11 +12,11 @@ import game.Player;
 
 public class WaterElement extends Element {
 
-	private static final ManaPool	defaultCost		= ManaPool.emptyPool();
-	private static final String		defaultImage	= "images/waterChoices/waterBig.jpg";
-	private static final String		defaultName		= "water";
-	private static final String		defaultText		= "";
-	private static final CardType	defaultType		= CardType.ELEMENT;
+	private static final ManaPool defaultCost = ManaPool.emptyPool();
+	private static final String defaultImage = "images/waterChoices/waterBig.jpg";
+	private static final String defaultName = "Water Element";
+	private static final String defaultText = "";
+	private static final CardType defaultType = CardType.ELEMENT;
 
 	public WaterElement(Player owner) {
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);

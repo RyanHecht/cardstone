@@ -124,6 +124,7 @@ class Server{
 
 	messageReceived(message){
         if(!spectator){
+            console.log(message);
             switch(message.type){
                 case MESSAGE_TYPE.BOARD_STATE:
                     this.boardGotten(message.payload);
@@ -253,8 +254,9 @@ class Server{
                 }
                 break;
             case "cardPlayed":
-                animationsMaker.playCardAnimation(message.card);
-                console.log("Aibfwe i wiu wd i hh iu dwiih dw ihu iu");
+                console.log(message.card);
+                quedAnims.push(animationsMaker.playCardAnimation(message.card).create());
+               
                 break;
             case "cardDied":
                 quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());
