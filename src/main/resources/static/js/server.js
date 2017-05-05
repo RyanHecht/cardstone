@@ -357,7 +357,10 @@ class Server{
 			console.log(response);
             if(response.exists){
                 if(forwards){
-                    for(let anim of animations){
+                    console.log("forwards");
+                    
+                    for(let anim of response.animations){
+                        console.log(anim);
                         server.messageReceived(anim);
                     }
                 }
