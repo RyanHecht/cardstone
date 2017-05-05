@@ -29,13 +29,13 @@ public class GamePool {
           if (removal.wasEvicted()) {
             int id = removal.getKey();
             Game g = removal.getValue();
-            System.out
-                .println(String.format("Game %d for player %d was evicted!",
+            System.out.println(String.format("Game %d for player %d was evicted!",
                     g.getId(), id));
             try {
               GameManager.conditionalInsert(g);
             } catch (IllegalStateException e) {
-              e.printStackTrace();
+              System.out.println(String.format("Game %d for player %d was evicted!", id,
+                    g.getId()));
             }
           }
         }

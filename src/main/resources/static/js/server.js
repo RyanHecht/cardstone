@@ -82,7 +82,7 @@ class Server{
     }
 
 	constructor() {
-        if(!isReplay){
+        if(typeof isReplay == "undefined" || !isReplay){
 		this.websocket = new WebSocket("ws://" + window.location.host + "/socket");
 		this.websocket.server = this;
 		this.websocket.socket = this.websocket;
@@ -126,7 +126,7 @@ class Server{
         if(!spectator){
             switch(message.type){
                 case MESSAGE_TYPE.BOARD_STATE:
-                    this.boardReceived(message.payload);
+                    this.boardGotten(message.payload);
                     break;
                 case MESSAGE_TYPE.ACTION_BAD:
                     this.badMessage(message.payload);
@@ -165,7 +165,7 @@ class Server{
           console.log("i'm a spectator and i got a message of type " + message.type);
             switch(message.type){
                 case MESSAGE_TYPE.BOARD_STATE:
-                    this.boardReceived(message.payload);
+                    this.boardGotten(message.payload);
                     break;
                 case MESSAGE_TYPE.TURN_START://
                     turnTimer.startTurn(message.payload.isSelf);//
@@ -291,14 +291,24 @@ class Server{
 		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(1,'',player2.element));
 	}
 
-	boardReceived(data){
+    boardGotten(data){
+        this.recentestBoard = data;
+        if(!this.animating){
+            this.boardReceived();
+        }
+    }
+    
+	boardReceived(){
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
+            this.animating = true;
             window.setTimeout(function(){
-                $this.boardReceived(data)
+                $this.boardReceived()
             }, UPDATE_RATE * 2);
             return;
         }
+        this.animating = false;
+        let data = this.recentestBoard;
         if(spectator){
             if(data.player1.playerId != spectating){
                 wholeBoard.flipTry();
@@ -346,20 +356,19 @@ class Server{
             const response = JSON.parse(responseObj);
 			console.log(response);
             if(response.exists){
-                server.boardReceived(response.board);
+                server.boardGotten(response.board);
             }
         })
     }
 
-    requestCardCollection(callback){
-        let $this = this;
+    static requestCardCollection(callback){
         $.get("/all_cards",function(responseJSON){
             const obj = JSON.parse(responseJSON);
-            $this.receiveCardCollection(obj);
+            Server.receiveCardCollection(obj);
         })
     }
 
-    receiveCardCollection(collection){
+    static receiveCardCollection(collection){
         cardCache.repairCardList(collection);
         for(let card of collection){
             allCards.push(cardCache.getByIID(card.id));

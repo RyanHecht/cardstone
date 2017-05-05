@@ -28,14 +28,6 @@ public class GameManager {
   public static void addGame(Game game) {
     if (games.updateGame(game)) {
       int gId = game.getId();
-      int p1 = game.getActivePlayerId();
-      int p2 = game.getOpposingPlayerId(p1);
-      if (p1 > p2) {
-        p1 = p1 ^ p2 ^ (p2 = p1);
-      }
-      System.out
-          .println(String.format("Trying to add game %d with players %d and %d",
-              gId, p1, p2));
       try {
         conditionalInsert(game);
         gamesToEventNums.put(gId, 1);
