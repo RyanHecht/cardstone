@@ -21,7 +21,7 @@ class Card{
 	}
     
     setBacks(backs){
-        this.drawAsBack = backs;
+        this.back = backs;
     }
 	
 	getZone(){
@@ -37,6 +37,7 @@ class Card{
 	}
     
     drawStates(div){
+        if(!this.back){
         let taunt = false;
         let canPlay = false;
         let canAttack = false;
@@ -68,6 +69,7 @@ class Card{
         else{
             div.removeClass("canAct");
         }
+    }
     }
 	
 }

@@ -20,8 +20,13 @@ class board{
 	constructor(hand1, hand2, aura1, aura2, creature1, creature2, p1Health, p2Health, p1RegRes, p2RegRes,p1Mana,p2Mana,deck1,deck2){
 		this.allZones = new Map();
 		this.allZones.set("hand1",new cardCollection($(HAND_1_DIV),hand1,$(EXPAND_1_DIV),false));
-		this.allZones.set("hand2",new cardCollection($(HAND_2_DIV),hand2,$(EXPAND_2_DIV),true));
-		this.allZones.set("aura1",new cardCollection($(AURA_1_DIV),aura1,$(EXPAND_1_DIV),false));
+        if(isReplay){
+            this.allZones.set("hand2",new cardCollection($(HAND_2_DIV),hand2,$(EXPAND_2_DIV),false));
+		}
+        else{
+            this.allZones.set("hand2",new cardCollection($(HAND_2_DIV),hand2,$(EXPAND_2_DIV),true));
+        }
+        this.allZones.set("aura1",new cardCollection($(AURA_1_DIV),aura1,$(EXPAND_1_DIV),false));
 		this.allZones.set("aura2",new cardCollection($(AURA_2_DIV),aura2,$(EXPAND_2_DIV),false));
 		this.allZones.set("creature1", new cardCollection($(CREATURE_1_DIV),creature1,$(EXPAND_1_DIV),false));
 		this.allZones.set("creature2", new cardCollection($(CREATURE_2_DIV),creature2,$(EXPAND_2_DIV),false));
