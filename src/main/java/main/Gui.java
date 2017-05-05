@@ -169,7 +169,7 @@ public class Gui {
               "lobbies.ftl");
         }
       }
-      return new ModelAndView(ImmutableMap.of(),
+      return new ModelAndView(ImmutableMap.of("isReplay", false),
           "boardDraw.ftl");
 
     }
@@ -288,22 +288,11 @@ public class Gui {
 
       String queryString = req.queryString();
       String gameId = queryString.substring(queryString.lastIndexOf('=') + 1);
-      System.out.println("Have game id: " + gameId);
+      System.out.println("Will be replaying id: " + gameId);
 
-      String eventQuery = "select board from game_event where game = ?;";
-      List<String> events = new ArrayList<>();
-      try (ResultSet rs = Db.query(eventQuery, gameId)) {
-        while (rs.next()) {
-          events.add(rs.getString(1));
-        }
-      } catch (SQLException | NullPointerException e) {
-        e.printStackTrace();
-      }
-
-      Map<String, Object> vars = ImmutableMap.of("title",
-          "Cardstone: The Shattering", "username",
-          req.cookie("username"), "events", events);
-      return new ModelAndView(vars, "replay.ftl");
+      Map<String, Object> vars = ImmutableMap.of("gameId", gameId, "isReplay",
+          true);
+      return new ModelAndView(vars, "boardDraw.ftl");
     }
   }
 
