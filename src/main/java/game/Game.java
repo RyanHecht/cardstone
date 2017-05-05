@@ -362,6 +362,11 @@ public class Game implements Jsonifiable, Serializable {
 			e.printStackTrace();
 		}
 		GameManager.pushToDb(this);
+		board.cleanAnimBox();
+	}
+	
+	public List<JsonObject> getAnimBox(){
+		return board.getAnimBox();
 	}
 
 	/**
