@@ -354,7 +354,7 @@ class Server{
     static requestCardCollection(callback){
         $.get("/all_cards",function(responseJSON){
             const obj = JSON.parse(responseJSON);
-            server.receiveCardCollection(obj);
+            Server.receiveCardCollection(obj);
         })
     }
 

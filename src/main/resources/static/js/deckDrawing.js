@@ -3,7 +3,6 @@ let josh;
 const CARDS_PER_PAGE = 12;
 let pages;
 let curPage;
-let server;
 let isReplayMode = false;
 let collect;
 let list;
@@ -163,5 +162,5 @@ function allCardsReady(){
 
 $('document').ready(function(){
     allCards = [];
-    server.requestCardCollection();
+    Server.requestCardCollection();
 })
