@@ -119,6 +119,11 @@ function setupMouseListen(){
     $(document).mousemove(function(event){
       mouseSystem.mousemoved(event);  
     });
+    $(document).on("touchmove",function(event){
+        mouseSystem.mousemoved(event));
+    $(document).on("touchend",function(event){
+        mouseSystem.mouseup(event);
+    });
     $(document).mouseup(function(event){
        mouseSystem.mouseup(event); 
     });
@@ -200,13 +205,7 @@ function setupChat(){
 
 
 $(document).ready(function(){
-    $(document).on("touchmove",function(event){
-        console.log(event, " touchmove");
-    });
-    $(document).on("touchstart",function(event){
-        console.log(event, "asd");
-    }
-    );
+
     setupChat();
     setupMouseListen();
 	setupCanvas();

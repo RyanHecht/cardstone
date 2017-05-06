@@ -8,7 +8,6 @@ class MouseManagerSystem{
     }
         
     mousedown(id,event){
-        console.log(event);
         if(canAct){
             console.log(id);
             this.isClicked = true;
@@ -22,17 +21,11 @@ class MouseManagerSystem{
     }
     
     mousemoved(event){
-        console.log(event);
         if(canAct){
         canvasLine.x2 = this.transformX(event.pageX);
         canvasLine.y2 = this.transformY(event.pageY);
-        if(event.which == 0){
-            if(!(typeof event == "touchmove")){
-                this.mouseupLight();
-            }
-            else{
-                console.log(typeof event);
-            }
+        if(event.which == 0 && event.type != "touchmove"){
+            this.mouseupLight();
         }
         }
     }
@@ -50,7 +43,6 @@ class MouseManagerSystem{
     }
     
     mouseup(event){
-        console.log(event);
         if(canAct){
        this.isClicked = false;
        this.tips.removeClass("tooltipHidden");

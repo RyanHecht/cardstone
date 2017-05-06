@@ -29,7 +29,7 @@ const StateEnum = {
 	CHOICE_NEEDED:2  
 }
 
-const WIDTH_RATIO = .7;
+const WIDTH_RATIO = 0.61803398875;
 const STAT_ALPHA = .8;
 const UPDATE_RATE = 25;
 const PQ_SIZE = 5;
