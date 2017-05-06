@@ -6,6 +6,8 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import effects.EffectMaker;
+import effects.PlayerDamageEffect;
 import game.Player;
 import templates.OnOwnDeathCard;
 
@@ -26,13 +28,14 @@ public class CherryBomb extends Creature implements OnOwnDeathCard {
 	@Override
 	public Effect onDeathEffect(Zone z) {
 		// TODO Auto-generated method stub
-		return (Board board) -> {
-			if (getOwner().equals(board.getActivePlayer())) {
-				board.damagePlayer(board.getInactivePlayer(), this, 5);
-			} else {
-				board.damagePlayer(board.getActivePlayer(), this, 5);
+		return new EffectMaker((Board board) -> {
+			if(getOwner().equals(board.getActivePlayer())){
+				return new PlayerDamageEffect(board.getInactivePlayer(),this,5);
 			}
-		};
+			else{
+				return new PlayerDamageEffect(board.getActivePlayer(),this,5);
+			}
+		});
 	}
 
 }

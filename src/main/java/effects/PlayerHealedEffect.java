@@ -19,8 +19,12 @@ public class PlayerHealedEffect implements Effect {
 
 	@Override
 	public void apply(Board board) {
-		// TODO Auto-generated method stub
 		board.healPlayer(playerHealed, source, heal);
+	}
+
+	@Override
+	public EffectType getType() {
+		return EffectType.PLAYER_HEALED;
 	}
 
 }

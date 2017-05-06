@@ -5,10 +5,13 @@ import java.util.List;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import effects.AddToOccEffect;
+import effects.GateEffect;
 import game.Player;
 import templates.PlayerChoosesCards;
 
@@ -33,10 +36,12 @@ public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 
 	@Override
 	public Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosen) {
-		return (Board board) -> {
-			// add chosen card to hand.
-			board.addCardToOcc(chosen, board.getOcc(getOwner(), Zone.HAND), board.getOcc(getOwner(), Zone.DECK));
-		};
+		ConcatEffect cE = new ConcatEffect();
+		cE.addEffect(new GateEffect((Board board) ->{
+			return board.getOcc(getOwner(),Zone.DECK).size() > 0;
+		}));
+		cE.addEffect(new AddToOccEffect(chosen,getOwner(),Zone.HAND,Zone.DECK));
+		return cE;
 	}
 
 	@Override

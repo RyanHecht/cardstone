@@ -3,6 +3,9 @@ package cardgamelibrary;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import effects.EffectType;
+import effects.GateEffect;
+
 public class ConcatEffect implements Effect, Serializable {
 
 	private LinkedList<Effect> effects;
@@ -19,12 +22,23 @@ public class ConcatEffect implements Effect, Serializable {
 	public void apply(Board board) {
 		while (this.effects.size() > 0) {
 			Effect e = effects.pop();
-			e.apply(board);
+			if(e instanceof GateEffect){
+				e.apply(board);
+				if(!((GateEffect) e).getShouldContinue()){
+					break;
+				}
+			}
+			board.handleEffect(e);
 		}
 	}
 
 	public boolean hasNext() {
 		return effects.size() > 0;
+	}
+
+	@Override
+	public EffectType getType() {
+		return EffectType.EMPTY;
 	}
 
 }

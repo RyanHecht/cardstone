@@ -3,11 +3,14 @@ package cards;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import effects.ApplyEffect;
+import effects.CardDamageEffect;
 import game.Player;
 import templates.TargetsOtherCard;
 import templates.decorators.CantAttackForTurnsCreature;
@@ -26,26 +29,17 @@ public class RockShock extends SpellCard implements TargetsOtherCard {
 
 	public boolean cardValidTarget(Card card, Zone z) {
 		if (card.getType() == CardType.CREATURE && z == Zone.CREATURE_BOARD) {
-			System.out.println("was valid");
 			return true;
 		}
 		return false;
 	}
 
-	// when the target is valid, produce some effect.
-	// this should usually also play the targetting card (move to appropriate zone
-	// i.e. graveyard).
-	public Effect impactCardTarget(Card target, Zone zone) {
-		return (Board board) -> {
-			System.out.println("tryna");
-			if ((target.isA(CreatureInterface.class))) {
-				System.out.println("SUCCESS");
-				CreatureInterface c = (CreatureInterface) target;
-				board.damageCard(c, this, 2);
-				board.applyToCard(target, new CantAttackForTurnsCreature(c, 2));
 
-			}
-		};
+	public Effect impactCardTarget(Card target, Zone zone) {
+		ConcatEffect ce = new ConcatEffect();
+		ce.addEffect(new CardDamageEffect(this,(CreatureInterface)target,2));
+		ce.addEffect(new ApplyEffect(target, new CantAttackForTurnsCreature((CreatureInterface) target,2)));
+		return ce;
 	}
 
 }

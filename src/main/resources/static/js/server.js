@@ -188,11 +188,9 @@ class Server{
           window.onbeforeunload = function() {};
           if (message.contains("tutorial")) {
             $.cookie('tutorial', tutorialStage() + 1);
-            window.location.replace("/menu");
-          } else {
-            window.location.replace("/lobbies");
-          }
 
+          }
+          window.location.replace("/menu");
       });
   }
 

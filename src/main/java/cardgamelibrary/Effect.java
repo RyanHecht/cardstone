@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import java.io.Serializable;
 
+import effects.EffectType;
 import effects.EmptyEffect;
 
 /**
@@ -21,5 +22,7 @@ public interface Effect extends Serializable{
 	public default boolean hasNext(){
 		return false;
 	}
+	
+	public EffectType getType();
 	
 }
