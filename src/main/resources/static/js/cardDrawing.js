@@ -203,6 +203,9 @@ function setupOptionsMenu(){
     $("#concedeButton").click(function(){
        window.location.replace("/lobbies"); 
     });
+    $("#quitReplay"){
+        window.location.replace("/menu");
+    }
 }
 
 function setupKeypress(){
