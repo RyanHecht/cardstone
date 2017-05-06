@@ -4,8 +4,22 @@ let selectedFull;
 let currNames;
 let currLobbies;
 let spectate = false;
+let isTutorial = false;
+
+let tutorialHandler;
+const stage = TutorialEnum.LOBBIES;
 
 $(document).ready(() => {
+	const tutorial_stage = tutorialStage();
+	if (tutorial_stage >= 0) {
+		tutorialHandler = new TutorialHandler(stage, user_prompt, next_stage, disabled_inputs);
+		tutorialHandler.handle(tutorial_stage);
+		$("#createlobby").on("click", function() {
+			tutorialHandler.action_complete();
+		});
+		isTutorial = true;
+	}
+	
 	const lobbyList = $("#lobby-table");
 	const listSocket = new WebSocket("ws://" + window.location.host + "/lobbyListSocket");
 	listSocket.onopen = function() {
@@ -27,6 +41,21 @@ $(document).ready(() => {
 	}
 });
 
+function user_prompt() {
+	$("#messageModal").modal("show");
+	$("#messageheader").text("You're doing great so far!");
+	$("#message").text("This is the lobbies page. As a player, you can click on any row of the lobbies table, and be given the option to spectate or join the selected lobby. You can also create a lobby of your own. Lobbies can be password-protected or public. Anyway, let's try and make a lobby by clicking on the create lobby button below.");
+};
+
+function disabled_inputs() {
+	$("#navbar").find("a").removeAttr("href");
+	$("#logolink").removeAttr("href");
+};
+
+function next_stage() {
+	window.location.replace("/tutorial_lobby");
+};
+	
 function drawLobbies(responseObject, lobbyList) {
 	lobbyList.empty();
 	for (let i = 0, len = responseObject.length; i < len; i++) {
@@ -84,12 +113,14 @@ function spectateRequest(postParams) {
 };
 
 $("#lobby-table").on("click", "tr", function() {
-	selectedName = $(this).find("td.name").text();
-	isFull = $(this).find("td.full").text() == "Yes";
-	isPriv = $(this).find("td.private").text() == "Yes";
+	if (!isTutorial) {
+		selectedName = $(this).find("td.name").text();
+		isFull = $(this).find("td.full").text() == "Yes";
+		isPriv = $(this).find("td.private").text() == "Yes";
 
-	$("#clickModal").modal("show");
-	$("#click_msg").text("Would you like to join or spectate lobby " + selectedName + "?");
+		$("#clickModal").modal("show");
+		$("#click_msg").text("Would you like to join or spectate lobby " + selectedName + "?");		
+	}
 });
 
 $("#join").on('click', function() {
@@ -146,14 +177,16 @@ $("#hostbutton").on('click', function() {
 });
 
 $("#createlobby").on('click', function() {
-	const lobby_name = $("#lname").val();
-	const isPriv = $("#lprivate").is(":checked");
-	const pw = $("#lpw").val();
+	if (!isTutorial) {
+		const lobby_name = $("#lname").val();
+		const isPriv = $("#lprivate").is(":checked");
+		const pw = $("#lpw").val();
 
-	if (lobby_name != "") {
-		$("#hostLobby").modal("hide");
-		const postParams = {name: lobby_name, private: isPriv, password: pw};
-		lobbyRequest("/makeLobby", postParams);
+		if (lobby_name != "") {
+			$("#hostLobby").modal("hide");
+			const postParams = {name: lobby_name, private: isPriv, password: pw};
+			lobbyRequest("/makeLobby", postParams);
+		}		
 	}
 });
 

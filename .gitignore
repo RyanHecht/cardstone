@@ -9,6 +9,7 @@
 *.war
 *.ear
 hs_err_pid*
+data/users/
 *.sqlite3
 *.exe
 

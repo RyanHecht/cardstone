@@ -69,6 +69,8 @@ public class Gui {
     Spark.post("/spectate", new SpectateHandler(), fm);
     Spark.get("/game", new GameHandler(), fm);
     Spark.get("/all_cards", new AllCardsHandler());
+
+    Spark.get("/tutorial_lobby", new TutorialLobbyHandler(), fm);
   }
 
   public void init() {
@@ -187,6 +189,16 @@ public class Gui {
       }
       return new ModelAndView(ImmutableMap.of("isReplay", false),
           "boardDraw.ftl");
+
+    }
+  }
+
+  private class TutorialLobbyHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res) {
+      return new ModelAndView(
+          ImmutableMap.of("title", "Cardstone: The Shattering"),
+          "tutorial_lobby.ftl");
 
     }
   }
@@ -552,12 +564,11 @@ public class Gui {
               "login.ftl");
         }
 
-        if (!username.isEmpty()) {
-          res.cookie("username", username);
-          String uid = rs.getString(1);
-          System.out.println(uid);
-          res.cookie("id", uid);
-        }
+        res.cookie("username", username);
+        String uid = rs.getString(1);
+        System.out.println(uid);
+        res.cookie("id", uid);
+        res.cookie("tutorial", "-1");
 
         return new ModelAndView(Collections.unmodifiableMap(vars),
             "menu_redirect.ftl");
@@ -601,6 +612,7 @@ public class Gui {
         rs.close();
         System.out.println("User id: " + uid);
         res.cookie("id", uid);
+        res.cookie("tutorial", "0"); // initiate tutorial
         return new ModelAndView(vars, "menu_redirect.ftl");
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
@@ -617,9 +629,5 @@ public class Gui {
   private static String getSalted(String password) {
     return Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
         .toString();
-  }
-
-  public static void main(String[] args) {
-    System.out.println(getSalted(""));
   }
 }

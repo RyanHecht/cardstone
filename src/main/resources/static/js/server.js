@@ -188,7 +188,7 @@ class Server{
           window.onbeforeunload = function() {};
           if (message.contains("tutorial")) {
             $.cookie('tutorial', tutorialStage() + 1);
-
+            console.log("tutorial ended!")
           }
           window.location.replace("/menu");
       });

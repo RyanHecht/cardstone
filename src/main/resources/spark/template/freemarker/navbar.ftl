@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/menu">Cardstone</a>
+          <a class="navbar-brand" id="logolink" href="/menu">Cardstone</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -37,9 +37,11 @@
 	$(document).ready(() => {
 		$("#loggedin").text("Logged in as " + $.cookie("username"));
 		$("#logout").on("click", function() {
-			console.log("nadsfadsfs");
-			$.removeCookie("id", {path: '/'});
-			$.removeCookie("username", {path: '/'});
+			if (undefined != $(this).attr("href")) {
+				$.removeCookie("id", {path: '/'});
+				$.removeCookie("username", {path: '/'});
+				$.removeCookie("tutorial", {path: '/'});
+			}
      	});
      });
 </script>

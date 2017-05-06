@@ -27,6 +27,7 @@
 	   </#if>
 	 </script>
      <script src="js/bootstrapalt.min.js"></script>
+     <script src="js/tutorial.js"></script>
      <script src="js/lobbiesdisplay.js"></script>
   </body>
 </html>

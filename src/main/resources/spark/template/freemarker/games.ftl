@@ -9,6 +9,7 @@
   </head>
   <#include "game_table.ftl">
   <#include "navbar.ftl">
+  <#include "message_modal.ftl">
   <body>
      ${nav}
      <div class="container">
@@ -16,13 +17,14 @@
      <br>
 	 <h3> ${username}'s Games</h3> 
 	   <div class="row">
-	     <div class="col-sm-8" id="userlist">
+	     <div class="col-sm-8" id="games">
 	       ${game_table}
 	     </div>
 	   </div>
-       <a href="/login">Logout</a>
 	</div>
+	${modal}
      <script src="js/bootstrapalt.min.js"></script>
+     <script src="js/tutorial.js"></script>
      <script src="js/gamedisplay.js"></script>
   </body>
 </html>
