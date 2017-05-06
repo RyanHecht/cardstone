@@ -11,8 +11,8 @@ public class CheapJoshCreature extends Creature {
 	private static final String		defaultImage	= "images/creature.jpg";
 	private static final String		defaultName		= "Cheap Josh Creature";
 	private static final String		defaultText		= "It's pretty broken";
-	private static final int			defaultHealth	= 5;
-	private static final int			defaultAttack	= 4;
+	private static final int			defaultHealth	= 2;
+	private static final int			defaultAttack	= 2;
 	private static final CardType	defaultType		= CardType.CREATURE;
 
 	public CheapJoshCreature(Player owner) {

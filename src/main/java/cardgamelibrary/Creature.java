@@ -81,11 +81,10 @@ public class Creature extends PlayableCard implements CreatureInterface {
 	public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
+		ConcatEffect effect = new ConcatEffect();
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
-
-			ConcatEffect effect = new ConcatEffect();
 			effect.addEffect((Board board) -> {
 				// effect to move creature to board.
 				board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
@@ -93,9 +92,11 @@ public class Creature extends PlayableCard implements CreatureInterface {
 
 			// add any specific effects for this creature being played.
 			effect.addEffect(onThisPlayed(c, z));
-			return effect;
 		}
-		return EmptyEffect.create();
+		else{
+			effect.addEffect(onOtherCardPlayed(c,z));
+		}
+		return effect;
 	}
 
 	@Override
