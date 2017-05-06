@@ -212,6 +212,15 @@ public class DemoGame extends Game {
       super.handleChosen(userInput, playerId);
     } else {
       super.handleChosen(userInput, playerId);
+      
+      try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+      
+      sendPlayerTextMessage(playerId, messages[actionId]);
     }
   }
 
@@ -280,6 +289,12 @@ public class DemoGame extends Game {
           sendPlayerActionBad(playerId, messages[actionId]);
         }
         break;
+      }
+    
+      if(actionId == 6){
+    	  // in this case the user has just played delve
+    	  // the depths and will be sent to the choose request.
+    	  return;
       }
       
       try {
