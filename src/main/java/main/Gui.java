@@ -84,9 +84,7 @@ public class Gui {
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists finished_game("
           + "id integer primary key, "
-          + "winner integer, moves integer, " + "UNIQUE(id, winner), "
-          + "FOREIGN KEY (winner) REFERENCES user(id) "
-          + "ON DELETE CASCADE ON UPDATE CASCADE);");
+          + "winner integer, moves integer, UNIQUE(id, winner));");
       Db.update("create table if not exists in_progress("
           + "id integer primary key autoincrement,"
           + "player1 integer, player2 integer, board blob, "
@@ -125,7 +123,7 @@ public class Gui {
           }
 
           GameManager.registerFinishedGame(rs.getInt(1), rs.getInt(2),
-              rs.getInt(3), rs.getInt(2), turns);
+              rs.getInt(3), 0, turns);
         }
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
@@ -539,7 +537,7 @@ public class Gui {
       String username = qm.value("username");
       username = username == null ? "" : username.trim();
       String password = qm.value("password");
-      // getSalted(qm.value("password"));
+      password = getSalted(password == null ? "" : password);
 
       Map<String, Object> vars = new HashMap<>();
       vars.put("title", "Cardstone: The Shattering");
@@ -580,12 +578,11 @@ public class Gui {
         throws NullPointerException, IllegalArgumentException, IOException {
       QueryParamsMap qm = req.queryMap();
       String username = qm.value("username");
-      String password = qm.value("password");
-      // getSalted(qm.value("password"));
+      String password = getSalted(qm.value("password"));
       System.out.println("First username " + username);
       username = username == null ? "" : username;
 
-      if (username.split("\\s+(?=\\p{Punct})").length > 1) {
+      if (username.split("\\s+").length > 1) {
         return new ModelAndView(
             ImmutableMap.of("title", "Cardstone: The Shattering"), "login.ftl");
       }
@@ -617,8 +614,12 @@ public class Gui {
     return cookie != null;
   }
 
-  private String getSalted(String password) {
+  private static String getSalted(String password) {
     return Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
         .toString();
+  }
+
+  public static void main(String[] args) {
+    System.out.println(getSalted(""));
   }
 }

@@ -169,7 +169,7 @@ public class DemoGame extends Game {
 			Card c = getBoard().getCardById(userInput.get("IID1").getAsInt());
 			switch (actionId) {
 			case 0:
-				if (c.getName().equals("Water Element")) {
+				if (c.getName().equals("water")) {
 					// they have done the correct thing so we should execute it.
 					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
@@ -189,7 +189,7 @@ public class DemoGame extends Game {
 				}
 				break;
 			case 4:
-				if (c.getName().equals("Water Element")) {
+				if (c.getName().equals("water")) {
 					// they have done the correct thing so we should execute it.
 					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
@@ -209,7 +209,7 @@ public class DemoGame extends Game {
 				}
 				break;
 			case 6:
-				if (c.getName().equals("Water Element")) {
+				if (c.getName().equals("water")) {
 					// they have done the correct thing so we should execute it.
 					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
@@ -233,13 +233,13 @@ public class DemoGame extends Game {
 		LinkedList<String> firstPlayerCards = new LinkedList<String>();
 		// starting hand will be 6 water elements, first card they draw will be
 		// water spirit.
-		firstPlayerCards.addLast("Water Element");
-		firstPlayerCards.addLast("Water Element");
-		firstPlayerCards.addLast("Water Element");
-		firstPlayerCards.addLast("Water Element");
-		firstPlayerCards.addLast("Water Element");
-		firstPlayerCards.addLast("Water Element");
-		firstPlayerCards.addLast("Water Spirit");
+		firstPlayerCards.addLast("water");
+		firstPlayerCards.addLast("water");
+		firstPlayerCards.addLast("water");
+		firstPlayerCards.addLast("water");
+		firstPlayerCards.addLast("water");
+		firstPlayerCards.addLast("water");
+		firstPlayerCards.addLast("water");
 
 		// the next card the user will draw (start of 2nd turn) will be Delve The
 		// Depths.
