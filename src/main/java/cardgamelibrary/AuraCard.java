@@ -37,7 +37,6 @@ public class AuraCard extends PlayableCard implements AuraInterface {
 		else{
 			effect.addEffect(this.onOtherCardPlayed(c, z));
 		}
-		return EmptyEffect.create();
+		return effect;
 	}
-
 }
