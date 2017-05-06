@@ -7,6 +7,7 @@ $(document).ready(() => {
 });
 
 function onOpponentJoin(oppId) {
+	console.log("Opponent joined with id " + oppId);
 	if (toSpectate == -1) {
 		toSpectate = oppId;
 		socket.updateSpectatee(toSpectate);
@@ -38,6 +39,7 @@ function onOpponentLeave() {
 	// spectating
 	if (toSpectate != parseInt($("#hostRadio").val())) {
 		toSpectate = -1;
+		// is this the bug? not updating spectatee?
 	}
 	$("#otherRadio").val(-1);
 };
@@ -58,6 +60,7 @@ function onGameStart() {
 
 $('input[type=radio][name=spectateRadio]').change(function() {
 	toSpectate = parseInt($(this).val());
+	console.log("Will spectate " + toSpectate);
 	if (toSpectate != -1) {
 		socket.updateSpectatee(toSpectate);
 	}

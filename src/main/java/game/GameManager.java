@@ -1,13 +1,15 @@
 package game;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import logins.Db;
 import server.CommsWebSocket;
 
@@ -22,15 +24,17 @@ public class GameManager {
   private static Map<Integer, Integer> gamesToEventNums = new ConcurrentHashMap<>();
   private static Map<Integer, JsonArray> gamesToAnimations = new ConcurrentHashMap<>();
 
-  // some sort of method to add games.
   public static void addGame(Game game) {
     if (games.updateGame(game)) {
+
       int gId = game.getId();
+      System.out.println(String.format("Trying to add game %d", gId));
       try {
         conditionalInsert(game);
         gamesToEventNums.put(gId, 1);
         gamesToAnimations.put(gId, new JsonArray());
       } catch (IllegalStateException e) {
+        System.out.println(String.format("Error putting game %d in db", gId));
         e.printStackTrace();
       }
     }
@@ -48,7 +52,7 @@ public class GameManager {
     String endString = String.format(
         "end game %d with winner %d and players %d and %d", gId, winner,
         firstUser, secondUser);
-    try {
+    // try {
       System.out.println("Request to " + endString);
       registerFinishedGame(gId, firstUser, secondUser, winner, turns);
 
@@ -56,10 +60,10 @@ public class GameManager {
       games.removeGame(secondUser);
       gamesToEventNums.remove(gId);
       System.out.println("Able to " + endString);
-    } catch (SQLException | NullPointerException e) {
-      System.out.println("Could not " + endString);
-      throw new RuntimeException();
-    }
+    // } catch (SQLException | NullPointerException e) {
+    // System.out.println("Could not " + endString);
+    // throw new RuntimeException();
+    // }
   }
 
   public static boolean playerIsInGame(int playerId) {
@@ -149,7 +153,6 @@ public class GameManager {
   public static void pushToDb(Game g) {
     // add game to cache
     if (games.updateGame(g)) {
-      System.out.println("Successfully updated game state");
       String eventInsert = "insert into game_event values(?, ?, ?, ?);";
       int gId = g.getId();
       int eventNum = gamesToEventNums.get(gId);
@@ -159,9 +162,6 @@ public class GameManager {
         System.out.println(
             "Trying to insert event num " + eventNum + " for game " + gId);
         JsonArray anims = gamesToAnimations.get(gId);
-        String animString = anims == null ? "null" : anims.toString();
-        System.out.println("Have some fuckin animations: " + animString);
-        System.out.println("Also have event " + g.jsonifySelf());
 
         Db.update(eventInsert, gId, eventNum, g.jsonifySelf(),
             anims);
@@ -228,13 +228,21 @@ public class GameManager {
 
   // Transitions game from in_progress to finished_game
   public static void registerFinishedGame(int gId, int p1, int p2, int winner,
-      int turns) throws NullPointerException, SQLException {
-    System.out.println(String
-        .format("Trying to stash %d with players %d and %d", gId, p1, p2));
-    Db.update("delete from in_progress where id = ?;", gId);
-    Db.update("insert into finished_game values(?, ?, ?);", gId, winner, turns);
-    Db.update("insert into user_game values(?, ?);", p1, gId);
-    Db.update("insert into user_game values(?, ?);", p2, gId);
+      int turns) {
+    try {
+      System.out.println(String
+          .format("Trying to stash %d with players %d and %d", gId, p1, p2));
+      Db.update("delete from in_progress where id = ?;", gId);
+      Db.update("insert into finished_game values(?, ?, ?);", gId, winner,
+          turns);
+      Db.update("insert into user_game values(?, ?);", p1, gId);
+      Db.update("insert into user_game values(?, ?);", p2, gId);
+    } catch (NullPointerException | SQLException e) {
+      System.out.println(
+          String.format("Game %d with players %d and %d ALREADY IN DB YOU TWAT",
+              gId, p1, p2));
+      e.printStackTrace();
+    }
   }
 
   static void conditionalInsert(Game g) {
@@ -258,6 +266,9 @@ public class GameManager {
       System.out.println(String
           .format("Stashed game %d with players %d and %d in db", gId, p1, p2));
     } catch (IOException | SQLException | NullPointerException e) {
+      System.out.println(String.format(
+          "Couldn't insert game %d with players %d and %d into db", gId, p1,
+          p2));
       e.printStackTrace();
     }
   }

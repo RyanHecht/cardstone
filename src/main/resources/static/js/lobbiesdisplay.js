@@ -85,9 +85,11 @@ function formSubmit() {
 };
 
 function lobbyRequest(route, postParams, headerMsg) {
+	console.log("making request to " + route);
+	console.log("have params " + postParams);
 	$.post(route, postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
-
+		console.log(respObj);
 		if (respObj.auth) {
 			window.location.replace("/lobby");
 		} else {
@@ -124,6 +126,7 @@ $("#lobby-table").on("click", "tr", function() {
 });
 
 $("#join").on('click', function() {
+	console.log("I clicked join!");
 	$("#clickModal").modal("hide");
 	if (!isFull) {
 		if (!isPriv) {

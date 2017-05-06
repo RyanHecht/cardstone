@@ -41,7 +41,7 @@
 		  </div>
 		</div>
 	   <div class="col-md-2 centerText">
-	       <button type="button" class="btn btn-default" id="leave">Leave</button>
+	       <a href="/lobbies" class="btn btn-default" id="leave">Leave</a>
 	   </div>
 	</div>
 
