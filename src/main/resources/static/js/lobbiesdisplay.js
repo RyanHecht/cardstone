@@ -19,19 +19,19 @@ $(document).ready(() => {
 		});
 		isTutorial = true;
 	}
-	
-	const lobbyList = $("#lobby-table");
+
+
 	const listSocket = new WebSocket("ws://" + window.location.host + "/lobbyListSocket");
 	listSocket.onopen = function() {
 		console.log("opened list socket");
 	}
 	listSocket.onmessage = function(message) {
-		drawLobbies(JSON.parse(message.data), lobbyList);
+		drawLobbies(JSON.parse(message.data));
 	};
 
 	$.get("/listLobbies", responseJSON => {
 		const responseObject = JSON.parse(responseJSON);
-		drawLobbies(responseObject, lobbyList);
+		drawLobbies(responseObject);
 	});
 
 	if (error != undefined && errorHeader != undefined) {
@@ -39,6 +39,27 @@ $(document).ready(() => {
 		$("#message").text(error);
 		$("#messageheader").text(errorHeader);
 	}
+
+	function drawLobbies(responseObject) {
+		const lobbyList = $("#lobby-table");
+		lobbyList.empty();
+		for (let i = 0, len = responseObject.length; i < len; i++) {
+			const curr_lobby = responseObject[i];
+
+			const privateAttr = curr_lobby.private ? "Yes" : "No";
+			const fullAttr = curr_lobby.full ? "Yes" : "No";
+
+			const postParams = {id: curr_lobby.host};
+			$.post("/username", postParams, responseJSON => {
+				const hostUsername = JSON.parse(responseJSON).username;
+				lobbyList.append("<tr> <td class='name'>"
+								 + curr_lobby.name + "</td> " +
+								"<td class='host'>" + hostUsername + "</td> " +
+								"<td class='private'>" + privateAttr + "</td> " +
+								"<td class='full'>" + fullAttr + "</td> </tr>");
+			});
+		}
+	};
 });
 
 function user_prompt() {
@@ -55,26 +76,8 @@ function disabled_inputs() {
 function next_stage() {
 	window.location.replace("/tutorial_lobby");
 };
-	
-function drawLobbies(responseObject, lobbyList) {
-	lobbyList.empty();
-	for (let i = 0, len = responseObject.length; i < len; i++) {
-		const curr_lobby = responseObject[i];
 
-		const privateAttr = curr_lobby.private ? "Yes" : "No";
-		const fullAttr = curr_lobby.full ? "Yes" : "No";
 
-		const postParams = {id: curr_lobby.host};
-		$.post("/username", postParams, responseJSON => {
-			const hostUsername = JSON.parse(responseJSON).username;
-			lobbyList.append("<tr> <td class='name'>"
-							 + curr_lobby.name + "</td> " +
-							"<td class='host'>" + hostUsername + "</td> " +
-							"<td class='private'>" + privateAttr + "</td> " +
-							"<td class='full'>" + fullAttr + "</td> </tr>");
-		});
-	}
-};
 
 function formSubmit() {
 	const form = $("<form action='/spectate' method='POST'>" +
@@ -121,7 +124,7 @@ $("#lobby-table").on("click", "tr", function() {
 		isPriv = $(this).find("td.private").text() == "Yes";
 
 		$("#clickModal").modal("show");
-		$("#click_msg").text("Would you like to join or spectate lobby " + selectedName + "?");		
+		$("#click_msg").text("Would you like to join or spectate lobby " + selectedName + "?");
 	}
 });
 
@@ -189,7 +192,7 @@ $("#createlobby").on('click', function() {
 			$("#hostLobby").modal("hide");
 			const postParams = {name: lobby_name, private: isPriv, password: pw};
 			lobbyRequest("/makeLobby", postParams);
-		}		
+		}
 	}
 });
 
