@@ -42,6 +42,7 @@ public class StoneHide extends AuraCard{
 	}
 	
 	public Event getNewProposition(Event e, Zone z) {
+		System.out.println("making new proposition");
 			PlayerDamagedEvent old = (PlayerDamagedEvent) e;
 			PlayerDamagedEvent newEvent = new PlayerDamagedEvent(old.getSrc(), old.getPlayer(), old.getDmg() - 1);
 			return newEvent;

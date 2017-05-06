@@ -186,7 +186,7 @@ class Server{
       this.alertMessage(message);
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          window.location.replace("/lobbies");
+          window.location.replace("/menu");
       });
   }
 
