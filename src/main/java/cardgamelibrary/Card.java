@@ -244,6 +244,10 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
+	default public Effect onOtherCardPlayed(Card c, Zone z){
+		return EmptyEffect.create();
+	}
+	
 	static boolean recursiveIs(Object c, Class goal) {
 		Class curClass = c.getClass();
 		while (curClass != Object.class) {
