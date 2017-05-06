@@ -24,6 +24,11 @@ $(document).ready(() => {
 	const listSocket = new WebSocket("ws://" + window.location.host + "/lobbyListSocket");
 	listSocket.onopen = function() {
 		console.log("opened list socket");
+
+		setInterval(function() {
+      listSocket.send("lubdub");
+			//console.log("sent heartbeat")
+    }, 5000);
 	}
 	listSocket.onmessage = function(message) {
 		drawLobbies(JSON.parse(message.data));

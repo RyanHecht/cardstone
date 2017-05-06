@@ -88,6 +88,11 @@ class Server{
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
+
+    const that = this;
+    setInterval(function() {
+        return that.websocket.send("lubdub")
+    }, 5000);
         }
 	}
 
@@ -96,7 +101,12 @@ class Server{
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened');
+    this.server.startHeartbeat();
 	}
+
+  startHeartbeat() {
+
+  }
 
 	onWebSocketMessage(event) {
 		this.server.messageReceived(JSON.parse(event.data));

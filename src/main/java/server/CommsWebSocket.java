@@ -62,6 +62,12 @@ public class CommsWebSocket {
   public void message(Session session, String message) throws IOException {
     // Get the object received, the message type, and the payload
     System.out.println("Got a message!" + "\n" + message);
+
+    // Ignore heartbeats
+    if (message.equals("lubdub")) {
+      return;
+    }
+
     JsonObject received = GSON.fromJson(message, JsonObject.class);
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
@@ -114,7 +120,7 @@ public class CommsWebSocket {
                   GameManager.getGameByPlayerId(spectatee), id);
               CommsWebSocket.sendTurnStart(id,
                   GameManager.getGameByPlayerId(spectatee)
-                      .isActivePlayer(spectatee));
+                  .isActivePlayer(spectatee));
             } else {
               GameManager.playerIsReady(id);
             }
@@ -262,7 +268,7 @@ public class CommsWebSocket {
     JsonObject obj = new JsonObject();
     obj.addProperty("isSelf", userIdsTurn);
     System.out
-        .println("Sending turn start to " + userId + "...it's " + userIdsTurn);
+    .println("Sending turn start to " + userId + "...it's " + userIdsTurn);
     sendMessage(userId, MessageTypeEnum.TURN_START, obj);
   }
 

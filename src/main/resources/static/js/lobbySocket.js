@@ -41,10 +41,15 @@ class LobbySocket {
 
 		const obj = {"type": type, "payload": payload};
 			this.socket.send(JSON.stringify(obj));
+			
 	}
 
 	onWebSocketMessage(event) {
 		this.server.messageReceived(JSON.parse(event.data));
+	}
+
+	sendHeartbeat() {
+		this.websocket.send("lubdub");
 	}
 
   sendChat(chat) {
