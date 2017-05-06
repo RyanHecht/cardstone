@@ -120,7 +120,7 @@ public class Creature extends PlayableCard implements CreatureInterface {
 			// decrement the number of times it can attack.
 			attacker.setAttacks(attacker.getNumAttacks() - 1);
 			// damage player by the card's attack.
-			return new PlayerDamageEffect(attacker, target, attacker.getAttack());
+			return new PlayerDamageEffect(target, attacker, attacker.getAttack());
 		}
 		return EmptyEffect.create();
 	}

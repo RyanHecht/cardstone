@@ -4,10 +4,13 @@ import cardgamelibrary.AuraCard;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import effects.GateEffect;
+import effects.PlayerHealedEffect;
 import game.Player;
 
 public class ForestOfLife extends AuraCard{
@@ -24,14 +27,12 @@ public class ForestOfLife extends AuraCard{
 	}
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
-		return (Board board) -> {
-			if(z == Zone.AURA_BOARD){
-				if(c.getOwner() == getOwner()){
-					if(c.getCost().getElement(ElementType.EARTH) >= 1){
-						board.healPlayer(getOwner(), this, 3);
-					}
-				}
-			}
-		};
+		ConcatEffect ce = new ConcatEffect();
+		ce.addEffect(new GateEffect((Board board) -> {
+			return z == Zone.AURA_BOARD && c.getOwner() 
+					== getOwner() && c.getCost().getElement(ElementType.EARTH) >= 1;
+		}));
+		ce.addEffect(new PlayerHealedEffect(this,getOwner(),3));
+		return ce;
 	}
 }
