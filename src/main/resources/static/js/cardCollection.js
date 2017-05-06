@@ -160,7 +160,7 @@ class cardCollection extends drawableZone{
         });
         this.div.on("mouseup",function(event){
             mouseSystem.mouseupDiv($this,event);
-        }
+        });
         
         this.div.find(".card").mousedown(function(event){
             mouseSystem.mousedown($(this).attr("id"),event);
@@ -177,7 +177,7 @@ class cardCollection extends drawableZone{
         });
         $(document).mouseup(function(event){
             mouseSystem.mouseup(event);
-        })
+        });
     }
     
     
