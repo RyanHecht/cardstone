@@ -254,7 +254,7 @@ public class CardWrapper implements Card {
 
 	@Override
 	public boolean isA(Class<?> c) {
-		return Card.recursiveIs(this, c) || internal.isA(c);
+		return c.isInstance(this) || internal.isA(c);
 	}
 
 }

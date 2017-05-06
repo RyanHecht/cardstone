@@ -237,7 +237,7 @@ public interface Card extends Jsonifiable, Serializable {
 	 * @return a boolean representing whether the given card is another class.
 	 */
 	default public boolean isA(Class<?> c) {
-		return recursiveIs(this, c);
+		return c.isInstance(this);
 	}
 
 	default public Effect onCardZoneCreated(Card card, Zone location, Zone zone) {
