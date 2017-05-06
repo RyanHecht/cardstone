@@ -12,7 +12,7 @@ public class AddToOccEffect implements Effect {
 	Player owner;
 	Zone end;
 	Zone start;
-	
+
 	public AddToOccEffect(Card card, Player owner, Zone end, Zone start) {
 		super();
 		this.card = card;
@@ -20,51 +20,38 @@ public class AddToOccEffect implements Effect {
 		this.end = end;
 		this.start = start;
 	}
-	
-	public AddToOccEffect(Card card, Player owner, Zone end, Zone start){
-		
-	}
-
 
 	public Card getCard() {
 		return card;
 	}
 
-
 	public void setCard(Card card) {
 		this.card = card;
 	}
-
 
 	public Player getOwner() {
 		return owner;
 	}
 
-
 	public void setOwner(Player owner) {
 		this.owner = owner;
 	}
-
 
 	public Zone getEnd() {
 		return end;
 	}
 
-
 	public void setEnd(Zone end) {
 		this.end = end;
 	}
-
 
 	public Zone getStart() {
 		return start;
 	}
 
-
 	public void setStart(Zone start) {
 		this.start = start;
 	}
-
 
 	@Override
 	public void apply(Board board) {
