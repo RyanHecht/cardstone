@@ -106,6 +106,10 @@ public interface Card extends Jsonifiable, Serializable {
 	default public boolean onProposedEvent(Event e, Zone z) {
 		return false;
 	}
+	
+	default public Effect onGameStart(){
+		return EmptyEffect.create();
+	}
 
 	default public Event getNewProposition(Event e, Zone z) {
 		return e;

@@ -368,6 +368,9 @@ class Server{
                 }
                 server.boardGotten(response.board);
             }
+            else{
+                $("#replayOverAsk").modal("show");
+            }
         })
     }
 
