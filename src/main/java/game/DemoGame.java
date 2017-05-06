@@ -61,6 +61,7 @@ public class DemoGame extends Game {
 
 	@Override
 	public void handleTurnend(JsonObject userInput, int playerId) {
+		System.out.println("CURRENT ACTION ID: " + actionId);
 		if (playerId == AI_ID) {
 			super.handleTurnend(userInput, playerId);
 		} else {
@@ -96,6 +97,7 @@ public class DemoGame extends Game {
 
 	@Override
 	public void handleCardTargeted(JsonObject userInput, int playerId) {
+		System.out.println("CURRENT ACTION ID: " + actionId);
 		if (playerId == AI_ID) {
 			super.handleCardTargeted(userInput, playerId);
 		} else {
@@ -130,6 +132,7 @@ public class DemoGame extends Game {
 
 	@Override
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
+		System.out.println("CURRENT ACTION ID: " + actionId);
 		if (playerId == AI_ID) {
 			super.handlePlayerTargeted(userInput, playerId);
 		} else {
@@ -148,6 +151,7 @@ public class DemoGame extends Game {
 
 	@Override
 	public void handleChosen(JsonObject userInput, int playerId) {
+		System.out.println("CURRENT ACTION ID: " + actionId);
 		if (playerId == AI_ID) {
 			super.handleChosen(userInput, playerId);
 		} else {
@@ -157,6 +161,7 @@ public class DemoGame extends Game {
 
 	@Override
 	public void handleCardPlayed(JsonObject userInput, int playerId) {
+		System.out.println("CURRENT ACTION ID: " + actionId);
 		if (playerId == AI_ID) {
 			super.handleCardPlayed(userInput, playerId);
 		} else {
