@@ -233,7 +233,7 @@ public class DemoGame extends Game {
 		LinkedList<String> firstPlayerCards = new LinkedList<String>();
 		// starting hand will be 6 water elements, first card they draw will be
 		// water spirit.
-		firstPlayerCards.addLast("Water Element");
+		firstPlayerCards.addLast("Water Spirit");
 		firstPlayerCards.addLast("Water Element");
 		firstPlayerCards.addLast("Water Element");
 		firstPlayerCards.addLast("Water Element");
