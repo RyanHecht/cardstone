@@ -287,7 +287,17 @@ public class Board implements Jsonifiable, Serializable {
 			EffectMaker maker = (EffectMaker) effect;
 			effect = maker.getEffect(this);
 		}
-		effect = preprocessEffect(effect, new HashSet<Card>());
+		Effect past = effect;
+		HashSet<Card> processed = new HashSet<Card>();
+		effect = preprocessEffect(effect, processed);
+		while(past != effect){
+			past = effect;
+			if(effect.getType() == EffectType.MAKER){
+				EffectMaker maker = (EffectMaker) effect;
+				effect = maker.getEffect(this);
+			}
+			effect = preprocessEffect(effect, processed);
+		}
 		effect.apply(this);
 	}
 
@@ -702,6 +712,10 @@ public class Board implements Jsonifiable, Serializable {
 			sendAnimation(animation);
 		}
 
+		if(c.isA(CreatureInterface.class) && destination.getZone() == Zone.GRAVE){
+			creatureDies((CreatureInterface)c);
+		}
+		
 		eventQueue.add(event);
 	}
 
