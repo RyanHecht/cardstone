@@ -203,9 +203,9 @@ function setupOptionsMenu(){
     $("#concedeButton").click(function(){
        window.location.replace("/lobbies"); 
     });
-    $("#quitReplay"){
+    $("#quitReplay").click(function(){
         window.location.replace("/menu");
-    }
+    });
 }
 
 function setupKeypress(){
