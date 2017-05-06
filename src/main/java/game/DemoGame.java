@@ -94,25 +94,37 @@ public class DemoGame extends Game {
         ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()),
             Zone.CREATURE_BOARD);
         getBoard().handleEffect(ef);
-        act(turnEnd);
+        sendWholeBoardToAllAndDb();
+       
         try {
-          CommsWebSocket.sendTurnStart(playerId, true);
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+        act(turnEnd);
         // have to manually send board.
         sendWholeBoardToAllAndDb();
       } else if (actionId == 8) {
         // in this case the AI just ends their turn.
         act(turnEnd);
-
+        
         // manually send board.
         sendWholeBoardToAllAndDb();
       }
 
       // increment action id.
       actionId++;
+      
+      // slight delay.
+      try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+      
       // tell player what to do next.
       sendPlayerTextMessage(playerId, messages[actionId]);
     }
@@ -153,6 +165,13 @@ public class DemoGame extends Game {
         }
         break;
       }
+      
+      try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
       // tell player what to do next.
       sendPlayerTextMessage(playerId, messages[actionId]);
     }
@@ -173,6 +192,14 @@ public class DemoGame extends Game {
       // increment actionId
       actionId++;
       super.handlePlayerTargeted(userInput, playerId);
+      
+      try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+      
       // tell player what to do next.
       sendPlayerTextMessage(playerId, messages[actionId]);
     }
@@ -185,6 +212,15 @@ public class DemoGame extends Game {
       super.handleChosen(userInput, playerId);
     } else {
       super.handleChosen(userInput, playerId);
+      
+      try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+      
+      sendPlayerTextMessage(playerId, messages[actionId]);
     }
   }
 
@@ -254,6 +290,19 @@ public class DemoGame extends Game {
         }
         break;
       }
+    
+      if(actionId == 6){
+    	  // in this case the user has just played delve
+    	  // the depths and will be sent to the choose request.
+    	  return;
+      }
+      
+      try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
       // tell player what to do next.
       sendPlayerTextMessage(playerId, messages[actionId]);
     }

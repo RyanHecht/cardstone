@@ -27,6 +27,7 @@ function arrival_prompt() {
 };
 
 function arrival_disabled() {
+	$("#deckselect").addClass("tutorialHighlight");
 };
 
 function after_arrival() {
@@ -44,7 +45,9 @@ function start_game() {
 };
 
 function disabled_select() {
+	$("#deckselect").removeClass("tutorialHighlight");
 	$("#deckselect").attr("disabled", "disabled");
+	$("#play").addClass("tutorialHighlight");
 };
 
 $("#deckselect").on("change", function() {

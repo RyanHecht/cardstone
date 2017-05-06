@@ -67,6 +67,7 @@ function postgame_prompt() {
 function postgame_disabled() {
 	$("#decks").addClass("disabled");
 	$("#lobbies").addClass("disabled");
+	$("#games").addClass("tutorialHighlight");
 };
 
 function postgame_next() {
@@ -85,6 +86,7 @@ function postreplay_prompt() {
 function postreplay_disabled() {
 	$("#games").addClass("disabled");
 	$("#lobbies").addClass("disabled");
+	$("#decks").addClass("tutorialHighlight");
 };
 
 function postreplay_next() {
