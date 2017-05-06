@@ -1,6 +1,5 @@
 package cards;
 
-import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.CreatureInterface;
@@ -8,6 +7,8 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import effects.CardDamageEffect;
+import effects.PlayerDamageEffect;
 import game.Player;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -17,7 +18,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 	private static final ManaPool defaultCost = new ManaPool(10, 0, 0, 0, 1, 0);
 	private static final String defaultImage = "images/JunsBolt.jpg";
 	private static final String defaultName = "Jun's Bolt";
-	private static final String defaultText = "Deal 3 damage to target creature or player.";
+	private static final String defaultText = "Deal 3 damage to target enemy creature or to your opponent.";
 	private static final CardType defaultType = CardType.SPELL;
 
 	public JunsBolt(Player owner) {
@@ -48,21 +49,12 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 
 	@Override
 	public Effect impactCardTarget(Card target, Zone targetIn) {
-		return (Board board) -> {
-			assert (cardValidTarget(target, targetIn));
-			// deal 3 damage to targeted creature.
-			board.damageCard((CreatureInterface) target, this, 3);
-		};
+		return new CardDamageEffect(this, (CreatureInterface) target, 3);
 	}
 
 	@Override
 	public Effect impactPlayerTarget(Player p) {
-		return (Board board) -> {
-			assert (playerValidTarget(p));
-			// deal 3 damage to targeted player.
-			board.damagePlayer(p, this, 3);
-
-		};
+		return new PlayerDamageEffect(p, this, 3);
 	}
 
 }

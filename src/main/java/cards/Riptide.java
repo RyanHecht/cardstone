@@ -3,6 +3,7 @@ package cards;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
@@ -26,7 +27,8 @@ public class Riptide extends SpellCard implements TargetsOtherCard {
 
 	@Override
 	public boolean cardValidTarget(Card card, Zone targetIn) {
-		if (card.isA(Creature.class) && !(card.getOwner().equals(this.getOwner())) && targetIn == Zone.CREATURE_BOARD) {
+		if (card.isA(CreatureInterface.class) && !(card.getOwner().equals(this.getOwner()))
+				&& targetIn == Zone.CREATURE_BOARD) {
 			// target must be creature on board that belongs to opponent.
 			return true;
 		}
@@ -35,7 +37,7 @@ public class Riptide extends SpellCard implements TargetsOtherCard {
 
 	@Override
 	public Effect impactCardTarget(Card target, Zone targetIn) {
-		assert (target.isA(Creature.class));
+		assert (target.isA(CreatureInterface.class));
 		return new CardDamageEffect(this, (Creature) target, 2);
 	}
 
