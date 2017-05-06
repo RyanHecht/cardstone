@@ -18,11 +18,17 @@ public class DemoGame extends Game {
 
 	private final String[] messages = new String[11];
 
-	private TurnEndEvent turnEnd;
+	private static TurnEndEvent turnEnd;
 
-	private CardPlayedEvent aiPlayedElement;
+	private static CardPlayedEvent aiPlayedElement;
 
-	private CardPlayedEvent aiPlayedWaterSpirit;
+	private static CardPlayedEvent aiPlayedWaterSpirit;
+
+	private static JsonObject aiTurnEnd = new JsonObject();
+
+	private static JsonObject aiWaterPlayed = new JsonObject();;
+
+	private static JsonObject aiWaterSpiritPlayed = new JsonObject();;
 
 	public DemoGame(int playerOneId) {
 		// superclass constructor with "true" flag passed to indicate that it is a
@@ -49,7 +55,7 @@ public class DemoGame extends Game {
 		Player ai = getBoard().getInactivePlayer();
 		turnEnd = new TurnEndEvent(ai);
 		// these are the two cards the ai plays.
-		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.DECK).getCards().get(5);
+		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.DECK).getCards().get(0);
 		Card aiWaterElement = getBoard().getOcc(ai, Zone.DECK).getFirstCard();
 
 		// events that reflect the cards played are constructed.
@@ -57,6 +63,13 @@ public class DemoGame extends Game {
 				getBoard().getOcc(ai, Zone.GRAVE));
 		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND),
 				getBoard().getOcc(ai, Zone.CREATURE_BOARD));
+
+		// build ai JsonObjects.
+		// don't actually have to do anything with the turn end object, it can
+		// remain empty.
+		aiWaterPlayed = null;
+
+		aiWaterSpiritPlayed = null;
 	}
 
 	@Override
