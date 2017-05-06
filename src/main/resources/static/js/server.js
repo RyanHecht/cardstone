@@ -188,7 +188,7 @@ class Server{
       //console.log(message)
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          if (message.message.contains("tutorial")) {
+          if (message.message.includes("tutorial")) {
             $.cookie('tutorial', tutorialStage() + 1);
             console.log("tutorial ended!")
           }
