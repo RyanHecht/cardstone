@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import lobby.LobbyHandlers;
 import server.CommsWebSocket;
+import server.LobbyListWebSocket;
 import server.LobbyWebSocket;
 import spark.ExceptionHandler;
 import spark.Request;
@@ -61,6 +62,7 @@ public class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.webSocket("/socket", CommsWebSocket.class);
     Spark.webSocket("/lobbySocket", LobbyWebSocket.class);
+    Spark.webSocket("/lobbyListSocket", LobbyListWebSocket.class);
     Spark.get("/listLobbies", new LobbyHandlers.ListLobbies());
     Spark.post("/joinLobby", new LobbyHandlers.JoinLobby());
     Spark.post("/spectateJoin", new LobbyHandlers.SpectateJoinLobby());

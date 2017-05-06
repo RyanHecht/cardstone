@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import server.LobbyListWebSocket;
 import server.LobbyWebSocket;
 
 /**
@@ -46,6 +47,7 @@ public class LobbyManager {
 
       Lobby lobby = lobbies.put(name, new Lobby(name, priv, password, hostUId));
       System.out.println("Made lobby: " + lobby);
+      LobbyListWebSocket.update();
       return lobby;
     }
   }
@@ -56,6 +58,7 @@ public class LobbyManager {
    */
   public static void cancelLobby(String name) {
     lobbies.remove(name);
+    LobbyListWebSocket.update();
   }
 
   /**
