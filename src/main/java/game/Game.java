@@ -648,6 +648,9 @@ public class Game implements Jsonifiable, Serializable {
 
 					// execute event on board.
 					act(event);
+					
+					
+					
 
 					// send board to both players.
 					sendWholeBoardToAllAndDb();
@@ -672,6 +675,12 @@ public class Game implements Jsonifiable, Serializable {
 					// execute event.
 					act(event);
 
+					// make card played event.
+					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
+							board.getOcc(board.getActivePlayer(), Zone.GRAVE));
+
+					act(cEvent);
+					
 					// send board.
 					sendWholeBoardToAllAndDb();
 				} else {

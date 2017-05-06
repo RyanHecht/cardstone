@@ -51,7 +51,6 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 	public Effect impactCardTarget(Card target, Zone targetIn) {
 		return new CardDamageEffect(this, (CreatureInterface) target, 3);
 	}
-
 	@Override
 	public Effect impactPlayerTarget(Player p) {
 		return new PlayerDamageEffect(p, this, 3);
