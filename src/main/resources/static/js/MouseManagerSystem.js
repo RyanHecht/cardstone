@@ -8,6 +8,7 @@ class MouseManagerSystem{
     }
         
     mousedown(id,event){
+        console.log(event);
         if(canAct){
             console.log(id);
             this.isClicked = true;
@@ -49,6 +50,7 @@ class MouseManagerSystem{
     }
     
     mouseup(event){
+        console.log(event);
         if(canAct){
        this.isClicked = false;
        this.tips.removeClass("tooltipHidden");
