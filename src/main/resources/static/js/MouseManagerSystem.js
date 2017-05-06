@@ -25,7 +25,9 @@ class MouseManagerSystem{
         canvasLine.x2 = this.transformX(event.pageX);
         canvasLine.y2 = this.transformY(event.pageY);
         if(event.which == 0){
-            this.mouseupLight();
+            if(!(event instanceof touchmove)){
+                this.mouseupLight();
+            }
         }
         }
     }

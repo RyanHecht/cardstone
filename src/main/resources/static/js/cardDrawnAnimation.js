@@ -5,7 +5,7 @@ class cardDrawnAnimation extends animation{
     
     constructor(){
 		super();
-        let off = $(".centerClockRect").offset(); 
+        let off = $("#cardQueue").offset();
         this.setStartLoc(off.left,off.top);
         this.speed = .6;
 	}
