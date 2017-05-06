@@ -600,9 +600,14 @@ public class Board implements Jsonifiable, Serializable {
 	 *          the zone to summon to.
 	 */
 	public void summonCard(Card summon, Zone targetZone) {
+		System.out.println("putting into target zone");
 		CardZoneCreatedEvent event = new CardZoneCreatedEvent(summon, targetZone);
+		System.out.println(summon.getOwner().getId() + "is the ai " + summon.getOwner());
 		for (OrderedCardCollection occ : cardsInGame) {
+			System.out.println(occ.getPlayer());
+			System.out.println(occ.getZone().name() + " is the zone" + targetZone.name());
 			if (occ.getZone() == targetZone && occ.getPlayer() == summon.getOwner()) {
+				System.out.println("found the zone");
 				occ.add(summon);
 			}
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
