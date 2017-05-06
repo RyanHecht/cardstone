@@ -2,7 +2,9 @@ package game;
 
 import cardgamelibrary.Card;
 import cardgamelibrary.Zone;
+import cards.WaterSpirit;
 import com.google.gson.JsonObject;
+import effects.SummonEffect;
 import events.CardPlayedEvent;
 import events.TurnEndEvent;
 import java.io.IOException;
@@ -24,11 +26,7 @@ public class DemoGame extends Game {
 
   private static CardPlayedEvent aiPlayedWaterSpirit;
 
-  private static JsonObject aiTurnEnd = new JsonObject();
-
-  private static JsonObject aiWaterPlayed = new JsonObject();;
-
-  private static JsonObject aiWaterSpiritPlayed = new JsonObject();;
+  private static SummonEffect ef;
 
   public DemoGame(int playerOneId) {
     // superclass constructor with "true" flag passed to indicate that it is a
@@ -54,6 +52,8 @@ public class DemoGame extends Game {
 
     // create the AI events.
     Player ai = getBoard().getInactivePlayer();
+    System.out.println(getBoard().getActivePlayer() + " is the players"
+        + getBoard().getInactivePlayer());
     turnEnd = new TurnEndEvent(ai);
     // these are the two cards the ai plays.
     Card aiWaterSpirit = getBoard().getOcc(ai, Zone.HAND).getCards().get(0);
@@ -72,12 +72,6 @@ public class DemoGame extends Game {
         getBoard().getOcc(ai, Zone.HAND),
         getBoard().getOcc(ai, Zone.CREATURE_BOARD));
 
-    // build ai JsonObjects.
-    // don't actually have to do anything with the turn end object, it can
-    // remain empty.
-    aiWaterPlayed = null;
-
-    aiWaterSpiritPlayed = null;
   }
 
   @Override
@@ -93,13 +87,14 @@ public class DemoGame extends Game {
       // in this case the turn end was correct so we should execute it.
       super.handleTurnend(userInput, playerId);
 
-      // now we must decide what the ai needs to dp.
+      // now we must decide what the ai needs to do.
       if (actionId == 2) {
-        // ai plays element, then spirit, then ends turn.
-        act(aiPlayedElement);
-        act(aiPlayedWaterSpirit);
+        // ai plays spirit, then ends turn.
+        System.out.println("got called at handle effect");
+        ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()),
+            Zone.CREATURE_BOARD);
+        getBoard().handleEffect(ef);
         act(turnEnd);
-
         actionId++;
         try {
           CommsWebSocket.sendTurnStart(playerId, true);
@@ -107,7 +102,6 @@ public class DemoGame extends Game {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-
         // have to manually send board.
         sendWholeBoardToAllAndDb();
       } else if (actionId == 8) {
@@ -182,12 +176,7 @@ public class DemoGame extends Game {
       actionId++;
       super.handlePlayerTargeted(userInput, playerId);
       // tell player what to do next.
-      if (actionId == 10) {
-        endGame(playerId);
-      } else {
-        sendPlayerTextMessage(playerId, messages[actionId]);
-      }
-
+      sendPlayerTextMessage(playerId, messages[actionId]);
     }
   }
 
@@ -274,7 +263,7 @@ public class DemoGame extends Game {
 
   /**
    * Gets the first player's deck as a list of strings.
-   *
+   * 
    * @return a list of strings representing the deck.
    */
   private static List<String> getFirstPlayerDeck() {
@@ -311,7 +300,7 @@ public class DemoGame extends Game {
 
   /**
    * Gets the second player's (not human) deck as a list of strings.
-   *
+   * 
    * @return a list of strings representing the deck.
    */
   private static List<String> getSecondPlayerDeck() {
@@ -336,7 +325,7 @@ public class DemoGame extends Game {
 
   /**
    * Used to get the current action needed for the user.
-   *
+   * 
    * @return the message the user should see.
    */
   public String getMessage() {
