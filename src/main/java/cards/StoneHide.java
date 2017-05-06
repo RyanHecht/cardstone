@@ -10,6 +10,8 @@ import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import effects.EffectType;
+import effects.PlayerDamageEffect;
 import events.PlayerDamagedEvent;
 import game.Player;
 
@@ -25,14 +27,14 @@ public class StoneHide extends AuraCard{
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 	
-	public boolean onProposedEvent(Event e, Zone z) {
+	public boolean onProposedEffect(Effect e, Zone z) {
 		if(z != Zone.AURA_BOARD){
 			return false;
 		}
 		
-		if(e.getType() == EventType.PLAYER_DAMAGED){
-			PlayerDamagedEvent pde = (PlayerDamagedEvent) e;
-			if(pde.getPlayer().equals(this.getOwner())){
+		if(e.getType() == EffectType.PLAYER_DAMAGED){
+			PlayerDamageEffect pde = (PlayerDamageEffect) e;
+			if(pde.getPlayerDamaged().equals(this.getOwner())){
 				if(pde.getDmg() > 0){
 					return true;
 				}
@@ -41,12 +43,10 @@ public class StoneHide extends AuraCard{
 		return false;
 	}
 	
-	public Event getNewProposition(Event e, Zone z) {
-		System.out.println("making new proposition");
-			PlayerDamagedEvent old = (PlayerDamagedEvent) e;
-			PlayerDamagedEvent newEvent = new PlayerDamagedEvent(old.getSrc(), old.getPlayer(), old.getDmg() - 1);
-			System.out.println(old.getDmg());
-			System.out.println(newEvent.getDmg());
-			return newEvent;
+	public Effect getNewProposition(Effect e, Zone z) {
+		PlayerDamageEffect old = (PlayerDamageEffect) e;
+		PlayerDamageEffect newEffect;
+		newEffect = new PlayerDamageEffect(old.getPlayerDamaged(),old.getSource(),old.getDmg() - 1);
+		return newEffect;
 	}
 }
