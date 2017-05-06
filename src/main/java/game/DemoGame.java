@@ -53,6 +53,7 @@ public class DemoGame extends Game {
 
 		// create the AI events.
 		Player ai = getBoard().getInactivePlayer();
+		System.out.println(getBoard().getActivePlayer() + " is the players" + getBoard().getInactivePlayer());
 		turnEnd = new TurnEndEvent(ai);
 		// these are the two cards the ai plays.
 		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.HAND).getCards().get(0);
@@ -67,7 +68,7 @@ public class DemoGame extends Game {
 		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND),
 				getBoard().getOcc(ai, Zone.CREATURE_BOARD));
 
-		ef = new SummonEffect(new WaterSpirit(ai), Zone.CREATURE_BOARD);
+		
 
 	}
 
@@ -88,6 +89,7 @@ public class DemoGame extends Game {
 			if (actionId == 2) {
 				// ai plays spirit, then ends turn.
 				System.out.println("got called at handle effect");
+				ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()), Zone.CREATURE_BOARD);
 				getBoard().handleEffect(ef);
 				act(turnEnd);
 				actionId++;
