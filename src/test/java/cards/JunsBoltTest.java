@@ -19,7 +19,7 @@ import game.GameManager;
 import game.Player;
 
 public class JunsBoltTest {
-	/*@Test
+	@Test
 	public void testOnPlayer() {
 		// should test targeting both a player and a creature here.
 
@@ -91,7 +91,7 @@ public class JunsBoltTest {
 		// check to see if life totals are updated.
 		assertEquals(activePlayer.getLife(), 30);
 		assertEquals(inactivePlayer.getLife(), 27);
-	}*/
+	}
 
 	@Test
 	public void testOnCard() {
