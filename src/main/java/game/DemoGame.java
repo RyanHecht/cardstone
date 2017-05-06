@@ -110,16 +110,18 @@ public class DemoGame extends Game {
 			switch (actionId) {
 			case 3:
 				if (targeter.getName().equals("Water Spirit") && targeted.getName().equals("Water Spirit")) {
-					super.handleCardTargeted(userInput, playerId);
+					// increment actionId
 					actionId++;
+					super.handleCardTargeted(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
 				break;
 			case 7:
 				if (targeter.getName().equals("Riptide") && targeted.getName().equals("Water Spirit")) {
-					super.handleCardTargeted(userInput, playerId);
+					// increment actionId
 					actionId++;
+					super.handleCardTargeted(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
@@ -142,8 +144,9 @@ public class DemoGame extends Game {
 				sendPlayerActionBad(playerId, messages[actionId]);
 				return;
 			}
-			super.handlePlayerTargeted(userInput, playerId);
+			// increment actionId
 			actionId++;
+			super.handlePlayerTargeted(userInput, playerId);
 			// tell player what to do next.
 			sendPlayerTextMessage(playerId, messages[actionId]);
 		}
@@ -175,50 +178,50 @@ public class DemoGame extends Game {
 			switch (actionId) {
 			case 0:
 				if (c.getName().equals("water")) {
-					// they have done the correct thing so we should execute it.
-					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
 					actionId++;
+					// they have done the correct thing so we should execute it.
+					super.handleCardPlayed(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
 				break;
 			case 1:
 				if (c.getName().equals("Water Spirit")) {
-					// they have performed the correct action!
-					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
 					actionId++;
+					// they have performed the correct action!
+					super.handleCardPlayed(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
 				break;
 			case 4:
 				if (c.getName().equals("water")) {
-					// they have done the correct thing so we should execute it.
-					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
 					actionId++;
+					// they have done the correct thing so we should execute it.
+					super.handleCardPlayed(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
 				break;
 			case 5:
 				if (c.getName().equals("Delve The Depths")) {
-					// they have done the correct thing so we should execute it.
-					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
 					actionId++;
+					// they have done the correct thing so we should execute it.
+					super.handleCardPlayed(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
 				break;
 			case 6:
 				if (c.getName().equals("water")) {
-					// they have done the correct thing so we should execute it.
-					super.handleCardPlayed(userInput, playerId);
 					// increment actionId
 					actionId++;
+					// they have done the correct thing so we should execute it.
+					super.handleCardPlayed(userInput, playerId);
 				} else {
 					sendPlayerActionBad(playerId, messages[actionId]);
 				}
