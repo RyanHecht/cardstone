@@ -25,6 +25,7 @@ public class CantAttackForTurnsCreature extends CreatureWrapper {
 		}
 		return super.onTurnEnd(p, z);
 	}
+<<<<<<< HEAD
 
 	public boolean onProposedLegalityEvent(Event e, Zone z) {
 		if (turns > 0) {
@@ -33,6 +34,18 @@ public class CantAttackForTurnsCreature extends CreatureWrapper {
 				return getAllowedAttack(eve.getAttacker(), eve.getTarget());
 			} else if (e.getType() == EventType.PLAYER_ATTACKED) {
 				PlayerAttackEvent eve = (PlayerAttackEvent) e;
+=======
+	
+	public boolean onProposedLegalityEvent(Event e, Zone z){
+		System.out.println("tried legality" + turns);
+		if(turns > 0){
+			if(e.getType() == EventType.CREATURE_ATTACKED){
+				CreatureAttackEvent eve = (CreatureAttackEvent)e;
+				return getAllowedAttack(eve.getAttacker(),eve.getTarget());
+			}
+			else if(e.getType() == EventType.PLAYER_ATTACKED){
+				PlayerAttackEvent eve = (PlayerAttackEvent)e;
+>>>>>>> 481b094d9aa66a229cf35e3981d9147e7bb88e4b
 				return getAllowedAttack(eve.getAttacker());
 			}
 		}

@@ -424,6 +424,7 @@ public class Game implements Jsonifiable, Serializable {
 	protected void act(Event event) {
 
 		String s = board.legalityProcessEvent(event);
+		System.out.println("checkd legality " + s);
 		if (!s.equals("ok")) {
 			sendPlayerActionBad(board.getActivePlayer().getId(), s);
 		} else {
