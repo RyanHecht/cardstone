@@ -21,6 +21,7 @@ class MouseManagerSystem{
     }
     
     mousemoved(event){
+        console.log(typeof event);
         if(canAct){
         canvasLine.x2 = this.transformX(event.pageX);
         canvasLine.y2 = this.transformY(event.pageY);
