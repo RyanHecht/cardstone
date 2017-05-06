@@ -1,22 +1,20 @@
 package server;
 
+import cardgamelibrary.Board;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import game.Game;
+import game.GameManager;
+import game.GameStats;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import cardgamelibrary.Board;
-import game.Game;
-import game.GameManager;
 
 /**
  * Spark WebSocket for sending data between server and client
@@ -42,8 +40,19 @@ public class CommsWebSocket {
   public void closed(Session session, int statusCode, String reason) {
     int id = sessions.get(session);
 
-    // TODO: Check if player is in game or in lobby, terminate game or update
-    // lobby.
+    Game game = GameManager.getGameByPlayerId(id);
+
+    if (game != null) {
+      int winner = game.getOpposingPlayerId(id);
+      GameStats stats = new GameStats(game, id);
+      GameManager.endGame(stats);
+
+      try {
+        CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
     sessions.remove(session);
     idToSessions.remove(id);
@@ -115,6 +124,7 @@ public class CommsWebSocket {
     } catch (Exception ex) {
       System.out.println("ERROR in message handling");
       ex.printStackTrace();
+
     }
 
   }
