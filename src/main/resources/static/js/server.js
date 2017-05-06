@@ -183,10 +183,12 @@ class Server{
 
 
   gameEnded(message){
+      console.log("game ended")
       this.alertMessage(message);
+      //console.log(message)
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          if (message.contains("tutorial")) {
+          if (message.message.contains("tutorial")) {
             $.cookie('tutorial', tutorialStage() + 1);
             console.log("tutorial ended!")
           }
