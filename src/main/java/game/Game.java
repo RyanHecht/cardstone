@@ -830,8 +830,11 @@ public class Game implements Jsonifiable, Serializable {
 				// spell or element.
 				z = Zone.GRAVE;
 			}
-
-			// create event representing CardPlayedEvent
+			if(board.getZoneOfCard(card) != Zone.HAND){
+				sendPlayerActionBad(playerId, "You need to pick a target to attack!");
+				return;
+			}
+			
 			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
 					board.getOcc(board.getActivePlayer(), z));
 
