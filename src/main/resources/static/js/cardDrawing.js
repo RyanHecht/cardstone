@@ -202,6 +202,9 @@ function setupChat(){
 $(document).ready(function(){
     $(document).on("touchmove",function(event){
         console.log(event, " touchmove");
+    });
+    $(document).on("touchstart",function(event){
+        console.log(event, "asd");
     }
     );
     setupChat();
