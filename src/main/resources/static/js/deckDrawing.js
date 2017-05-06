@@ -108,7 +108,9 @@ function setupInput(){
        filterCollection($("#filterText").val()); 
     });
     $("#deckSubmit").click(function(){
-        submitDeck();
+		if ($("#deckName").val() != "") {
+			submitDeck();
+		}
     })
 }
 

@@ -8,13 +8,6 @@ const SPECTATE_MESSAGE_TYPE = {
 };
 
 class SpectateLobbySocket {
-
-	// onOpponentJoin changes value of 2nd radio button
-	// also change the username majig and message majig
-	// onOpponentJoin changes value of 2nd radio button to -1
-	// onGameStart does????
-	// onLobbyCancel same as before
-
   constructor(userId, onOpponentJoinZ, onOpponentLeaveZ, onGameStartZ, onLobbyCancelZ) {
     this.websocket = new WebSocket("ws://" + window.location.host + "/lobbySocket");
     this.websocket.server = this;
