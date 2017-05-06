@@ -19,7 +19,7 @@
 		<script src="js/tether.min.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/cardCacher.js"></script>
-        
+
 		<script src="js/drawable.js"></script>
 
 		<script src="js/radialAnimation.js"></script>
@@ -35,6 +35,7 @@
 		<script src="js/chooseZone.js"></script>
 		<script src="js/cardCollection.js"></script>
 		<script src="js/board.js"></script>
+    <script src="js/tutorial.js"></script>
 		<script src="js/server.js"></script>
 		<script src="js/cardDrawing.js"></script>
 		<script src="js/qtip.js"></script>

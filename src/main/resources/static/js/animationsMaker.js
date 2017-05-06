@@ -9,7 +9,6 @@ function getDrawnCardAnimation(isMe){
     let anim;
     anim = new cardDrawnAnimation();
     anim.setTarget(isMe);
-    
     return anim;
 }
 

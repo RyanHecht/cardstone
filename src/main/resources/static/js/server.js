@@ -88,7 +88,13 @@ class Server{
 		this.websocket.socket = this.websocket;
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
+
+    const that = this;
+    setInterval(function() {
+        return that.websocket.send("lubdub")
+    }, 5000);
         }
+        this.curMessage = "none";
 	}
 
 	onWebSocketOpen() {
@@ -96,7 +102,12 @@ class Server{
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened');
+    this.server.startHeartbeat();
 	}
+
+  startHeartbeat() {
+
+  }
 
 	onWebSocketMessage(event) {
 		this.server.messageReceived(JSON.parse(event.data));
@@ -154,6 +165,8 @@ class Server{
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
+                    console.log(spectating);
+                    console.log(message);
                     break;
                 case MESSAGE_TYPE.GAME_END:
                     this.gameEnded(message.payload);
@@ -183,10 +196,12 @@ class Server{
 
 
   gameEnded(message){
+      console.log("game ended")
       this.alertMessage(message);
+      //console.log(message)
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          if (message.contains("tutorial")) {
+          if (message.message.includes("tutorial")) {
             $.cookie('tutorial', tutorialStage() + 1);
             console.log("tutorial ended!")
           }
@@ -316,6 +331,7 @@ class Server{
         this.animating = false;
         let data = this.recentestBoard;
         if(spectator){
+            console.log(data.player1.playedId, data.player2.playerId, spectating);
             if(data.player1.playerId != spectating){
                 wholeBoard.flipTry();
             }
@@ -341,8 +357,6 @@ class Server{
         wholeBoard.buildResZones();
 		cardCache.repairFrom(data.board);
 		wholeBoard.getFromCache(data.board);
-        console.log(data.player1, $.cookie("id"));
-
 		redrawAll();
 	}
 

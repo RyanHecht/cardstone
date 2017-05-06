@@ -10,6 +10,7 @@
   <body>
      ${content}
      <script src="js/jquery-2.1.1.js"></script>
+     <script src="js/jquery-cookie.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/login.js"></script>
   </body>

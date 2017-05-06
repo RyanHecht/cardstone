@@ -9,6 +9,10 @@
 
 .regRes{
 	display:inline-block;
+    background-image:url("../images/coin.png");
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center;
 }
 
 .manaHUD1{

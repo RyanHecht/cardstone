@@ -95,7 +95,6 @@ public class DemoGame extends Game {
             Zone.CREATURE_BOARD);
         getBoard().handleEffect(ef);
         act(turnEnd);
-        actionId++;
         try {
           CommsWebSocket.sendTurnStart(playerId, true);
         } catch (IOException e) {
@@ -108,12 +107,11 @@ public class DemoGame extends Game {
         // in this case the AI just ends their turn.
         act(turnEnd);
 
-        actionId++;
-
         // manually send board.
         sendWholeBoardToAllAndDb();
       }
 
+      // increment action id.
       actionId++;
       // tell player what to do next.
       sendPlayerTextMessage(playerId, messages[actionId]);

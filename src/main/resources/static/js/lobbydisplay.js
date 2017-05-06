@@ -5,6 +5,10 @@ let oppReady = false;
 
 $(document).ready(() => {
 	socket = new LobbySocket(parseInt($.cookie("id")), isHost, onOpponentJoin, onOpponentLeave, onOpponentSetDeck, onGameStart, onLobbyCancel, handleChat);
+
+	setInterval(function() {
+		socket.sendHeartbeat();
+	}, 5000);
 });
 
 function onOpponentJoin(opponentId) {
