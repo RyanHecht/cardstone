@@ -45,14 +45,14 @@ public class CantAttackForTurnsCreature extends CreatureWrapper {
 	}
 
 	public boolean getAllowedAttack(CreatureInterface attacker, CreatureInterface target) {
-		if (attacker == this.internal) {
+		if (attacker.equals(this)) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean getAllowedAttack(CreatureInterface attacker) {
-		if (attacker == this.internal) {
+		if (attacker.equals(this)) {
 			return true;
 		}
 		return false;

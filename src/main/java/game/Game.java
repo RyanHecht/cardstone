@@ -435,6 +435,8 @@ public class Game implements Jsonifiable, Serializable {
 
 	private void checkWinners() {
 		if (playerOne.getLife() <= 0 || playerTwo.getLife() <= 0) {
+			// send the board to the db since it's over.
+			sendWholeBoardToAllAndDb();
 			if (playerOne.getLife() > 0) {
 				endGame(1);
 			} else if (playerTwo.getLife() > 0) {
