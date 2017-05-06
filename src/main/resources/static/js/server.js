@@ -89,6 +89,7 @@ class Server{
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
         }
+        this.curMessage = "none";
 	}
 
 	onWebSocketOpen() {
@@ -197,7 +198,13 @@ class Server{
   }
 
   alertMessage(message) {
-    customAlert(message.message);
+    if(this.curMessage != "none"){
+        this.curMessage = message.message;
+    }
+    else{
+        this.curMessage = message.message;
+        customAlert(message.message);
+    }
   }
 
   handleChat(message,flag) {
