@@ -1,4 +1,5 @@
 <#assign lobby_table>
+<#include "message_modal.ftl">
 <table class="table table-hover">
   <thead>
     <th>Lobby Name</th>
@@ -77,20 +78,6 @@
   </div>
 </div> 
 
-<div id="messageModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" id="messageheader"></h4>
-      </div>
-      <div class="modal-body">
-        <p id="message"> </p>
-      </div>
-    </div>
-  </div>
-</div> 
-
 <div id="clickModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -108,4 +95,6 @@
     </div>
   </div>
 </div> 
+
+${modal}
 </#assign>

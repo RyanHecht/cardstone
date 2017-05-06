@@ -9,6 +9,7 @@
   </head>
   <#include "deck_list.ftl">
   <#include "navbar.ftl">
+  <#include "message_modal.ftl">
   <body>
      ${nav}
      <div class="container">
@@ -16,13 +17,15 @@
 	   <br>
 	   <br>
 	   <h3> ${username}'s Decks</h3> 
-	     <div class="col-sm-8" id="userlist">
+	     <div class="col-sm-8">
 	       ${deck_list}
 	     </div>
 	   </div>
-	   <a href="/deckDraw.html">Create new deck</a>
-       <a href="/login">Logout</a>
-	</div>
+	   <a id="create_deck" href="/deckDraw.html">Create new deck</a>
+	 </div>
+	 ${modal}
      <script src="js/bootstrapalt.min.js"></script>
+     <script src="js/tutorial.js"></script>
+     <script src="js/decks.js"></script>
   </body>
 </html>

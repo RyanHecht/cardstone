@@ -9,9 +9,12 @@
   </head>
   <body>
      <#include "user_info.ftl">
+     <#include "navbar.ftl">
+     ${nav}
      ${content}
-     <script src="js/jquery-2.1.1.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
+     <script src="js/tutorial.js"></script>
+     <script src="js/menu.js"></script>
   </body>
 </html>
