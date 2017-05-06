@@ -1,6 +1,7 @@
 package templates.decorators;
 
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import cardgamelibrary.Zone;
@@ -25,7 +26,7 @@ public class TauntCreature extends CreatureWrapper {
 		return false;
 	}
 
-	public boolean getAllowedAttack(Creature attacker) {
+	public boolean getAllowedAttack(CreatureInterface attacker) {
 		if (attacker.getOwner() == this.getOwner()) {
 			return false;
 		} else {
@@ -33,7 +34,7 @@ public class TauntCreature extends CreatureWrapper {
 		}
 	}
 
-	public boolean getAllowedAttack(Creature attacker, Creature target) {
+	public boolean getAllowedAttack(CreatureInterface attacker, CreatureInterface target) {
 		if (attacker.getOwner() == this.getOwner()) {
 			return false;
 		} else {

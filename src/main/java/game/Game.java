@@ -19,9 +19,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
+import cardgamelibrary.AuraInterface;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Element;
 import cardgamelibrary.Event;
 import cardgamelibrary.Jsonifiable;
@@ -472,11 +474,11 @@ public class Game implements Jsonifiable, Serializable {
 				return;
 			}
 
-			if ((targetter instanceof Creature) && (targetee instanceof Creature)) {
+			if ((targetter.isA(CreatureInterface.class)) && (targetee.isA(CreatureInterface.class))) {
 				// in this case we have an attack.
 
-				Creature attacker = (Creature) targetter;
-				Creature target = (Creature) targetee;
+				CreatureInterface attacker = (CreatureInterface) targetter;
+				CreatureInterface target = (CreatureInterface) targetee;
 
 				if (attacker.getOwner().getId() != playerId) {
 					sendPlayerActionBad(playerId, "Can't attack using an opponents creature!");
@@ -509,7 +511,7 @@ public class Game implements Jsonifiable, Serializable {
 
 				// send board to both players.
 				sendWholeBoardToAllAndDb();
-			} else if (targetter instanceof TargetsOtherCard) {
+			} else if (targetter.isA(TargetsOtherCard.class)) {
 				// we have some sort of card on card action here son.
 
 				// check to see if we can pay the card's cost.
@@ -592,7 +594,7 @@ public class Game implements Jsonifiable, Serializable {
 
 			if (target) {
 				// TODO targeted self.
-				if (card instanceof TargetsPlayer) {
+				if (card.isA(TargetsPlayer.class)) {
 					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
 						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
 						return;
@@ -625,9 +627,9 @@ public class Game implements Jsonifiable, Serializable {
 				}
 			} else {
 				// targeted opponent.
-				if (card instanceof Creature) {
+				if (card.isA(CreatureInterface.class)) {
 					// we have an attack going down.
-					Creature attacker = (Creature) card;
+					CreatureInterface attacker = (CreatureInterface) card;
 
 					if (!(attacker.canAttack())) {
 						sendPlayerActionBad(playerId, "That creature can no longer attack.");
@@ -646,7 +648,7 @@ public class Game implements Jsonifiable, Serializable {
 
 					// send board to both players.
 					sendWholeBoardToAllAndDb();
-				} else if (card instanceof TargetsPlayer) {
+				} else if (card.isA(TargetsPlayer.class)) {
 					// TODO Targeted opposing player.
 					if (!(board.getActivePlayer().validateCost(card.getCost()))) {
 						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
@@ -765,7 +767,7 @@ public class Game implements Jsonifiable, Serializable {
 			}
 
 			// the user must make some sort of choice here.
-			if (card instanceof PlayerChoosesCards) {
+			if (card.isA(PlayerChoosesCards.class)) {
 				// get possible options.
 				List<Card> options = ((PlayerChoosesCards) card).getOptions(board);
 
@@ -800,7 +802,7 @@ public class Game implements Jsonifiable, Serializable {
 				lockState();
 			}
 
-			if (card instanceof TargetsOtherCard || card instanceof TargetsPlayer) {
+			if (card.isA(TargetsOtherCard.class) || card.isA(TargetsPlayer.class)) {
 				// their card needs a target!
 				sendPlayerActionBad(playerId,
 						"That card needs a target to be played! Try dragging it onto a valid target to play it.");
@@ -808,9 +810,9 @@ public class Game implements Jsonifiable, Serializable {
 			}
 
 			Zone z;
-			if (card instanceof Creature) {
+			if (card.isA(CreatureInterface.class)) {
 				z = Zone.CREATURE_BOARD;
-			} else if (card instanceof AuraCard) {
+			} else if (card.isA(AuraInterface.class)) {
 				z = Zone.AURA_BOARD;
 			} else {
 				// spell or element.

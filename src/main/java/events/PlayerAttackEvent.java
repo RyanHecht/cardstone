@@ -1,25 +1,25 @@
 package events;
 
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
 import game.Player;
 
 public class PlayerAttackEvent extends Event {
-	private Player		target;
-	private Creature	attacker;
+	private Player target;
+	private CreatureInterface attacker;
 
-	public PlayerAttackEvent(Player target, Creature attacker) {
+	public PlayerAttackEvent(Player target, CreatureInterface attacker2) {
 		super();
 		this.target = target;
-		this.attacker = attacker;
+		this.attacker = attacker2;
 	}
 
 	public Player getTarget() {
 		return target;
 	}
 
-	public Creature getAttacker() {
+	public CreatureInterface getAttacker() {
 		return attacker;
 	}
 
