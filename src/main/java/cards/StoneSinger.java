@@ -27,7 +27,7 @@ public class StoneSinger extends Creature{
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
 		return (Board board) -> {
-			if(z != Zone.CREATURE_BOARD){
+			if(z == Zone.CREATURE_BOARD && c.getOwner() == getOwner()){
 				if(c.getCost().getElement(ElementType.EARTH) >= 1){
 					TauntCreature tc = new TauntCreature(new StoneGolem(this.getOwner()));
 					board.summonCard(tc, Zone.CREATURE_BOARD);

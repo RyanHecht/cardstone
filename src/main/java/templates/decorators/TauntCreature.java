@@ -30,7 +30,7 @@ public class TauntCreature extends CreatureWrapper {
 		if (attacker.getOwner() == this.getOwner()) {
 			return false;
 		} else {
-			return false;
+			return true;
 		}
 	}
 
@@ -39,9 +39,9 @@ public class TauntCreature extends CreatureWrapper {
 			return false;
 		} else {
 			if (target.isA(TauntCreature.class)) {
-				return true;
+				return false;
 			}
-			return false;
+			return true;
 		}
 	}
 
