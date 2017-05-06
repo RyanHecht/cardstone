@@ -8,6 +8,12 @@ h3{
     color:lightblue;
 }
 
+.tutorialHighlight{
+    transform: scale(1.2, 1.2);
+    border: 3px solid lightblue;
+    box-shadow: 0 -2px 20px 5px lightblue;
+}
+
 .whiteBg{
     background-color: rgba(240,240,240,.9);
 }
