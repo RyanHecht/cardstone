@@ -22,7 +22,13 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 	public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
+
+		System.out.println("ZONE THAT CARD PLAYED IS PASSED: " + z.toString());
 		if (c.equals(this) && z == Zone.HAND) {
+			System.out.println(
+					"A spell's onCardPlayed has triggered for itself. Cost should be paid and it will go to " + "the graveyard.");
+			System.out.println("SPELL NAME: " + getName());
+
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 
