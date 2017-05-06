@@ -7,6 +7,7 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import effects.AddToOccEffect;
 import game.Player;
 import templates.TargetsOtherCard;
 
@@ -35,9 +36,7 @@ public class FellTitan extends SpellCard implements TargetsOtherCard{
 	@Override
 	public Effect impactCardTarget(Card target, Zone targetIn) {
 		assert cardValidTarget(target,targetIn);
-		return (Board board) -> {
-			board.addCardToOcc(target, board.getOcc(target.getOwner(), Zone.CREATURE_BOARD), board.getOcc(target.getOwner(), Zone.GRAVE));
-		};
+		return new AddToOccEffect(target,target.getOwner(),Zone.CREATURE_BOARD,Zone.GRAVE);
 	}
 
 	

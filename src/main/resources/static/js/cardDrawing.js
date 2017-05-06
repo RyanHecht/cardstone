@@ -201,7 +201,10 @@ function setupOptionsMenu(){
         resizeRedrawAll();
     });
     $("#concedeButton").click(function(){
-       window.location.replace("/lobbies"); 
+       window.location.replace("/menu"); 
+    });
+    $("#quitReplay").click(function(){
+        window.location.replace("/menu");
     });
 }
 

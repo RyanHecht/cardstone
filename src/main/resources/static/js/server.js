@@ -186,7 +186,11 @@ class Server{
       this.alertMessage(message);
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          window.location.replace("/lobbies");
+          if (message.contains("tutorial")) {
+            $.cookie('tutorial', tutorialStage() + 1);
+
+          }
+          window.location.replace("/menu");
       });
   }
 
@@ -256,7 +260,7 @@ class Server{
             case "cardPlayed":
                 console.log(message.card);
                 quedAnims.push(animationsMaker.playCardAnimation(message.card).create());
-               
+
                 break;
             case "cardDied":
                 quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());
@@ -299,7 +303,7 @@ class Server{
             this.boardReceived();
         }
     }
-    
+
 	boardReceived(){
         if(animations.length != 0 || quedAnims.length != 0){
             let $this = this;
@@ -351,7 +355,7 @@ class Server{
         replayStep++;
         this.replayRequest(true);
     }
-    
+
     replayRequest(forwards){
 		const postParams = {gameId: gameId, eventNum: replayStep};
         $.post("/replay",postParams,function(responseObj){
@@ -360,13 +364,16 @@ class Server{
             if(response.exists){
                 if(forwards){
                     console.log("forwards");
-                    
+
                     for(let anim of response.animations){
                         console.log(anim);
                         server.animationEventReceived(anim);
                     }
                 }
                 server.boardGotten(response.board);
+            }
+            else{
+                $("#replayOverAsk").modal("show");
             }
         })
     }

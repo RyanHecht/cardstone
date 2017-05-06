@@ -23,4 +23,11 @@ public class CardZoneChangeEffect implements Effect {
 		board.addCardToOcc(c, destination, start);
 	}
 
+	@Override
+	public EffectType getType() {
+		return EffectType.CARD_ZONE_CHANGED;
+	}
+
+	
+	
 }

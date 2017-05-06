@@ -7,16 +7,19 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import lobby.LobbyHandlers;
 import server.CommsWebSocket;
+import server.LobbyListWebSocket;
 import server.LobbyWebSocket;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
+import tutorial.TutorialRoutes;
 
 public class Main {
   private String[] args;
   private Gui gui;
+  private TutorialRoutes tut;
 
   private Main(String[] args) {
     this.args = args;
@@ -36,6 +39,7 @@ public class Main {
     runSparkServer(8080, f);
 
     gui = new Gui(f);
+    tut = new TutorialRoutes(f);
     gui.init();
   }
 
@@ -58,6 +62,7 @@ public class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.webSocket("/socket", CommsWebSocket.class);
     Spark.webSocket("/lobbySocket", LobbyWebSocket.class);
+    Spark.webSocket("/lobbyListSocket", LobbyListWebSocket.class);
     Spark.get("/listLobbies", new LobbyHandlers.ListLobbies());
     Spark.post("/joinLobby", new LobbyHandlers.JoinLobby());
     Spark.post("/spectateJoin", new LobbyHandlers.SpectateJoinLobby());

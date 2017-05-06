@@ -36,4 +36,9 @@ public final class EmptyEffect implements Effect {
 		return effect;
 	}
 
+	@Override
+	public EffectType getType() {
+		return EffectType.EMPTY;
+	}
+
 }

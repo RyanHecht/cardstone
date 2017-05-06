@@ -13,7 +13,7 @@ import game.Player;
  */
 public class SkyWhale extends Creature {
 	private static final int			defaultMaxHealth	= 6;
-	private static final int			defaultAttack		= 4;
+	private static final int			defaultAttack		= 6;
 	private static final ManaPool	defaultCost			= new ManaPool(30, 0, 2, 0, 1, 0);
 	private static final String		defaultImage			= "images/magicSkyWhale.jpg";
 	private static final String		defaultName			= "Sky Whale";

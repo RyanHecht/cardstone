@@ -21,26 +21,17 @@ $(document).ready(() => {
 	}
 	
 	const lobbyList = $("#lobby-table");
-	
+	const listSocket = new WebSocket("ws://" + window.location.host + "/lobbyListSocket");
+	listSocket.onopen = function() {
+		console.log("opened list socket");
+	}
+	listSocket.onmessage = function(message) {
+		drawLobbies(JSON.parse(message.data), lobbyList);
+	};
+
 	$.get("/listLobbies", responseJSON => {
 		const responseObject = JSON.parse(responseJSON);
-		lobbyList.empty();
-		for (let i = 0, len = responseObject.length; i < len; i++) {
-			const curr_lobby = responseObject[i];
-
-			const privateAttr = curr_lobby.private ? "Yes" : "No";
-			const fullAttr = curr_lobby.full ? "Yes" : "No";
-		
-			const postParams = {id: curr_lobby.host};
-			$.post("/username", postParams, responseJSON => {
-				const hostUsername = JSON.parse(responseJSON).username;				
-				lobbyList.append("<tr> <td class='name'>" 
-								 + curr_lobby.name + "</td> " +
-								"<td class='host'>" + hostUsername + "</td> " +
-								"<td class='private'>" + privateAttr + "</td> " +
-								"<td class='full'>" + fullAttr + "</td> </tr>");
-			});
-		}
+		drawLobbies(responseObject, lobbyList);
 	});
 
 	if (error != undefined && errorHeader != undefined) {
@@ -63,6 +54,26 @@ function disabled_inputs() {
 
 function next_stage() {
 	window.location.replace("/tutorial_lobby");
+};
+	
+function drawLobbies(responseObject, lobbyList) {
+	lobbyList.empty();
+	for (let i = 0, len = responseObject.length; i < len; i++) {
+		const curr_lobby = responseObject[i];
+
+		const privateAttr = curr_lobby.private ? "Yes" : "No";
+		const fullAttr = curr_lobby.full ? "Yes" : "No";
+
+		const postParams = {id: curr_lobby.host};
+		$.post("/username", postParams, responseJSON => {
+			const hostUsername = JSON.parse(responseJSON).username;
+			lobbyList.append("<tr> <td class='name'>"
+							 + curr_lobby.name + "</td> " +
+							"<td class='host'>" + hostUsername + "</td> " +
+							"<td class='private'>" + privateAttr + "</td> " +
+							"<td class='full'>" + fullAttr + "</td> </tr>");
+		});
+	}
 };
 
 function formSubmit() {
@@ -90,21 +101,18 @@ function lobbyRequest(route, postParams, headerMsg) {
 function spectateRequest(postParams) {
 	$.post("/spectateJoin", postParams, responseJSON => {
 		const respObj = JSON.parse(responseJSON);
-		
+
 		if (respObj.auth) {
 			formSubmit();
 		} else {
 			$("#messageModal").modal("show");
 			$("#messageheader").text("Error spectating lobby");
-			$("#message").text(respObj.message);	
+			$("#message").text(respObj.message);
 		}
-	});	
+	});
 };
 
 $("#lobby-table").on("click", "tr", function() {
-	console.log("clicked");
-	console.log(isTutorial);
-	console.log(!isTutorial);
 	if (!isTutorial) {
 		selectedName = $(this).find("td.name").text();
 		isFull = $(this).find("td.full").text() == "Yes";
@@ -130,7 +138,7 @@ $("#join").on('click', function() {
 		$("#messageModal").modal("show");
 		$("#messageheader").text("Error joining lobby");
 		$("#message").text("Lobby " + selectedName + " is full");
-	}	
+	}
 });
 
 $("#spectate").on('click', function() {
@@ -153,7 +161,7 @@ $("#pwSubmit").on('click', function() {
 		$("#passwordModal").modal("hide");
 		$("#pwSubmit").val("");
 		const postParams = {name: selectedName, password: inputted};
-		
+
 		if (spectate) {
 			spectateRequest(postParams);
 		} else {
@@ -161,7 +169,7 @@ $("#pwSubmit").on('click', function() {
 		}
 		spectate = false;
 	}
-	
+
 });
 
 $("#hostbutton").on('click', function() {

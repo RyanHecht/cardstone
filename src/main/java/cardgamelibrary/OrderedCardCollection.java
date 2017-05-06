@@ -123,6 +123,7 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			break;
 		case PLAYER_HEALED:
 			results = handlePlayerHealed((PlayerHealedEvent) event);
+			break;
 		case TURN_START:
 			results = handleTurnStart((TurnStartEvent) event);
 			break;

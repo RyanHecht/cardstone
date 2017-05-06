@@ -37,7 +37,7 @@ public class CantAttackForTurnsCreature extends CreatureWrapper {
 				return getAllowedAttack(eve.getAttacker());
 			}
 		}
-		return false || internal.onProposedEvent(e, z);
+		return false || internal.onProposedLegalityEvent(e, z);
 	}
 
 	public String getComplaint(Event e, Zone z) {

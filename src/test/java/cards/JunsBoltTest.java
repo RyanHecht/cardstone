@@ -164,7 +164,6 @@ public class JunsBoltTest {
 		assertNotNull(airId);
 		assertNotNull(waterId);
 		assertNotNull(waterSpiritId);
-
 		// set up json objects for user input.
 		activeAirPlayed.addProperty("IID1", airId);
 		activeBoltOnCard.addProperty("IID1", boltId);

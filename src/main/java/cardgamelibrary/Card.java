@@ -103,11 +103,15 @@ public interface Card extends Jsonifiable, Serializable {
 		return "Invalid Event";
 	}
 
-	default public boolean onProposedEvent(Event e, Zone z) {
+	default public boolean onProposedEffect(Effect e, Zone z) {
 		return false;
 	}
+	
+	default public Effect onGameStart(){
+		return EmptyEffect.create();
+	}
 
-	default public Event getNewProposition(Event e, Zone z) {
+	default public Effect getNewProposition(Effect e, Zone z) {
 		return e;
 	}
 
@@ -244,6 +248,10 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
+	default public Effect onOtherCardPlayed(Card c, Zone z){
+		return EmptyEffect.create();
+	}
+	
 	static boolean recursiveIs(Object c, Class goal) {
 		Class curClass = c.getClass();
 		while (curClass != Object.class) {

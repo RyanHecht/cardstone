@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import effects.AddToOccEffect;
 import effects.CardDamageEffect;
 import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
@@ -81,21 +82,19 @@ public class Creature extends PlayableCard implements CreatureInterface {
 	public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
+		ConcatEffect effect = new ConcatEffect();
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
-
-			ConcatEffect effect = new ConcatEffect();
-			effect.addEffect((Board board) -> {
-				// effect to move creature to board.
-				board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
-			});
+			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.CREATURE_BOARD,Zone.HAND));
 
 			// add any specific effects for this creature being played.
 			effect.addEffect(onThisPlayed(c, z));
-			return effect;
 		}
-		return EmptyEffect.create();
+		else{
+			effect.addEffect(onOtherCardPlayed(c,z));
+		}
+		return effect;
 	}
 
 	@Override
@@ -121,7 +120,7 @@ public class Creature extends PlayableCard implements CreatureInterface {
 			// decrement the number of times it can attack.
 			attacker.setAttacks(attacker.getNumAttacks() - 1);
 			// damage player by the card's attack.
-			return new PlayerDamageEffect(attacker, target, attacker.getAttack());
+			return new PlayerDamageEffect(target, attacker, attacker.getAttack());
 		}
 		return EmptyEffect.create();
 	}

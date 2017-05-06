@@ -12,6 +12,7 @@ import cardgamelibrary.Event;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
+import effects.EmptyEffect;
 import game.Player;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
@@ -131,12 +132,12 @@ public class CardWrapper implements Card {
 	}
 
 	@Override
-	public boolean onProposedEvent(Event e, Zone z) {
-		return internal.onProposedEvent(e, z);
+	public boolean onProposedEffect(Effect e, Zone z) {
+		return internal.onProposedEffect(e, z);
 	}
 
 	@Override
-	public Event getNewProposition(Event e, Zone z) {
+	public Effect getNewProposition(Effect e, Zone z) {
 		return internal.getNewProposition(e, z);
 	}
 
@@ -252,6 +253,10 @@ public class CardWrapper implements Card {
 		return internal.jsonifySelfBack();
 	}
 
+	public Effect onOtherCardPlayed(Card c, Zone z){
+		return internal.onOtherCardPlayed(c, z);
+	}
+	
 	@Override
 	public boolean isA(Class<?> c) {
 		return c.isInstance(this) || internal.isA(c);
