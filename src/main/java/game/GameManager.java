@@ -1,15 +1,13 @@
 package game;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import logins.Db;
 import server.CommsWebSocket;
 
@@ -73,7 +71,7 @@ public class GameManager {
       // game.h
     }
   }
-  
+
   public static void receiveTargetedCard(int playerId, JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
@@ -127,6 +125,9 @@ public class GameManager {
   public static void playerIsReady(int uId) {
     try {
       Game game = games.getGameByPlayerId(uId);
+      if (game instanceof DemoGame) {
+        ((DemoGame) game).getMessage();
+      }
       CommsWebSocket.sendWholeBoardSate(game, uId);
       CommsWebSocket.sendTurnStart(uId, game.isActivePlayer(uId));
     } catch (IOException e) {
