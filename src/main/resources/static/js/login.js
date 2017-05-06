@@ -8,7 +8,10 @@ function valOf(id) {
 
 $('input[type="submit"]').click(function() {
 	 const id = $(this).attr('id');
-	
+	 if(id == "/register"){
+         $.cookie("tutorial",0);
+         console.log("ad");
+     }
 	 const username = valOf("#username");
 	 const pw = valOf("#password");
 	 if (username != "" && pw != "") {
