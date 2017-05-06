@@ -174,8 +174,6 @@ public class Board implements Jsonifiable, Serializable {
 				// all effects it produces onto the queue.
 				Event e = eventQueue.poll();
 
-				handleEvent(e);
-
 				// used to send animations off to front end!
 				JsonObject animation = new JsonObject();
 
@@ -238,6 +236,9 @@ public class Board implements Jsonifiable, Serializable {
 					eventQueue.add(new TurnStartEvent(activePlayer));
 					System.out.println("Active Player Id: " + activePlayer.getId());
 				}
+
+				// handle event.
+				handleEvent(e);
 
 			} else {
 				handleDead();

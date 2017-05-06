@@ -14,16 +14,16 @@ import cardgamelibrary.ManaPool;
  *
  */
 public class Player implements Serializable {
-	private PlayerType				playerType;
-	private int								life;
-	private ManaPool					manaPool;
-	private final int					id;
+	private PlayerType playerType;
+	private int life;
+	private ManaPool manaPool;
+	private final int id;
 
 	// keeps track of amount of resources to gain at start of a turn.
-	private int								maxResources	= 0;
+	private int maxResources = 0;
 
 	// how much the amount of resources you gain per turn increments.
-	private static final int	RESOURCE_GAIN	= 10;
+	private static final int RESOURCE_GAIN = 10;
 
 	public Player(int l, PlayerType p, int id) {
 		playerType = p;
@@ -55,6 +55,10 @@ public class Player implements Serializable {
 	public void startTurn() {
 		// Increment by fixed amount.
 		maxResources += RESOURCE_GAIN;
+
+		// reset resource count at turn start.
+		manaPool.setResources(0);
+
 		// update manapool
 		manaPool.setResources(manaPool.getResources() + maxResources);
 	}
