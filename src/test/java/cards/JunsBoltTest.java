@@ -19,7 +19,7 @@ import game.GameManager;
 import game.Player;
 
 public class JunsBoltTest {
-	@Test
+	/*@Test
 	public void testOnPlayer() {
 		// should test targeting both a player and a creature here.
 
@@ -91,7 +91,7 @@ public class JunsBoltTest {
 		// check to see if life totals are updated.
 		assertEquals(activePlayer.getLife(), 30);
 		assertEquals(inactivePlayer.getLife(), 27);
-	}
+	}*/
 
 	@Test
 	public void testOnCard() {
@@ -164,7 +164,6 @@ public class JunsBoltTest {
 		assertNotNull(airId);
 		assertNotNull(waterId);
 		assertNotNull(waterSpiritId);
-
 		// set up json objects for user input.
 		activeAirPlayed.addProperty("IID1", airId);
 		activeBoltOnCard.addProperty("IID1", boltId);

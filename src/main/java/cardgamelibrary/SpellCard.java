@@ -33,7 +33,7 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 
-			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.CREATURE_BOARD,Zone.HAND));
+			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND));
 
 			// add any specific effects for this spell being played.
 			effect.addEffect(onThisPlayed(c, z));

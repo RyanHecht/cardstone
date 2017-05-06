@@ -262,6 +262,9 @@ public class Board implements Jsonifiable, Serializable {
 	private void handleDead() {
 		Iterator<Card> it = creatureOne.iterator();
 		Iterator<Card> itTwo = creatureTwo.iterator();
+		for(Card c : creatureOne){
+			System.out.println(c.getName());
+		}
 		while (it.hasNext()) {
 			CreatureInterface c = (CreatureInterface) it.next();
 			if (c.isDead()) {
