@@ -210,13 +210,7 @@ class Server{
   }
 
   alertMessage(message) {
-    if(this.curMessage != "none"){
-        this.curMessage = message.message;
-    }
-    else{
-        this.curMessage = message.message;
-        customAlert(message.message);
-    }
+    customAlert(message.message);
   }
 
   handleChat(message,flag) {

@@ -96,15 +96,9 @@ function setupCanvas(){
 	$(".boardOverlay").attr('width',canvas.width);
 };
 
-function customAlert(){
-    if(animations.length == 0){
-        $("#customMessage").text(server.message);
-        server.message = "none";
-        $("#messageModal").modal("show");
-    }
-    else{
-        window.setTimeout(customAlert,UPDATE_RATE * 5);
-    }
+function customAlert(message){
+    $("#customMessage").text(message);
+    $("#messageModal").modal("show");
 }
 
 function setupBoard(){
