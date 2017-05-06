@@ -132,7 +132,8 @@ public class GameManager {
     try {
       Game game = games.getGameByPlayerId(uId);
       if (game instanceof DemoGame) {
-        ((DemoGame) game).getMessage();
+        CommsWebSocket.sendTextMessage(uId, ((DemoGame) game).getMessage());
+
       }
       CommsWebSocket.sendWholeBoardSate(game, uId);
       CommsWebSocket.sendTurnStart(uId, game.isActivePlayer(uId));
