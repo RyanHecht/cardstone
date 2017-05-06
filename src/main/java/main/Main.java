@@ -13,10 +13,12 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
+import tutorial.TutorialRoutes;
 
 public class Main {
   private String[] args;
   private Gui gui;
+  private TutorialRoutes tut;
 
   private Main(String[] args) {
     this.args = args;
@@ -36,6 +38,7 @@ public class Main {
     runSparkServer(8080, f);
 
     gui = new Gui(f);
+    tut = new TutorialRoutes(f);
     gui.init();
   }
 
