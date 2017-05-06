@@ -167,7 +167,7 @@ public class GameManager {
         gamesToAnimations.replace(gId, new JsonArray());
         System.out.println("Event num now " + gamesToEventNums.get(gId));
       } catch (SQLException | NullPointerException e) {
-        System.out.println(String.format("Game %d event %d is a duplicate",
+        System.out.println(String.format("Error pushing game %d event %d to db",
             g.getId(), gamesToEventNums.get(g.getId())));
         e.printStackTrace();
       }
