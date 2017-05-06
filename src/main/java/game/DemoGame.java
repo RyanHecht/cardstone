@@ -1,5 +1,6 @@
 package game;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import cardgamelibrary.Card;
 import cardgamelibrary.Zone;
 import events.CardPlayedEvent;
 import events.TurnEndEvent;
+import server.CommsWebSocket;
 
 public class DemoGame extends Game {
 
@@ -34,20 +36,20 @@ public class DemoGame extends Game {
 		// superclass constructor with "true" flag passed to indicate that it is a
 		// tutorial.
 		super(getFirstPlayerDeck(), getSecondPlayerDeck(), playerOneId, AI_ID, true);
-		messages[0] = "Play a Water Element from your hand by dragging it anywhere on your side of the board. You will see your elemental"
+		messages[0] = "Play a Water Element from your hand by dragging it anywhere on your side of the board. You will see your elemental "
 				+ "resource pool update in the bottom left corner of your screen.";
-		messages[1] = "Play the Water Spirit from your hand by dragging it anywhere on your side of the board. Unfortunately, creatures"
+		messages[1] = "Play the Water Spirit from your hand by dragging it anywhere on your side of the board. Unfortunately, creatures "
 				+ "cannot attack on the turn they are played.";
 		messages[2] = "End your turn by clicking the 'End Turn' button in the middle of your screen";
 		messages[3] = "Attack the enemy Water Spirit by clicking on your Water Spirit and dragging to the opponent's Water Spirit";
 		messages[4] = "Play another Water Element from your hand by dragging it anywhere on your side of the board.";
-		messages[5] = "Play the Delve The Depths from your hand by dragging it anywhere on your side of the board."
+		messages[5] = "Play the Delve The Depths from your hand by dragging it anywhere on your side of the board. "
 				+ " You will have to select a card from the popup by clicking on it.";
 		messages[6] = "Play another Water Element from your hand.";
-		messages[7] = "Play the Riptide you added to your hand targeting the opponent's Water Spirit by dragging Riptide"
+		messages[7] = "Play the Riptide you added to your hand targeting the opponent's Water Spirit by dragging Riptide "
 				+ "onto the Water Spirit.";
 		messages[8] = "End your turn.";
-		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the heart representing your"
+		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the heart representing your "
 				+ "opponent's health in the top right corner.";
 		messages[10] = "Congrats! You have finished the tutorial.";
 
@@ -57,6 +59,9 @@ public class DemoGame extends Game {
 		// these are the two cards the ai plays.
 		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.HAND).getCards().get(0);
 		Card aiWaterElement = getBoard().getOcc(ai, Zone.HAND).getCards().get(1);
+
+		System.out.println("The water spirit card for the AI has this name: " + aiWaterSpirit.getName());
+		System.out.println("The water element card for the AI has this name: " + aiWaterElement.getName());
 
 		// events that reflect the cards played are constructed.
 		aiPlayedElement = new CardPlayedEvent(aiWaterElement, getBoard().getOcc(ai, Zone.HAND),
@@ -92,13 +97,23 @@ public class DemoGame extends Game {
 				act(aiPlayedWaterSpirit);
 				act(turnEnd);
 
+				actionId++;
+				try {
+					CommsWebSocket.sendTurnStart(playerId, true);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				// have to manually send board.
 				sendWholeBoardToAllAndDb();
 			} else if (actionId == 8) {
 				// in this case the AI just ends their turn.
 				act(turnEnd);
 
-				// mangually send board.
+				actionId++;
+
+				// manually send board.
 				sendWholeBoardToAllAndDb();
 			}
 
@@ -123,6 +138,7 @@ public class DemoGame extends Game {
 			switch (actionId) {
 			case 3:
 				if (targeter.getName().equals("Water Spirit") && targeted.getName().equals("Water Spirit")) {
+					System.out.println("SENDING THE WATER SPIRIT COMBAT EVENT");
 					// increment actionId
 					actionId++;
 					super.handleCardTargeted(userInput, playerId);

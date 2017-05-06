@@ -283,7 +283,7 @@ public class Board implements Jsonifiable, Serializable {
 	}
 
 	public void handleEffect(Effect effect) {
-		if(effect.getType() == EffectType.MAKER){
+		if (effect.getType() == EffectType.MAKER) {
 			EffectMaker maker = (EffectMaker) effect;
 			effect = maker.getEffect(this);
 		}
@@ -317,7 +317,6 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		return complaint;
 	}
-	
 
 	private Effect preprocessEffect(Effect effect, Set<Card> alreadyProcessed) {
 		for (OrderedCardCollection occ : cardsInGame) {
@@ -631,7 +630,7 @@ public class Board implements Jsonifiable, Serializable {
 		eventQueue.add(event);
 	}
 
-	public void changeCreatureHealth(CreatureInterface target, int amount, Zone z) {
+	public void changeCreatureHealth(CreatureInterface target, int amount) {
 		StatChangeEvent event = new StatChangeEvent(EventType.HEALTH_CHANGE, target, amount);
 		target.changeMaxHealthBy(amount);
 		eventQueue.add(event);

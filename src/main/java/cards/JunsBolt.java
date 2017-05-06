@@ -3,7 +3,6 @@ package cards;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
-import cardgamelibrary.Creature;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
@@ -40,7 +39,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 			// can't cast on own creatures.
 			return false;
 		}
-		if (card.isA(Creature.class) && targetIn == Zone.CREATURE_BOARD) {
+		if (card.isA(CreatureInterface.class) && targetIn == Zone.CREATURE_BOARD) {
 			// card must be a creature and on board.
 			return true;
 		}
