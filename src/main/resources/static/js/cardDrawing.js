@@ -200,7 +200,10 @@ function setupChat(){
 
 
 $(document).ready(function(){
-
+    $(document).on("touchmove",function(event){
+        console.log(event, " touchmove");
+    }
+    );
     setupChat();
     setupMouseListen();
 	setupCanvas();
