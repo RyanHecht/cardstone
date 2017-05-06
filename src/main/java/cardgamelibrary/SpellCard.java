@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import effects.AddToOccEffect;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -32,11 +33,7 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 
-			
-			effect.addEffect((Board board) -> {
-				// effect to move spell to grave from hand.
-				board.addCardToOcc(this, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
-			});
+			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.CREATURE_BOARD,Zone.HAND));
 
 			// add any specific effects for this spell being played.
 			effect.addEffect(onThisPlayed(c, z));

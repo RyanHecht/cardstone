@@ -13,6 +13,8 @@ import java.util.Set;
 
 import com.google.gson.JsonObject;
 
+import effects.EffectMaker;
+import effects.EffectType;
 import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
@@ -280,12 +282,16 @@ public class Board implements Jsonifiable, Serializable {
 		}
 	}
 
-	private void handleEffect(Effect effect) {
+	public void handleEffect(Effect effect) {
+		if(effect.getType() == EffectType.MAKER){
+			EffectMaker maker = (EffectMaker) effect;
+			effect = maker.getEffect(this);
+		}
+		effect = preprocessEffect(effect, new HashSet<Card>());
 		effect.apply(this);
 	}
 
 	private void handleEvent(Event event) {
-		event = preprocessEvent(event, new HashSet<Card>());
 		for (OrderedCardCollection occ : cardsInGame) {
 			// collect effects from all cards in game!
 			for (Effect e : occ.handleCardBoardEvent(event)) {
@@ -311,20 +317,21 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		return complaint;
 	}
+	
 
-	private Event preprocessEvent(Event event, Set<Card> alreadyProcessed) {
+	private Effect preprocessEffect(Effect effect, Set<Card> alreadyProcessed) {
 		for (OrderedCardCollection occ : cardsInGame) {
 			for (Card c : occ) {
 				if (!alreadyProcessed.contains(c)) {
-					if (c.onProposedEvent(event, occ.getZone())) {
+					if (c.onProposedEffect(effect, occ.getZone())) {
 						alreadyProcessed.add(c);
-						event = c.getNewProposition(event, occ.getZone());
-						preprocessEvent(event, alreadyProcessed);
+						effect = c.getNewProposition(effect, occ.getZone());
+						preprocessEffect(effect, alreadyProcessed);
 					}
 				}
 			}
 		}
-		return event;
+		return effect;
 	}
 
 	/**

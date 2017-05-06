@@ -132,12 +132,12 @@ public class CardWrapper implements Card {
 	}
 
 	@Override
-	public boolean onProposedEvent(Event e, Zone z) {
-		return internal.onProposedEvent(e, z);
+	public boolean onProposedEffect(Effect e, Zone z) {
+		return internal.onProposedEffect(e, z);
 	}
 
 	@Override
-	public Event getNewProposition(Event e, Zone z) {
+	public Effect getNewProposition(Effect e, Zone z) {
 		return internal.getNewProposition(e, z);
 	}
 

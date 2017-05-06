@@ -2,6 +2,7 @@ package cardgamelibrary;
 
 import com.google.gson.JsonObject;
 
+import effects.AddToOccEffect;
 import effects.CardDamageEffect;
 import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
@@ -85,10 +86,7 @@ public class Creature extends PlayableCard implements CreatureInterface {
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
-			effect.addEffect((Board board) -> {
-				// effect to move creature to board.
-				board.addCardToOcc(this, board.getOcc(getOwner(), Zone.CREATURE_BOARD), board.getOcc(getOwner(), Zone.HAND));
-			});
+			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.CREATURE_BOARD,Zone.HAND));
 
 			// add any specific effects for this creature being played.
 			effect.addEffect(onThisPlayed(c, z));

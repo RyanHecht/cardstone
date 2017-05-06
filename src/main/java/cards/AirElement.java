@@ -3,11 +3,14 @@ package cards;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Element;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import effects.AddToOccEffect;
+import effects.GiveElementEffect;
 import game.Player;
 
 public class AirElement extends Element {
@@ -25,12 +28,10 @@ public class AirElement extends Element {
 	@Override
 	public Effect onThisPlayed(Card c, Zone z) {
 		assert (this.equals(c));
-		return (Board board) -> {
-			// give player element.
-			board.givePlayerElement(getOwner(), ElementType.AIR, Element.DEFAULT_ELEMENT_GAIN);
-			// send element to grave from hand.
-			board.addCardToOcc(c, board.getOcc(getOwner(), Zone.GRAVE), board.getOcc(getOwner(), Zone.HAND));
-		};
+		ConcatEffect effect = new ConcatEffect();
+		effect.addEffect(new GiveElementEffect(getOwner(),ElementType.AIR,Element.DEFAULT_ELEMENT_GAIN));
+		effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND));
+		return effect;
 	}
 
 }
