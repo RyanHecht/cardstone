@@ -1,19 +1,22 @@
 package server;
 
-import cardgamelibrary.Board;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import game.Game;
-import game.GameManager;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import cardgamelibrary.Board;
+import game.Game;
+import game.GameManager;
 
 /**
  * Spark WebSocket for sending data between server and client
@@ -112,7 +115,6 @@ public class CommsWebSocket {
     } catch (Exception ex) {
       System.out.println("ERROR in message handling");
       ex.printStackTrace();
-
     }
 
   }
