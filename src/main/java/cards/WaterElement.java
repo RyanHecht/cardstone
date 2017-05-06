@@ -29,7 +29,7 @@ public class WaterElement extends Element {
 	public Effect onThisPlayed(Card c, Zone z) {
 		assert (this.equals(c));
 		ConcatEffect effect = new ConcatEffect();
-		effect.addEffect(new GiveElementEffect(getOwner(),ElementType.AIR,Element.DEFAULT_ELEMENT_GAIN));
+		effect.addEffect(new GiveElementEffect(getOwner(),ElementType.WATER,Element.DEFAULT_ELEMENT_GAIN));
 		effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND));
 		return effect;
 	}
