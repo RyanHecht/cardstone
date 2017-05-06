@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 
 import cardgamelibrary.Card;
 import cardgamelibrary.Zone;
+import cards.WaterSpirit;
+import effects.SummonEffect;
 import events.CardPlayedEvent;
 import events.TurnEndEvent;
 import server.CommsWebSocket;
@@ -26,11 +28,7 @@ public class DemoGame extends Game {
 
 	private static CardPlayedEvent aiPlayedWaterSpirit;
 
-	private static JsonObject aiTurnEnd = new JsonObject();
-
-	private static JsonObject aiWaterPlayed = new JsonObject();;
-
-	private static JsonObject aiWaterSpiritPlayed = new JsonObject();;
+	private static SummonEffect ef;
 
 	public DemoGame(int playerOneId) {
 		// superclass constructor with "true" flag passed to indicate that it is a
@@ -69,12 +67,8 @@ public class DemoGame extends Game {
 		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND),
 				getBoard().getOcc(ai, Zone.CREATURE_BOARD));
 
-		// build ai JsonObjects.
-		// don't actually have to do anything with the turn end object, it can
-		// remain empty.
-		aiWaterPlayed = null;
+		ef = new SummonEffect(new WaterSpirit(ai), Zone.CREATURE_BOARD);
 
-		aiWaterSpiritPlayed = null;
 	}
 
 	@Override
@@ -92,9 +86,8 @@ public class DemoGame extends Game {
 
 			// now we must decide what the ai needs to dp.
 			if (actionId == 2) {
-				// ai plays element, then spirit, then ends turn.
-				act(aiPlayedElement);
-				act(aiPlayedWaterSpirit);
+				// ai plays spirit, then ends turn.
+				getBoard().handleEffect(ef);
 				act(turnEnd);
 
 				actionId++;
