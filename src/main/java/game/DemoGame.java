@@ -84,12 +84,12 @@ public class DemoGame extends Game {
 			// in this case the turn end was correct so we should execute it.
 			super.handleTurnend(userInput, playerId);
 
-			// now we must decide what the ai needs to dp.
+			// now we must decide what the ai needs to do.
 			if (actionId == 2) {
 				// ai plays spirit, then ends turn.
+				System.out.println("got called at handle effect");
 				getBoard().handleEffect(ef);
 				act(turnEnd);
-
 				actionId++;
 				try {
 					CommsWebSocket.sendTurnStart(playerId, true);
@@ -97,7 +97,6 @@ public class DemoGame extends Game {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 				// have to manually send board.
 				sendWholeBoardToAllAndDb();
 			} else if (actionId == 8) {
