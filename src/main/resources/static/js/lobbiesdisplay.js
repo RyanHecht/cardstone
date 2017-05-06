@@ -50,6 +50,7 @@ function user_prompt() {
 function disabled_inputs() {
 	$("#navbar").find("a").removeAttr("href");
 	$("#logolink").removeAttr("href");
+	$("#hostbutton").addClass("tutorialHighlight");
 };
 
 function next_stage() {
