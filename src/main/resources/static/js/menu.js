@@ -48,6 +48,7 @@ function start_prompt() {
 function start_disabled() {
 	$("#games").addClass("disabled");
 	$("#decks").addClass("disabled");
+	$("#lobbies").addClass("tutorialHighlight");
 };
 
 function start_next() {

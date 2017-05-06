@@ -119,7 +119,6 @@ public class Gui {
                 String.format("Cleaning out game %d with players %d and %d",
                     g.getId(), p1, p2));
           } catch (ClassNotFoundException | IOException e) {
-            System.out.println("Already have");
             e.printStackTrace();
             turns = 0;
           }
@@ -269,9 +268,11 @@ public class Gui {
       }
 
       int uid = Integer.parseInt(uString);
+      System.out.println("I'm here");
       if (LobbyWebSocket.isConnected(uid)) {
         res.redirect("/lobbies");
       }
+      System.out.println("Now here");
       Lobby l = LobbyManager.getLobbyByPlayerId(uid);
       if (l == null) {
         res.redirect("/lobbies");
