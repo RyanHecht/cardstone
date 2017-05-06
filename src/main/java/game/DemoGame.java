@@ -55,8 +55,8 @@ public class DemoGame extends Game {
 		Player ai = getBoard().getInactivePlayer();
 		turnEnd = new TurnEndEvent(ai);
 		// these are the two cards the ai plays.
-		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.DECK).getCards().get(0);
-		Card aiWaterElement = getBoard().getOcc(ai, Zone.DECK).getFirstCard();
+		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.HAND).getCards().get(0);
+		Card aiWaterElement = getBoard().getOcc(ai, Zone.HAND).getCards().get(1);
 
 		// events that reflect the cards played are constructed.
 		aiPlayedElement = new CardPlayedEvent(aiWaterElement, getBoard().getOcc(ai, Zone.HAND),
