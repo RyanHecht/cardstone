@@ -47,13 +47,19 @@ public class GameManager {
 
     int firstUser = g.getActivePlayerId();
     int secondUser = g.getOpposingPlayerId(firstUser);
+    String endString = String.format(
+        "end game %d with winner %d and players %d and %d", gId, winner,
+        firstUser, secondUser);
     try {
+      System.out.println("Request to " + endString);
       registerFinishedGame(gId, firstUser, secondUser, winner, turns);
 
       games.removeGame(firstUser);
       games.removeGame(secondUser);
       gamesToEventNums.remove(gId);
+      System.out.println("Able to " + endString);
     } catch (SQLException | NullPointerException e) {
+      System.out.println("Could not " + endString);
       throw new RuntimeException();
     }
   }
@@ -161,7 +167,7 @@ public class GameManager {
         gamesToAnimations.replace(gId, new JsonArray());
         System.out.println("Event num now " + gamesToEventNums.get(gId));
       } catch (SQLException | NullPointerException e) {
-        System.out.println(String.format("Game %d event %d is a duplicate",
+        System.out.println(String.format("Error pushing game %d event %d to db",
             g.getId(), gamesToEventNums.get(g.getId())));
         e.printStackTrace();
       }
@@ -193,8 +199,12 @@ public class GameManager {
 
   public static int getStartingId() {
     int ret;
-    try (ResultSet rs = Db.query("select max(id) from in_progress;")) {
-      ret = rs.getInt(1);
+    try (ResultSet finished = Db.query("select max(id) from finished_game;")) {
+      ret = finished.getInt(1);
+      try (ResultSet in_prog = Db.query("select max(id) from in_progress;")) {
+        // return largest id of 2 tables
+        ret = Math.max(ret, in_prog.getInt(1));
+      }
     } catch (SQLException | NullPointerException e) {
       ret = 1;
     }

@@ -19,8 +19,6 @@
 	     </div>
 	   </div>
 	   <button class="btn btn-default" type="submit" id="hostbutton">...or create one</button>
-       <br>
-       <a href="/login">Logout</a>
 	</div>
      <script type="text/javascript">
        <#if error?? && errorHeader??>
