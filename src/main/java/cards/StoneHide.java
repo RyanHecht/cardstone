@@ -18,8 +18,8 @@ public class StoneHide extends AuraCard{
 	private static final ManaPool defaultCost = new ManaPool(20, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/StoneHide.jpg";
 	private static final String defaultName = "Stone Hide";
-	private static final String defaultText = "";
-	private static final CardType defaultType = CardType.SPELL;
+	private static final String defaultText = "Reduce all instances of damage by 1";
+	private static final CardType defaultType = CardType.AURA;
 
 	public StoneHide(Player owner) {
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);

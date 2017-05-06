@@ -17,7 +17,7 @@ public class Mine extends AuraCard{
 	private static final String defaultImage = "images/Mine.jpg";
 	private static final String defaultName = "Mine";
 	private static final String defaultText = "At the start of your turns, gain 1 earth";
-	private static final CardType defaultType = CardType.SPELL;
+	private static final CardType defaultType = CardType.AURA;
 
 	public Mine(Player owner) {
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);

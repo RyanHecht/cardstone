@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import com.google.gson.JsonObject;
+
 import effects.EmptyEffect;
 import game.Player;
 
@@ -7,6 +9,13 @@ public class AuraCard extends PlayableCard implements AuraInterface {
 
 	public AuraCard(ManaPool cost, String image, Player owner, String name, String text, CardType type) {
 		super(cost, image, owner, name, text, type);
+	}
+	
+	@Override
+	public JsonObject jsonifySelf() {
+		JsonObject result = super.jsonifySelf();
+		result.addProperty("type", "spell");
+		return result;
 	}
 	
 	@Override
