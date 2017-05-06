@@ -8,6 +8,8 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import effects.EmptyEffect;
+import effects.SummonEffect;
 import game.Player;
 import templates.decorators.TauntCreature;
 
@@ -26,14 +28,13 @@ public class StoneSinger extends Creature{
 	}
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
-		return (Board board) -> {
-			if(z == Zone.CREATURE_BOARD && c.getOwner() == getOwner()){
-				if(c.getCost().getElement(ElementType.EARTH) >= 1){
-					TauntCreature tc = new TauntCreature(new StoneGolem(this.getOwner()));
-					board.summonCard(tc, Zone.CREATURE_BOARD);
-				}
+		if(z == Zone.CREATURE_BOARD && c.getOwner() == getOwner()){
+			if(c.getCost().getElement(ElementType.EARTH) >= 1){
+				TauntCreature tc = new TauntCreature(new StoneGolem(this.getOwner()));
+				return new SummonEffect(tc,Zone.CREATURE_BOARD);
 			}
-		};
+		}
+		return EmptyEffect.create();
 	}
 
 	private static class StoneGolem extends Creature{

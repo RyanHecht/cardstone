@@ -22,4 +22,9 @@ public class CardHealEffect implements Effect {
 		board.healCard(cardHealed, source, heal);
 	}
 
+	@Override
+	public EffectType getType() {
+		return EffectType.CARD_HEALED;
+	}
+
 }
