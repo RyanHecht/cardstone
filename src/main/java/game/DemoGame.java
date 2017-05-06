@@ -14,7 +14,7 @@ public class DemoGame extends Game {
 
 	private static final int AI_ID = -10;
 
-	private int actionId = 1;
+	private int actionId = 0;
 
 	private final String[] messages = new String[11];
 
@@ -272,6 +272,15 @@ public class DemoGame extends Game {
 		// this can obviously be swapped out as improvements to the tutorial system
 		// are made!
 		return getFirstPlayerDeck();
+	}
+
+	/**
+	 * Used to get the current action needed for the user.
+	 * 
+	 * @return the message the user should see.
+	 */
+	public String getMessage() {
+		return messages[actionId];
 	}
 
 }
