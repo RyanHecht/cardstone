@@ -3,29 +3,28 @@ package cardgamelibrary;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class ConcatEffect implements Effect, Serializable{
+public class ConcatEffect implements Effect, Serializable {
 
 	private LinkedList<Effect> effects;
 
-	public ConcatEffect(){
+	public ConcatEffect() {
 		this.effects = new LinkedList<Effect>();
 	}
-	
-	public void addEffect(Effect e){
+
+	public void addEffect(Effect e) {
 		effects.add(e);
 	}
-	
+
 	@Override
 	public void apply(Board board) {
-		if(this.effects.size() > 0){
+		while (this.effects.size() > 0) {
 			Effect e = effects.pop();
 			e.apply(board);
 		}
 	}
-	
-	public boolean hasNext(){
+
+	public boolean hasNext() {
 		return effects.size() > 0;
 	}
 
-	
 }

@@ -4,6 +4,7 @@ import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
@@ -14,11 +15,11 @@ import templates.TargetsPlayer;
 
 public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlayer {
 
-	private static final ManaPool	defaultCost		= new ManaPool(10, 0, 0, 0, 1, 0);
-	private static final String		defaultImage	= "images/JunsBolt.jpg";
-	private static final String		defaultName		= "Jun's Bolt";
-	private static final String		defaultText		= "Deal 3 damage to target creature or player.";
-	private static final CardType	defaultType		= CardType.SPELL;
+	private static final ManaPool defaultCost = new ManaPool(10, 0, 0, 0, 1, 0);
+	private static final String defaultImage = "images/JunsBolt.jpg";
+	private static final String defaultName = "Jun's Bolt";
+	private static final String defaultText = "Deal 3 damage to target creature or player.";
+	private static final CardType defaultType = CardType.SPELL;
 
 	public JunsBolt(Player owner) {
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
@@ -39,7 +40,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 			// can't cast on own creatures.
 			return false;
 		}
-		if (card instanceof Creature && targetIn == Zone.CREATURE_BOARD) {
+		if (card.isA(Creature.class) && targetIn == Zone.CREATURE_BOARD) {
 			// card must be a creature and on board.
 			return true;
 		}
@@ -51,7 +52,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 		return (Board board) -> {
 			assert (cardValidTarget(target, targetIn));
 			// deal 3 damage to targeted creature.
-			board.damageCard((Creature) target, this, 3);
+			board.damageCard((CreatureInterface) target, this, 3);
 		};
 	}
 
@@ -62,7 +63,7 @@ public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlay
 			// deal 3 damage to targeted player.
 			board.damagePlayer(p, this, 3);
 
-			};
+		};
 	}
 
 }
