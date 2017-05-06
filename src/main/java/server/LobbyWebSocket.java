@@ -42,6 +42,13 @@ public class LobbyWebSocket {
   public void message(Session session, String message) throws IOException {
     // Get the object received, the message type, and the payload
     System.out.println(message);
+
+    // Ignore heartbeats
+    if (message.equals("lubdub")) {
+      return;
+    }
+
+
     JsonObject received = GSON.fromJson(message, JsonObject.class);
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
