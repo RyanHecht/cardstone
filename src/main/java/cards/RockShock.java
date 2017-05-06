@@ -43,7 +43,7 @@ public class RockShock extends SpellCard implements TargetsOtherCard{
 			if((target.isA(CreatureInterface.class))){
 				CreatureInterface c = (CreatureInterface) target;
 				board.damageCard(c, this, 2);
-				board.applyToCard(target,new CantAttackForTurnsCreature(c,2));
+				board.applyToCard(c,new CantAttackForTurnsCreature(c,2));
 			}
 		};
 	}

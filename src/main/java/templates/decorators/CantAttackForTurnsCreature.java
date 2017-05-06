@@ -30,6 +30,7 @@ public class CantAttackForTurnsCreature extends CreatureWrapper{
 	}
 	
 	public boolean onProposedLegalityEvent(Event e, Zone z){
+		System.out.println("tried legality" + turns);
 		if(turns > 0){
 			if(e.getType() == EventType.CREATURE_ATTACKED){
 				CreatureAttackEvent eve = (CreatureAttackEvent)e;
