@@ -26,10 +26,10 @@ public class StoneHide extends AuraCard{
 	}
 	
 	public boolean onProposedEvent(Event e, Zone z) {
-		if(z != Zone.AURA_BOARD)
-		{
+		if(z != Zone.AURA_BOARD){
 			return false;
 		}
+		
 		if(e.getType() == EventType.PLAYER_DAMAGED){
 			PlayerDamagedEvent pde = (PlayerDamagedEvent) e;
 			if(pde.getPlayer().equals(this.getOwner())){
@@ -42,13 +42,8 @@ public class StoneHide extends AuraCard{
 	}
 	
 	public Event getNewProposition(Event e, Zone z) {
-		if(onProposedEvent(e,z)){
 			PlayerDamagedEvent old = (PlayerDamagedEvent) e;
 			PlayerDamagedEvent newEvent = new PlayerDamagedEvent(old.getSrc(), old.getPlayer(), old.getDmg() - 1);
 			return newEvent;
-		}
-		else{
-			return e;
-		}
 	}
 }
