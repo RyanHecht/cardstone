@@ -31,10 +31,9 @@ public class CherryBomb extends Creature implements OnOwnDeathCard {
 		return new EffectMaker((Board board) -> {
 			if (getOwner().equals(board.getActivePlayer())) {
 				return new PlayerDamageEffect(board.getInactivePlayer(), this, 5);
-			} else {
-				return new PlayerDamageEffect(board.getActivePlayer(), this, 5);
+			} else {				return new PlayerDamageEffect(board.getActivePlayer(), this, 5);
 			}
-		},this);
+		}, this);
 	}
 
 }

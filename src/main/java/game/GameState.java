@@ -8,6 +8,6 @@ import java.io.Serializable;
  * @author Raghu
  *
  */
-public enum GameState implements Serializable{
-	IDLE, AWAITING_CHOICE,
+public enum GameState implements Serializable {
+	IDLE, AWAITING_CHOICE, GAME_OVER,
 }
