@@ -4,16 +4,23 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.eclipse.jetty.util.MultiMap;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 
 import effects.EffectMaker;
 import effects.EffectType;
+import effects.EmptyEffect;
 import events.CardDamagedEvent;
 import events.CardHealedEvent;
 import events.CardZoneChangeEvent;
@@ -44,10 +51,13 @@ public class Board implements Jsonifiable, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Queue<Event> eventQueue;
+	
 	private LinkedList<Effect> effectQueue;
 
 	private static final int STARTING_HAND_SIZE = 6;
 
+	private static Card EmptySrc = EmptyEffect.create().getSrc();
+	
 	private final int gameId;
 
 	// player one stuff;
@@ -63,15 +73,14 @@ public class Board implements Jsonifiable, Serializable {
 	private OrderedCardCollection auraTwo;
 	private OrderedCardCollection graveTwo;
 	private OrderedCardCollection creatureTwo;
+	
+	private Multimap<Card,Card> alreadyProcessed;
 
-	private HashSet<Card> alreadyProcessed;
 
 	// everything in the game;
 	List<OrderedCardCollection> cardsInGame = new ArrayList<>();
-
 	// currently active player.
 	private Player activePlayer;
-
 	// keeps track of turn counter.
 	private int turnIndex = 0;
 
@@ -116,7 +125,7 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		// set up starting hands.
 		assignStartingHands();
-		alreadyProcessed = new HashSet<>();
+		alreadyProcessed = HashMultimap.create();
 	}
 
 	/**
@@ -255,9 +264,6 @@ public class Board implements Jsonifiable, Serializable {
 				while (effectQueue.size() != 0) {
 					Effect e = effectQueue.pop();
 					handleEffect(e);
-					if (e.hasNext()) {
-						effectQueue.addFirst(e);
-					}
 				}
 			}
 		}
@@ -265,6 +271,7 @@ public class Board implements Jsonifiable, Serializable {
 		if (eventQueue.size() > 0 || effectQueue.size() > 0) {
 			handleState();
 		}
+		alreadyProcessed.clear();
 	}
 
 	private void handleDead() {
@@ -338,15 +345,27 @@ public class Board implements Jsonifiable, Serializable {
 		return complaint;
 	}
 
+	private boolean hasProcessed(Card processor, Card effectSrc){
+		Collection<Card> cc = alreadyProcessed.get(processor);
+		if(effectSrc == EmptySrc){
+			return false; 
+		}
+		return cc.contains(effectSrc);
+	}
+	
 	private Effect preprocessEffect(Effect effect) {
 		for (OrderedCardCollection occ : cardsInGame) {
 			for (Card c : occ) {
-				if (!alreadyProcessed.contains(c)) {
+				if (!hasProcessed(c,effect.getSrc())) {
 					if (c.onProposedEffect(effect, occ.getZone())) {
-						alreadyProcessed.add(c);
+						alreadyProcessed.put(c, effect.getSrc());
 						effect = c.getNewProposition(effect, occ.getZone());
 						preprocessEffect(effect);
 					}
+				}
+				else{
+					System.out.println("it already HAWD" + c.getName() + " " +c.getId());
+					System.out.println("was dere" + alreadyProcessed.get(c));
 				}
 			}
 		}
@@ -651,6 +670,7 @@ public class Board implements Jsonifiable, Serializable {
 
 	public void healPlayer(Player target, Card src, int heal) {
 		PlayerHealedEvent event = new PlayerHealedEvent(target, src, heal);
+		System.out.println("I heard for " + heal);
 		target.healDamage(heal);
 		eventQueue.add(event);
 	}
@@ -674,9 +694,7 @@ public class Board implements Jsonifiable, Serializable {
 	public void addCardToOcc(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
 		CardZoneChangeEvent event = new CardZoneChangeEvent(c, destination, start);
 		destination.add(c);
-		// System.out.println("DOG " + start.size());
 		start.remove(c);
-		// System.out.println("CAT " + start.size());
 
 		// animation sending:
 		if (destination.getZone() == Zone.HAND) {
@@ -726,10 +744,10 @@ public class Board implements Jsonifiable, Serializable {
 			sendAnimation(animation);
 		}
 
+
 		if (c.isA(CreatureInterface.class) && destination.getZone() == Zone.GRAVE) {
 			creatureDies((CreatureInterface) c);
 		}
-
 		eventQueue.add(event);
 	}
 
@@ -747,7 +765,6 @@ public class Board implements Jsonifiable, Serializable {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
 		eventQueue.add(event);
-
 	}
 
 	public void givePlayerElement(Player p, ElementType type, int amount) {
@@ -756,7 +773,6 @@ public class Board implements Jsonifiable, Serializable {
 		int curElem = p.getElem(type);
 		p.setElement(type, curElem + amount);
 		eventQueue.add(event);
-
 	}
 
 	public void applyToCard(Card toApply, Card newCard) {

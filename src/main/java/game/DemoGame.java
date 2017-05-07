@@ -1,6 +1,5 @@
 package game;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import cards.WaterSpirit;
 import effects.SummonEffect;
 import events.CardPlayedEvent;
 import events.TurnEndEvent;
-import server.CommsWebSocket;
 
 public class DemoGame extends Game {
 
@@ -50,6 +48,9 @@ public class DemoGame extends Game {
 		messages[8] = "End your turn.";
 		messages[9] = "Finish your opponent off with your Water Spirit by clicking on it and dragging it to the player icon representing your "
 				+ "opponent in the top right corner.";
+
+		// WARNING: DO NOT CHANGE THIS TEXT OR SOMETHING AWFUL WILL HAPPEN WITH THE
+		// FRONT END!!!!
 		messages[10] = "Congrats! You have finished the tutorial.";
 
 		// create the AI events.
@@ -90,7 +91,7 @@ public class DemoGame extends Game {
 			if (actionId == 2) {
 				// ai plays spirit, then ends turn.
 				System.out.println("got called at handle effect");
-				ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()), Zone.CREATURE_BOARD,null);
+				ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()), Zone.CREATURE_BOARD, null);
 				getBoard().handleEffect(ef);
 				sendWholeBoardToAllAndDb();
 
@@ -357,12 +358,6 @@ public class DemoGame extends Game {
 
 	@Override
 	public void endGame(int i) {
-		try {
-			CommsWebSocket.sendGameEnd(i, "You completed the tutorial game!");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		GameManager.endGame(new GameStats(this, i));
 	}

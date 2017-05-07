@@ -1,6 +1,7 @@
 package cardgamelibrary;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import effects.EffectType;
@@ -28,8 +29,9 @@ public class ConcatEffect implements Effect, Serializable {
 
 	@Override
 	public void apply(Board board) {
-		while (this.effects.size() > 0) {
-			Effect e = effects.pop();
+		Iterator<Effect> it = effects.iterator();
+		while(it.hasNext()){
+			Effect e = it.next();
 			if(e instanceof GateEffect){
 				e.apply(board);
 				if(!((GateEffect) e).getShouldContinue()){
@@ -39,13 +41,13 @@ public class ConcatEffect implements Effect, Serializable {
 			board.handleEffect(e);
 		}
 	}
-
-	public boolean hasNext() {
-		return effects.size() > 0;
+	
+	public Iterator<Effect> getEffects(){
+		return effects.iterator();
 	}
 
 	@Override
 	public EffectType getType() {
-		return EffectType.EMPTY;
+		return EffectType.CONCAT;
 	}
 }
