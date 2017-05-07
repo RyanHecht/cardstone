@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Zone;
 import cards.WaterSpirit;
@@ -47,8 +48,8 @@ public class DemoGame extends Game {
 		messages[7] = "Play the Riptide you added to your hand targeting the opponent's Water Spirit by dragging Riptide "
 				+ "onto the Water Spirit.";
 		messages[8] = "End your turn.";
-		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the heart representing your "
-				+ "opponent's health in the top right corner.";
+		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the player icon representing your "
+				+ "opponent in the top right corner.";
 		messages[10] = "Congrats! You have finished the tutorial.";
 
 		// create the AI events.
@@ -229,7 +230,9 @@ public class DemoGame extends Game {
 				sendPlayerActionBad(playerId, messages[actionId]);
 				return;
 			}
-			Card c = getBoard().getCardById(userInput.get("IID1").getAsInt());
+			Board b = getBoard();
+			int cardId = userInput.get("IID1").getAsInt();
+			Card c = b.getCardById(cardId);
 			switch (actionId) {
 			case 0:
 				if (c.getName().equals("water")) {
@@ -288,20 +291,12 @@ public class DemoGame extends Game {
 				// the depths and will be sent to the choose request.
 				return;
 			}
-			if (actionId == 1) {
-				try {
-					Thread.sleep(1500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			} else {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			// tell player what to do next.
 			sendPlayerTextMessage(playerId, messages[actionId]);
