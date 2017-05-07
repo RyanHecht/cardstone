@@ -340,6 +340,9 @@ public class CommsWebSocket {
       session.getRemote().sendString(GSON.toJson(obj));
     }
 
+    System.out.println("spectator list for user is non-null: "
+        + (spectators.get(userId) != null));
+    System.out.println("size: " + spectators.get(userId).size());
     if (spectators.get(userId) != null && spectators.get(userId).size() > 0) {
       for (Integer spectator : spectators.get(userId)) {
         System.out.println(userId + " has a spectator!");
