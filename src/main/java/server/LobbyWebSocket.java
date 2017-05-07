@@ -1,20 +1,17 @@
 package server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+import lobby.Lobby;
+import lobby.LobbyManager;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import lobby.Lobby;
-import lobby.LobbyManager;
 
 @WebSocket
 public class LobbyWebSocket {
@@ -45,13 +42,13 @@ public class LobbyWebSocket {
   public void message(Session session, String message) throws IOException {
     // Get the object received, the message type, and the payload
     System.out.println("Got message: " + message);
-    JsonObject received = GSON.fromJson(message, JsonObject.class);
 
     // Ignore heartbeats
-    if (received.get("heartbeat") != null) {
+    if (message.equals("lubdub")) {
       return;
     }
 
+    JsonObject received = GSON.fromJson(message, JsonObject.class);
     int type = received.get("type").getAsInt();
     JsonObject payload = received.get("payload").getAsJsonObject();
     // These types of messages can only be operated on fully added sessions

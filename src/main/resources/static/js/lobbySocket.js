@@ -41,7 +41,7 @@ class LobbySocket {
 
 		const obj = {"type": type, "payload": payload};
 			this.socket.send(JSON.stringify(obj));
-			
+
 	}
 
 	onWebSocketMessage(event) {
@@ -49,8 +49,7 @@ class LobbySocket {
 	}
 
 	sendHeartbeat() {
-		const heartbeat = {"heartbeat": "lubdub"};
-		this.websocket.send(JSON.stringify(heartbeat));
+		this.websocket.send("lubdub");
 	}
 
   sendChat(chat) {

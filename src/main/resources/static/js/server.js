@@ -89,12 +89,11 @@ class Server{
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
 
-		const that = this;
-			setInterval(function() {
-				const heartbeat = {heartbeat: "lubdub"}
-				return that.websocket.send(JSON.stringify(heartbeat));
-			}, 5000);
-		}
+    const that = this;
+    setInterval(function() {
+        return that.websocket.send("lubdub")
+    }, 5000);
+        }
         this.curMessage = "none";
 	}
 
@@ -103,11 +102,11 @@ class Server{
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened');
-    	this.server.startHeartbeat();
+    this.server.startHeartbeat();
 	}
 
   startHeartbeat() {
-	  // why doesn't this do anything?
+
   }
 
 	onWebSocketMessage(event) {
