@@ -12,6 +12,9 @@
      <#include "navbar.ftl">
      ${nav}
      ${content}
+     <script type="text/javascript">
+	    $("#greeting").text("Welcome to Cardstone, " + $.cookie("username"));
+	</script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/tutorial.js"></script>

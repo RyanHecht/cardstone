@@ -6,6 +6,7 @@
            <h2 class="form-signin-heading"><center>Cardstone: The Shattering</center></h2>
            <h4 class="form-signin-heading"><center>Enter The Fray!</center></h2>
            <div class="form-group" id="login-fields">
+             <p id="error" style="color: red"></p>
              <input type="text" id="username" class="form-control blackColor" placeholder="Username" required autofocus>
              <input type="password" id="password" class="form-control blackColor" placeholder="Password" required>
            </div>
