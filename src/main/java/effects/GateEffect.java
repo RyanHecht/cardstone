@@ -3,6 +3,7 @@ package effects;
 import java.util.function.Function;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
 
 public class GateEffect implements Effect{
@@ -10,9 +11,17 @@ public class GateEffect implements Effect{
 	Function<Board,Boolean> gate;
 	boolean shouldContinue;
 	
-	public GateEffect(Function<Board,Boolean> func){
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
+	public GateEffect(Function<Board,Boolean> func, Card src){
 		this.gate = func;
 		shouldContinue = true;
+		this.src = src;
 	}
 	
 	@Override
@@ -28,5 +37,6 @@ public class GateEffect implements Effect{
 	public EffectType getType() {
 		return EffectType.GATE_EFFECT;
 	}
+
 
 }

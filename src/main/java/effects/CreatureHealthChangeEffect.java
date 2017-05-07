@@ -1,6 +1,7 @@
 package effects;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 
@@ -25,10 +26,18 @@ public class CreatureHealthChangeEffect implements Effect {
 		this.target = target;
 	}
 
-	public CreatureHealthChangeEffect(int amount, CreatureInterface target) {
+	public CreatureHealthChangeEffect(int amount, CreatureInterface target, Card src) {
 		super();
 		this.amount = amount;
 		this.target = target;
+		this.src = src;
+	}
+	
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package effects;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
 import game.Player;
@@ -40,11 +41,19 @@ public class GiveElementEffect implements Effect {
 		this.amount = amount;
 	}
 
-	public GiveElementEffect(Player owner, ElementType element, int amount) {
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
+	public GiveElementEffect(Player owner, ElementType element, int amount, Card src) {
 		super();
 		this.owner = owner;
 		this.element = element;
 		this.amount = amount;
+		this.src = src;
 	}
 
 	@Override

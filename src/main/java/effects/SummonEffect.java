@@ -10,10 +10,18 @@ public class SummonEffect implements Effect {
 	private Card toSummon;
 	private Zone targetZone;
 
-	public SummonEffect(Card toSummon, Zone targetZone) {
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
+	public SummonEffect(Card toSummon, Zone targetZone, Card src) {
 		super();
 		this.toSummon = toSummon;
 		this.targetZone = targetZone;
+		this.src = src;
 	}
 
 	@Override

@@ -12,6 +12,8 @@ public class PlayerDamageEffect implements Effect {
 		return source;
 	}
 
+	
+	
 	public void setSource(Card source) {
 		this.source = source;
 	}
@@ -50,6 +52,13 @@ public class PlayerDamageEffect implements Effect {
 	@Override
 	public EffectType getType() {
 		return EffectType.PLAYER_DAMAGED;
+	}
+
+
+
+	@Override
+	public Card getSrc() {
+		return source;
 	}
 
 }
