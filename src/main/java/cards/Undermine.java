@@ -52,7 +52,7 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 		if (turnsLeft > 0 && z == Zone.AURA_BOARD) {
 			// concat effect to deal damage and then send the card to the grave.
 			ConcatEffect ce = new ConcatEffect(this);
-			ce.addEffect(new AoeDamageEffect(4, 0, 0, false, false, this, FunctionThreeMaker.targetsAllCreatures(),
+			ce.addEffect(new AoeDamageEffect(damage, 0, 0, false, false, this, FunctionThreeMaker.targetsAllCreatures(),
 					FunctionThreeMaker.determineCreatureDamage(0)));
 			ce.addEffect(new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD, this));
 			return ce;
