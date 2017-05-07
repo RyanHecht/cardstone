@@ -9,17 +9,17 @@ import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 import game.Player;
 
-public class DwarvenMiners extends Creature{
+public class DwarvenMiner extends Creature{
 
 	private static final ManaPool	defaultCost		= new ManaPool(40, 0, 0, 2, 0, 0);
-	private static final String		defaultImage	= "images/DwarvenMiners.jpg";
-	private static final String		defaultName		= "Dwarven Miners";
+	private static final String		defaultImage	= "images/DwarvenMiner.jpg";
+	private static final String		defaultName		= "Dwarven Miner";
 	private static final String		defaultText		= "Double the effect of all your auras.";
 	private static final int			defaultHealth	= 3;
 	private static final int			defaultAttack	= 5;
 	private static final CardType	defaultType		= CardType.CREATURE;
 
-	public DwarvenMiners(Player owner) {
+	public DwarvenMiner(Player owner) {
 		super(defaultHealth, defaultAttack, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 	
