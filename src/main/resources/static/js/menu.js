@@ -36,10 +36,18 @@ function tutorialButtonBind(name, stage) {
 	});
 };
 
+$("#skip_tutorial").click(function() {
+	$.cookie("tutorial", -1);
+//	$("#lobbies").removeClass("tutorialHighlight");
+//	$("#games").removeClass("disabled");
+//	$("#decks").removeClass("disabled");
+	window.location.reload();
+});
+
 function start_prompt() {
-	$("#messageModal").modal("show");
-	$("#messageheader").text("Welcome to Cardstone!");
-	$("#message").text("Cardstone is a card game. As one of our esteemed users, you can do 3 main things: create/edit decks to play with, replay your past games, and play or spectate in games. So follow us along for a quick tutorial, beginning with clicking the lobbies button on the page.");
+	$("#startmodal").modal("show");
+	$("#startheader").text("Welcome to Cardstone!");
+	$("#startmessage").text("Cardstone is a card game. As one of our esteemed users, you can do 3 main things: create/edit decks to play with, replay your past games, and play or spectate in games. So follow us along for a quick tutorial, beginning with clicking the lobbies button on the page.");
 	// maybe setInterval later for retarded users
 	// prompt them every 30 seconds
 	// could turn messages into method
