@@ -165,7 +165,7 @@ class Server{
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
-                    replayRequest(true);
+                    this.replayRequest(true);
                     break;
                 case MESSAGE_TYPE.GAME_END:
                     this.gameEnded(message.payload);
