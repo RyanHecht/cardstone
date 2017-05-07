@@ -1,7 +1,6 @@
 package cards;
 
 import cardgamelibrary.AuraCard;
-import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.ConcatEffect;
@@ -10,10 +9,10 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
 import effects.AddToOccEffect;
-import effects.CardDamageEffect;
-import effects.EffectMaker;
+import effects.AoeDamageEffect;
 import effects.EmptyEffect;
 import game.Player;
+import lambda.FunctionThreeMaker;
 import templates.OnAnyAttackCard;
 
 public class Undermine extends AuraCard implements OnAnyAttackCard {
@@ -51,22 +50,12 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 
 	public Effect onAnyAttack(CreatureInterface attacker, Zone z) {
 		if (turnsLeft == 1 && z == Zone.AURA_BOARD) {
-			return new EffectMaker((Board board) -> {
-				ConcatEffect ce = new ConcatEffect(this);
-				for (Card c : board.getPlayerOneCreatures()) {
-					CreatureInterface cr = (CreatureInterface) c;
-					ce.addEffect(new CardDamageEffect(this, cr, damage));
-				}
-
-				for (Card c : board.getPlayerTwoCreatures()) {
-					CreatureInterface cr = (CreatureInterface) c;
-					ce.addEffect(new CardDamageEffect(this, cr, damage));
-				}
-				// send to grave if it triggers b/c it shouldn't trigger more than
-				// once per turn.
-				ce.addEffect(new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD, this));
-				return ce;
-			}, this);
+			// concat effect to deal damage and then send the card to the grave.
+			ConcatEffect ce = new ConcatEffect(this);
+			ce.addEffect(new AoeDamageEffect(damage, 0, 0, false, false, this, FunctionThreeMaker.targetsAllCreatures(),
+					FunctionThreeMaker.determineCreatureDamage(0)));
+			ce.addEffect(new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD, this));
+			return ce;
 		}
 		return EmptyEffect.create();
 	}

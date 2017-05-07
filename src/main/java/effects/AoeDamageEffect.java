@@ -3,7 +3,8 @@ package effects;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CreatureInterface;
-import cardgamelibrary.FunctionThree;
+import game.Player;
+import lambda.FunctionThree;
 
 public class AoeDamageEffect implements DamageInterface {
 
@@ -12,13 +13,17 @@ public class AoeDamageEffect implements DamageInterface {
 	private Card src;
 	private FunctionThree<Board, CreatureInterface, Boolean> checker;
 	private FunctionThree<Board, CreatureInterface, Integer> determineCreatureDamage;
-	private int damage;
+	private int damageAmp;
+	private int damageOwner;
+	private int damageOpponent;
 
-	public AoeDamageEffect(int damage, boolean damagesOwner, boolean damagesOpponent, Card src,
-			FunctionThree<Board, CreatureInterface, Boolean> checker,
+	public AoeDamageEffect(int damage, int damageOwner, int damageOpponent, boolean damagesOwner, boolean damagesOpponent,
+			Card src, FunctionThree<Board, CreatureInterface, Boolean> checker,
 			FunctionThree<Board, CreatureInterface, Integer> determineCreatureDamage) {
 		super();
-		this.damage = damage;
+		this.damageAmp = damage;
+		this.damageOwner = damageOwner;
+		this.damageOpponent = damageOpponent;
 		this.damagesOwner = damagesOwner;
 		this.damagesOpponent = damagesOpponent;
 		this.src = src;
@@ -30,23 +35,24 @@ public class AoeDamageEffect implements DamageInterface {
 	public void apply(Board board) {
 		// TODO Auto-generated method stub
 		if (damagesOwner) {
-
+			board.damagePlayer(getSrc().getOwner(), getSrc(), damageOwner + damageAmp);
 		}
 		if (damagesOpponent) {
-
+			Player opponent = board.getOpposingPlayer(getSrc().getOwner());
+			board.damagePlayer(opponent, getSrc(), damageOpponent);
 		}
 
 		for (Card c : board.getPlayerOneCreatures()) {
 			CreatureInterface cr = (CreatureInterface) c;
 			if (checkCreature(checker, board, cr)) {
-				board.damageCard(cr, getSrc(), getCreatureDamage(determineCreatureDamage, board, cr) + damage);
+				board.damageCard(cr, getSrc(), getCreatureDamage(determineCreatureDamage, board, cr) + damageAmp);
 			}
 		}
 
 		for (Card c : board.getPlayerTwoCreatures()) {
 			CreatureInterface cr = (CreatureInterface) c;
 			if (checkCreature(checker, board, cr)) {
-				board.damageCard(cr, getSrc(), getCreatureDamage(determineCreatureDamage, board, cr) + damage);
+				board.damageCard(cr, getSrc(), getCreatureDamage(determineCreatureDamage, board, cr) + damageAmp);
 			}
 		}
 	}
@@ -70,14 +76,22 @@ public class AoeDamageEffect implements DamageInterface {
 		return 1;
 	}
 
+	public int getOwnerDamage() {
+		return damageOwner;
+	}
+
+	public int getOpponentDamage() {
+		return damageOpponent;
+	}
+
 	@Override
 	public void setDamage(int dmg) {
-		this.damage = dmg;
+		this.damageAmp = dmg;
 	}
 
 	@Override
 	public int getDamage() {
-		return damage;
+		return damageAmp;
 	}
 
 }

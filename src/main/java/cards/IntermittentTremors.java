@@ -1,20 +1,17 @@
 package cards;
 
 import cardgamelibrary.AuraCard;
-import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
-import cardgamelibrary.ConcatEffect;
-import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
-import effects.CardDamageEffect;
-import effects.EffectMaker;
+import effects.AoeDamageEffect;
 import effects.EmptyEffect;
 import game.Player;
+import lambda.FunctionThreeMaker;
 
-public class IntermittentTremors extends AuraCard{
+public class IntermittentTremors extends AuraCard {
 
 	private static final ManaPool defaultCost = new ManaPool(15, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/IntermittentTremors.jpg";
@@ -27,34 +24,24 @@ public class IntermittentTremors extends AuraCard{
 		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsToTremor = 0;
 	}
-	
-	public Effect onThisPlayed(Card c, Zone z){
+
+	public Effect onThisPlayed(Card c, Zone z) {
 		turnsToTremor = 1;
 		return EmptyEffect.create();
 	}
-	
+
 	public Effect onTurnStart(Player p, Zone z) {
-		if(z == Zone.AURA_BOARD){
-			if(turnsToTremor == 0){
+		if (z == Zone.AURA_BOARD) {
+			if (turnsToTremor == 0) {
 				turnsToTremor = 3;
-				return new EffectMaker((Board board) -> {
-					ConcatEffect ce = new ConcatEffect(this);
-					for (Card c : board.getPlayerOneCreatures()) {
-						CreatureInterface cr = (CreatureInterface) c;
-						ce.addEffect(new CardDamageEffect(this, cr, 1));
-					}
-					for (Card c : board.getPlayerTwoCreatures()) {
-						CreatureInterface cr = (CreatureInterface) c;
-						ce.addEffect(new CardDamageEffect(this, cr, 1));
-					}
-					return ce;
-				},this);
-			}
-			else{
+
+				return new AoeDamageEffect(1, 0, 0, false, false, this, FunctionThreeMaker.targetsAllCreatures(),
+						FunctionThreeMaker.determineCreatureDamage(0));
+			} else {
 				turnsToTremor--;
 			}
 		}
 		return EmptyEffect.create();
 	}
-	
+
 }
