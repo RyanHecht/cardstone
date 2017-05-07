@@ -36,11 +36,11 @@ public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 
 	@Override
 	public Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosen) {
-		ConcatEffect cE = new ConcatEffect();
+		ConcatEffect cE = new ConcatEffect(this);
 		cE.addEffect(new GateEffect((Board board) ->{
 			return board.getOcc(getOwner(),Zone.DECK).size() > 0;
-		}));
-		cE.addEffect(new AddToOccEffect(chosen,getOwner(),Zone.HAND,Zone.DECK));
+		},this));
+		cE.addEffect(new AddToOccEffect(chosen,getOwner(),Zone.HAND,Zone.DECK,this));
 		return cE;
 	}
 

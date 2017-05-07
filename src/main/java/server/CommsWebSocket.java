@@ -120,7 +120,7 @@ public class CommsWebSocket {
                   GameManager.getGameByPlayerId(spectatee), id);
               CommsWebSocket.sendTurnStart(id,
                   GameManager.getGameByPlayerId(spectatee)
-                  .isActivePlayer(spectatee));
+                      .isActivePlayer(spectatee));
             } else {
               GameManager.playerIsReady(id);
             }
@@ -268,7 +268,7 @@ public class CommsWebSocket {
     JsonObject obj = new JsonObject();
     obj.addProperty("isSelf", userIdsTurn);
     System.out
-    .println("Sending turn start to " + userId + "...it's " + userIdsTurn);
+        .println("Sending turn start to " + userId + "...it's " + userIdsTurn);
     sendMessage(userId, MessageTypeEnum.TURN_START, obj);
   }
 

@@ -27,4 +27,9 @@ public class CardHealEffect implements Effect {
 		return EffectType.CARD_HEALED;
 	}
 
+	@Override
+	public Card getSrc() {
+		return source;
+	}
+
 }

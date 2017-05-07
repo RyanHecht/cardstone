@@ -200,7 +200,6 @@ function setupChat(){
 
 
 $(document).ready(function(){
-
     setupChat();
     setupMouseListen();
 	setupCanvas();

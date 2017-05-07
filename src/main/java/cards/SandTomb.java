@@ -43,7 +43,7 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 	public Effect impactCardTarget(Card target, Zone targetIn) {
 		assert cardValidTarget(target, targetIn);
 		Creature tomb = new Tomb(target, getOwner());
-		return new TransformEffect(target, tomb, Zone.CREATURE_BOARD);
+		return new TransformEffect(target, tomb, Zone.CREATURE_BOARD,this);
 	}
 
 	private static class Tomb extends Creature implements OnOwnDeathCard {
@@ -63,7 +63,7 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 
 		@Override
 		public Effect onDeathEffect(Zone z) {
-			return new SummonEffect(resummon, Zone.CREATURE_BOARD);
+			return new SummonEffect(resummon, Zone.CREATURE_BOARD,this);
 		}
 
 	}

@@ -28,9 +28,9 @@ public class EarthElement extends Element {
 	@Override
 	public Effect onThisPlayed(Card c, Zone z) {
 		assert (this.equals(c));
-		ConcatEffect effect = new ConcatEffect();
-		effect.addEffect(new GiveElementEffect(getOwner(),ElementType.EARTH,Element.DEFAULT_ELEMENT_GAIN));
-		effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND));
+		ConcatEffect effect = new ConcatEffect(this);
+		effect.addEffect(new GiveElementEffect(getOwner(),ElementType.EARTH,Element.DEFAULT_ELEMENT_GAIN,this));
+		effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND,this));
 		return effect;
 	}
 

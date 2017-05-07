@@ -36,7 +36,7 @@ public class RockInTheWay extends Creature implements CantAttackCreature {
 	}
 
 	public Effect onThisPlayed(Card c, Zone z) {
-		return new CreatureHealthChangeEffect(healthGained, this);
+		return new CreatureHealthChangeEffect(healthGained, this,this);
 	}
 
 }

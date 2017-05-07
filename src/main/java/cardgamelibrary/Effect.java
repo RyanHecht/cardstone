@@ -25,4 +25,6 @@ public interface Effect extends Serializable{
 	
 	public EffectType getType();
 	
+	public Card getSrc();
+	
 }

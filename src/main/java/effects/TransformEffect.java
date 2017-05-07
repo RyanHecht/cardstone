@@ -11,11 +11,19 @@ public class TransformEffect implements Effect {
 	private Card replaceWith;
 	private Zone targetZone;
 
-	public TransformEffect(Card target, Card replaceWith, Zone targetZone) {
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
+	public TransformEffect(Card target, Card replaceWith, Zone targetZone, Card src) {
 		super();
 		this.target = target;
 		this.replaceWith = replaceWith;
 		this.targetZone = targetZone;
+		this.src = src;
 	}
 
 	@Override

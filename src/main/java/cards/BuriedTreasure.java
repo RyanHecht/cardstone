@@ -31,7 +31,7 @@ public class BuriedTreasure extends SpellCard {
 	public Effect onThisPlayed(Card c, Zone z) {
 		// check card is indeed this card.
 		assert (c.equals(this));
-		ConcatEffect effect = new ConcatEffect();
+		ConcatEffect effect = new ConcatEffect(this);
 		effect.addEffect(new EffectMaker((Board board) -> {
 			OrderedCardCollection deck = board.getOcc(getOwner(), Zone.DECK);
 			if (deck.size() != 0) {
@@ -47,10 +47,10 @@ public class BuriedTreasure extends SpellCard {
 					}
 				}
 
-				return new AddToOccEffect(maxCostCard,maxCostCard.getOwner(),Zone.HAND,Zone.DECK);
+				return new AddToOccEffect(maxCostCard,maxCostCard.getOwner(),Zone.HAND,Zone.DECK,this);
 			}
 			return EmptyEffect.create();
-		}));
+		},this));
 		return effect;
 	}
 

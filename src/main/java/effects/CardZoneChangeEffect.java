@@ -11,10 +11,11 @@ public class CardZoneChangeEffect implements Effect {
 	private OrderedCardCollection	destination;
 	private OrderedCardCollection	start;
 
-	public CardZoneChangeEffect(Card c, OrderedCardCollection destination, OrderedCardCollection start) {
+	public CardZoneChangeEffect(Card c, OrderedCardCollection destination, OrderedCardCollection start, Card src) {
 		this.c = c;
 		this.destination = destination;
 		this.start = start;
+		this.src = src;
 	}
 
 	@Override
@@ -28,6 +29,13 @@ public class CardZoneChangeEffect implements Effect {
 		return EffectType.CARD_ZONE_CHANGED;
 	}
 
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
 	
 	
 }

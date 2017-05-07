@@ -27,4 +27,9 @@ public class CardDamageEffect implements Effect {
 		board.damageCard(cardDamaged, source, dmg);
 	}
 
+	@Override
+	public Card getSrc() {
+		return source;
+	}
+
 }
