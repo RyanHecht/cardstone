@@ -49,8 +49,8 @@ public class CommsWebSocket {
       System.out.println("Game ended because " + id + " left.");
       try {
         CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
-        // CommsWebSocket.sendGameEnd(id,
-        // "The player you were spectating left the game.");
+        CommsWebSocket.sendGameEndToSpectators(id,
+            "The player you were spectating left the game.");
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -58,9 +58,10 @@ public class CommsWebSocket {
 
     sessions.remove(session);
     idToSessions.remove(Integer.valueOf(id));
-    System.out.println("removed. time to assert.");
-    assert (!idToSessions.containsKey(Integer.valueOf(id)));
-    assert (!sessions.containsKey(session));
+
+    if (spectators.get(id) != null) {
+      spectators.remove(id);
+    }
 
     System.out.println("disconnected " + id);
   }
@@ -320,6 +321,29 @@ public class CommsWebSocket {
     obj.addProperty("message", message);
     System.out.println("Sending game end: " + message);
     sendMessage(userId, MessageTypeEnum.GAME_END, obj);
+  }
+
+  public static void sendGameEndToSpectators(int userId, String message)
+      throws IOException {
+    JsonObject payload = new JsonObject();
+    payload.addProperty("message", message);
+    System.out.println("Sending game end: " + message);
+
+    if (spectators.get(userId) != null && spectators.get(userId).size() > 0) {
+
+      for (Integer spectator : spectators.get(userId)) {
+        System.out.println(userId + " has a spectator!");
+        if (idToSessions.containsKey(spectator)) {
+          System.out.println("The spectator has the page opened!");
+          Session session = idToSessions.get(spectator);
+          JsonObject obj = new JsonObject();
+          obj.addProperty("type", MessageTypeEnum.GAME_END.ordinal());
+          obj.add("payload", payload);
+
+          session.getRemote().sendString(GSON.toJson(obj));
+        }
+      }
+    }
   }
 
   public static void closeSession(int userId) {
