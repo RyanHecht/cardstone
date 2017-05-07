@@ -7,6 +7,7 @@ import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import effects.CardDamageEffect;
+import effects.DamageInterface;
 import effects.EffectType;
 import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
@@ -36,35 +37,23 @@ public class StaticBuildup extends SpellCard{
 
 	public boolean onProposedEffect(Effect e, Zone z){
 		if(turnsLeft == 1 && z == Zone.GRAVE){
-			if(e.getType() == EffectType.PLAYER_DAMAGED && e.getSrc().getOwner() == getOwner()){
-				return true;
-			}
-			if(e.getType() == EffectType.CARD_DAMAGED){
-				return true;
-			}
-			if(e.getType() == EffectType.AOE_DAMAGE){
-				return true;
+			if(e instanceof DamageInterface){
+				if(e.getSrc().getOwner() == getOwner()){
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 	
 	public Effect getNewProposition(Effect e, Zone z){
-		if(e.getType() == EffectType.PLAYER_DAMAGED && e.getSrc().getOwner() == getOwner()){
-			PlayerDamageEffect pde = (PlayerDamageEffect) e;
-			PlayerDamageEffect newEff = new PlayerDamageEffect(pde.getPlayerDamaged(),pde.getSource(),pde.getDmg() + buildup);
+		if(e instanceof DamageInterface){
+			DamageInterface di = (DamageInterface) e;
+			di.setDamage(di.getDamage() + buildup);
 			buildup++;
-			return newEff;
+			return di;
 		}
-		if(e.getType() == EffectType.CARD_DAMAGED){
-			CardDamageEffect pde = (CardDamageEffect) e;
-			CardDamageEffect newEff = new CardDamageEffect(pde.getSrc(),pde.getTarget(),pde.getDmg() + buildup);
-			buildup++;
-			return newEff;
-		}
-		if(e.getType() == EffectType.AOE_DAMAGE){
-			
-		}
+		return e;
 	}
 	
 }
