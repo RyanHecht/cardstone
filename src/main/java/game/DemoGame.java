@@ -1,6 +1,5 @@
 package game;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import cards.WaterSpirit;
 import effects.SummonEffect;
 import events.CardPlayedEvent;
 import events.TurnEndEvent;
-import server.CommsWebSocket;
 
 public class DemoGame extends Game {
 
@@ -360,12 +358,6 @@ public class DemoGame extends Game {
 
 	@Override
 	public void endGame(int i) {
-		try {
-			CommsWebSocket.sendGameEnd(i, "You completed the tutorial game!");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		GameManager.endGame(new GameStats(this, i));
 	}
