@@ -59,6 +59,7 @@ public class CommsWebSocket {
 
     sessions.remove(session);
     idToSessions.remove(Integer.valueOf(id));
+    removeIfSpectator(Integer.valueOf(id));
 
     if (spectators.get(id) != null) {
       spectators.remove(id);
