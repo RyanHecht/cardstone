@@ -152,6 +152,8 @@ public class LobbyManager {
       System.out.println(
           "updating spectator " + spectatorId + " to spectatee " + spectateeId);
       l.changeSpectator(spectatorId, spectateeId);
+    } else {
+      System.out.println("couldn't find game for " + spectateeId);
     }
   }
 
