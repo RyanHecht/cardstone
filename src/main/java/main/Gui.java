@@ -68,6 +68,7 @@ public class Gui {
     Spark.get("/all_cards", new AllCardsHandler());
 
     Spark.get("/tutorial_lobby", new TutorialLobbyHandler(), fm);
+    Spark.redirect.get("/", "/login");
   }
 
   public void init() {
