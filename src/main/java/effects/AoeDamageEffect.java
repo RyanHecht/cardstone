@@ -3,8 +3,8 @@ package effects;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CreatureInterface;
-import cardgamelibrary.FunctionThree;
 import game.Player;
+import lambda.FunctionThree;
 
 public class AoeDamageEffect implements DamageInterface {
 

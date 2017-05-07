@@ -1,4 +1,4 @@
-package cardgamelibrary;
+package lambda;
 
 @FunctionalInterface
 public interface FunctionThree<One, Two, Three> {

@@ -2,7 +2,6 @@ package lambda;
 
 import cardgamelibrary.Board;
 import cardgamelibrary.CreatureInterface;
-import cardgamelibrary.FunctionThree;
 import game.Player;
 
 /**
