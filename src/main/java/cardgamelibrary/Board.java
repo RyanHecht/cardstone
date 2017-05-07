@@ -169,7 +169,7 @@ public class Board implements Jsonifiable, Serializable {
 	public void drawCard(Player player) {
 		OrderedCardCollection deck = getOcc(player, Zone.DECK);
 		// add first card from deck to hand.
-		addCardToOcc(deck.getFirstCard(), getOcc(activePlayer, Zone.HAND), deck);
+		addCardToOcc(deck.getFirstCard(), getOcc(player, Zone.HAND), deck);
 	}
 
 	// Basically, any time a player sends a command, events or effects will wind

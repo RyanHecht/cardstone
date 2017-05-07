@@ -16,7 +16,7 @@ public class EarthswornObserver extends Creature implements CantAttackCreature {
 	private static final ManaPool defaultCost = new ManaPool(25, 0, 0, 1, 0, 0);
 	private static final String defaultImage = "images/EarthswornObserver.png";
 	private static final String defaultName = "Earthsworn Observer";
-	private static final String defaultText = "Can't attack. Whenever a minion with Earth in its cost dies, gain 2 health.";
+	private static final String defaultText = "Can't attack. Whenever a friendly minion with Earth in its cost dies, gain 2 health.";
 	private static final int defaultHealth = 8;
 	private static final int defaultAttack = 0;
 	private static final CardType defaultType = CardType.CREATURE;
