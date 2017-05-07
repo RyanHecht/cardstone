@@ -54,7 +54,7 @@ public class DemoGame extends Game {
 		messages[10] = "Congrats! You have finished the tutorial.";
 		// WARNING: DO NOT CHANGE THIS TEXT OR SOMETHING AWFUL WILL HAPPEN WITH THE
 		// FRONT END!!!!
-		
+
 		// create the AI events.
 		Player ai = getBoard().getInactivePlayer();
 		System.out.println(getBoard().getActivePlayer() + " is the players" + getBoard().getInactivePlayer());
@@ -95,6 +95,8 @@ public class DemoGame extends Game {
 				System.out.println("got called at handle effect");
 				ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()), Zone.CREATURE_BOARD, null);
 				getBoard().handleEffect(ef);
+				// increment action id.
+				actionId++;
 				sendWholeBoardToAllAndDb();
 
 				try {
@@ -110,13 +112,11 @@ public class DemoGame extends Game {
 			} else if (actionId == 8) {
 				// in this case the AI just ends their turn.
 				act(turnEnd);
-
+				// increment action id.
+				actionId++;
 				// manually send board.
 				sendWholeBoardToAllAndDb();
 			}
-
-			// increment action id.
-			actionId++;
 
 			// slight delay.
 			try {
