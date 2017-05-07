@@ -201,7 +201,7 @@ class Server{
           window.onbeforeunload = function() {};
           let stage = parseInt($.cookie('tutorial'));
           if (stage > 0) {
-            $.cookie('tutorial', stage);
+            $.cookie('tutorial', stage + 1);
           }
           window.location.replace("/menu");
       });
