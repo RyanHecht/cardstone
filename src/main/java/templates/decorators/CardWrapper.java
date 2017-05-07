@@ -135,6 +135,10 @@ public class CardWrapper implements Card {
 	public boolean onProposedEffect(Effect e, Zone z) {
 		return internal.onProposedEffect(e, z);
 	}
+	
+	public Card getNewInstanceOf(){
+		return internal.getNewInstanceOf();
+	}
 
 	@Override
 	public Effect getNewProposition(Effect e, Zone z) {

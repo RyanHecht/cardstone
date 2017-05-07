@@ -64,7 +64,8 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 				}
 				else{
 					turnsLeft = 0;
-					last.getClass().getConstructor(getOwner());
+					last.getClass().getConstructors()[0].newInstance(getOwner());
+					last.getClass().getDeclaredConstructor(getOwner());
 					return new SummonEffect()
 				}
 			}

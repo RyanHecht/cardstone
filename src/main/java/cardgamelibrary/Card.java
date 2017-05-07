@@ -72,6 +72,10 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
+	default public Card getNewInstanceOf(){
+		return this;
+	}
+	
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
 	default public Effect onCreatureDamage(CreatureInterface target, Card src, int dmg, Zone z) {
