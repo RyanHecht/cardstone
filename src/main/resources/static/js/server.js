@@ -188,6 +188,9 @@ class Server{
                     console.log(message);
                     this.animationEventReceived(message.payload);
                     break;
+                case MESSAGE_TYPE.GAME_END:
+                    this.gameEnded(message.payload);
+                    break;
 
 
             }
