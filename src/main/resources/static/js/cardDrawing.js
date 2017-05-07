@@ -97,8 +97,20 @@ function setupCanvas(){
 };
 
 function customAlert(message){
-    $("#customMessage").text(message);
-    $("#messageModal").modal("show");
+    if(message.includes("Congrats! You have finished")){
+        $('#messageModal').on('hidden.bs.modal', function () {
+          window.onbeforeunload = function() {};
+          let stage = parseInt($.cookie('tutorial'));
+          if (stage > 0) {
+            $.cookie('tutorial', stage + 1);
+          }
+          window.location.replace("/menu");
+      });
+    }
+
+        $("#customMessage").text(message);
+        $("#messageModal").modal("show");
+    
 }
 
 function setupBoard(){

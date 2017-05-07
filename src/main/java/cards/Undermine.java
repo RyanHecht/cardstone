@@ -5,7 +5,6 @@ import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.ConcatEffect;
-import cardgamelibrary.Creature;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
@@ -41,16 +40,16 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 	}
 
 	public Effect onTurnStart(Player p, Zone z) {
-		if(z==Zone.AURA_BOARD){
+		if (z == Zone.AURA_BOARD) {
 			turnsLeft--;
 			if (turnsLeft <= 0) {
-				return new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD,this);
+				return new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD, this);
 			}
 		}
 		return EmptyEffect.create();
 	}
 
-	public Effect onAnyAttack(Creature attacker, Zone z) {
+	public Effect onAnyAttack(CreatureInterface attacker, Zone z) {
 		if (turnsLeft > 0 && z == Zone.AURA_BOARD) {
 			return new EffectMaker((Board board) -> {
 				ConcatEffect ce = new ConcatEffect(this);
@@ -63,8 +62,11 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 					CreatureInterface cr = (CreatureInterface) c;
 					ce.addEffect(new CardDamageEffect(this, cr, damage));
 				}
+				// send to grave if it triggers b/c it shouldn't trigger more than
+				// once per turn.
+				ce.addEffect(new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD, this));
 				return ce;
-			},this);
+			}, this);
 		}
 		return EmptyEffect.create();
 	}

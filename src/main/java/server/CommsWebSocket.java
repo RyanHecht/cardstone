@@ -46,9 +46,10 @@ public class CommsWebSocket {
       int winner = game.getOpposingPlayerId(id);
       GameStats stats = new GameStats(game, id);
       GameManager.endGame(stats);
-
       try {
         CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
+        CommsWebSocket.sendGameEnd(id,
+            "The player you were spectating left the game.");
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -339,6 +340,7 @@ public class CommsWebSocket {
     }
 
     if (spectators.get(userId) != null && spectators.get(userId).size() > 0) {
+      System.out.println("nummssss: " + spectators.get(userId).size());
       for (Integer spectator : spectators.get(userId)) {
         System.out.println(userId + " has a spectator!");
         if (idToSessions.containsKey(spectator)) {

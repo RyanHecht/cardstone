@@ -41,7 +41,7 @@ public class LobbyWebSocket {
   @OnWebSocketMessage
   public void message(Session session, String message) throws IOException {
     // Get the object received, the message type, and the payload
-    System.out.println("Got message: " + message);
+    System.out.println("Got lobby message: " + message);
 
     // Ignore heartbeats
     if (message.equals("lubdub")) {
