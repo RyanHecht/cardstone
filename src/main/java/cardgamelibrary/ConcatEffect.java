@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import static org.junit.Assert.assertNotNull;
+
 import effects.EffectType;
 import effects.GateEffect;
 import java.io.Serializable;
@@ -31,7 +33,7 @@ public class ConcatEffect implements Effect, Serializable {
     Iterator<Effect> it = effects.iterator();
     while (it.hasNext()) {
       Effect e = it.next();
-      System.out.println(e.getType());
+      assertNotNull(e);
       if (e instanceof GateEffect) {
         e.apply(board);
         if (!((GateEffect) e).getShouldContinue()) {
