@@ -110,7 +110,7 @@ function customAlert(message){
 
         $("#customMessage").text(message);
         $("#messageModal").modal("show");
-    
+
 }
 
 function setupBoard(){
@@ -129,10 +129,10 @@ function setupServer(){
 function setupMouseListen(){
     mouseSystem = new MouseManagerSystem();
     $(document).mousemove(function(event){
-      mouseSystem.mousemoved(event);  
+      mouseSystem.mousemoved(event);
     });
     $(document).mouseup(function(event){
-       mouseSystem.mouseup(event); 
+       mouseSystem.mouseup(event);
     });
 }
 
@@ -149,8 +149,13 @@ function setupOptionsMenu(){
         tooltipDisplay = this.checked;
         resizeRedrawAll();
     });
+		if (isReplayMode) {
+			$("#concedeButton").text("Return to Menu");
+		} else if (spectator) {
+			$("#concedeButton").text("Quit Spectating")
+		}
     $("#concedeButton").click(function(){
-       window.location.replace("/menu"); 
+       window.location.replace("/menu");
     });
     $("#quitReplay").click(function(){
         window.location.replace("/menu");
@@ -197,7 +202,7 @@ function submitChat(){
     let cont = $("#chatMessageContent")
     server.sendChat(cont.val());
     cont.val("");
-    
+
 }
 
 function setupChat(){
