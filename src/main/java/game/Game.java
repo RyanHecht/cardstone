@@ -68,7 +68,7 @@ public class Game implements Jsonifiable, Serializable {
 	private PlayerChoosesCards chooserCard = null;
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
-			boolean isTutorial) {
+			boolean noShuffle) {
 
 		this.id = idGenerator.incrementAndGet();
 		System.out.println(String.format("Making new game with id %d and players %d and %d", id, playerOneId, playerTwoId));
@@ -168,7 +168,7 @@ public class Game implements Jsonifiable, Serializable {
 		deckOne.addAll(fCards);
 		deckTwo.addAll(sCards);
 
-		if (!(isTutorial)) {
+		if (!(noShuffle)) {
 			// shuffle decks if not tutorial.
 			deckOne.shuffle();
 			deckTwo.shuffle();

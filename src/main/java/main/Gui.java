@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.MasterCardList;
@@ -55,9 +56,10 @@ public class Gui {
     Spark.get("/deck", new DeckHandler(), fm); // displaying one deck
     Spark.post("/deck_from", new DeckFinder());
 
-    Spark.get("/games", new GameDisplayHandler(), fm);
+    Spark.get("/replays", new GameDisplayHandler(), fm);
     Spark.get("/replay", new GameReplayHandler(), fm);
     Spark.post("/replay", new ReplayEventHandler());
+    Spark.post("/user_replays", new GameGetter());
 
     Spark.get("/lobbies", new LobbiesHandler(), fm);
     Spark.post("/lobbies", new LobbiesHandler(), fm);
@@ -67,7 +69,6 @@ public class Gui {
     Spark.get("/game", new GameHandler(), fm);
     Spark.get("/all_cards", new AllCardsHandler());
 
-    Spark.get("/tutorial_lobby", new TutorialLobbyHandler(), fm);
     Spark.redirect.get("/", "/login");
   }
 
@@ -83,22 +84,21 @@ public class Gui {
           + "FOREIGN KEY (user) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists finished_game("
-          + "id integer primary key, "
-          + "winner integer, moves integer, UNIQUE(id, winner));");
+          + "id integer primary key, winner integer not null, "
+          + "player1 integer not null, player2 integer not null, "
+          + "moves integer, date text not null, "
+          + "FOREIGN KEY (player1) REFERENCES user(id) "
+          + "ON DELETE CASCADE ON UPDATE CASCADE, "
+          + "FOREIGN KEY (player2) REFERENCES user(id) "
+          + "ON DELETE CASCADE ON UPDATE CASCADE, UNIQUE(id, winner));");
       Db.update("create table if not exists in_progress("
           + "id integer primary key autoincrement,"
-          + "player1 integer, player2 integer, board blob, "
+          + "player1 integer not null, player2 integer not null, board blob, "
           + "FOREIGN KEY (player1) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE,"
           + "FOREIGN KEY (player2) REFERENCES user(id)"
           + "ON DELETE CASCADE ON UPDATE CASCADE, "
           + "UNIQUE(id, player1, player2));");
-      Db.update("create table if not exists user_game("
-          + "user integer not null, game integer not null,"
-          + "UNIQUE(user, game)," + "FOREIGN KEY (user) REFERENCES user(id)"
-          + "ON DELETE CASCADE ON UPDATE CASCADE,"
-          + "FOREIGN KEY (game) REFERENCES finished_game(id)"
-          + "ON DELETE CASCADE ON UPDATE CASCADE);");
       Db.update("create table if not exists game_event("
           + "game integer not null, event integer not null,"
           + "board text not null, animations text not null, UNIQUE(game, event));");
@@ -186,17 +186,6 @@ public class Gui {
       }
       return new ModelAndView(ImmutableMap.of("isReplay", false),
           "boardDraw.ftl");
-
-    }
-  }
-
-  private class TutorialLobbyHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      return new ModelAndView(
-          ImmutableMap.of("title", "Cardstone: The Shattering"),
-          "tutorial_lobby.ftl");
-
     }
   }
 
@@ -331,21 +320,31 @@ public class Gui {
         res.redirect("/login");
       }
 
-      String gameQuery = "select g.id, g.winner, g.moves from finished_game as g, user_game"
-          + " as ug where g.id = ug.game and ug.user = ?;";
-      List<MetaGame> toDisplay = new ArrayList<>();
-      try (ResultSet rs = Db.query(gameQuery, uid)) {
+      Map<String, Object> vars = ImmutableMap.of("title",
+          "Cardstone: The Shattering", "username", req.cookie("username"));
+      return new ModelAndView(vars, "games.ftl");
+    }
+  }
+
+  private class GameGetter implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      int user = Integer.parseInt(qm.value("user"));
+
+      String gameQuery = "select * from finished_game where player1 = ? or player2 = ?;";
+      JsonArray games = new JsonArray();
+      try (ResultSet rs = Db.query(gameQuery, user, user)) {
         while (rs.next()) {
-          toDisplay.add(new MetaGame(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
+          MetaGame toAdd = new MetaGame.MetaBuilder().id(rs.getInt(1))
+              .winner(rs.getInt(2)).p1(rs.getInt(3)).p2(rs.getInt(4))
+              .moves(rs.getInt(5)).date(rs.getString(6)).build(user);
+          games.add(toAdd.jsonifySelf());
         }
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
       }
-
-      Map<String, Object> vars = ImmutableMap.of("title",
-          "Cardstone: The Shattering", "username",
-          req.cookie("username"), "games", toDisplay);
-      return new ModelAndView(vars, "games.ftl");
+      return games;
     }
   }
 

@@ -8,7 +8,7 @@
 		<select class="form-control" id="deckselect">
 		  <option selected>Pick a deck</option>
 		  <#list decks as deck>
-          <option value="${deck}">${deck}</option>
+          	<option value="${deck}">${deck}</option>
     	  </#list>
 		</select>
 		<p id="message"> </p>
