@@ -196,14 +196,12 @@ class Server{
 
 
   gameEnded(message){
-      console.log("game ended")
       this.alertMessage(message);
-      //console.log(message)
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          if (message.message.includes("tutorial")) {
-            $.cookie('tutorial', tutorialStage() + 1);
-            console.log("tutorial ended!")
+          let stage = parseInt($.cookie('tutorial'));
+          if (stage > 0) {
+            $.cookie('tutorial', stage);
           }
           window.location.replace("/menu");
       });
@@ -275,7 +273,6 @@ class Server{
             case "cardPlayed":
                 console.log(message.card);
                 quedAnims.push(animationsMaker.playCardAnimation(message.card).create());
-
                 break;
             case "cardDied":
                 quedAnims.push(animationsMaker.getDeadAnimation(message.id1.id).create());
