@@ -243,15 +243,6 @@ public class Game implements Jsonifiable, Serializable {
 			throw new IllegalArgumentException("Passed invalid value to endGame: " + i);
 		}
 
-		// send off messages to players about game being over.
-		try {
-			CommsWebSocket.sendGameEnd(playerOne.getId(), messageOne);
-			CommsWebSocket.sendGameEnd(playerTwo.getId(), messageTwo);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		GameManager.endGame(new GameStats(this, winnerId));
 	}
 
