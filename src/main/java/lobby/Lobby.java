@@ -156,6 +156,9 @@ public class Lobby implements Jsonifiable {
       uId2Spectators.add(spectatorId);
       if (uId1Spectators.contains(spectatorId)) {
         uId1Spectators.remove(spectatorId);
+        System.out.println(
+            "removing " + spectatorId + " from " + spectateeId
+                + " spectate list");
       }
     }
   }
