@@ -1,21 +1,23 @@
 package templates;
 
 import cardgamelibrary.Card;
-import cardgamelibrary.Creature;
+import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Zone;
 import game.Player;
 
-public interface OnAnyAttackCard extends Card{
+public interface OnAnyAttackCard extends Card {
 
-	default public Effect onCreatureAttack(Creature attacker, Creature target, Zone z) {
-		return this.onAnyAttack(attacker, z);
-	}
-	
-	public default Effect onPlayerAttack(Creature attacker, Player target, Zone z) {
+	@Override
+	default public Effect onCreatureAttack(CreatureInterface attacker, CreatureInterface target, Zone z) {
 		return this.onAnyAttack(attacker, z);
 	}
 
-	public Effect onAnyAttack(Creature attacker, Zone z);
-	
+	@Override
+	public default Effect onPlayerAttack(CreatureInterface attacker, Player target, Zone z) {
+		return this.onAnyAttack(attacker, z);
+	}
+
+	public Effect onAnyAttack(CreatureInterface attacker, Zone z);
+
 }

@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 
 import com.google.gson.JsonObject;
 
@@ -64,7 +63,7 @@ public class Board implements Jsonifiable, Serializable {
 	private OrderedCardCollection auraTwo;
 	private OrderedCardCollection graveTwo;
 	private OrderedCardCollection creatureTwo;
-	
+
 	private HashSet<Card> alreadyProcessed;
 
 	// everything in the game;
@@ -166,11 +165,11 @@ public class Board implements Jsonifiable, Serializable {
 		eventQueue.add(event);
 		handleState();
 	}
-	
-	public void drawCard(Player player){
+
+	public void drawCard(Player player) {
 		OrderedCardCollection deck = getOcc(player, Zone.DECK);
 		// add first card from deck to hand.
-		addCardToOcc(deck.getFirstCard(), getOcc(activePlayer, Zone.HAND), deck);
+		addCardToOcc(deck.getFirstCard(), getOcc(player, Zone.HAND), deck);
 	}
 
 	// Basically, any time a player sends a command, events or effects will wind
@@ -271,7 +270,7 @@ public class Board implements Jsonifiable, Serializable {
 	private void handleDead() {
 		Iterator<Card> it = creatureOne.iterator();
 		Iterator<Card> itTwo = creatureTwo.iterator();
-		for(Card c : creatureOne){
+		for (Card c : creatureOne) {
 			System.out.println(c.getName());
 		}
 		while (it.hasNext()) {
@@ -301,9 +300,9 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		Effect past = effect;
 		effect = preprocessEffect(effect);
-		while(past != effect){
+		while (past != effect) {
 			past = effect;
-			if(effect.getType() == EffectType.MAKER){
+			if (effect.getType() == EffectType.MAKER) {
 				EffectMaker maker = (EffectMaker) effect;
 				effect = maker.getEffect(this);
 			}
@@ -727,10 +726,10 @@ public class Board implements Jsonifiable, Serializable {
 			sendAnimation(animation);
 		}
 
-		if(c.isA(CreatureInterface.class) && destination.getZone() == Zone.GRAVE){
-			creatureDies((CreatureInterface)c);
+		if (c.isA(CreatureInterface.class) && destination.getZone() == Zone.GRAVE) {
+			creatureDies((CreatureInterface) c);
 		}
-		
+
 		eventQueue.add(event);
 	}
 
