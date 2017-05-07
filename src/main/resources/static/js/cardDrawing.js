@@ -149,7 +149,7 @@ function setupOptionsMenu(){
         tooltipDisplay = this.checked;
         resizeRedrawAll();
     });
-		if (isReplayMode) {
+		if (isReplay) {
 			$("#concedeButton").text("Return to Menu");
 		} else if (spectator) {
 			$("#concedeButton").text("Quit Spectating")
