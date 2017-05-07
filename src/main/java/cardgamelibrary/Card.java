@@ -1,6 +1,7 @@
 package cardgamelibrary;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -73,6 +74,14 @@ public interface Card extends Jsonifiable, Serializable {
 	}
 
 	default public Card getNewInstanceOf(Player p){
+		Class[] args = new Class[1];
+		args[0] = Player.class;
+			try {
+				this.getClass().getDeclaredConstructor(args).newInstance(p);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
 		return this;
 	}
 	

@@ -7,6 +7,7 @@ import game.Game;
 import game.GameManager;
 import game.GameStats;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,9 +47,10 @@ public class CommsWebSocket {
       int winner = game.getOpposingPlayerId(id);
       GameStats stats = new GameStats(game, id);
       GameManager.endGame(stats);
+      System.out.println("Game ended because " + id + " left.");
       try {
         CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
-        CommsWebSocket.sendGameEnd(id,
+        CommsWebSocket.sendGameEndToSpectators(id,
             "The player you were spectating left the game.");
       } catch (IOException e) {
         e.printStackTrace();
@@ -56,7 +58,14 @@ public class CommsWebSocket {
     }
 
     sessions.remove(session);
-    idToSessions.remove(id);
+    idToSessions.remove(Integer.valueOf(id));
+    removeIfSpectator(Integer.valueOf(id));
+
+    if (spectators.get(id) != null) {
+      spectators.remove(id);
+    }
+
+    System.out.println("disconnected " + id);
   }
 
   @OnWebSocketMessage
@@ -145,6 +154,19 @@ public class CommsWebSocket {
     return false;
   }
 
+  public static void removeIfSpectator(Integer userId) {
+    Iterator<List<Integer>> it = spectators.values().iterator();
+    while (it.hasNext()) {
+      List<Integer> specList = it.next();
+
+      if (specList.contains(userId)) {
+        specList.remove(userId);
+        return;
+      }
+    }
+
+  }
+
   public static int getSpectatee(Integer userId) {
     for (Integer spectatee : spectators.keySet()) {
       if (spectators.get(spectatee).contains(userId)) {
@@ -164,7 +186,7 @@ public class CommsWebSocket {
   public static void sendChangedBoardSate(Board toSend, int userId)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
-      Session session = idToSessions.get(userId);
+      Session session = idToSessions.get(Integer.valueOf(userId));
       JsonObject obj = new JsonObject();
       JsonObject payload = toSend.jsonifySelfChanged();
       obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
@@ -316,6 +338,29 @@ public class CommsWebSocket {
     sendMessage(userId, MessageTypeEnum.GAME_END, obj);
   }
 
+  public static void sendGameEndToSpectators(int userId, String message)
+      throws IOException {
+    JsonObject payload = new JsonObject();
+    payload.addProperty("message", message);
+    System.out.println("Sending game end: " + message);
+
+    if (spectators.get(userId) != null && spectators.get(userId).size() > 0) {
+
+      for (Integer spectator : spectators.get(userId)) {
+        System.out.println(userId + " has a spectator!");
+        if (idToSessions.containsKey(spectator)) {
+          System.out.println("The spectator has the page opened!");
+          Session session = idToSessions.get(spectator);
+          JsonObject obj = new JsonObject();
+          obj.addProperty("type", MessageTypeEnum.GAME_END.ordinal());
+          obj.add("payload", payload);
+
+          session.getRemote().sendString(GSON.toJson(obj));
+        }
+      }
+    }
+  }
+
   public static void closeSession(int userId) {
 
   }
@@ -331,7 +376,10 @@ public class CommsWebSocket {
   private static void sendMessage(int userId, MessageTypeEnum type,
       JsonObject payload) throws IOException {
     if (idToSessions.containsKey(userId)) {
-      Session session = idToSessions.get(userId);
+      Session session = idToSessions.get(Integer.valueOf(userId));
+      if (session == null) {
+        System.out.println("session is null");
+      }
       JsonObject obj = new JsonObject();
       obj.addProperty("type", type.ordinal());
       obj.add("payload", payload);
