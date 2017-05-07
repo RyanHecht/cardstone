@@ -158,26 +158,17 @@ class cardCollection extends drawableZone{
         this.div.mouseup(function(event){
             mouseSystem.mouseupDiv($this,event);
         });
-        this.div.on("mouseup",function(event){
-            mouseSystem.mouseupDiv($this,event);
-        });
         
         this.div.find(".card").mousedown(function(event){
-            mouseSystem.mousedown($(this).attr("id"),event);
-        });
-        this.div.on("mousestart",function(event){
-            mouseSystem.mousedown($(this).attr("id"),event);
+            mouseSystem.mousedown($(this).attr("id"),event)
         });
         
         this.div.find(".card").mouseup(function(event){
             mouseSystem.mouseupCard($(this).attr("id"),event);
         });
-        this.div.find(".card").on("touchend",function(event){
-           mouseSystem.mouseupCard($(this).attr("id"),event); 
-        });
         $(document).mouseup(function(event){
             mouseSystem.mouseup(event);
-        });
+        })
     }
     
     

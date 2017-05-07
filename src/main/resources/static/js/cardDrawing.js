@@ -119,12 +119,6 @@ function setupMouseListen(){
     $(document).mousemove(function(event){
       mouseSystem.mousemoved(event);  
     });
-    $(document).on("touchmove",function(event){    
-        mouseSystem.mousemoved(event)
-    });
-    $(document).on("touchend",function(event){
-        mouseSystem.mouseup(event);
-    });
     $(document).mouseup(function(event){
        mouseSystem.mouseup(event); 
     });
