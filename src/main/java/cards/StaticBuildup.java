@@ -15,7 +15,6 @@ import game.Player;
 
 public class StaticBuildup extends SpellCard{
 
-	private static final ManaPool defaultCost = new ManaPool(30, 0, 0, 0, 1, 0);
 	private static final String defaultImage = "images/StaticBuildup.jpg";
 	private static final String defaultName = "Static Buildup";
 	private static final String defaultText = "On your next turn, every damaging spell does 1 more damage for each damaging spell you previously played that turn.";
@@ -24,7 +23,7 @@ public class StaticBuildup extends SpellCard{
 	private int buildup;
 
 	public StaticBuildup(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(30, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsLeft = 0;
 		buildup = 0;
 	}

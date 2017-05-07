@@ -17,14 +17,13 @@ import templates.PlayerChoosesCards;
 
 public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 
-	private static final ManaPool	defaultCost		= new ManaPool(15, 0, 3, 0, 0, 0);
 	private static final String		defaultImage	= "images/DelveTheDepths.jpg";
 	private static final String		defaultName		= "Delve The Depths";
 	private static final String		defaultText		= "Select any card from your deck and add it to your hand.";
 	private static final CardType	defaultType		= CardType.SPELL;
 
 	public DelveTheDepths(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 3, 0, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		// TODO Auto-generated constructor stub
 	}
 

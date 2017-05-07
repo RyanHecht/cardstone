@@ -6,8 +6,6 @@ import cardgamelibrary.ManaPool;
 import game.Player;
 
 public class WaterSpirit extends Creature {
-
-	private static final ManaPool	defaultCost		= new ManaPool(10, 0, 3, 0, 0, 0);
 	private static final String		defaultImage	= "images/WaterSpirit.jpg";
 	private static final String		defaultName		= "Water Spirit";
 	private static final String		defaultText		= "";
@@ -16,7 +14,7 @@ public class WaterSpirit extends Creature {
 	private static final CardType	defaultType		= CardType.CREATURE;
 
 	public WaterSpirit(Player owner) {
-		super(defaultHealth, defaultAttack, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(defaultHealth, defaultAttack, new ManaPool(10, 0, 3, 0, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 }

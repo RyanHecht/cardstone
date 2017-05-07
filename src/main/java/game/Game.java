@@ -556,11 +556,10 @@ public class Game implements Jsonifiable, Serializable {
 				// execute action on board.
 				act(event);
 
-				// make card played event.
-				CardPlayedEvent cEvent = new CardPlayedEvent(targetter, board.getOcc(board.getActivePlayer(), Zone.HAND),
-						board.getOcc(board.getActivePlayer(), Zone.GRAVE));
-
-				act(cEvent);
+//				// make card played event.
+//				CardPlayedEvent cEvent = new CardPlayedEvent(targetter, board.getOcc(board.getActivePlayer(), Zone.HAND));
+//
+//				act(cEvent);
 
 				// send board to both players.
 				sendWholeBoardToAllAndDb();
@@ -640,8 +639,7 @@ public class Game implements Jsonifiable, Serializable {
 					act(event);
 
 					// make card played event.
-					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
-							board.getOcc(board.getActivePlayer(), Zone.GRAVE));
+					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
 
 					act(cEvent);
 
@@ -694,11 +692,10 @@ public class Game implements Jsonifiable, Serializable {
 					// execute event.
 					act(event);
 
-					// make card played event.
-					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
-							board.getOcc(board.getActivePlayer(), Zone.GRAVE));
-
-					act(cEvent);
+//					// make card played event.
+//					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
+//
+//					act(cEvent);
 
 					// send board.
 					sendWholeBoardToAllAndDb();
@@ -725,33 +722,24 @@ public class Game implements Jsonifiable, Serializable {
 
 			// ensure there is some card prompting the choice saved.
 			assertNotNull(chooserCard);
-
 			// TODO retrieve card or list of cards that user has chosen and
 			// create
 			// events that reflect them .
 
 			// get card the user chose.
 			Card chosen = board.getCardById(userInput.get("IID1").getAsInt());
-
 			CardChosenEvent event = new CardChosenEvent(chooserCard, chosen);
-
 			sendPlayerActionGood(playerId);
-
 			act(event);
-
 			// create card played event for the choosing card.
-			CardPlayedEvent cEvent = new CardPlayedEvent(chooserCard, board.getOcc(chooserCard.getOwner(), Zone.GRAVE),
-					board.getOcc(chooserCard.getOwner(), Zone.HAND));
-
+			CardPlayedEvent cEvent = new CardPlayedEvent(chooserCard, board.getOcc(chooserCard.getOwner(), Zone.GRAVE));
 			act(cEvent);
-
 			// reset the choosing card.
 			chooserCard = null;
 
 			// done responding to choose request so change game state again.
 
 			unlockState();
-
 			sendWholeBoardToAllAndDb();
 		} else {
 			// yeah i'm not sure how this would even happen but better safe than
@@ -860,8 +848,7 @@ public class Game implements Jsonifiable, Serializable {
 				return;
 			}
 
-			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
-					board.getOcc(board.getActivePlayer(), z));
+			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
 
 			// tell player action was ok.
 			sendPlayerActionGood(playerId);

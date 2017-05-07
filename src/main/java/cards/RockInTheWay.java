@@ -13,7 +13,6 @@ import templates.CantAttackCreature;
 
 public class RockInTheWay extends Creature implements CantAttackCreature {
 
-	private static final ManaPool defaultCost = new ManaPool(30, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/RockInTheWay.jpg";
 	private static final String defaultName = "Rock In The Way";
 	private static final String defaultText = "Taunt. On play, gain life equal to the life you have gained this game";
@@ -23,7 +22,7 @@ public class RockInTheWay extends Creature implements CantAttackCreature {
 	private int healthGained;
 
 	public RockInTheWay(Player owner) {
-		super(defaultAttack, defaultHealth, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(defaultAttack, defaultHealth, new ManaPool(30, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		healthGained = 0;
 	}
 

@@ -147,6 +147,7 @@ class Server{
                     this.animationEventReceived(message.payload);
                     break;
                 case MESSAGE_TYPE.CHOOSE_REQUEST:
+                    console.log(message);
                     this.chooseFrom(message.payload.cards);
                     break;
                 case MESSAGE_TYPE.TARGET_REQUEST:

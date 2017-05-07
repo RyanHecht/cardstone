@@ -17,7 +17,6 @@ import templates.OnAnyAttackCard;
 
 public class Undermine extends AuraCard implements OnAnyAttackCard {
 
-	private static final ManaPool defaultCost = new ManaPool(20, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/Undermine.jpg";
 	private static final String defaultName = "Undermine!";
 	private static final String defaultText = "If an enemy minion attacks next turn, deal 4 to all minions.";
@@ -26,7 +25,7 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 	private int damage = 4;
 
 	public Undermine(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(20, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsLeft = 0;
 	}
 

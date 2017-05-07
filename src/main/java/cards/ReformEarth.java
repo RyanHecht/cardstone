@@ -14,7 +14,6 @@ import game.Player;
 
 public class ReformEarth extends AuraCard{
 
-	private static final ManaPool defaultCost = new ManaPool(15, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/ReformEarth.jpg";
 	private static final String defaultName = "Reform Earth";
 	private static final String defaultText = "For every third friendly earth creature that dies, draw a card";
@@ -22,7 +21,7 @@ public class ReformEarth extends AuraCard{
 	private int deadCount;
 
 	public ReformEarth(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		this.deadCount = 0;
 	}
 	

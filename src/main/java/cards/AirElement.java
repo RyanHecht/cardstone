@@ -15,14 +15,13 @@ import game.Player;
 
 public class AirElement extends Element {
 
-	private static final ManaPool defaultCost = ManaPool.emptyPool();
 	private static final String defaultImage = "images/waterChoices/airBig.jpg";
 	private static final String defaultName = "air";
 	private static final String defaultText = "";
 	private static final CardType defaultType = CardType.ELEMENT;
 
 	public AirElement(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(ManaPool.emptyPool(), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	@Override

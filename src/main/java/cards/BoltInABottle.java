@@ -13,14 +13,13 @@ import game.Player;
 
 public class BoltInABottle extends SpellCard{
 
-	private static final ManaPool	defaultCost		= new ManaPool(20, 0, 0, 0, 1, 0);
 	private static final String		defaultImage	= "images/BoltInABottle.jpg";
 	private static final String		defaultName		= "Bolt In A Bottle";
-	private static final String		defaultText		= "Add a 'Jun's Bolt' to your hand. You do not have to pay the element cost for these cards.";
+	private static final String		defaultText		= "Add a 'Jun's Bolt' to your hand. You do not have to pay the element cost for it.";
 	private static final CardType	defaultType		= CardType.SPELL;
 	
 	public BoltInABottle(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(20, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 	
 	public Effect onThisPlayed(Card c, Zone z){

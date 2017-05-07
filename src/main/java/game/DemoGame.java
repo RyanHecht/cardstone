@@ -67,10 +67,8 @@ public class DemoGame extends Game {
 		System.out.println("The water element card for the AI has this name: " + aiWaterElement.getName());
 
 		// events that reflect the cards played are constructed.
-		aiPlayedElement = new CardPlayedEvent(aiWaterElement, getBoard().getOcc(ai, Zone.HAND),
-				getBoard().getOcc(ai, Zone.GRAVE));
-		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND),
-				getBoard().getOcc(ai, Zone.CREATURE_BOARD));
+		aiPlayedElement = new CardPlayedEvent(aiWaterElement, getBoard().getOcc(ai, Zone.HAND));
+		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND));
 
 		// damage AI for 28 when the game starts so they will die at the end.
 		getBoard().getInactivePlayer().takeDamage(28);

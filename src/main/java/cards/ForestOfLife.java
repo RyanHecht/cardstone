@@ -16,15 +16,13 @@ import game.Player;
 
 public class ForestOfLife extends AuraCard{
 
-	
-	private static final ManaPool defaultCost = new ManaPool(10, 0, 0, 1, 0, 0);
 	private static final String defaultImage = "images/ForestOfLife.jpg";
 	private static final String defaultName = "Forest Of Life";
 	private static final String defaultText = "Whenever you play a card with earth in its cost, gain 3 life.";
 	private static final CardType defaultType = CardType.AURA;
 
 	public ForestOfLife(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 	
 	

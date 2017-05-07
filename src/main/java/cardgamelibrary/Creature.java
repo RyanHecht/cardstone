@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import effects.AddToOccEffect;
 import effects.CardDamageEffect;
+import effects.EffectType;
 import effects.EmptyEffect;
 import effects.PlayerDamageEffect;
 import game.Player;
@@ -90,6 +91,7 @@ public class Creature extends PlayableCard implements CreatureInterface {
 
 			// add any specific effects for this creature being played.
 			effect.addEffect(onThisPlayed(c, z));
+			effect.setType(EffectType.CARD_PLAYED);
 		}
 		else{
 			effect.addEffect(onOtherCardPlayed(c,z));

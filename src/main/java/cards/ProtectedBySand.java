@@ -18,11 +18,10 @@ public class ProtectedBySand extends AuraCard {
 	private int instancesToPrevent;
 
 	public ProtectedBySand(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		instancesToPrevent = 0;
 	}
 
-	private static final ManaPool defaultCost = new ManaPool(10, 0, 0, 1, 0, 0);
 	private static final String defaultImage = "images/ProtectedBySand.png";
 	private static final String defaultName = "Protected By Sand";
 	private static final String defaultText = "Prevent the next two instances of damage you would take.";
