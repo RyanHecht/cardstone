@@ -46,6 +46,25 @@ public final class FunctionThreeMaker {
 	}
 
 	/**
+	 * Generates function to target creatures that DO NOT belong to a specific
+	 * player.
+	 * 
+	 * @param p
+	 *          the player whose creatures we are exempting from damage.
+	 * @return see the first line.
+	 */
+	public static FunctionThree<Board, CreatureInterface, Boolean> targetsOtherPlayerCreatures(Player p) {
+		return (Board b, CreatureInterface cr) -> {
+			if (b.getActivePlayer().equals(p) || b.getInactivePlayer().equals(p)) {
+				return !cr.getOwner().equals(p);
+			}
+			throw new IllegalArgumentException(
+					"Tried to pass player that wasn't on board into targetsOtherPlayerCreatures from FunctionThree. "
+							+ "Their id is: " + p.getId());
+		};
+	}
+
+	/**
 	 * Generates a functionthree to return a constant value for all
 	 * CreatureInterfaces it is passed.
 	 * 
