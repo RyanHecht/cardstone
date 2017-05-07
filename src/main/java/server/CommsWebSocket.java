@@ -61,6 +61,8 @@ public class CommsWebSocket {
 
     assert (!idToSessions.containsKey(Integer.valueOf(id)));
     assert (!sessions.containsKey(session));
+
+    System.out.println("disconnected " + id);
   }
 
   @OnWebSocketMessage
