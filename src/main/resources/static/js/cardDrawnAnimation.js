@@ -7,7 +7,7 @@ class cardDrawnAnimation extends animation{
 		super();
         let off = $("#lineRight").offset();
         let offWidth = $("#lineRight")[0].offsetWidth;
-        this.setStartLoc(off.left offWidth,off.top);
+        this.setStartLoc(off.left + offWidth,off.top);
         this.speed = .6;
 	}
     
