@@ -48,7 +48,7 @@ public class DemoGame extends Game {
 		messages[7] = "Play the Riptide you added to your hand targeting the opponent's Water Spirit by dragging Riptide "
 				+ "onto the Water Spirit.";
 		messages[8] = "End your turn.";
-		messages[9] = "Attack your opponent with your Water Spirit by clicking on it and dragging it to the player icon representing your "
+		messages[9] = "Finish your opponent off with your Water Spirit by clicking on it and dragging it to the player icon representing your "
 				+ "opponent in the top right corner.";
 		messages[10] = "Congrats! You have finished the tutorial.";
 
@@ -69,6 +69,8 @@ public class DemoGame extends Game {
 		aiPlayedWaterSpirit = new CardPlayedEvent(aiWaterSpirit, getBoard().getOcc(ai, Zone.HAND),
 				getBoard().getOcc(ai, Zone.CREATURE_BOARD));
 
+		// damage AI for 28 when the game starts so they will die at the end.
+		getBoard().getInactivePlayer().takeDamage(28);
 	}
 
 	@Override
