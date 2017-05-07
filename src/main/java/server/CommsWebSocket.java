@@ -58,7 +58,7 @@ public class CommsWebSocket {
 
     sessions.remove(session);
     idToSessions.remove(Integer.valueOf(id));
-
+    System.out.println("removed. time to assert.");
     assert (!idToSessions.containsKey(Integer.valueOf(id)));
     assert (!sessions.containsKey(session));
 
