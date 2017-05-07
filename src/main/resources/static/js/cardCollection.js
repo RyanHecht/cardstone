@@ -165,7 +165,7 @@ class cardCollection extends drawableZone{
         this.div.find(".card").mousedown(function(event){
             mouseSystem.mousedown($(this).attr("id"),event);
         });
-        this.div.on("mousedown",function(event){
+        this.div.on("mousestart",function(event){
             mouseSystem.mousedown($(this).attr("id"),event);
         });
         
