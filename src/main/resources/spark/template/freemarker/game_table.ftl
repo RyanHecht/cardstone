@@ -1,9 +1,10 @@
 <#assign game_table>
 <table class="table table-hover">
   <thead>
-    <th>#</th>
     <th>Winner</th>
+    <th>Opponent</th>
     <th># of Moves</th>
+   <#-- <th>Date</th> -->
   </thead>
   <tbody>
     <#list games as game>

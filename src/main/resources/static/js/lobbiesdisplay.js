@@ -39,7 +39,7 @@ $(document).ready(() => {
 		drawLobbies(responseObject);
 	});
 
-	if (error != undefined && errorHeader != undefined) {
+	if (undefined != error && undefined != errorHeader) {
 		$("#messageModal").modal("show");
 		$("#message").text(error);
 		$("#messageheader").text(errorHeader);
