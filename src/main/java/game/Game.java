@@ -217,6 +217,9 @@ public class Game implements Jsonifiable, Serializable {
 	 *          the result of the game (see checkWinners for how this works).
 	 */
 	public void endGame(int i) {
+		// change state to game over.
+		state = GameState.GAME_OVER;
+
 		// move game to finished games somehow.
 
 		// set up messages for players to receive.
@@ -648,9 +651,6 @@ public class Game implements Jsonifiable, Serializable {
 
 					// execute event on board.
 					act(event);
-					
-					
-					
 
 					// send board to both players.
 					sendWholeBoardToAllAndDb();
@@ -680,7 +680,7 @@ public class Game implements Jsonifiable, Serializable {
 							board.getOcc(board.getActivePlayer(), Zone.GRAVE));
 
 					act(cEvent);
-					
+
 					// send board.
 					sendWholeBoardToAllAndDb();
 				} else {
@@ -830,11 +830,11 @@ public class Game implements Jsonifiable, Serializable {
 				// spell or element.
 				z = Zone.GRAVE;
 			}
-			if(board.getZoneOfCard(card) != Zone.HAND){
+			if (board.getZoneOfCard(card) != Zone.HAND) {
 				sendPlayerActionBad(playerId, "You need to pick a target to attack!");
 				return;
 			}
-			
+
 			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND),
 					board.getOcc(board.getActivePlayer(), z));
 
