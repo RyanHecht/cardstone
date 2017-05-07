@@ -35,8 +35,8 @@ public class IntermittentTremors extends AuraCard {
 			if (turnsToTremor == 0) {
 				turnsToTremor = 3;
 
-				return new AoeDamageEffect(0, 0, 0, false, false, this, FunctionThreeMaker.targetsAllCreatures(),
-						FunctionThreeMaker.determineCreatureDamage(1));
+				return new AoeDamageEffect(1, 0, 0, false, false, this, FunctionThreeMaker.targetsAllCreatures(),
+						FunctionThreeMaker.determineCreatureDamage(0));
 			} else {
 				turnsToTremor--;
 			}
