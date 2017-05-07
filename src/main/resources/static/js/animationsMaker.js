@@ -65,7 +65,7 @@ class animationsMaker{
 		anim.setShape("circle");
 		anim.setRadius(1);
 		anim.setCount(150);
-		anim.setSpeed(.5);
+		anim.setSpeed(.7);
 		anim.setRandom(true);
 		anim.setStartDivById(attacker);
 		anim.setEndDivById(defender);
@@ -76,8 +76,8 @@ class animationsMaker{
 		let anim = new singleRadial();
 		anim.setColor("red");
 		anim.setShape("circle");
-		anim.setRadius(50);
-		anim.setSpeed(.3);
+		anim.setRadius(150);
+		anim.setSpeed(.7);
 		anim.setCenterDivById(damaged);
 		anim.setCount(3);
 		return anim;
@@ -87,8 +87,8 @@ class animationsMaker{
         let anim = new singleRadial();
 		anim.setColor("black");
 		anim.setShape("circle");
-		anim.setRadius(50);
-		anim.setSpeed(.3);
+		anim.setRadius(150);
+		anim.setSpeed(.35);
 		anim.setCenterDivById(damaged);
 		anim.setCount(3);
 		return anim;
@@ -98,8 +98,8 @@ class animationsMaker{
         let anim = new singleRadial();
 		anim.setColor("red");
 		anim.setShape("circle");
-		anim.setRadius(50);
-		anim.setSpeed(.3);
+		anim.setRadius(150);
+		anim.setSpeed(.7);
         if(isMe){
             anim.setCenterDiv($(".overlayHUD1"));
         }
