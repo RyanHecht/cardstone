@@ -26,6 +26,16 @@ public class CardDamageEffect implements Effect {
 	public void apply(Board board) {
 		board.damageCard(cardDamaged, source, dmg);
 	}
+	
+	public CreatureInterface getTarget(){
+		return cardDamaged;
+	}
+	
+	public int getDmg(){
+		return dmg;
+	}
+	
+	
 
 	@Override
 	public Card getSrc() {

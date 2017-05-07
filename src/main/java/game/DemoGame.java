@@ -52,7 +52,9 @@ public class DemoGame extends Game {
 		// WARNING: DO NOT CHANGE THIS TEXT OR SOMETHING AWFUL WILL HAPPEN WITH THE
 		// FRONT END!!!!
 		messages[10] = "Congrats! You have finished the tutorial.";
-
+		// WARNING: DO NOT CHANGE THIS TEXT OR SOMETHING AWFUL WILL HAPPEN WITH THE
+		// FRONT END!!!!
+		
 		// create the AI events.
 		Player ai = getBoard().getInactivePlayer();
 		System.out.println(getBoard().getActivePlayer() + " is the players" + getBoard().getInactivePlayer());
@@ -188,17 +190,8 @@ public class DemoGame extends Game {
 			}
 			// increment actionId
 			actionId++;
-			super.handlePlayerTargeted(userInput, playerId);
-
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			// tell player what to do next.
 			sendPlayerTextMessage(playerId, messages[actionId]);
+			super.handlePlayerTargeted(userInput, playerId);
 		}
 	}
 

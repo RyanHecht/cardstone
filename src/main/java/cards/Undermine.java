@@ -50,7 +50,7 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 	}
 
 	public Effect onAnyAttack(CreatureInterface attacker, Zone z) {
-		if (turnsLeft > 0 && z == Zone.AURA_BOARD) {
+		if (turnsLeft == 1 && z == Zone.AURA_BOARD) {
 			return new EffectMaker((Board board) -> {
 				ConcatEffect ce = new ConcatEffect(this);
 				for (Card c : board.getPlayerOneCreatures()) {
