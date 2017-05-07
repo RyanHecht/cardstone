@@ -243,6 +243,8 @@ public class Game implements Jsonifiable, Serializable {
 			throw new IllegalArgumentException("Passed invalid value to endGame: " + i);
 		}
 
+		sendGameOver(playerOne.getId(), messageOne);
+		sendGameOver(playerTwo.getId(), messageTwo);
 		GameManager.endGame(new GameStats(this, winnerId));
 	}
 
