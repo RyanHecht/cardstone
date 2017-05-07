@@ -8,12 +8,14 @@ import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Effect;
+import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import effects.AddToOccEffect;
 import effects.EmptyEffect;
 import effects.GateEffect;
+import effects.SummonEffect;
 import game.Player;
 import templates.PlayerChoosesCards;
 
@@ -63,22 +65,31 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 						should = false;
 				}
 				else{
-					turnsLeft = 0;
-					last.getClass().getConstructors()[0].newInstance(getOwner());
-					last.getClass().getDeclaredConstructor(getOwner());
-					return new SummonEffect()
+					return getCard();
 				}
 			}
 		}
 		return null;
 	}
 	
-	public Effect onTurnStart(Player p, Zone z){
-		if(should){
-			return new SummonEffect()
+	Effect getCard(){
+		turnsLeft = 0;
+		Card newCard = last.getNewInstanceOf(getOwner());
+		ManaPool mp = newCard.getCost();
+		mp.setResources(0);
+		for(ElementType type : ElementType.values()){
+			mp.setElement(type, 0);
 		}
-		return null;
-		
+		return new SummonEffect(newCard,Zone.HAND,this);
+	}
+	
+	public Effect onTurnStart(Player p, Zone z){
+		if(turnsLeft == 1 && p == getOwner() && z == Zone.GRAVE && should){
+			turnsLeft = 0;
+			return getCard();
+		}
+		turnsLeft--;
+		return EmptyEffect.create();
 	}
 	
 	@Override

@@ -72,7 +72,7 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
-	default public Card getNewInstanceOf(){
+	default public Card getNewInstanceOf(Player p){
 		return this;
 	}
 	

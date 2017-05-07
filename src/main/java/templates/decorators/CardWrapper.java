@@ -136,8 +136,8 @@ public class CardWrapper implements Card {
 		return internal.onProposedEffect(e, z);
 	}
 	
-	public Card getNewInstanceOf(){
-		return internal.getNewInstanceOf();
+	public Card getNewInstanceOf(Player p){
+		return internal.getNewInstanceOf(p);
 	}
 
 	@Override
