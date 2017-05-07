@@ -44,7 +44,6 @@ class TurnTimer{
                     server.endTurn();
                 }
             }
-            return;
         }
         window.setTimeout(function(){
             $this.updateThread($this);
