@@ -21,9 +21,11 @@
 	   <button class="btn btn-default" type="submit" id="hostbutton">...or create one</button>
 	</div>
      <script type="text/javascript">
+       let error;
+       let errorHeader;
        <#if error?? && errorHeader??>
-          let error = "${error}";
-		  let errorHeader = "${errorHeader}";
+          error = "${error}";
+		  errorHeader = "${errorHeader}";
 	   </#if>
 	 </script>
      <script src="js/bootstrapalt.min.js"></script>

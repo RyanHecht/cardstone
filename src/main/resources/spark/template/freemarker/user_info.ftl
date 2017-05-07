@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div id="startmodadl" class="modal fade" role="dialog">
+<div id="startmodal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
