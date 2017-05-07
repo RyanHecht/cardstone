@@ -24,7 +24,8 @@ public class DwarvenMiner extends Creature{
 	}
 	
 	public boolean onProposedEffect(Effect e, Zone z) {
-		if(z == Zone.CREATURE_BOARD && e.getSrc().getType() == CardType.AURA && e.getSrc().getOwner() == getOwner()){
+		if(z == Zone.CREATURE_BOARD && e.getSrc().getType() 
+				== CardType.AURA && e.getSrc().getOwner() == getOwner()){
 			return true;
 		}
 		return false;
