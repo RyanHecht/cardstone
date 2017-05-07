@@ -50,6 +50,9 @@ public class IntermittentTremors extends AuraCard{
 					return ce;
 				},this);
 			}
+			else{
+				turnsToTremor--;
+			}
 		}
 		return EmptyEffect.create();
 	}

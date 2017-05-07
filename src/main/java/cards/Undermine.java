@@ -41,9 +41,11 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 	}
 
 	public Effect onTurnStart(Player p, Zone z) {
-		turnsLeft--;
-		if (turnsLeft <= 0) {
-			return new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD,this);
+		if(z==Zone.AURA_BOARD){
+			turnsLeft--;
+			if (turnsLeft <= 0) {
+				return new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD,this);
+			}
 		}
 		return EmptyEffect.create();
 	}
