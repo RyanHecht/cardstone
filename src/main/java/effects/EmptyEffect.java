@@ -3,6 +3,9 @@ package effects;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
+import cards.CheapJoshCreature;
+import game.Player;
+import game.PlayerType;
 
 /**
  * Class to represent an effect that does nothing. It's final so people can't
@@ -15,7 +18,7 @@ import cardgamelibrary.Effect;
  */
 public final class EmptyEffect implements Effect {
 	private static final EmptyEffect effect = new EmptyEffect();
-
+	private static final Card src = new CheapJoshCreature(new Player(-1100,PlayerType.PLAYER_ONE,-1100));
 	/*
 	 * no instantiation allowed.
 	 */
@@ -44,7 +47,7 @@ public final class EmptyEffect implements Effect {
 
 	@Override
 	public Card getSrc() {
-		return null;
+		return src;
 	}
 
 }
