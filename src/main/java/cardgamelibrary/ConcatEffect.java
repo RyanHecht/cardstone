@@ -10,8 +10,16 @@ public class ConcatEffect implements Effect, Serializable {
 
 	private LinkedList<Effect> effects;
 
-	public ConcatEffect() {
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
+	public ConcatEffect(Card src) {
 		this.effects = new LinkedList<Effect>();
+		this.src = src;
 	}
 
 	public void addEffect(Effect e) {
@@ -40,5 +48,4 @@ public class ConcatEffect implements Effect, Serializable {
 	public EffectType getType() {
 		return EffectType.EMPTY;
 	}
-
 }

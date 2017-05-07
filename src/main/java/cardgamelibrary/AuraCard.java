@@ -23,11 +23,11 @@ public class AuraCard extends PlayableCard implements AuraInterface {
 	public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
-		ConcatEffect effect = new ConcatEffect();
+		ConcatEffect effect = new ConcatEffect(this);
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
-			effect.addEffect(new AddToOccEffect(this, getOwner(), Zone.AURA_BOARD, Zone.HAND));
+			effect.addEffect(new AddToOccEffect(this, getOwner(), Zone.AURA_BOARD, Zone.HAND,this));
 
 			// add any specific effects for this aura being played.
 			effect.addEffect(onThisPlayed(c, z));

@@ -36,9 +36,9 @@ public class RockShock extends SpellCard implements TargetsOtherCard {
 
 
 	public Effect impactCardTarget(Card target, Zone zone) {
-		ConcatEffect ce = new ConcatEffect();
+		ConcatEffect ce = new ConcatEffect(this);
 		ce.addEffect(new CardDamageEffect(this,(CreatureInterface)target,2));
-		ce.addEffect(new ApplyEffect(target, new CantAttackForTurnsCreature((CreatureInterface) target,2)));
+		ce.addEffect(new ApplyEffect(target, new CantAttackForTurnsCreature((CreatureInterface) target,2),this));
 		return ce;
 	}
 

@@ -24,7 +24,7 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
 
-		ConcatEffect effect = new ConcatEffect();
+		ConcatEffect effect = new ConcatEffect(this);
 		if (c.equals(this) && z == Zone.HAND) {
 			System.out.println(
 					"A spell's onCardPlayed has triggered for itself. Cost should be paid and it will go to " + "the graveyard.");
@@ -33,7 +33,7 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 			// pay cost of the card.
 			getOwner().payCost(getCost());
 
-			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND));
+			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND,this));
 			// add any specific effects for this spell being played.
 			effect.addEffect(onThisPlayed(c, z));
 			

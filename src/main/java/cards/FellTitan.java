@@ -36,7 +36,7 @@ public class FellTitan extends SpellCard implements TargetsOtherCard{
 	@Override
 	public Effect impactCardTarget(Card target, Zone targetIn) {
 		assert cardValidTarget(target,targetIn);
-		return new AddToOccEffect(target,target.getOwner(),Zone.CREATURE_BOARD,Zone.GRAVE);
+		return new AddToOccEffect(target,target.getOwner(),Zone.CREATURE_BOARD,Zone.GRAVE,this);
 	}
 
 	

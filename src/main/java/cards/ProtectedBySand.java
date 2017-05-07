@@ -50,10 +50,10 @@ public class ProtectedBySand extends AuraCard{
 	public Effect getNewProposition(Effect e, Zone z){
 		if(onProposedEffect(e,z)){
 			instancesToPrevent--;
-			ConcatEffect ce = new ConcatEffect();
-			ce.addEffect(new CancelledEffect());
+			ConcatEffect ce = new ConcatEffect(this);
+			ce.addEffect(new CancelledEffect(this));
 			if(instancesToPrevent <= 0){
-				ce.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.AURA_BOARD));
+				ce.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.AURA_BOARD,this));
 			}
 			return ce;
 		}
