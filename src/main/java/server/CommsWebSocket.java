@@ -7,6 +7,7 @@ import game.Game;
 import game.GameManager;
 import game.GameStats;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -150,6 +151,19 @@ public class CommsWebSocket {
       }
     }
     return false;
+  }
+
+  public static void removeIfSpectator(Integer userId) {
+    Iterator<List<Integer>> it = spectators.values().iterator();
+    while (it.hasNext()) {
+      List<Integer> specList = it.next();
+
+      if (specList.contains(userId)) {
+        specList.remove(userId);
+        return;
+      }
+    }
+
   }
 
   public static int getSpectatee(Integer userId) {
