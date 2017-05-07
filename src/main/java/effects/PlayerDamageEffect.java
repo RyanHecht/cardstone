@@ -2,18 +2,16 @@ package effects;
 
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
-import cardgamelibrary.Effect;
 import game.Player;
 
-public class PlayerDamageEffect implements Effect {
+public class PlayerDamageEffect implements DamageInterface {
 
-	private Card		source;
+	private Card source;
+
 	public Card getSource() {
 		return source;
 	}
 
-	
-	
 	public void setSource(Card source) {
 		this.source = source;
 	}
@@ -34,8 +32,8 @@ public class PlayerDamageEffect implements Effect {
 		this.dmg = dmg;
 	}
 
-	private Player	playerDamaged;
-	private int			dmg;
+	private Player playerDamaged;
+	private int dmg;
 
 	public PlayerDamageEffect(Player target, Card c, int dmg) {
 		source = c;
@@ -54,11 +52,19 @@ public class PlayerDamageEffect implements Effect {
 		return EffectType.PLAYER_DAMAGED;
 	}
 
-
-
 	@Override
 	public Card getSrc() {
 		return source;
+	}
+
+	@Override
+	public void setDamage(int dmg) {
+		this.dmg = dmg;
+	}
+
+	@Override
+	public int getDamage() {
+		return dmg;
 	}
 
 }
