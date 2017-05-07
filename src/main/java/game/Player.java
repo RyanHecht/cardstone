@@ -85,6 +85,7 @@ public class Player implements Serializable {
 
 	public void healDamage(int heal) {
 		life += heal;
+		System.out.println("i helaed for" + heal);
 	}
 
 	@Override
