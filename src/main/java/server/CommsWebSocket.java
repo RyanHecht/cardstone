@@ -46,7 +46,7 @@ public class CommsWebSocket {
       int winner = game.getOpposingPlayerId(id);
       GameStats stats = new GameStats(game, id);
       GameManager.endGame(stats);
-      System.out.println("game ended");
+      System.out.println("Game ended because " + id + " left.");
       try {
         CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
         CommsWebSocket.sendGameEnd(id,
