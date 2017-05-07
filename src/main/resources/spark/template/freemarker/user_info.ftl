@@ -6,7 +6,7 @@
     <div class="col-sm-8">
 	    <a href="/decks" id="decks" class="btn btn-default btn-lg btn-block shadowedButton">Decks</a>
 	    <br><br>
-        <a href="/games" id="games" class="btn btn-default btn-lg btn-block shadowedButton">Games</a>
+        <a href="/replays" id="games" class="btn btn-default btn-lg btn-block shadowedButton">Replays</a>
 	    <br><br>
         <a href="/lobbies" id="lobbies" class="btn btn-default btn-lg btn-block shadowedButton">Lobbies</a>
         <br><br>

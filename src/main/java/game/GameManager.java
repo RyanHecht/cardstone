@@ -3,6 +3,8 @@ package game;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -50,20 +52,12 @@ public class GameManager {
 
 		int firstUser = g.getActivePlayerId();
 		int secondUser = g.getOpposingPlayerId(firstUser);
-		String endString = String.format("end game %d with winner %d and players %d and %d", gId, winner, firstUser,
-				secondUser);
-		// try {
-		System.out.println("Request to " + endString);
+
 		registerFinishedGame(gId, firstUser, secondUser, winner, turns);
 
 		games.removeGame(firstUser);
 		games.removeGame(secondUser);
 		gamesToEventNums.remove(gId);
-		System.out.println("Able to " + endString);
-		// } catch (SQLException | NullPointerException e) {
-		// System.out.println("Could not " + endString);
-		// throw new RuntimeException();
-		// }
 	}
 
 	public static boolean playerIsInGame(int playerId) {
@@ -151,29 +145,32 @@ public class GameManager {
 	 * @param g
 	 *          the game
 	 */
-	public static void pushToDb(Game g) {
-		// add game to cache
-		if (games.updateGame(g)) {
-			String eventInsert = "insert into game_event values(?, ?, ?, ?);";
-			int gId = g.getId();
-			int eventNum = gamesToEventNums.get(gId);
-			// insert JSON board state and animations into Db for replay purposes
-			// and increment the event number
-			try {
-				System.out.println("Trying to insert event num " + eventNum + " for game " + gId);
-				JsonArray anims = gamesToAnimations.get(gId);
-
-				Db.update(eventInsert, gId, eventNum, g.jsonifySelf(), anims);
-				gamesToEventNums.put(gId, ++eventNum);
-				gamesToAnimations.replace(gId, new JsonArray());
-				System.out.println("Event num now " + gamesToEventNums.get(gId));
-			} catch (SQLException | NullPointerException e) {
-				System.out
-						.println(String.format("Error pushing game %d event %d to db", g.getId(), gamesToEventNums.get(g.getId())));
-				e.printStackTrace();
-			}
-		}
-	}
+    public static void pushToDb(Game g) {
+      // add game to cache
+      if (games.updateGame(g)) {
+        String eventInsert = "insert into game_event values(?, ?, ?, ?);";
+        int gId = g.getId();
+        int eventNum = gamesToEventNums.get(gId);
+        // insert JSON board state and animations into Db for replay purposes
+        // and increment the event number
+        try {
+          System.out.println(
+              "Trying to insert event num " + eventNum + " for game " + gId);
+          JsonArray anims = gamesToAnimations.get(gId);
+  
+          Db.update(eventInsert, gId, eventNum, g.jsonifySelf(), anims);
+          gamesToEventNums.put(gId, ++eventNum);
+          gamesToAnimations.replace(gId, new JsonArray());
+          System.out.println("Event num now " + gamesToEventNums.get(gId));
+        } catch (SQLException e) {
+          System.out.println(String.format("Error pushing game %d event %d to db",
+              g.getId(), gamesToEventNums.get(g.getId())));
+        } catch (NullPointerException e) {
+          System.out.println(
+              "Game " + g.getId() + " does not exist or has been completed.");
+        }
+      }
+    }
 
 	/**
 	 * Returns the board state for a game event as a JsonObject.
@@ -231,19 +228,23 @@ public class GameManager {
 		anims.add(anim);
 	}
 
-	// Transitions game from in_progress to finished_game
-	public static void registerFinishedGame(int gId, int p1, int p2, int winner, int turns) {
-		try {
-			System.out.println(String.format("Trying to stash %d with players %d and %d", gId, p1, p2));
-			Db.update("delete from in_progress where id = ?;", gId);
-			Db.update("insert into finished_game values(?, ?, ?);", gId, winner, turns);
-			Db.update("insert into user_game values(?, ?);", p1, gId);
-			Db.update("insert into user_game values(?, ?);", p2, gId);
-		} catch (NullPointerException | SQLException e) {
-			System.out.println(String.format("Game %d with players %d and %d ALREADY IN DB YOU TWAT", gId, p1, p2));
-			e.printStackTrace();
-		}
-	}
+    // Transitions game from in_progress to finished_game
+    public static void registerFinishedGame(int gId, int p1, int p2, int winner,
+        int turns) {
+      try {
+        System.out.println(String
+            .format("Trying to stash %d with players %d and %d", gId, p1, p2));
+        String timestamp = DateFormat.getInstance().format(new Date());
+  
+        Db.update("delete from in_progress where id = ?;", gId);
+        Db.update("insert into finished_game values(?, ?, ?, ?, ?, ?);", gId,
+            winner, p1, p2, turns, timestamp);
+      } catch (NullPointerException | SQLException e) {
+        System.out.println(
+          String.format("Game %d with players %d and %d already in db",
+                gId, p1, p2));
+      }
+    }
 
 	static void conditionalInsert(Game g) {
 		int gId = g.getId();

@@ -15,7 +15,7 @@
      <div class="container">
      <br>
      <br>
-	 <h3> ${username}'s Games</h3> 
+	 <h3> ${username}'s Replays</h3> 
 	   <div class="row">
 	     <div class="col-sm-8" id="games">
 	       ${game_table}
