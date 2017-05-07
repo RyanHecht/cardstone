@@ -1,16 +1,13 @@
 package cards;
 
-import cardgamelibrary.Board;
 import cardgamelibrary.CardType;
-import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Creature;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
-import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
 import effects.CreatureHealthChangeEffect;
-import effects.GateEffect;
+import effects.EmptyEffect;
 import game.Player;
 import templates.CantAttackCreature;
 
@@ -30,15 +27,11 @@ public class EarthswornObserver extends Creature implements CantAttackCreature {
 
 	@Override
 	public Effect onCreatureDeath(CreatureInterface cr, Zone z) {
-		ConcatEffect ef = new ConcatEffect(this);
 
-		ef.addEffect(new GateEffect((Board board) -> {
-			return z == Zone.CREATURE_BOARD && cr.getCost().getElement(ElementType.EARTH) > 0;
-		},this));
-
-		ef.addEffect(new CreatureHealthChangeEffect(2, this,this));
-
-		return ef;
+		if (z == Zone.CREATURE_BOARD && cr.getOwner().equals(getOwner())) {
+			return new CreatureHealthChangeEffect(2, this, this);
+		}
+		return EmptyEffect.create();
 	}
 
 }
