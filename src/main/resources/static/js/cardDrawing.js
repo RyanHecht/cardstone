@@ -149,12 +149,12 @@ function setupOptionsMenu(){
         tooltipDisplay = this.checked;
         resizeRedrawAll();
     });
-		console.log("setting options");
+		//console.log("setting options");
 		if (isReplay) {
 			$("#concedeButton").text("Return to Menu");
 		}
 		if (spectator) {
-			console.log("it's a spectator");
+			//console.log("it's a spectator");
 			$("#concedeButton").text("Quit Spectating");
 		}
     $("#concedeButton").click(function(){

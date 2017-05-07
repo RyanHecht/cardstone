@@ -169,6 +169,7 @@ class Server{
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
+                    $("#concedeButton").text("Quit Spectating");
                     break;
                 case MESSAGE_TYPE.GAME_END:
                     this.gameEnded(message.payload);
