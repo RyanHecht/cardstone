@@ -19,7 +19,7 @@ import logins.Db;
  * @author ryan an willayyy
  */
 public class GamePool {
-  private static final int POOL_SIZE = 10;
+  private static final int POOL_SIZE = 1;
   private static LoadingCache<Integer, Game> playersToGames = CacheBuilder
       .newBuilder()
       .maximumSize(POOL_SIZE)

@@ -37,6 +37,7 @@ function user_prompt() {
 function disabled_inputs() {
 	$("#deck_list").find("a").removeAttr("href");
 	$("#deck_list").find("a").css( 'pointer-events', 'none' );
+	$("#create_deck").addClass("tutorialHighlight");
 };
 
 function next_stage() {
