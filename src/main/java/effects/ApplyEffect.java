@@ -25,10 +25,18 @@ public class ApplyEffect implements Effect {
 		this.replaceWith = replaceWith;
 	}
 
-	public ApplyEffect(Card target, Card replaceWith) {
+	private Card src;
+
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+	
+	public ApplyEffect(Card target, Card replaceWith, Card src) {
 		super();
 		this.target = target;
 		this.replaceWith = replaceWith;
+		this.src = src;
 	}
 
 	@Override

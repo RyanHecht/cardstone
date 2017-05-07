@@ -90,7 +90,7 @@ public class DemoGame extends Game {
 			if (actionId == 2) {
 				// ai plays spirit, then ends turn.
 				System.out.println("got called at handle effect");
-				ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()), Zone.CREATURE_BOARD);
+				ef = new SummonEffect(new WaterSpirit(getBoard().getActivePlayer()), Zone.CREATURE_BOARD,null);
 				getBoard().handleEffect(ef);
 				sendWholeBoardToAllAndDb();
 

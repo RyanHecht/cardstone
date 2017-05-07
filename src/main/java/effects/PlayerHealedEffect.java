@@ -27,4 +27,9 @@ public class PlayerHealedEffect implements Effect {
 		return EffectType.PLAYER_HEALED;
 	}
 
+	@Override
+	public Card getSrc() {
+		return source;
+	}
+
 }

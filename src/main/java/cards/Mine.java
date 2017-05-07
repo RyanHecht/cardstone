@@ -25,7 +25,7 @@ public class Mine extends AuraCard {
 	public Effect onTurnStart(Player p, Zone z) {
 
 		if (p.equals(getOwner()) && z == Zone.AURA_BOARD) {
-			return new GiveElementEffect(p, ElementType.EARTH, 1);
+			return new GiveElementEffect(p, ElementType.EARTH, 1,this);
 		}
 		return EmptyEffect.create();
 	}

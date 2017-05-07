@@ -8,20 +8,20 @@ function valOf(id) {
 
 $('input[type="submit"]').click(function() {
 	 const id = $(this).attr('id');
-	 if(id == "/register"){
-         $.cookie("tutorial",0);
-         console.log("ad");
-     }
+
 	 const username = valOf("#username");
 	 const pw = valOf("#password");
 	 if (username != "" && pw != "") {
-		 const formText = "<form action=" + id + " method='POST'>" + 
-		"<input type='text' name='username' value=" + username + " />" +
-		"<input type='password' name='password' value=" + pw + " />" +
-		" />";
-	
-		 const form = $(formText);
-		 $('body').append(form);
-		 form.submit();
+		 const postParams = {username: username, password: pw};
+		 $.post(id, postParams, responseJSON => {
+			const respObj = JSON.parse(responseJSON);
+			console.log(respObj);
+			 
+			if (respObj.auth) {
+				window.location.replace("/menu");
+			} else {
+				$("#error").text(respObj.error);
+			}
+		 });
 	 }
  });

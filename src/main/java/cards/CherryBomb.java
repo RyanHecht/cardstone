@@ -34,7 +34,7 @@ public class CherryBomb extends Creature implements OnOwnDeathCard {
 			} else {
 				return new PlayerDamageEffect(board.getActivePlayer(), this, 5);
 			}
-		});
+		},this);
 	}
 
 }

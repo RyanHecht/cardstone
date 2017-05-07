@@ -31,7 +31,7 @@ public class StoneSinger extends Creature{
 		if(z == Zone.CREATURE_BOARD && c.getOwner() == getOwner()){
 			if(c.getCost().getElement(ElementType.EARTH) >= 1){
 				TauntCreature tc = new TauntCreature(new StoneGolem(this.getOwner()));
-				return new SummonEffect(tc,Zone.CREATURE_BOARD);
+				return new SummonEffect(tc,Zone.CREATURE_BOARD,this);
 			}
 		}
 		return EmptyEffect.create();

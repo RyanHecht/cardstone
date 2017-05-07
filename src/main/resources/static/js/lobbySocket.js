@@ -49,7 +49,8 @@ class LobbySocket {
 	}
 
 	sendHeartbeat() {
-		this.websocket.send("lubdub");
+		const heartbeat = {"heartbeat": "lubdub"};
+		this.websocket.send(JSON.stringify(heartbeat));
 	}
 
   sendChat(chat) {

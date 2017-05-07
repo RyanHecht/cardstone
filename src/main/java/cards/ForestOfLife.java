@@ -27,11 +27,11 @@ public class ForestOfLife extends AuraCard{
 	}
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
-		ConcatEffect ce = new ConcatEffect();
+		ConcatEffect ce = new ConcatEffect(this);
 		ce.addEffect(new GateEffect((Board board) -> {
 			return z == Zone.AURA_BOARD && c.getOwner() 
 					== getOwner() && c.getCost().getElement(ElementType.EARTH) >= 1;
-		}));
+		},this));
 		ce.addEffect(new PlayerHealedEffect(this,getOwner(),3));
 		return ce;
 	}

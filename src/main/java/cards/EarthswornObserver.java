@@ -30,13 +30,13 @@ public class EarthswornObserver extends Creature implements CantAttackCreature {
 
 	@Override
 	public Effect onCreatureDeath(CreatureInterface cr, Zone z) {
-		ConcatEffect ef = new ConcatEffect();
+		ConcatEffect ef = new ConcatEffect(this);
 
 		ef.addEffect(new GateEffect((Board board) -> {
 			return z == Zone.CREATURE_BOARD && cr.getCost().getElement(ElementType.EARTH) > 0;
-		}));
+		},this));
 
-		ef.addEffect(new CreatureHealthChangeEffect(2, this));
+		ef.addEffect(new CreatureHealthChangeEffect(2, this,this));
 
 		return ef;
 	}

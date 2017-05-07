@@ -12,13 +12,21 @@ public class AddToOccEffect implements Effect {
 	Player owner;
 	Zone end;
 	Zone start;
+	private Card src;
 
-	public AddToOccEffect(Card card, Player owner, Zone end, Zone start) {
+	@Override
+	public Card getSrc() {
+		return src;
+	}
+
+	
+	public AddToOccEffect(Card card, Player owner, Zone end, Zone start, Card src) {
 		super();
 		this.card = card;
 		this.owner = owner;
 		this.end = end;
 		this.start = start;
+		this.src = src;
 	}
 
 	public Card getCard() {
@@ -63,4 +71,5 @@ public class AddToOccEffect implements Effect {
 		return EffectType.CARD_ZONE_CHANGED;
 	}
 
+	
 }

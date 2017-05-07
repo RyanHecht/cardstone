@@ -1,6 +1,7 @@
 package effects;
 
 import cardgamelibrary.Board;
+import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
 
 /**
@@ -39,6 +40,11 @@ public final class EmptyEffect implements Effect {
 	@Override
 	public EffectType getType() {
 		return EffectType.EMPTY;
+	}
+
+	@Override
+	public Card getSrc() {
+		return null;
 	}
 
 }

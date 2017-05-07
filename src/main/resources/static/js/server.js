@@ -89,11 +89,12 @@ class Server{
 		this.websocket.onmessage = this.onWebSocketMessage;
 		this.websocket.onopen = this.onWebSocketOpen;
 
-    const that = this;
-    setInterval(function() {
-        return that.websocket.send("lubdub")
-    }, 5000);
-        }
+		const that = this;
+			setInterval(function() {
+				const heartbeat = {heartbeat: "lubdub"}
+				return that.websocket.send(JSON.stringify(heartbeat));
+			}, 5000);
+		}
         this.curMessage = "none";
 	}
 
@@ -102,11 +103,11 @@ class Server{
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened');
-    this.server.startHeartbeat();
+    	this.server.startHeartbeat();
 	}
 
   startHeartbeat() {
-
+	  // why doesn't this do anything?
   }
 
 	onWebSocketMessage(event) {
@@ -196,14 +197,12 @@ class Server{
 
 
   gameEnded(message){
-      console.log("game ended")
       this.alertMessage(message);
-      //console.log(message)
       $('#messageModal').on('hidden.bs.modal', function () {
           window.onbeforeunload = function() {};
-          if (message.message.includes("tutorial")) {
-            $.cookie('tutorial', tutorialStage() + 1);
-            console.log("tutorial ended!")
+          let stage = parseInt($.cookie('tutorial'));
+          if (stage > 0) {
+            $.cookie('tutorial', stage + 1);
           }
           window.location.replace("/menu");
       });
@@ -275,7 +274,6 @@ class Server{
             case "cardPlayed":
                 console.log(message.card);
                 quedAnims.push(animationsMaker.playCardAnimation(message.card).create());
-
                 break;
             case "cardDied":
                 quedAnims.push(animationsMaker.getDeadAnimation(message.id1.id).create());

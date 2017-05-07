@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,10 +42,9 @@ public class Gui {
   private static final Gson GSON = new Gson();
 
   public Gui(FreeMarkerEngine fm) {
-    Spark.get("/login", new LoginHandler(), fm);
-    Spark.get("/register", new RegisterHandler(), fm);
-    Spark.post("/login", new LoginHandler(), fm);
-    Spark.post("/register", new RegisterHandler(), fm); // buggy
+    Spark.get("/login", new LoginViewer(), fm);
+    Spark.post("/login", new LoginHandler());
+    Spark.post("/register", new RegisterHandler()); // buggy
     Spark.post("/username", new UsernameHandler());
 
     Spark.post("/menu", new MenuHandler(), fm);
@@ -497,12 +494,11 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
 
       String id = qm.value("id");
+      System.out.println("Trying to get username for id " + id);
       String username;
       String userQuery = "select username from user where id = ?;";
       try (ResultSet rs = Db.query(userQuery, id)) {
-        rs.next();
-        username = rs.getString(1);
-        assert !rs.next();
+        username = rs.next() ? rs.getString(1) : "Anonymous";
       } catch (NullPointerException | SQLException e) {
         username = "Anonymous";
         e.printStackTrace();
@@ -542,9 +538,9 @@ public class Gui {
    * Login page.
    * @author wriley1
    */
-  private class LoginHandler implements TemplateViewRoute {
+  private class LoginHandler implements Route {
     @Override
-    public ModelAndView handle(Request req, Response res)
+    public String handle(Request req, Response res)
         throws NullPointerException, IllegalArgumentException, IOException {
       QueryParamsMap qm = req.queryMap();
       String username = qm.value("username");
@@ -552,31 +548,45 @@ public class Gui {
       String password = qm.value("password");
       password = getSalted(password == null ? "" : password);
 
-      Map<String, Object> vars = new HashMap<>();
-      vars.put("title", "Cardstone: The Shattering");
+      JsonObject response = new JsonObject();
+      boolean auth = false;
+      String error = "Invalid username or password.";
 
       // See if there's anyone with the same username/password combo
       // if there is, log them in; otherwise, do not
       String loginQuery = "SELECT * FROM user WHERE username = ? "
           + "AND password = ?;";
       try (ResultSet rs = Db.query(loginQuery, username, password)) {
-        if (!rs.next()) {
-          return new ModelAndView(Collections.unmodifiableMap(vars),
-              "login.ftl");
+        auth = rs.next() ? true : false;
+        if (auth) {
+          res.cookie("username", username);
+          String uid = rs.getString(1);
+          res.cookie("id", uid);
+          res.cookie("tutorial", "-1");
+        } else {
+          response.addProperty("error", error);
         }
-
-        res.cookie("username", username);
-        String uid = rs.getString(1);
-        System.out.println(uid);
-        res.cookie("id", uid);
-        res.cookie("tutorial", "-1");
-
-        return new ModelAndView(Collections.unmodifiableMap(vars),
-            "menu_redirect.ftl");
       } catch (SQLException e) {
         e.printStackTrace();
-        return new ModelAndView(Collections.unmodifiableMap(vars), "login.ftl");
+        auth = false;
+        response.addProperty("error", error);
       }
+      response.addProperty("auth", auth);
+      return response.toString();
+    }
+  }
+
+  /**
+   * Login page.
+   * 
+   * @author wriley1
+   */
+  private class LoginViewer implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request req, Response res)
+        throws NullPointerException, IllegalArgumentException, IOException {
+      return new ModelAndView(
+          ImmutableMap.of("title", "Cardstone: The Shattering"), "login.ftl");
     }
   }
 
@@ -584,9 +594,9 @@ public class Gui {
    * Creating accounts.
    * @author wriley1
    */
-  private class RegisterHandler implements TemplateViewRoute {
+  private class RegisterHandler implements Route {
     @Override
-    public ModelAndView handle(Request req, Response res)
+    public String handle(Request req, Response res)
         throws NullPointerException, IllegalArgumentException, IOException {
       QueryParamsMap qm = req.queryMap();
       String username = qm.value("username");
@@ -594,31 +604,43 @@ public class Gui {
       System.out.println("First username " + username);
       username = username == null ? "" : username;
 
-      if (username.split("\\s+").length > 1) {
-        return new ModelAndView(
-            ImmutableMap.of("title", "Cardstone: The Shattering"), "login.ftl");
+      JsonObject response = new JsonObject();
+      boolean auth;
+      String error = null;
+
+      if (username.split("\\W+").length > 1) {
+        response.addProperty("auth", false);
+        response.addProperty("error",
+            "Usernames must be one word and have no punctuation.");
+        return response.toString();
       }
 
-      Map<String, Object> vars = ImmutableMap.of("title",
-          "Cardstone: The Shattering", "username", username);
       System.out.println("I'm here with password " + password);
       try {
         Db.update("insert into user values(null, ?, ?);", username, password);
         res.cookie("username", username);
 
-        ResultSet rs = Db.query("select id from user where username = ?;",
-            username);
-        assert rs.next();
-        String uid = rs.getString(1);
-        rs.close();
-        System.out.println("User id: " + uid);
-        res.cookie("id", uid);
-        res.cookie("tutorial", "0"); // initiate tutorial
-        return new ModelAndView(vars, "menu_redirect.ftl");
+        try (ResultSet rs = Db.query("select id from user where username = ?;",
+            username)) {
+          assert rs.next();
+          String uid = rs.getString(1);
+          rs.close();
+          System.out.println("User id: " + uid);
+          res.cookie("id", uid);
+          res.cookie("tutorial", "0"); // initiate tutorial
+          auth = true;
+        }
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
-        return new ModelAndView(vars, "login.ftl");
+        auth = false;
+        error = "User with name " + username + " already exists.";
       }
+
+      response.addProperty("auth", auth);
+      if (error != null) {
+        response.addProperty("error", error);
+      }
+      return response.toString();
     }
   }
 
