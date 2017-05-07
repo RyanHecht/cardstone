@@ -344,6 +344,15 @@ public class Game implements Jsonifiable, Serializable {
 		}
 	}
 
+	public void sendGameOver(int playerId, String message) {
+		try {
+			CommsWebSocket.sendGameEnd(playerId, message);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Sends the board state to both players in the game.
 	 */
@@ -385,13 +394,18 @@ public class Game implements Jsonifiable, Serializable {
 			sendPlayerActionBad(playerId, "Acting out of turn.");
 		} else {
 
-			if (state != GameState.IDLE) {
+			if (state == GameState.AWAITING_CHOICE) {
 				System.out.println(state.name());
-				// if the game state isn't idle, we are awaiting some other
+				// if the game state is awaiting choice, we are awaiting some other
 				// input from
 				// the user so they can't end their turn.
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
+				return;
+			}
+
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
 				return;
 			}
 			sendPlayerActionGood(playerId);
@@ -452,11 +466,18 @@ public class Game implements Jsonifiable, Serializable {
 	public void handleCardTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
-			if (state != GameState.IDLE) {
-				// if the game state isn't idle, we are awaiting some other
-				// input from the user.
+			if (state == GameState.AWAITING_CHOICE) {
+				System.out.println(state.name());
+				// if the game state is awaiting choice, we are awaiting some other
+				// input from
+				// the user so they can't end their turn.
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
+				return;
+			}
+
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
 				return;
 			}
 
@@ -566,11 +587,18 @@ public class Game implements Jsonifiable, Serializable {
 	public void handlePlayerTargeted(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
-			if (state != GameState.IDLE) {
-				// if the game state isn't idle, we are awaiting some other
-				// input from the user.
+			if (state == GameState.AWAITING_CHOICE) {
+				System.out.println(state.name());
+				// if the game state is awaiting choice, we are awaiting some other
+				// input from
+				// the user so they can't end their turn.
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
+				return;
+			}
+
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
 				return;
 			}
 
@@ -746,12 +774,18 @@ public class Game implements Jsonifiable, Serializable {
 			Card card = board.getCardById(userInput.get("IID1").getAsInt());
 
 			// check to see if game is in a state where cards can be played.
-			if (state != GameState.IDLE) {
-				// if the game state isn't idle, we are awaiting some other
-				// input from the user.
-
+			if (state == GameState.AWAITING_CHOICE) {
+				System.out.println(state.name());
+				// if the game state is awaiting choice, we are awaiting some other
+				// input from
+				// the user so they can't end their turn.
 				// send choose box back to user.
 				sendPlayerChooseRequest(playerId);
+				return;
+			}
+
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
 				return;
 			}
 
