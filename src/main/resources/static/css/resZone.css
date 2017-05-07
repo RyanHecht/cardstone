@@ -121,7 +121,7 @@
   height:50%;
   background-color:lightblue;
   background-image:url("../images/option.png");
-  background-size:contain;
+  background-size:80% 80%;
   background-repeat:no-repeat;
   background-position:center;
   text-align:center;
