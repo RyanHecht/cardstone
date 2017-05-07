@@ -49,6 +49,8 @@ public class CommsWebSocket {
 
       try {
         CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
+        CommsWebSocket.sendGameEnd(id,
+            "The player you were spectating left the game.");
       } catch (IOException e) {
         e.printStackTrace();
       }

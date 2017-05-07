@@ -33,6 +33,7 @@ class SpectateLobbySocket {
 
   updateSpectatee(id) {
     const obj = {"type": SPECTATE_MESSAGE_TYPE.SPECTATEE_UPDATE, "payload": {"id": id}};
+		console.log(JSON.stringify(obj));
     this.websocket.send(JSON.stringify(obj));
   }
 
