@@ -1,16 +1,19 @@
 package server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import lobby.Lobby;
-import lobby.LobbyManager;
+
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import lobby.Lobby;
+import lobby.LobbyManager;
 
 @WebSocket
 public class LobbyListWebSocket {
@@ -42,5 +45,4 @@ public class LobbyListWebSocket {
       }
     }
   }
-
 }

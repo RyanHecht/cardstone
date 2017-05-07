@@ -497,12 +497,11 @@ public class Gui {
       QueryParamsMap qm = req.queryMap();
 
       String id = qm.value("id");
+      System.out.println("Trying to get username for id " + id);
       String username;
       String userQuery = "select username from user where id = ?;";
       try (ResultSet rs = Db.query(userQuery, id)) {
-        rs.next();
-        username = rs.getString(1);
-        assert !rs.next();
+        username = rs.next() ? rs.getString(1) : "Anonymous";
       } catch (NullPointerException | SQLException e) {
         username = "Anonymous";
         e.printStackTrace();

@@ -59,7 +59,7 @@ class TutorialHandler {
 					window.location.replace("/tutorial_lobby");
 					break;
 				case TutorialEnum.IN_GAME:
-					window.location.replace("/game");
+					window.location.replace("/tutorialGame");
 					break;
 				case TutorialEnum.GAME_DONE:
 					window.location.replace("/menu");
