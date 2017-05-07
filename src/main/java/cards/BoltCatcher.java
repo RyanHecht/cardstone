@@ -69,7 +69,7 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 				}
 			}
 		}
-		return null;
+		return EmptyEffect.create();
 	}
 	
 	Effect getCard(){
