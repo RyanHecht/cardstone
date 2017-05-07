@@ -64,6 +64,8 @@ public class Board implements Jsonifiable, Serializable {
 	private OrderedCardCollection auraTwo;
 	private OrderedCardCollection graveTwo;
 	private OrderedCardCollection creatureTwo;
+	
+	private HashSet<Card> alreadyProcessed;
 
 	// everything in the game;
 	List<OrderedCardCollection> cardsInGame = new ArrayList<>();
@@ -115,7 +117,7 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		// set up starting hands.
 		assignStartingHands();
-
+		alreadyProcessed = new HashSet<>();
 	}
 
 	/**
@@ -172,6 +174,7 @@ public class Board implements Jsonifiable, Serializable {
 	private void handleState() {
 		while (eventQueue.size() >= 1 || effectQueue.size() >= 1) {
 			if (eventQueue.size() >= 1) {
+				alreadyProcessed.clear();
 				// when we handle an event we want to put
 				// all effects it produces onto the queue.
 				Event e = eventQueue.poll();
@@ -291,15 +294,14 @@ public class Board implements Jsonifiable, Serializable {
 			effect = maker.getEffect(this);
 		}
 		Effect past = effect;
-		HashSet<Card> processed = new HashSet<Card>();
-		effect = preprocessEffect(effect, processed);
+		effect = preprocessEffect(effect);
 		while(past != effect){
 			past = effect;
 			if(effect.getType() == EffectType.MAKER){
 				EffectMaker maker = (EffectMaker) effect;
 				effect = maker.getEffect(this);
 			}
-			effect = preprocessEffect(effect, processed);
+			effect = preprocessEffect(effect);
 		}
 		effect.apply(this);
 	}
@@ -331,14 +333,14 @@ public class Board implements Jsonifiable, Serializable {
 		return complaint;
 	}
 
-	private Effect preprocessEffect(Effect effect, Set<Card> alreadyProcessed) {
+	private Effect preprocessEffect(Effect effect) {
 		for (OrderedCardCollection occ : cardsInGame) {
 			for (Card c : occ) {
 				if (!alreadyProcessed.contains(c)) {
 					if (c.onProposedEffect(effect, occ.getZone())) {
 						alreadyProcessed.add(c);
 						effect = c.getNewProposition(effect, occ.getZone());
-						preprocessEffect(effect, alreadyProcessed);
+						preprocessEffect(effect);
 					}
 				}
 			}

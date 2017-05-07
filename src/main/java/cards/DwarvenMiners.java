@@ -1,6 +1,7 @@
 package cards;
 
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
@@ -10,7 +11,7 @@ import game.Player;
 
 public class DwarvenMiners extends Creature{
 
-	private static final ManaPool	defaultCost		= new ManaPool(30, 0, 0, 2, 0, 0);
+	private static final ManaPool	defaultCost		= new ManaPool(40, 0, 0, 2, 0, 0);
 	private static final String		defaultImage	= "images/DwarvenMiners.jpg";
 	private static final String		defaultName		= "Dwarven Miners";
 	private static final String		defaultText		= "Double the effect of all your auras.";
@@ -23,12 +24,17 @@ public class DwarvenMiners extends Creature{
 	}
 	
 	public boolean onProposedEffect(Effect e, Zone z) {
-		if()
+		if(z == Zone.CREATURE_BOARD && e.getSrc().getType() == CardType.AURA && e.getSrc().getOwner() == getOwner()){
+			return true;
+		}
 		return false;
 	}
 
 	public Effect getNewProposition(Effect e, Zone z) {
-		return e;
+		ConcatEffect ce = new ConcatEffect(this);
+		ce.addEffect(e);
+		ce.addEffect(e);
+		return ce;
 	}
 	
 }
