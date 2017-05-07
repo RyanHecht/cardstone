@@ -57,7 +57,7 @@ public class CommsWebSocket {
     }
 
     sessions.remove(session);
-    idToSessions.remove(id);
+    idToSessions.remove(Integer.valueOf(id));
   }
 
   @OnWebSocketMessage
