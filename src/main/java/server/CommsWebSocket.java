@@ -340,7 +340,7 @@ public class CommsWebSocket {
     }
 
     if (spectators.get(userId) != null && spectators.get(userId).size() > 0) {
-      System.out.println("nummssss: " + spectators.get(userId).size());
+
       for (Integer spectator : spectators.get(userId)) {
         System.out.println(userId + " has a spectator!");
         if (idToSessions.containsKey(spectator)) {
