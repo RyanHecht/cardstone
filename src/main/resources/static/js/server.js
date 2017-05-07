@@ -102,7 +102,11 @@ class Server{
         const obj = {"type": MESSAGE_TYPE.ID_RESPONSE, "payload": payload}
 		this.socket.send(JSON.stringify(obj));
 		console.log('opened');
-    this.server.startHeartbeat();
+    if (isReplay) {
+      this.server.replayRequest(true);
+      this.server.startHeartbeat();
+    }
+
 	}
 
   startHeartbeat() {
@@ -166,7 +170,7 @@ class Server{
                     spectator = true;
                     canAct = false;
                     spectating = message.payload.watching;
-                    replayRequest(true);
+                    $("#concedeButton").text("Quit Spectating");
                     break;
                 case MESSAGE_TYPE.GAME_END:
                     this.gameEnded(message.payload);

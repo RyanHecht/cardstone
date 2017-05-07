@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Test;
 
 import cardgamelibrary.Board;
-import cardgamelibrary.Card;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Zone;
 import effects.CardDamageEffect;
@@ -16,7 +15,7 @@ import game.Game;
 import game.GameManager;
 import game.Player;
 
-public class CherryBombTest {
+public class WaterSpiritTest {
 
 	@Test
 	public void testBomb() {
@@ -26,14 +25,14 @@ public class CherryBombTest {
 		firstPlayerDeck.add("Earth Element");
 		firstPlayerDeck.add("Air Element");
 		firstPlayerDeck.add("Jun's Bolt");
-		firstPlayerDeck.add("Cherry Bomb");
+		firstPlayerDeck.add("Water Spirit");
 		List<String> secondPlayerDeck = new LinkedList<String>();
 		secondPlayerDeck.add("Fire Element");
 		secondPlayerDeck.add("Water Element");
 		secondPlayerDeck.add("Earth Element");
 		secondPlayerDeck.add("Air Element");
 		secondPlayerDeck.add("Jun's Bolt");
-		secondPlayerDeck.add("Cherry Bomb");
+		secondPlayerDeck.add("Water Spirit");
 
 		// construct dummy game.
 		Game g = new Game(firstPlayerDeck, secondPlayerDeck, -1, -2, false);
@@ -44,12 +43,11 @@ public class CherryBombTest {
 		GameManager.addGame(g);
 
 		Player active = b.getActivePlayer();
-
-		Card bombOne = b.getCardById(6);
-		Card bombTwo = b.getCardById(12);
-
-		SummonEffect se1 = new SummonEffect(bombOne, Zone.CREATURE_BOARD, null);
-		SummonEffect se2 = new SummonEffect(bombTwo, Zone.CREATURE_BOARD, null);
+		Player inactive = b.getInactivePlayer();
+		WaterSpirit w1 = new WaterSpirit(active);
+		WaterSpirit w2 = new WaterSpirit(inactive);
+		SummonEffect se1 = new SummonEffect(w1, Zone.CREATURE_BOARD, null);
+		SummonEffect se2 = new SummonEffect(w2, Zone.CREATURE_BOARD, null);
 
 		b.handleEffect(se1);
 		assert (b.getOcc(active, Zone.CREATURE_BOARD).size() == 1);
@@ -57,13 +55,12 @@ public class CherryBombTest {
 		b.handleEffect(se2);
 		assert (b.getOcc(b.getInactivePlayer(), Zone.CREATURE_BOARD).size() == 1);
 
-		CardDamageEffect dc1 = new CardDamageEffect(null, (CreatureInterface) bombOne, 3);
+		CardDamageEffect dc1 = new CardDamageEffect(null, (CreatureInterface) w1, 3);
 
 		b.handleEffect(dc1);
 
 		b.takeAction(new TurnEndEvent(active));
 		assert (b.getOcc(active, Zone.CREATURE_BOARD).size() == 0);
 
-		// assert (active.getLife() == 25 || b.getInactivePlayer().getLife() == 25);
 	}
 }

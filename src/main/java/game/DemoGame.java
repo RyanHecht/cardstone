@@ -1,5 +1,6 @@
 package game;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import cards.WaterSpirit;
 import effects.SummonEffect;
 import events.CardPlayedEvent;
 import events.TurnEndEvent;
+import server.CommsWebSocket;
 
 public class DemoGame extends Game {
 
@@ -21,7 +23,7 @@ public class DemoGame extends Game {
 
 	private final String[] messages = new String[11];
 
-	private static TurnEndEvent turnEnd;
+	private static TurnEndEvent aiTurnEnd;
 
 	private static CardPlayedEvent aiPlayedElement;
 
@@ -58,7 +60,7 @@ public class DemoGame extends Game {
 		// create the AI events.
 		Player ai = getBoard().getInactivePlayer();
 		System.out.println(getBoard().getActivePlayer() + " is the players" + getBoard().getInactivePlayer());
-		turnEnd = new TurnEndEvent(ai);
+		aiTurnEnd = new TurnEndEvent(ai);
 		// these are the two cards the ai plays.
 		Card aiWaterSpirit = getBoard().getOcc(ai, Zone.HAND).getCards().get(0);
 		Card aiWaterElement = getBoard().getOcc(ai, Zone.HAND).getCards().get(1);
@@ -84,6 +86,8 @@ public class DemoGame extends Game {
 				sendPlayerActionBad(playerId, messages[actionId]);
 				return;
 			}
+			Player player = getBoard().getActivePlayer();
+
 			// in this case the turn end was correct so we should execute it.
 			super.handleTurnend(userInput, playerId);
 
@@ -104,16 +108,24 @@ public class DemoGame extends Game {
 					e1.printStackTrace();
 				}
 
-				act(turnEnd);
+				act(aiTurnEnd);
 				// have to manually send board.
 				sendWholeBoardToAllAndDb();
+
 			} else if (actionId == 8) {
 				// in this case the AI just ends their turn.
-				act(turnEnd);
+				act(aiTurnEnd);
 				// increment action id.
 				actionId++;
 				// manually send board.
 				sendWholeBoardToAllAndDb();
+			}
+
+			try {
+				CommsWebSocket.sendTurnStart(player.getId(), true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			// slight delay.
