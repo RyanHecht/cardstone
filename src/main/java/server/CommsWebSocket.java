@@ -46,6 +46,7 @@ public class CommsWebSocket {
       int winner = game.getOpposingPlayerId(id);
       GameStats stats = new GameStats(game, id);
       GameManager.endGame(stats);
+      System.out.println("game ended");
       try {
         CommsWebSocket.sendGameEnd(winner, "Opponent left game.");
         CommsWebSocket.sendGameEnd(id,
@@ -56,7 +57,10 @@ public class CommsWebSocket {
     }
 
     sessions.remove(session);
-    idToSessions.remove(id);
+    idToSessions.remove(Integer.valueOf(id));
+
+    assert (!idToSessions.containsKey(id));
+
   }
 
   @OnWebSocketMessage
@@ -164,7 +168,7 @@ public class CommsWebSocket {
   public static void sendChangedBoardSate(Board toSend, int userId)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
-      Session session = idToSessions.get(userId);
+      Session session = idToSessions.get(Integer.valueOf(userId));
       JsonObject obj = new JsonObject();
       JsonObject payload = toSend.jsonifySelfChanged();
       obj.addProperty("type", MessageTypeEnum.BOARD_STATE.ordinal());
@@ -331,7 +335,10 @@ public class CommsWebSocket {
   private static void sendMessage(int userId, MessageTypeEnum type,
       JsonObject payload) throws IOException {
     if (idToSessions.containsKey(userId)) {
-      Session session = idToSessions.get(userId);
+      Session session = idToSessions.get(Integer.valueOf(userId));
+      if (session == null) {
+        System.out.println("session is null");
+      }
       JsonObject obj = new JsonObject();
       obj.addProperty("type", type.ordinal());
       obj.add("payload", payload);
