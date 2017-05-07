@@ -149,8 +149,14 @@ public class Lobby implements Jsonifiable {
   public void changeSpectator(int spectatorId, int spectateeId) {
     if (uId1.equals(Integer.valueOf(spectateeId))) {
       uId1Spectators.add(spectatorId);
+      if (uId2Spectators.contains(spectatorId)) {
+        uId2Spectators.remove(spectatorId);
+      }
     } else if (uId2.equals(Integer.valueOf(spectateeId))) {
       uId2Spectators.add(spectatorId);
+      if (uId1Spectators.contains(spectatorId)) {
+        uId1Spectators.remove(spectatorId);
+      }
     }
   }
 
