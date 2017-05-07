@@ -5,14 +5,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import org.eclipse.jetty.util.MultiMap;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -51,13 +47,13 @@ public class Board implements Jsonifiable, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Queue<Event> eventQueue;
-	
+
 	private LinkedList<Effect> effectQueue;
 
 	private static final int STARTING_HAND_SIZE = 6;
 
 	private static Card EmptySrc = EmptyEffect.create().getSrc();
-	
+
 	private final int gameId;
 
 	// player one stuff;
@@ -73,9 +69,8 @@ public class Board implements Jsonifiable, Serializable {
 	private OrderedCardCollection auraTwo;
 	private OrderedCardCollection graveTwo;
 	private OrderedCardCollection creatureTwo;
-	
-	private Multimap<Card,Card> alreadyProcessed;
 
+	private Multimap<Card, Card> alreadyProcessed;
 
 	// everything in the game;
 	List<OrderedCardCollection> cardsInGame = new ArrayList<>();
@@ -162,6 +157,18 @@ public class Board implements Jsonifiable, Serializable {
 			// player two was active so we return player one.
 			return deckOne.getPlayer();
 		}
+	}
+
+	public Player getOpposingPlayer(Player p) {
+		Player opponent;
+		if (p.equals(getActivePlayer())) {
+			opponent = getInactivePlayer();
+		} else if (p.equals(getInactivePlayer())) {
+			opponent = getActivePlayer();
+		} else {
+			throw new IllegalArgumentException("Attempted to find opposing player of player who wasn't on the board.");
+		}
+		return opponent;
 	}
 
 	public String getCards() {
@@ -345,26 +352,25 @@ public class Board implements Jsonifiable, Serializable {
 		return complaint;
 	}
 
-	private boolean hasProcessed(Card processor, Card effectSrc){
+	private boolean hasProcessed(Card processor, Card effectSrc) {
 		Collection<Card> cc = alreadyProcessed.get(processor);
-		if(effectSrc == EmptySrc){
-			return false; 
+		if (effectSrc == EmptySrc) {
+			return false;
 		}
 		return cc.contains(effectSrc);
 	}
-	
+
 	private Effect preprocessEffect(Effect effect) {
 		for (OrderedCardCollection occ : cardsInGame) {
 			for (Card c : occ) {
-				if (!hasProcessed(c,effect.getSrc())) {
+				if (!hasProcessed(c, effect.getSrc())) {
 					if (c.onProposedEffect(effect, occ.getZone())) {
 						alreadyProcessed.put(c, effect.getSrc());
 						effect = c.getNewProposition(effect, occ.getZone());
 						preprocessEffect(effect);
 					}
-				}
-				else{
-					System.out.println("it already HAWD" + c.getName() + " " +c.getId());
+				} else {
+					System.out.println("it already HAWD" + c.getName() + " " + c.getId());
 					System.out.println("was dere" + alreadyProcessed.get(c));
 				}
 			}
@@ -743,7 +749,6 @@ public class Board implements Jsonifiable, Serializable {
 			animation.add("card", c.jsonifySelf());
 			sendAnimation(animation);
 		}
-
 
 		if (c.isA(CreatureInterface.class) && destination.getZone() == Zone.GRAVE) {
 			creatureDies((CreatureInterface) c);
