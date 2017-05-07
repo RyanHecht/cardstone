@@ -278,7 +278,7 @@ class Server{
 
                 break;
             case "cardDied":
-                quedAnims.push(animationsMaker.getDeadAnimation(message.id1).create());
+                quedAnims.push(animationsMaker.getDeadAnimation(message.id1.id).create());
                 break;
             default:
                 console.log("unknown animation type");
