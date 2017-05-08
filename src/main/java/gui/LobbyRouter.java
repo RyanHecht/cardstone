@@ -32,6 +32,7 @@ public class LobbyRouter implements RouteGroup {
     Spark.post("/lobbies", new LobbiesHandler(), fm);
     Spark.get("/lobby", new LobbyHandler(), fm);
     Spark.post("/spectate", new SpectateHandler(), fm);
+    Spark.get("/tutorial_lobby", new TutorialLobbyHandler(), fm);
   }
 
   private class LobbiesHandler implements AuthRoute {
@@ -140,4 +141,13 @@ public class LobbyRouter implements RouteGroup {
     }
   }
 
+  private class TutorialLobbyHandler implements AuthRoute {
+    @Override
+    public ModelAndView customHandle(Request req, Response res) {
+      return new ModelAndView(
+          ImmutableMap.of("title", "Cardstone: The Shattering"),
+          "tutorial_lobby.ftl");
+
+    }
+  }
 }

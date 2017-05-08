@@ -99,6 +99,7 @@ public class LoginHandler implements RouteGroup {
           res.cookie("id", uid);
           res.cookie("tutorial", "0"); // initiate tutorial
           auth = true;
+          usersToSessions.put(Integer.parseInt(uid), req.session());
         }
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
