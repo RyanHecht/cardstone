@@ -24,9 +24,9 @@ $(document).ready(() => {
 			const oppId = curr_game.opponent;
 			let winner;
 			if (curr_game.winner == user) {
-				winner = "You";
+				winner = "Win";
 			} else if (curr_game.winner == oppId) {
-				winner = "Them";
+				winner = "Loss";
 			} else if (curr_game.winner == 0) {
 				winner = "Tie";
 			}
@@ -35,7 +35,8 @@ $(document).ready(() => {
 			$.post("/username", postParams, responseJSON => {
 				const opponent = JSON.parse(responseJSON).username;
 				
-				gamesList.append("<tr data-href='"  + link + "'>" + 					"<td>" + winner + "</td> <td> " + opponent + "</td> " + 
+				gamesList.append("<tr data-href='"  + link + "'>" + 
+								"<td>" + winner + "</td> <td> " + opponent + "</td> " + 
 								"<td>" + curr_game.moves + "</td>" + 
 								"<td>" + curr_game.date + "</td></tr>");
 			});			

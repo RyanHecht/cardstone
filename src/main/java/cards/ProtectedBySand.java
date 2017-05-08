@@ -24,7 +24,7 @@ public class ProtectedBySand extends AuraCard {
 
 	private static final String defaultImage = "images/ProtectedBySand.png";
 	private static final String defaultName = "Protected By Sand";
-	private static final String defaultText = "Prevent the next two instances of damage you would take.";
+	private static final String defaultText = "Aura. Prevent the next two instances of damage you would take.";
 	private static final CardType defaultType = CardType.SPELL;
 
 	public boolean onProposedEffect(Effect e, Zone z) {

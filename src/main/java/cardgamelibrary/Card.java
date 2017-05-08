@@ -77,12 +77,12 @@ public interface Card extends Jsonifiable, Serializable {
 		Class[] args = new Class[1];
 		args[0] = Player.class;
 			try {
-				this.getClass().getDeclaredConstructor(args).newInstance(p);
+				return this.getClass().getDeclaredConstructor(args).newInstance(p);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 			}
-		return this;
+		return null;
 	}
 	
 	// when something else is damaged. Creatures have a

@@ -16,13 +16,14 @@ public class ReformEarth extends AuraCard{
 
 	private static final String defaultImage = "images/ReformEarth.jpg";
 	private static final String defaultName = "Reform Earth";
-	private static final String defaultText = "For every third friendly earth creature that dies, draw a card";
+	private static final String defaultText = "Aura. For every third friendly earth creature that dies, draw a card";
 	private static final CardType defaultType = CardType.AURA;
 	private int deadCount;
 
 	public ReformEarth(Player owner) {
 		super(new ManaPool(15, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		this.deadCount = 0;
+		
 	}
 	
 	public Effect onThisPlayed(Zone z){

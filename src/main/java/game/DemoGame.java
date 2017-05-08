@@ -319,7 +319,7 @@ public class DemoGame extends Game {
 
   /**
    * Gets the first player's deck as a list of strings.
-   * 
+   *
    * @return a list of strings representing the deck.
    */
   private static List<String> getFirstPlayerDeck() {
@@ -327,6 +327,7 @@ public class DemoGame extends Game {
     // starting hand will be 6 water elements, first card they draw will be
     // water spirit.
     firstPlayerCards.addLast("Water Spirit");
+    firstPlayerCards.addLast("Water Element");
     firstPlayerCards.addLast("Water Element");
     firstPlayerCards.addLast("Water Element");
     firstPlayerCards.addLast("Water Element");
@@ -356,7 +357,7 @@ public class DemoGame extends Game {
 
   /**
    * Gets the second player's (not human) deck as a list of strings.
-   * 
+   *
    * @return a list of strings representing the deck.
    */
   private static List<String> getSecondPlayerDeck() {
@@ -375,7 +376,7 @@ public class DemoGame extends Game {
 
   /**
    * Used to get the current action needed for the user.
-   * 
+   *
    * @return the message the user should see.
    */
   public String getMessage() {

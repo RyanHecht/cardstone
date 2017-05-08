@@ -7,6 +7,7 @@ import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
 import effects.AddToOccEffect;
+import effects.SummonEffect;
 import game.Player;
 
 public class Boomarock extends SpellCard{
@@ -21,7 +22,7 @@ public class Boomarock extends SpellCard{
 	}
 	
 	public Effect onThisPlayed(Card c, Zone z){
-		return new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.HAND, this);
+		return new SummonEffect(this.getNewInstanceOf(getOwner()),Zone.HAND,this);
 	}
 	
 }

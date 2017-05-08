@@ -1,4 +1,4 @@
-package logins;
+package game;
 
 import com.google.gson.JsonObject;
 

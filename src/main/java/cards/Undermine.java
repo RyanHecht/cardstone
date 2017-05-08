@@ -19,7 +19,7 @@ public class Undermine extends AuraCard implements OnAnyAttackCard {
 
 	private static final String defaultImage = "images/Undermine.jpg";
 	private static final String defaultName = "Undermine!";
-	private static final String defaultText = "If an enemy minion attacks next turn, deal 4 to all minions.";
+	private static final String defaultText = "Aura. If an enemy minion attacks next turn, deal 4 to all minions.";
 	private static final CardType defaultType = CardType.SPELL;
 	private int turnsLeft;
 	private int damage = 4;
