@@ -70,11 +70,19 @@ public class Game implements Jsonifiable, Serializable {
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
 			boolean noShuffle) {
 
+		// SPECIAL CASE FOR DEMO DAY
+		if ((playerOneId == 2 && playerTwoId == 4) || (playerOneId == 4 && playerTwoId == 2)) {
+			noShuffle = true;
+			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, 2);
+			playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, 4);
+		} else {
+			// Initialize both players with starting life.
+			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
+			playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
+		}
+
 		this.id = idGenerator.incrementAndGet();
 		System.out.println(String.format("Making new game with id %d and players %d and %d", id, playerOneId, playerTwoId));
-		// Initialize both players with starting life.
-		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
-		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
 
 		// build decks from the lists of cards.
 		OrderedCardCollection deckOne = new OrderedCardCollection(Zone.DECK, playerOne);
@@ -558,10 +566,11 @@ public class Game implements Jsonifiable, Serializable {
 				// execute action on board.
 				act(event);
 
-//				// make card played event.
-//				CardPlayedEvent cEvent = new CardPlayedEvent(targetter, board.getOcc(board.getActivePlayer(), Zone.HAND));
-//
-//				act(cEvent);
+				// // make card played event.
+				// CardPlayedEvent cEvent = new CardPlayedEvent(targetter,
+				// board.getOcc(board.getActivePlayer(), Zone.HAND));
+				//
+				// act(cEvent);
 
 				// send board to both players.
 				sendWholeBoardToAllAndDb();
@@ -694,10 +703,11 @@ public class Game implements Jsonifiable, Serializable {
 					// execute event.
 					act(event);
 
-//					// make card played event.
-//					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
-//
-//					act(cEvent);
+					// // make card played event.
+					// CardPlayedEvent cEvent = new CardPlayedEvent(card,
+					// board.getOcc(board.getActivePlayer(), Zone.HAND));
+					//
+					// act(cEvent);
 
 					// send board.
 					sendWholeBoardToAllAndDb();

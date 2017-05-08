@@ -6,14 +6,14 @@ class TurnTimer{
         this.maxTime = maxTime * 1000;
         this.lineRight = $(".lineRight");
         this.lineLeft = $(".lineLeft");
-        
+
         this.clockRect = $(".centerClockRect");
         if(!isReplay){
             this.updateThread(this);
             this.startTurn(isTurn);
         }
     }
-    
+
     startTurn(isTurn){
         this.isTurn = isTurn;
         this.timeLeft = this.maxTime;
@@ -29,13 +29,14 @@ class TurnTimer{
         else{
             this.clockRect.removeClass("endTurnPng");
             this.clockRect.addClass("enemyTurnPng");
-            
+
         }
         }
         this.lineLeft.show();
     }
-    
+
     updateThread($this){
+      if ($.cookie('tutorial') == -1) {
         $this.timeLeft -= UPDATE_RATE;
         $this.drawLines($this.timeLeft * 100 / $this.maxTime,$this);
         if($this.timeLeft <= 0){
@@ -48,8 +49,9 @@ class TurnTimer{
         window.setTimeout(function(){
             $this.updateThread($this);
         },UPDATE_RATE);
+      }        
     }
-    
+
     drawLines(portion,$this){
         if(portion > 50){
             $this.lineRight.css("width",DEFAULT_WIDTH + "%");
