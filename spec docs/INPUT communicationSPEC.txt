@@ -62,7 +62,7 @@ When the host needs user input, it may send a message of the form:
 	}
 	
 		name will represent one of several possible names for the event, such as
-		"choosefrom" or "selecttarget"
+		"choosefrom".
 		
 		options will represent specific information about the event. This
 		may represent valid zones for targeting in the event of a target request,
@@ -70,4 +70,5 @@ When the host needs user input, it may send a message of the form:
 		
 		cards will represent the affected cards. This may represent cards
 		to choose from in the event of choosing from among several options,
+		ooher choices the user might need to make i.e. will your opponent play a spell next turn,
 		etc.
