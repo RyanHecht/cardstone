@@ -23,7 +23,7 @@ public class SpellsInBottles extends SpellCard{
 	private boolean active;
 	
 	public SpellsInBottles(Player owner) {
-		super(new ManaPool(20, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(35, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		active = false;
 	}
 	

@@ -16,13 +16,13 @@ public class StoneSinger extends Creature {
 
   private static final String defaultImage = "images/StoneSinger.jpg";
   private static final String defaultName = "Stone Singer";
-  private static final String defaultText = "Whenever you play a card with earth in its cost, summon a 1/1 stone golem with taunt.";
-  private static final int defaultHealth = 2;
-  private static final int defaultAttack = 2;
+  private static final String defaultText = "Whenever you play a card with earth in its cost, summon a 1/2 stone golem with taunt.";
+  private static final int defaultHealth = 4;
+  private static final int defaultAttack = 3;
   private static final CardType defaultType = CardType.CREATURE;
 
   public StoneSinger(Player owner) {
-    super(defaultHealth, defaultAttack, new ManaPool(20, 0, 0, 1, 0, 0),
+    super(defaultHealth, defaultAttack, new ManaPool(40, 0, 0, 2, 0, 0),
         defaultImage, owner, defaultName, defaultText, defaultType);
   }
 
@@ -42,7 +42,7 @@ public class StoneSinger extends Creature {
     private static final String defaultImage = "images/StoneGolem.jpg";
     private static final String defaultName = "Stone Golem";
     private static final String defaultText = "Taunt.";
-    private static final int defaultHealth = 1;
+    private static final int defaultHealth = 2;
     private static final int defaultAttack = 1;
     private static final CardType defaultType = CardType.CREATURE;
 

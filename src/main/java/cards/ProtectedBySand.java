@@ -18,7 +18,7 @@ public class ProtectedBySand extends AuraCard {
 	private int instancesToPrevent;
 
 	public ProtectedBySand(Player owner) {
-		super(new ManaPool(10, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		instancesToPrevent = 0;
 	}
 

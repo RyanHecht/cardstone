@@ -17,13 +17,13 @@ public class StaticBuildup extends SpellCard{
 
 	private static final String defaultImage = "images/StaticBuildup.jpg";
 	private static final String defaultName = "Static Buildup";
-	private static final String defaultText = "For the rest of the turn, every damaging spell does 2 more damage for each spell you previously played that turn.";
+	private static final String defaultText = "For the rest of the turn, every damaging spell does 1 more damage for each spell you previously played that turn.";
 	private static final CardType defaultType = CardType.SPELL;
 	private int turnsLeft;
 	private int buildup;
 
 	public StaticBuildup(Player owner) {
-		super(new ManaPool(35, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(50, 0, 0, 0, 4, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsLeft = 0;
 		buildup = 0;
 	}
@@ -40,7 +40,7 @@ public class StaticBuildup extends SpellCard{
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
 		if(c.getType() == CardType.SPELL && turnsLeft == 1){
-			buildup+=2;
+			buildup++;
 		}
 		return EmptyEffect.create();
 	}
