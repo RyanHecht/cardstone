@@ -1,5 +1,9 @@
 package game;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import gui.Db;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,12 +11,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import gui.Db;
 import server.CommsWebSocket;
 
 /**
@@ -116,6 +114,30 @@ public class GameManager {
     }
   }
 
+  public static void receiveCardActivatedSelf(int playerId,
+      JsonObject message) {
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      game.handleCardActivation(message, playerId);
+    }
+  }
+
+  public static void receiveCardActivatedTargetsCard(int playerId,
+      JsonObject message) {
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      game.handleCardActivationTargetsCard(message, playerId);
+    }
+  }
+
+  public static void receiveCardActivatedTargetsPlayer(int playerId,
+      JsonObject message) {
+    Game game = games.getGameByPlayerId(playerId);
+    if (game != null) {
+      game.handleCardActivationTargetsPlayer(message, playerId);
+    }
+  }
+
   public static void receiveChooseResponse(int playerId, JsonObject message) {
     Game game = games.getGameByPlayerId(playerId);
     if (game != null) {
@@ -160,7 +182,7 @@ public class GameManager {
 
   /**
    * Caches board states and inserts their JSON into the Db for replay purposes.
-   * 
+   *
    * @param g the game
    */
   public static void pushToDb(Game g) {
