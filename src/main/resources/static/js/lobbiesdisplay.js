@@ -58,7 +58,7 @@ $(document).ready(() => {
 			$.post("/username", postParams, responseJSON => {
 				const hostUsername = JSON.parse(responseJSON).username;
 				lobbyList.append("<tr class='clickableRow'><td class='name borderWhite'>"
-								 + curr_lobby.name + "</td> " +
+								 + decodeURIComponent(curr_lobby.name) + "</td> " +
 								"<td class='host borderWhite'>" + hostUsername + "</td> " +
 								"<td class='private borderWhite'>" + privateAttr + "</td> " +
 								"<td class='full borderWhite'>" + fullAttr + "</td></tr>");
