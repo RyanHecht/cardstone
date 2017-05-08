@@ -237,8 +237,9 @@ public class GameManager {
         Db.update("delete from in_progress where id = ?;", gId);
 
       System.out.println("Am gonna insert with winner " + winner);
-      Db.update("insert into finished_game values (?, ?, ?, ?, ?, ?);", gId,
-          winner, p1, p2, turns, timestamp);
+      Db.update(
+          "INSERT INTO finished_game(id, winner, player1, player2, moves, date) VALUES (?, ?, ?, ?, ?, ?);",
+          gId, winner, p1, p2, turns, timestamp);
       } catch (NullPointerException | SQLException e) {
         System.out.println(
           String.format("Game %d with players %d and %d already in db",

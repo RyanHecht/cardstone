@@ -22,22 +22,28 @@ $(document).ready(() => {
 			
 			const link = "/replay?id=" + curr_game.id;
 			const oppId = curr_game.opponent;
-			let winner;
-			if (curr_game.winner == user) {
-				winner = "Win";
-			} else if (curr_game.winner == oppId) {
-				winner = "Loss";
-			} else if (curr_game.winner == 0) {
-				winner = "Tie";
+			let result;
+			switch (curr_game.winner) {
+				case user: 
+					result = "Win";
+					break;
+				case oppId: 
+					result = "Loss";
+					break;
+				case 0:
+					result = "Tie";
+					break;
+				default:
+					result = "Win";
 			}
-			console.log("have winner " + winner);
+
 			console.log("winning id " + curr_game.winner);
 			const postParams = {id: oppId};
 			$.post("/username", postParams, responseJSON => {
 				const opponent = JSON.parse(responseJSON).username;
 				
 				gamesList.append("<tr data-href='"  + link + "'>" + 
-								"<td>" + winner + "</td> <td> " + opponent + "</td> " + 
+								"<td>" + result + "</td> <td> " + opponent + "</td> " + 
 								"<td>" + curr_game.moves + "</td>" + 
 								"<td>" + curr_game.date + "</td></tr>");
 			});			
