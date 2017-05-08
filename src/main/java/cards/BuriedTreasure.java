@@ -23,7 +23,7 @@ public class BuriedTreasure extends SpellCard {
 	private static final CardType	defaultType		= CardType.SPELL;
 
 	public BuriedTreasure(Player owner) {
-		super(new ManaPool(25, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(20, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		// TODO Auto-generated constructor stub
 	}
 

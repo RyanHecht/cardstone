@@ -26,7 +26,6 @@ public class BoonFromTheStorm extends SpellCard{
 		ConcatEffect ce = new ConcatEffect(this);
 		for(int x = 0; x < 3; x++){
 			JunsBolt jb = new JunsBolt(getOwner());
-			jb.getCost().setElement(ElementType.AIR,0);
 			ce.addEffect(new SummonEffect(jb,Zone.HAND,this));
 		}
 		BaboonFromTheStorm bfts = new BaboonFromTheStorm(getOwner());

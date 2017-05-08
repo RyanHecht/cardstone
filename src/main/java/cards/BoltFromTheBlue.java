@@ -21,7 +21,7 @@ public class BoltFromTheBlue extends SpellCard implements TargetsOtherCard, Targ
 
 	private static final String		defaultImage	= "images/BoltFromTheBlue.jpg";
 	private static final String		defaultName		= "Bolt From The Blue";
-	private static final String		defaultText		= "Deal 3. If this is the first storm card you played this game, deal 5 instead.";
+	private static final String		defaultText		= "Deal 2. If this is the first storm card you played this game, deal 5 instead.";
 	private static final CardType	defaultType		= CardType.SPELL;
 	private boolean deal5;
 	
@@ -64,14 +64,14 @@ public class BoltFromTheBlue extends SpellCard implements TargetsOtherCard, Targ
 		if(deal5){
 			return new CardDamageEffect(this, (CreatureInterface) target, 5);
 		}
-		return new CardDamageEffect(this, (CreatureInterface) target, 3);
+		return new CardDamageEffect(this, (CreatureInterface) target, 2);
 	}
 	@Override
 	public Effect impactPlayerTarget(Player p) {
 		if(deal5){
 			return new PlayerDamageEffect(p, this, 5);
 		}
-		return new PlayerDamageEffect(p, this, 3);
+		return new PlayerDamageEffect(p, this, 2);
 	}
 
 	

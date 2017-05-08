@@ -18,7 +18,7 @@ import templates.decorators.CantAttackForTurnsCreature;
 public class RockShock extends SpellCard implements TargetsOtherCard {
 
 	public RockShock(Player owner) {
-		super(new ManaPool(15, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	private static final String defaultImage = "images/RockShock.jpg";

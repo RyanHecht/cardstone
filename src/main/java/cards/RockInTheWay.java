@@ -2,14 +2,17 @@ package cards;
 
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Creature;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import effects.ApplyEffect;
 import effects.CreatureHealthChangeEffect;
 import effects.EmptyEffect;
 import game.Player;
 import templates.CantAttackCreature;
+import templates.decorators.TauntCreature;
 
 public class RockInTheWay extends Creature implements CantAttackCreature {
 
@@ -35,7 +38,10 @@ public class RockInTheWay extends Creature implements CantAttackCreature {
 	}
 
 	public Effect onThisPlayed(Card c, Zone z) {
-		return new CreatureHealthChangeEffect(healthGained, this,this);
+		ConcatEffect ce = new ConcatEffect(this);
+		ce.addEffect(new ApplyEffect(new TauntCreature(this),this,this));
+		ce.addEffect(new CreatureHealthChangeEffect(healthGained,this,this));
+		return ce;
 	}
 
 }

@@ -21,7 +21,7 @@ public class ReformEarth extends AuraCard{
 	private int deadCount;
 
 	public ReformEarth(Player owner) {
-		super(new ManaPool(15, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(35, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		this.deadCount = 0;
 		
 	}
@@ -35,8 +35,10 @@ public class ReformEarth extends AuraCard{
 		if(z == Zone.AURA_BOARD && c.getOwner() == this.getOwner() && c.getCost().getElement(ElementType.EARTH) > 0){
 			deadCount++;
 			if(deadCount >= 3){
+				deadCount = 0;
 				return new CardDrawEffect(getOwner(),this);
 			}
+			
 		}
 		return EmptyEffect.create();
 	}
