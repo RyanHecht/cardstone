@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.Hashing;
@@ -16,14 +14,14 @@ import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Session;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public class LoginHandler implements RouteGroup {
   private final FreeMarkerEngine fm;
-  private static Map<Integer, Session> usersToSessions = new ConcurrentHashMap<>();
+  // private static Map<Integer, Session> usersToSessions = new
+  // ConcurrentHashMap<>();
 
   public LoginHandler(FreeMarkerEngine fm) {
     this.fm = fm;
@@ -35,18 +33,7 @@ public class LoginHandler implements RouteGroup {
     Spark.post("/login", new LoginRequestHandler());
     Spark.post("/register", new RegisterHandler());
     Spark.post("/username", new UsernameGetter());
-    Spark.get("/logout", new LogoutHandler(), fm);
     Spark.redirect.get("/", "/login");
-  }
-
-  private static class LogoutHandler implements AuthRoute {
-    @Override
-    public ModelAndView customHandle(Request req, Response res) {
-      int uid = Integer.parseInt(req.cookie("id"));
-      usersToSessions.remove(uid);
-      return new ModelAndView(ImmutableMap.of("title", "Logged out"),
-          "login.ftl");
-    }
   }
 
   /**
@@ -99,7 +86,6 @@ public class LoginHandler implements RouteGroup {
           res.cookie("id", uid);
           res.cookie("tutorial", "0"); // initiate tutorial
           auth = true;
-          usersToSessions.put(Integer.parseInt(uid), req.session());
         }
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
@@ -140,16 +126,10 @@ public class LoginHandler implements RouteGroup {
       try (ResultSet rs = Db.query(loginQuery, username, password)) {
         if (rs.next()) {
           String user = rs.getString(1);
-          int uid = Integer.parseInt(user);
-          if (!usersToSessions.containsKey(uid)) {
             auth = true;
             res.cookie("username", username);
             res.cookie("id", user);
             res.cookie("tutorial", "-1");
-            usersToSessions.put(uid, req.session());
-          } else {
-            error = username + " is currently logged in";
-          }
         } else {
           error = "Invalid username or password";
         }
@@ -197,10 +177,5 @@ public class LoginHandler implements RouteGroup {
   private static String getSalted(String password) {
     return Hashing.sha256().hashString(password, StandardCharsets.UTF_8)
         .toString();
-  }
-
-  public static boolean validSession(int user, Session s) {
-    Session found = usersToSessions.get(user);
-    return found != null ? s.id().equals(found.id()) : false;
   }
 }
