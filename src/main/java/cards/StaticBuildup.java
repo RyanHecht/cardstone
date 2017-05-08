@@ -38,7 +38,6 @@ public class StaticBuildup extends SpellCard{
 		return EmptyEffect.create();
 	}
 	
-	
 	public Effect onOtherCardPlayed(Card c, Zone z){
 		if(c.getType() == CardType.SPELL && turnsLeft == 1){
 			buildup+=2;
