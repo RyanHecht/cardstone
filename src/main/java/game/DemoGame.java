@@ -325,6 +325,7 @@ public class DemoGame extends Game {
 		firstPlayerCards.addLast("Water Element");
 		firstPlayerCards.addLast("Water Element");
 		firstPlayerCards.addLast("Water Element");
+		firstPlayerCards.addLast("Water Element");
 
 		// the next card the user will draw (start of 2nd turn) will be Delve The
 		// Depths.

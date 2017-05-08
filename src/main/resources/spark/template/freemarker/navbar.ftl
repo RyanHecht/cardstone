@@ -24,7 +24,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><p class="navbar-text" id="loggedin"></p></li>
-            <li><a href="/login" id="logout">Logout</a></li>
+            <li><a href="/logout" id="logout">Logout</a></li>
           </ul>
         </div>
       </div>

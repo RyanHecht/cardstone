@@ -1,10 +1,12 @@
 package main;
 
-import freemarker.template.Configuration;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import freemarker.template.Configuration;
+import gui.Gui;
 import lobby.LobbyHandlers;
 import server.CommsWebSocket;
 import server.LobbyListWebSocket;
@@ -40,7 +42,6 @@ public class Main {
 
     gui = new Gui(f);
     tut = new TutorialRoutes(f);
-    gui.init();
   }
 
   private static FreeMarkerEngine createEngine() {
