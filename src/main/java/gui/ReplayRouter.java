@@ -57,6 +57,8 @@ public class ReplayRouter implements RouteGroup {
           MetaGame toAdd = new MetaGame.MetaBuilder().id(rs.getInt(1))
               .winner(rs.getInt(2)).p1(rs.getInt(3)).p2(rs.getInt(4))
               .moves(rs.getInt(5)).date(rs.getString(6)).build(user);
+          System.out.println(String.format("Have metagame %d with winner %d",
+              toAdd.getId(), toAdd.getWinner()));
           games.add(toAdd.jsonifySelf());
         }
       } catch (SQLException | NullPointerException e) {

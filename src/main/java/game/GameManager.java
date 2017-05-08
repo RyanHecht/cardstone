@@ -43,7 +43,7 @@ public class GameManager {
 		}
 	}
 
-	// remove games when they complete.
+  // remove games when they're complete.
 	public static void endGame(GameStats ended) {
 		Game g = ended.getGame();
 		int gId = g.getId();
@@ -52,7 +52,8 @@ public class GameManager {
 
 		int firstUser = g.getActivePlayerId();
 		int secondUser = g.getOpposingPlayerId(firstUser);
-
+    System.out
+        .println(String.format("Ending game %d with winner %d", gId, winner));
 		registerFinishedGame(gId, firstUser, secondUser, winner, turns);
 
 		games.removeGame(firstUser);
@@ -198,19 +199,23 @@ public class GameManager {
 	}
 
 	public static int getStartingId() {
-		int ret;
-		System.out.println("About to get starting id");
-		try (ResultSet finished = Db.query("select max(id) from finished_game;")) {
-			ret = finished.getInt(1);
-			try (ResultSet in_prog = Db.query("select max(id) from in_progress;")) {
-				// return largest id of 2 tables
-				ret = Math.max(ret, in_prog.getInt(1));
-			}
-		} catch (SQLException | NullPointerException e) {
-			ret = 1;
-		}
-		System.out.println("Recommended starting id " + ret);
-		return ret;
+      int ret;
+      System.out.println("About to get starting id");
+      try (ResultSet finished = Db.query("select max(id) from finished_game;")) {
+          ret = finished.getInt(1);
+          System.out.println("Got max " + ret + " from finished_game");
+          try (ResultSet in_prog = Db.query("select max(id) from in_progress;")) {
+              // return largest id of 2 tables
+              System.out
+                  .println("Got max " + in_prog.getInt(1) + " from in_progress");
+              ret = Math.max(ret, in_prog.getInt(1));
+              System.out.println("Will return " + ret);
+          }
+      } catch (SQLException | NullPointerException e) {
+          ret = 1;
+      }
+      System.out.println("Recommended starting id " + ret);
+      return ret;
 	}
 
 	public static void addAnim(JsonObject anim, int gameId) {
@@ -229,10 +234,11 @@ public class GameManager {
         System.out.println(String
           .format("Stashing game %d with players %d and %d", gId, p1, p2));
         String timestamp = DateFormat.getInstance().format(new Date());
-  
         Db.update("delete from in_progress where id = ?;", gId);
-        Db.update("insert into finished_game values(?, ?, ?, ?, ?, ?);", gId,
-            winner, p1, p2, turns, timestamp);
+
+      System.out.println("Am gonna insert with winner " + winner);
+      Db.update("insert into finished_game values (?, ?, ?, ?, ?, ?);", gId,
+          winner, p1, p2, turns, timestamp);
       } catch (NullPointerException | SQLException e) {
         System.out.println(
           String.format("Game %d with players %d and %d already in db",
