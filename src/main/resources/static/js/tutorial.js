@@ -65,7 +65,7 @@ class TutorialHandler {
 					window.location.replace("/menu");
 					break;
 				case TutorialEnum.REPLAY_PAGE:
-					window.location.replace("/games");
+					window.location.replace("/replays");
 					break;
 				case TutorialEnum.REPLAY_DONE:
 					window.location.replace("/menu");

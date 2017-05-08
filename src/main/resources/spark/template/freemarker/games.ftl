@@ -13,12 +13,11 @@
   <body>
      ${nav}
      <div class="container">
-     <br>
-     <br>
-	 <h3> ${username}'s Replays</h3> 
 	   <div class="row">
-	     <div class="col-sm-8" id="games">
-	       ${game_table}
+	     <div class="center-block regDisplay" id="games">
+	        <br>
+	 		<h3> ${username}'s Replays</h3> 
+	       	${game_table}
 	     </div>
 	   </div>
 	</div>

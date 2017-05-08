@@ -42,7 +42,7 @@ $(document).ready(() => {
 			$.post("/username", postParams, responseJSON => {
 				const opponent = JSON.parse(responseJSON).username;
 				
-				gamesList.append("<tr data-href='"  + link + "'>" + 
+				gamesList.append("<tr class='clickableRow' data-href='"  + link + "'>" + 
 								"<td>" + result + "</td> <td> " + opponent + "</td> " + 
 								"<td>" + curr_game.moves + "</td>" + 
 								"<td>" + curr_game.date + "</td></tr>");

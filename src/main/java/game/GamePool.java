@@ -8,19 +8,18 @@ import java.util.concurrent.ExecutionException;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
-
-import gui.Db;
-
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+
+import gui.Db;
 
 /**
  * Represents pool of all games that are going on.
  * @author ryan an willayyy
  */
 public class GamePool {
-  private static final int POOL_SIZE = 1;
+  private static final int POOL_SIZE = 100;
   private static LoadingCache<Integer, Game> playersToGames = CacheBuilder
       .newBuilder()
       .maximumSize(POOL_SIZE)

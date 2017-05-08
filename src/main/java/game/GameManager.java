@@ -238,7 +238,7 @@ public class GameManager {
 
       System.out.println("Am gonna insert with winner " + winner);
       Db.update(
-          "INSERT INTO finished_game(id, winner, player1, player2, moves, date) VALUES (?, ?, ?, ?, ?, ?);",
+          "INSERT INTO finished_game VALUES (?, ?, ?, ?, ?, ?);",
           gId, winner, p1, p2, turns, timestamp);
       } catch (NullPointerException | SQLException e) {
         System.out.println(

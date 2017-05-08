@@ -169,7 +169,6 @@ public final class Db {
       int i = 1;
       for (Object o : options) {
         base.setObject(i, o);
-        System.out.println("Setting object: " + o);
         i++;
       }
       base.executeUpdate();
