@@ -465,7 +465,7 @@ public class Game implements Jsonifiable, Serializable {
 	 * @param playerId
 	 *          the id of the player submitting the action.
 	 */
-	public void handleCardActivated(JsonObject userInput, int playerId) {
+	public void handleCardActivation(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
 		} else {
@@ -489,7 +489,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 	}
 
-	public void handleCardActivation(JsonObject userInput, int playerId) {
+	public void handleCardActivationTargetsPlayer(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
 		} else {
