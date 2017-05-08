@@ -36,7 +36,7 @@ public class Lobby implements Jsonifiable {
    * @param hostUId The id of the host player.
    */
   public Lobby(String name, boolean priv, String password, int hostUId) {
-    this.name = name.replace("<", "\\").replace(">", "/");
+    this.name = name;
     this.priv = priv;
     this.password = password;
     this.uId1 = hostUId;
