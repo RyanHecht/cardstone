@@ -70,16 +70,8 @@ public class Game implements Jsonifiable, Serializable {
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
 			boolean noShuffle) {
 
-		// SPECIAL CASE FOR DEMO DAY
-		if ((playerOneId == 3 && playerTwoId == 4) || (playerOneId == 4 && playerTwoId == 3)) {
-			noShuffle = true;
-			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, 4);
-			playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, 3);
-		} else {
-			// Initialize both players with starting life.
-			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
-			playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
-		}
+		playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
+		playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, playerTwoId);
 
 		this.id = idGenerator.incrementAndGet();
 		System.out.println(String.format("Making new game with id %d and players %d and %d", id, playerOneId, playerTwoId));
