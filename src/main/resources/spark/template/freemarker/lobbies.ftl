@@ -10,15 +10,16 @@
   <#include "lobbies_table.ftl">
   <#include "navbar.ftl">
   <body>
-     <div class="container">
      ${nav}
-	 <h3> Join a game... </h3>
+     <div class="container">
 	   <div class="row">
-	     <div class="col-sm-8" id="lobbytable">
+	     <div class="center-block regDisplay" id="lobbytable">
+	       <br>
+	       <h3> Join a game... </h3>
 	       ${lobby_table}
+	       <button class="btn btn-default" type="submit" id="hostbutton">...or create one</button>
 	     </div>
 	   </div>
-	   <button class="btn btn-default" type="submit" id="hostbutton">...or create one</button>
 	</div>
      <script type="text/javascript">
        let error;

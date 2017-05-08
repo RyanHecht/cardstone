@@ -14,16 +14,22 @@
      ${nav}
      <div class="container">
 	   <div class="row">
-	   <br>
-	   <br>
-	   <h3> ${username}'s Decks</h3> 
-	     <div class="col-sm-8">
-	       ${deck_list}
-	     </div>
-	   </div>
-	   <a id="create_deck" href="/deckDraw.html">Create new deck</a>
+	   	<div class="center-block regDisplay">
+		   <br>
+		   <h3> ${username}'s Decks</h3> 
+		   ${deck_list}
+		   <a id="create_deck" href="/deckDraw.html">Create new deck</a>
+	   	</div>
 	 </div>
 	 ${modal}
+	 <script>
+	   function deleteDeck(button, ofName) {
+	     button.parent().parent().remove();
+	     const postParams = {deck: ofName, userId: $.cookie("id")};
+	     $.post("delete_deck", postParams, responseJSON => {
+	     });
+	   };
+ 	 </script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/tutorial.js"></script>
      <script src="js/decks.js"></script>

@@ -29,6 +29,7 @@ public class DeckRouter implements RouteGroup {
     Spark.post("/deck_upload", new UploadHandler());
     Spark.get("/decks", new DecksHandler(), fm); // displaying all decks
     Spark.get("/deck", new DeckHandler(), fm); // displaying one deck
+    Spark.post("/delete_deck", new DeckDeleter());
     Spark.post("/deck_from", new DeckFinder());
   }
 
@@ -57,7 +58,7 @@ public class DeckRouter implements RouteGroup {
       }
 
       // we don't do anything with callback
-      return null;
+      return "";
     }
   }
 
@@ -108,6 +109,24 @@ public class DeckRouter implements RouteGroup {
       Map<String, Object> vars = ImmutableMap.of("title",
           "Cardstone: The Shattering", "deckname", deckName, "deck", cards);
       return new ModelAndView(vars, "deck.ftl");
+    }
+  }
+
+  private static class DeckDeleter implements Route {
+    @Override
+    public String handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String deckName = qm.value("deck");
+      String uid = qm.value("userId");
+
+      String deckDelete = "delete from deck where user=? and name=?;";
+      try {
+        Db.update(deckDelete, uid, deckName);
+        System.out.println("Deleted deck " + deckName);
+      } catch (NullPointerException | SQLException e) {
+        e.printStackTrace();
+      }
+      return "";
     }
   }
 

@@ -1,9 +1,12 @@
 <#assign content>
 <#include "message_modal.ftl">
 <div class="container">
-  <h3 id="greeting"></h3> 
+  
   <div class="row">
-    <div class="col-sm-8">
+    <div class="center-block menuDisplay">
+    	<br>
+        <h3 id="greeting"></h3> 
+        <br>
 	    <a href="/decks" id="decks" class="btn btn-default btn-lg btn-block shadowedButton">Decks</a>
 	    <br><br>
         <a href="/replays" id="games" class="btn btn-default btn-lg btn-block shadowedButton">Replays</a>
@@ -25,6 +28,7 @@
         <p id="startmessage"> </p>
       </div>
       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Start Tutorial</button>
         <button type="button" id="skip_tutorial" class="btn btn-default" data-dismiss="modal">Skip Tutorial</button>
       </div>
     </div>

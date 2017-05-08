@@ -19,8 +19,8 @@ public class Gui implements RouteGroup {
         new ReplayRouter(fm), new LobbyRouter(fm), 
         new GameRouter(fm), new MenuHandler(fm));
 
-    Db.init();
     registerRoutes();
+    Db.init();
   }
 
   @Override

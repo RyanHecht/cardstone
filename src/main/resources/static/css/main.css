@@ -14,7 +14,7 @@ h3{
     box-shadow: 0 -2px 20px 5px lightblue;
 }
 
-tr{
+.clickableRow {
     cursor:pointer;
 }
 
@@ -145,4 +145,19 @@ body {
 
 .full{
   height:100%;
+}
+
+.menuDisplay {
+  text-align: center;
+  width: 65%;
+  margin: auto;
+}
+
+.regDisplay {
+  width: 65%;
+  margin: auto;
+}
+
+.vert-align {
+  vertical-align: middle;
 }
