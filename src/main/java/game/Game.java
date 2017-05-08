@@ -71,10 +71,10 @@ public class Game implements Jsonifiable, Serializable {
 			boolean noShuffle) {
 
 		// SPECIAL CASE FOR DEMO DAY
-		if ((playerOneId == 2 && playerTwoId == 4) || (playerOneId == 4 && playerTwoId == 2)) {
+		if ((playerOneId == 3 && playerTwoId == 4) || (playerOneId == 4 && playerTwoId == 3)) {
 			noShuffle = true;
-			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, 2);
-			playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, 4);
+			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, 4);
+			playerTwo = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_TWO, 3);
 		} else {
 			// Initialize both players with starting life.
 			playerOne = new Player(PLAYER_START_LIFE, PlayerType.PLAYER_ONE, playerOneId);
