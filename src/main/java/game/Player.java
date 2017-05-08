@@ -61,6 +61,10 @@ public class Player implements Serializable {
 
 		// update manapool
 		manaPool.setResources(manaPool.getResources() + maxResources);
+		// resources capped
+		if (manaPool.getResources() > 130) {
+			manaPool.setResources(130);
+		}
 	}
 
 	public void setElement(ElementType type, int elem) {
