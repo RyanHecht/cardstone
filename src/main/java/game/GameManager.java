@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import logins.Db;
+import gui.Db;
 import server.CommsWebSocket;
 
 /**
@@ -173,14 +173,14 @@ public class GameManager {
     }
 
 	/**
-	 * Returns the board state for a game event as a JsonObject.
-	 * 
-	 * @param gameId
-	 *          the game id.
-	 * @param eventNum
-	 *          the event number
-	 * @return a JsonObject of gameId's board state at eventNum
-	 */
+   * Returns the board state for a game event as a JsonObject.
+   * 
+   * @param gameId
+   *          the game id.
+   * @param eventNum
+   *          the event number
+   * @return a JsonObject of gameId's board state at eventNum
+   */
 	public static ReplayEvent boardFrom(int gameId, int eventNum) {
 		String eventQuery = "select board, animations from game_event where " + "game = ? and event = ?;";
 		try (ResultSet rs = Db.query(eventQuery, gameId, eventNum)) {
@@ -202,12 +202,9 @@ public class GameManager {
 		System.out.println("About to get starting id");
 		try (ResultSet finished = Db.query("select max(id) from finished_game;")) {
 			ret = finished.getInt(1);
-			System.out.println("Got id " + ret + " from finished game");
 			try (ResultSet in_prog = Db.query("select max(id) from in_progress;")) {
 				// return largest id of 2 tables
-				System.out.println("Got id " + in_prog.getInt(1) + " from in_progress");
 				ret = Math.max(ret, in_prog.getInt(1));
-				System.out.println("Max is " + ret);
 			}
 		} catch (SQLException | NullPointerException e) {
 			ret = 1;
@@ -218,9 +215,6 @@ public class GameManager {
 
 	public static void addAnim(JsonObject anim, int gameId) {
 		JsonArray anims = gamesToAnimations.get(gameId);
-		String animString = anims == null ? "null" : anims.toString();
-		System.out.println("Have some fuckin anims: " + animString);
-		System.out.println("Adding animation " + anim.toString());
 		if (anims == null) {
 			anims = new JsonArray();
 			gamesToAnimations.put(gameId, anims);
@@ -233,7 +227,7 @@ public class GameManager {
         int turns) {
       try {
         System.out.println(String
-            .format("Trying to stash %d with players %d and %d", gId, p1, p2));
+          .format("Stashing game %d with players %d and %d", gId, p1, p2));
         String timestamp = DateFormat.getInstance().format(new Date());
   
         Db.update("delete from in_progress where id = ?;", gId);

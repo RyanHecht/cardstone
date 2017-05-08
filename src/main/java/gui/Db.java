@@ -1,5 +1,6 @@
-package logins;
+package gui;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+
+import game.Game;
+import game.GameManager;
 
 /**
  * A database class for shit.
@@ -73,6 +77,66 @@ public final class Db {
       instances.set(new CachedConnection(PATH));
     }
     instances.get().update(update, options);
+  }
+
+  public static void init() {
+    try {
+      Db.update("create table if not exists user("
+          + "id integer primary key autoincrement, "
+          + "username text unique not null, password text not null);");
+      Db.update("create table if not exists deck("
+          + "id integer primary key autoincrement, " + "name text not null, "
+          + "user integer not null, " + "cards text not null, "
+          + "UNIQUE(name, user), " + "FOREIGN KEY (user) REFERENCES user(id) "
+          + "ON DELETE CASCADE ON UPDATE CASCADE);");
+      Db.update("create table if not exists finished_game("
+          + "id integer primary key, winner integer not null, "
+          + "player1 integer not null, player2 integer not null, "
+          + "moves integer, date text not null, "
+          + "FOREIGN KEY (player1) REFERENCES user(id) "
+          + "ON DELETE CASCADE ON UPDATE CASCADE, "
+          + "FOREIGN KEY (player2) REFERENCES user(id) "
+          + "ON DELETE CASCADE ON UPDATE CASCADE, UNIQUE(id, winner));");
+      Db.update("create table if not exists in_progress("
+          + "id integer primary key autoincrement,"
+          + "player1 integer not null, player2 integer not null, board blob, "
+          + "FOREIGN KEY (player1) REFERENCES user(id) "
+          + "ON DELETE CASCADE ON UPDATE CASCADE,"
+          + "FOREIGN KEY (player2) REFERENCES user(id)"
+          + "ON DELETE CASCADE ON UPDATE CASCADE, "
+          + "UNIQUE(id, player1, player2));");
+      Db.update("create table if not exists game_event("
+          + "game integer not null, event integer not null,"
+          + "board text not null, animations text not null, UNIQUE(game, event));");
+
+      // loop through in_progress and stash in finished_game
+      try (ResultSet rs = Db.query("select * from in_progress;")) {
+        while (rs.next()) {
+          int turns;
+          String board = rs.getString(4);
+          try {
+            Game g = Game.deserialize(board);
+            turns = g.getNumTurns();
+            int p1 = g.getActivePlayerId();
+            int p2 = g.getOpposingPlayerId(p1);
+            System.out.println(
+                String.format("Cleaning out game %d with players %d and %d",
+                    g.getId(), p1, p2));
+          } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            turns = 0;
+          }
+
+          GameManager.registerFinishedGame(rs.getInt(1), rs.getInt(2),
+              rs.getInt(3), 0, turns);
+        }
+      } catch (SQLException | NullPointerException e) {
+        e.printStackTrace();
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
