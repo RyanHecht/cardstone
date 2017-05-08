@@ -25,6 +25,10 @@ public class GameManager {
   private static Map<Integer, Integer> gamesToEventNums = new ConcurrentHashMap<>();
   private static Map<Integer, JsonArray> gamesToAnimations = new ConcurrentHashMap<>();
 
+  /**
+   * Add a game to the game pool.
+   * @param game The game to add.
+   */
   public static void addGame(Game game) {
     if (games.updateGame(game)) {
 
@@ -41,7 +45,10 @@ public class GameManager {
     }
   }
 
-  // remove games when they're complete.
+  /**
+   * remove games when they're complete.
+   * @param ended The GameStats to end the game on.
+   */
   public static void endGame(GameStats ended) {
     Game g = ended.getGame();
     int gId = g.getId();
@@ -59,6 +66,11 @@ public class GameManager {
     gamesToEventNums.remove(gId);
   }
 
+  /**
+   * End the game, but with an explicitly defined winner.
+   * @param ended The GameStats of the game.
+   * @param winner The winner.
+   */
   public static void endGameExplicitWinners(GameStats ended, int winner) {
     Game g = ended.getGame();
     int gId = g.getId();
@@ -76,10 +88,20 @@ public class GameManager {
     gamesToEventNums.remove(gId);
   }
 
+  /**
+   * Query whether a player of a specified Id is in a game.
+   * @param playerId The user in question.
+   * @return True if they're in a game, false otherwise.
+   */
   public static boolean playerIsInGame(int playerId) {
     return games.getGameByPlayerId(playerId) != null;
   }
 
+  /**
+   * Get a game from a specified Id.
+   * @param playerId The user in question.
+   * @return The game the user is in (null if they aren't in a game).
+   */
   public static Game getGameByPlayerId(int playerId) {
     return games.getGameByPlayerId(playerId);
   }
