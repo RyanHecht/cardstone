@@ -19,7 +19,7 @@ public class BoltInABottle extends SpellCard{
 	private static final CardType	defaultType		= CardType.SPELL;
 	
 	public BoltInABottle(Player owner) {
-		super(new ManaPool(20, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 	
 	public Effect onThisPlayed(Card c, Zone z){

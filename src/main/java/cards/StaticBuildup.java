@@ -23,7 +23,7 @@ public class StaticBuildup extends SpellCard{
 	private int buildup;
 
 	public StaticBuildup(Player owner) {
-		super(new ManaPool(30, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(35, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsLeft = 0;
 		buildup = 0;
 	}
@@ -49,7 +49,7 @@ public class StaticBuildup extends SpellCard{
 		if(e instanceof DamageInterface){
 			DamageInterface di = (DamageInterface) e;
 			di.setDamage(di.getDamage() + buildup);
-			buildup++;
+			buildup+=2;
 			return di;
 		}
 		return e;
