@@ -1,14 +1,12 @@
 package gui;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonObject;
-
 import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
