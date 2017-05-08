@@ -34,14 +34,14 @@ public class StaticBuildup extends SpellCard{
 	}
 	
 	public Effect onTurnStart(Player p, Zone z){
-		buildup--;
+		turnsLeft--;
 		return EmptyEffect.create();
 	}
 	
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
 		if(c.getType() == CardType.SPELL && turnsLeft == 1){
-			buildup++;
+			buildup+=2;
 		}
 		return EmptyEffect.create();
 	}
