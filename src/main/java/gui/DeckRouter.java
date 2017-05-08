@@ -57,7 +57,7 @@ public class DeckRouter implements RouteGroup {
       }
 
       // we don't do anything with callback
-      return null;
+      return "";
     }
   }
 

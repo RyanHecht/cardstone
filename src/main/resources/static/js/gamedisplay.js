@@ -30,7 +30,8 @@ $(document).ready(() => {
 			} else if (curr_game.winner == 0) {
 				winner = "Tie";
 			}
-			
+			console.log("have winner " + winner);
+			console.log("winning id " + curr_game.winner);
 			const postParams = {id: oppId};
 			$.post("/username", postParams, responseJSON => {
 				const opponent = JSON.parse(responseJSON).username;

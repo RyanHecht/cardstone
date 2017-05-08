@@ -98,7 +98,7 @@ public final class Db {
           + "FOREIGN KEY (player2) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE, UNIQUE(id, winner));");
       Db.update("create table if not exists in_progress("
-          + "id integer primary key autoincrement,"
+          + "id integer primary key,"
           + "player1 integer not null, player2 integer not null, board blob, "
           + "FOREIGN KEY (player1) REFERENCES user(id) "
           + "ON DELETE CASCADE ON UPDATE CASCADE,"
@@ -109,7 +109,6 @@ public final class Db {
           + "game integer not null, event integer not null,"
           + "board text not null, animations text not null, UNIQUE(game, event));");
 
-      // loop through in_progress and stash in finished_game
       try (ResultSet rs = Db.query("select * from in_progress;")) {
         while (rs.next()) {
           int turns;
@@ -133,7 +132,6 @@ public final class Db {
       } catch (SQLException | NullPointerException e) {
         e.printStackTrace();
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -171,6 +169,7 @@ public final class Db {
       int i = 1;
       for (Object o : options) {
         base.setObject(i, o);
+        System.out.println("Setting object: " + o);
         i++;
       }
       base.executeUpdate();
