@@ -21,10 +21,9 @@ import templates.PlayerChoosesCards;
 
 public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 
-	private static final ManaPool	defaultCost		= new ManaPool(10, 0, 0, 0, 1, 0);
 	private static final String		defaultImage	= "images/BoltCatcher.jpg";
 	private static final String		defaultName		= "Bolt Catcher";
-	private static final String		defaultText		= "Predict whether your opponent will play a spell next turn. If you are right, gain a copy of the last spell they played.";
+	private static final String		defaultText		= "Predict whether your opponent will play a spell next turn. If you are right, gain a copy of the last spell they played, which costs nothing.";
 	private static final CardType	defaultType		= CardType.SPELL;
 	private final SpellCard chooseYes; 
 	private final SpellCard chooseNo; 
@@ -34,7 +33,7 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 	private Card last;
 	
 	public BoltCatcher(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		chooseYes = new SpellCard(ManaPool.emptyPool(),"images/BoltCatcher.jpg",owner,"Predict Yes","Predict that your opponent will play a spell during their next turn.",CardType.SPELL);
 		chooseNo = new SpellCard(ManaPool.emptyPool(),"images/BoltCatcherNo.jpg",owner,"Predict No","Predict that your opponent will not play a spell during their next turn.",CardType.SPELL);
 		turnsLeft = 0;
@@ -52,6 +51,8 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 		List<Card> res = new LinkedList<Card>();
 		res.add(chooseYes);
 		res.add(chooseNo);
+		board.registerCard(chooseYes);
+		board.registerCard(chooseNo);
 		return res;
 	}
 

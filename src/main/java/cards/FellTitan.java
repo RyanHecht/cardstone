@@ -13,14 +13,13 @@ import templates.TargetsOtherCard;
 
 public class FellTitan extends SpellCard implements TargetsOtherCard{
 
-	private static final ManaPool	defaultCost		= new ManaPool(10, 0, 0, 0, 0, 2);
 	private static final String		defaultImage	= "images/FellTitan.jpg";
 	private static final String		defaultName		= "Fell Titan";
 	private static final String		defaultText		= "Destroy target creature that costs 50 or more gold.";
 	private static final CardType	defaultType		= CardType.SPELL;
 	
 	public FellTitan(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 0, 0, 2), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	@Override

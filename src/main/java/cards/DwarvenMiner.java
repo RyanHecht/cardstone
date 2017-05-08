@@ -14,16 +14,15 @@ import game.Player;
 
 public class DwarvenMiner extends Creature {
 
-	private static final ManaPool defaultCost = new ManaPool(40, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/DwarvenMiner.jpg";
 	private static final String defaultName = "Dwarven Miner";
 	private static final String defaultText = "Double the effect of all your auras. Does not stack with other 'Dwarven Miners'.";
-	private static final int defaultHealth = 4;
-	private static final int defaultAttack = 3;
+	private static final int defaultHealth = 3;
+	private static final int defaultAttack = 1;
 	private static final CardType defaultType = CardType.CREATURE;
 
 	public DwarvenMiner(Player owner) {
-		super(defaultHealth, defaultAttack, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(defaultHealth, defaultAttack, new ManaPool(20, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	public boolean onProposedEffect(Effect e, Zone z) {

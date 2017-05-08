@@ -3,6 +3,7 @@ package cardgamelibrary;
 import com.google.gson.JsonObject;
 
 import effects.AddToOccEffect;
+import effects.EffectType;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -31,6 +32,7 @@ public class AuraCard extends PlayableCard implements AuraInterface {
 
 			// add any specific effects for this aura being played.
 			effect.addEffect(onThisPlayed(c, z));
+			effect.setType(EffectType.CARD_PLAYED);
 		}
 		else{
 			effect.addEffect(this.onOtherCardPlayed(c, z));

@@ -19,6 +19,8 @@ import effects.EffectType;
 import effects.EmptyEffect;
 import events.CardDamagedEvent;
 import events.CardHealedEvent;
+import events.CardPlayedEvent;
+import events.CardTargetedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
 import events.CreatureAttackEvent;
@@ -27,6 +29,7 @@ import events.GainElementEvent;
 import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
+import events.PlayerTargetedEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.GameManager;
@@ -62,6 +65,8 @@ public class Board implements Jsonifiable, Serializable {
 	private OrderedCardCollection auraOne;
 	private OrderedCardCollection graveOne;
 	private OrderedCardCollection creatureOne;
+	
+	private OrderedCardCollection extraCards;
 
 	// player two stuff;
 	private OrderedCardCollection deckTwo;
@@ -95,6 +100,8 @@ public class Board implements Jsonifiable, Serializable {
 		graveOne = new OrderedCardCollection(Zone.GRAVE, deckOne.getPlayer());
 		creatureOne = new OrderedCardCollection(Zone.CREATURE_BOARD, deckOne.getPlayer());
 
+		extraCards = new OrderedCardCollection(Zone.EXILE,deckOne.getPlayer());
+		
 		handTwo = new OrderedCardCollection(Zone.HAND, deckTwo.getPlayer());
 		auraTwo = new OrderedCardCollection(Zone.AURA_BOARD, deckTwo.getPlayer());
 		graveTwo = new OrderedCardCollection(Zone.GRAVE, deckTwo.getPlayer());
@@ -327,11 +334,58 @@ public class Board implements Jsonifiable, Serializable {
 
 	private void handleEvent(Event event) {
 		for (OrderedCardCollection occ : cardsInGame) {
-			// collect effects from all cards in game!
-			for (Effect e : occ.handleCardBoardEvent(event)) {
-				// iterate through all cards in a collection and add their effects to
-				// the queue.
-				effectQueue.add(e);
+			if(event.getType() == EventType.CARD_TARGETED){
+				CardTargetedEvent cte = (CardTargetedEvent) event;
+				CardPlayedEvent cpe = new CardPlayedEvent(cte.getTargetter(),this.getOcc(cte.getTargetter().getOwner(), Zone.HAND));
+				List<Effect> firstEffects = new ArrayList<Effect>();
+				for (Effect e : occ.handleCardBoardEvent(cte)) {
+					// iterate through all cards in a collection and add their effects to
+					// the queue.
+					firstEffects.add(e);
+				}
+				int x =0;
+				for(Effect e : occ.handleCardBoardEvent(cpe)){
+					
+					ConcatEffect ce = new ConcatEffect(e.getSrc());
+					if(e.getSrc() == cte.getTargetter()){
+						ce.setType(EffectType.CARD_PLAYED);
+					}
+					ce.addEffect(e);
+					ce.addEffect(firstEffects.get(x));
+					x++;
+					effectQueue.add(ce);
+				}
+			}
+			else if(event.getType() == EventType.PLAYER_TARGETED){
+				System.out.println("player targeted");
+				PlayerTargetedEvent cte = (PlayerTargetedEvent) event;
+				CardPlayedEvent cpe = new CardPlayedEvent(cte.getTargetter(),this.getOcc(cte.getTargetter().getOwner(), Zone.HAND));
+				List<Effect> firstEffects = new ArrayList<Effect>();
+				for (Effect e : occ.handleCardBoardEvent(cte)) {
+					// iterate through all cards in a collection and add their effects to
+					// the queue.
+					firstEffects.add(e);
+				}
+				int x =0;
+				for(Effect e : occ.handleCardBoardEvent(cpe)){
+					ConcatEffect ce = new ConcatEffect(e.getSrc());
+					if(e.getSrc().equals(cte.getTargetter())){
+						System.out.println("gong to yard");
+						ce.setType(EffectType.CARD_PLAYED);
+					}
+					System.out.println("jad");
+					ce.addEffect(e);
+					ce.addEffect(firstEffects.get(x));
+					x++;
+					effectQueue.add(ce);
+				}
+			}
+			else{
+				for (Effect e : occ.handleCardBoardEvent(event)) {
+					// iterate through all cards in a collection and add their effects to
+					// the queue.
+					effectQueue.add(e);
+				}
 			}
 		}
 		Event e = event.getNext(this);
@@ -557,6 +611,11 @@ public class Board implements Jsonifiable, Serializable {
 				}
 			}
 		}
+		for(Card c : this.extraCards){
+			if (c.getId() == id) {
+				return c;
+			}
+		}
 		throw new IllegalArgumentException("ERROR: No card with id" + id + " found.");
 	}
 
@@ -646,6 +705,10 @@ public class Board implements Jsonifiable, Serializable {
 		}
 	}
 
+	public void registerCard(Card c){
+		this.extraCards.add(c);
+	}
+	
 	/**
 	 * Inflicts damage on a card.
 	 *

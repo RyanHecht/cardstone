@@ -23,7 +23,7 @@ public class Discharge extends SpellCard {
 	private int numSpellsPlayed = 0;
 
 	public Discharge(Player owner) {
-		super(new ManaPool(30, 0, 0, 0, 2, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	public Effect onTurnStart(Player p, Zone z) {

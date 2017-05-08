@@ -19,7 +19,6 @@ import templates.TargetsPlayer;
 
 public class BoltFromTheBlue extends SpellCard implements TargetsOtherCard, TargetsPlayer {
 
-	private static final ManaPool	defaultCost		= new ManaPool(15, 0, 0, 0, 1, 0);
 	private static final String		defaultImage	= "images/BoltFromTheBlue.jpg";
 	private static final String		defaultName		= "Bolt From The Blue";
 	private static final String		defaultText		= "Deal 3. If this is the first storm card you played this game, deal 5 instead.";
@@ -27,7 +26,7 @@ public class BoltFromTheBlue extends SpellCard implements TargetsOtherCard, Targ
 	private boolean deal5;
 	
 	public BoltFromTheBlue(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		deal5 = true;
 	}
 	

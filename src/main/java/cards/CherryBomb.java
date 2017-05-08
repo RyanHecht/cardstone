@@ -13,7 +13,6 @@ import templates.OnOwnDeathCard;
 
 public class CherryBomb extends Creature implements OnOwnDeathCard {
 
-	private static final ManaPool defaultCost = new ManaPool(15, 1, 0, 0, 0, 0);
 	private static final String defaultImage = "images/CherryBomb.jpg";
 	private static final String defaultName = "Cherry Bomb";
 	private static final String defaultText = "When this creature dies, your opponent takes 5 damage.";
@@ -22,7 +21,7 @@ public class CherryBomb extends Creature implements OnOwnDeathCard {
 	private static final CardType defaultType = CardType.CREATURE;
 
 	public CherryBomb(Player owner) {
-		super(defaultHealth, defaultAttack, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(defaultHealth, defaultAttack, new ManaPool(15, 1, 0, 0, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	@Override

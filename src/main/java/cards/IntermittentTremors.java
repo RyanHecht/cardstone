@@ -13,7 +13,6 @@ import lambda.FunctionThreeMaker;
 
 public class IntermittentTremors extends AuraCard {
 
-	private static final ManaPool defaultCost = new ManaPool(15, 0, 0, 2, 0, 0);
 	private static final String defaultImage = "images/IntermittentTremors.jpg";
 	private static final String defaultName = "Intermittent Tremors";
 	private static final String defaultText = "At the start of every other one of your turns, deal 1 to all minions";
@@ -21,7 +20,7 @@ public class IntermittentTremors extends AuraCard {
 	private int turnsToTremor;
 
 	public IntermittentTremors(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsToTremor = 0;
 	}
 
