@@ -17,7 +17,7 @@ public class StaticBuildup extends SpellCard{
 
 	private static final String defaultImage = "images/StaticBuildup.jpg";
 	private static final String defaultName = "Static Buildup";
-	private static final String defaultText = "On your next turn, every damaging spell does 1 more damage for each damaging spell you previously played that turn.";
+	private static final String defaultText = "For the rest of the turn, every damaging spell does 1 more damage for each damaging spell you previously played that turn.";
 	private static final CardType defaultType = CardType.SPELL;
 	private int turnsLeft;
 	private int buildup;
@@ -29,7 +29,7 @@ public class StaticBuildup extends SpellCard{
 	}
 	
 	public Effect onThisPlayed(Card c, Zone z){
-		turnsLeft = 3;
+		turnsLeft = 1;
 		return EmptyEffect.create();
 	}
 	
@@ -37,7 +37,7 @@ public class StaticBuildup extends SpellCard{
 	public boolean onProposedEffect(Effect e, Zone z){
 		if(turnsLeft == 1 && z == Zone.GRAVE){
 			if(e instanceof DamageInterface){
-				if(e.getSrc().getOwner() == getOwner()){
+				if(e.getSrc().getOwner().equals(getOwner())){
 					return true;
 				}
 			}
