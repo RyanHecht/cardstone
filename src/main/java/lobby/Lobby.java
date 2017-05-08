@@ -5,8 +5,6 @@ import com.google.gson.JsonObject;
 import game.Game;
 import game.GameManager;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import server.CommsWebSocket;
@@ -38,13 +36,7 @@ public class Lobby implements Jsonifiable {
    * @param hostUId The id of the host player.
    */
   public Lobby(String name, boolean priv, String password, int hostUId) {
-    String encodedName = name;
-    try {
-      encodedName = URLEncoder.encode(name, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-    }
-    this.name = encodedName;
+    this.name = name.replace("<", "\\").replace(">", "/");
     this.priv = priv;
     this.password = password;
     this.uId1 = hostUId;
