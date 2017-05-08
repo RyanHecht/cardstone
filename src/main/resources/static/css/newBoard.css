@@ -1,11 +1,8 @@
 html{
     background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
 	width:98%;
-	height:100%;   
-    user-select: none;
+	height:100%;
 }
-
-
 
 img{
     -webkit-user-drag: none;
