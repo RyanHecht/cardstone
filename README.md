@@ -52,7 +52,7 @@ Mockup:
 https://xd.adobe.com/view/31887873-4f11-46d0-9159-c05904adf2e5/
 
 ## Project Design Presentation
-_A link to your design presentation/document will go here!_
+https://docs.google.com/presentation/d/1iJAo8T5gdSyt4Vo4BV-95i9ne7NhUJs37k6EnSeNA94/edit?usp=sharing
 
 ## How to Build and Run
-_A necessary part of any README!_
+If YOU want to build and run it, clone the repository and create an empty folder data/users. Build with mvn clean -> mvn package and use the included run script. It will run on port 8080.  If you want to play the game, head to http://cardst.one and make an account! New accounts are subject to an optional tutorial that will explain the site. 
