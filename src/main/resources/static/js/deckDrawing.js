@@ -105,11 +105,17 @@ function setupInput(){
         }
     });
     $("#filterSubmit").click(function(){
-       filterCollection($("#filterText").val()); 
+       filterCollection($("#filterText").val());
     });
     $("#deckSubmit").click(function(){
+    const reg = /^[A-Za-z\d\s]+$/;
 		if ($("#deckName").val() != "") {
-			submitDeck();
+      if (reg.test($("#deckName").val())) {
+        submitDeck();
+      } else {
+        alert("Invalid deck name! Ensure that you only use letters, numbers, and spaces.");
+      }
+
 		}
     })
 }
@@ -122,7 +128,7 @@ function submitDeck(){
     $.post("/deck_upload",post_params, responseJSON => {
         window.location.replace("/decks");
     });
-    
+
 }
 
 function drawProgressBar(){
@@ -146,20 +152,20 @@ function checkForGlobals(){
 
 function allCardsReady(){
 	    buildPages(allCards);
-	
+
 
     curPage = 0;
     collect = new cardCollectionDeck($('.collectionDisplay'),pages.get(curPage),allCards);
     list = new deckList($(".deckList"));
     $(window).resize(function() {
          redrawAll();
-        
+
 	});
     setupPaging();
     setupInput();
     redrawAll();
 	checkForGlobals();
-    
+
 }
 
 $('document').ready(function(){
