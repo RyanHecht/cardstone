@@ -3,7 +3,7 @@ package effects;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
-import cards.CheapJoshCreature;
+import cards.CaveDwellingGoblin;
 import game.Player;
 import game.PlayerType;
 
@@ -17,37 +17,39 @@ import game.PlayerType;
  *
  */
 public final class EmptyEffect implements Effect {
-	private static final EmptyEffect effect = new EmptyEffect();
-	private static final Card src = new CheapJoshCreature(new Player(-1100,PlayerType.PLAYER_ONE,-1100));
-	/*
-	 * no instantiation allowed.
-	 */
-	private EmptyEffect() {
+  private static final EmptyEffect effect = new EmptyEffect();
+  private static final Card src = new CaveDwellingGoblin(
+      new Player(-1100, PlayerType.PLAYER_ONE, -1100));
 
-	}
+  /*
+   * no instantiation allowed.
+   */
+  private EmptyEffect() {
 
-	@Override
-	public void apply(Board board) {
-		// empty method b/c it doesn't do anything.
-	}
+  }
 
-	/**
-	 * Static method used to create empty effects.
-	 *
-	 * @return an empty effect.
-	 */
-	public static EmptyEffect create() {
-		return effect;
-	}
+  @Override
+  public void apply(Board board) {
+    // empty method b/c it doesn't do anything.
+  }
 
-	@Override
-	public EffectType getType() {
-		return EffectType.EMPTY;
-	}
+  /**
+   * Static method used to create empty effects.
+   *
+   * @return an empty effect.
+   */
+  public static EmptyEffect create() {
+    return effect;
+  }
 
-	@Override
-	public Card getSrc() {
-		return src;
-	}
+  @Override
+  public EffectType getType() {
+    return EffectType.EMPTY;
+  }
+
+  @Override
+  public Card getSrc() {
+    return src;
+  }
 
 }
