@@ -458,6 +458,46 @@ public class Game implements Jsonifiable, Serializable {
 	}
 
 	/**
+	 * Used to handle the user activating a card with no target.
+	 * 
+	 * @param userInput
+	 *          JsonObject representing the user's front end input.
+	 * @param playerId
+	 *          the id of the player submitting the action.
+	 */
+	public void handleCardActivated(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+
+		} else {
+
+		}
+	}
+
+	/**
+	 * Used to handle the user activating a card that targets another card.
+	 * 
+	 * @param userInput
+	 *          JsonObject representing the user's input from the front end.
+	 * @param playerId
+	 *          the id of the player submitting the action.
+	 */
+	public void handleCardActivationTargetsCard(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+
+		} else {
+
+		}
+	}
+
+	public void handleCardActivation(JsonObject userInput, int playerId) {
+		if (isTurn(playerId)) {
+
+		} else {
+
+		}
+	}
+
+	/**
 	 * Handles receiving card targeted inputs from front end.
 	 *
 	 * @param userInput
