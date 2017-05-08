@@ -50,7 +50,7 @@ public class Board implements Jsonifiable, Serializable {
 
 	private LinkedList<Effect> effectQueue;
 
-	private static final int STARTING_HAND_SIZE = 6;
+	private static final int STARTING_HAND_SIZE = 7;
 
 	private static Card EmptySrc = EmptyEffect.create().getSrc();
 
