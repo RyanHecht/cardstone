@@ -410,6 +410,11 @@ public class CommsWebSocket {
 
   }
 
+  /**
+   * Add the list of spectators for this user.
+   * @param spectateeId The user being specated.
+   * @param spectatorList The list of spectators.
+   */
   public static void setSpectators(int spectateeId,
       List<Integer> spectatorList) {
     spectators.put(spectateeId, spectatorList);
