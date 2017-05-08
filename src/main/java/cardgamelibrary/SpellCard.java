@@ -3,6 +3,7 @@ package cardgamelibrary;
 import com.google.gson.JsonObject;
 
 import effects.AddToOccEffect;
+import effects.EffectType;
 import effects.EmptyEffect;
 import game.Player;
 
@@ -36,6 +37,7 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND,this));
 			// add any specific effects for this spell being played.
 			effect.addEffect(onThisPlayed(c, z));
+			effect.setType(EffectType.CARD_PLAYED);
 			
 		}
 		else{

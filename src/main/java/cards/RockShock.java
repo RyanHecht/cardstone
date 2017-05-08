@@ -18,10 +18,9 @@ import templates.decorators.CantAttackForTurnsCreature;
 public class RockShock extends SpellCard implements TargetsOtherCard {
 
 	public RockShock(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(15, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
-	private static final ManaPool defaultCost = new ManaPool(15, 0, 0, 1, 0, 0);
 	private static final String defaultImage = "images/RockShock.jpg";
 	private static final String defaultName = "Rock Shock";
 	private static final String defaultText = "Deal two damage to target minion and prevent it from attacking next turn.";

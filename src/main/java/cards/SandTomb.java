@@ -47,7 +47,6 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 	}
 
 	private static class Tomb extends Creature implements OnOwnDeathCard {
-		private static final ManaPool defaultCost = new ManaPool(0, 0, 0, 1, 0, 0);
 		private static final String defaultImage = "images/Tomb.jpg";
 		private static final String defaultName = "Tomb";
 		private static final String defaultText = "Destroy this to free the imprisoned minion!";
@@ -57,7 +56,7 @@ public class SandTomb extends SpellCard implements TargetsOtherCard {
 		Card resummon;
 
 		private Tomb(Card resummon, Player owner) {
-			super(defaultAttack, defaultHealth, defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+			super(defaultAttack, defaultHealth, new ManaPool(0, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 			this.resummon = resummon;
 		}
 

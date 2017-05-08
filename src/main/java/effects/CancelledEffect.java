@@ -8,8 +8,6 @@ public class CancelledEffect implements Effect {
 
 	@Override
 	public void apply(Board board) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public CancelledEffect(Card src){

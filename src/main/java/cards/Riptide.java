@@ -15,14 +15,13 @@ import templates.TargetsOtherCard;
 public class Riptide extends SpellCard implements TargetsOtherCard {
 
 	private static final long serialVersionUID = 1L;
-	private static final ManaPool defaultCost = new ManaPool(5, 0, 3, 0, 0, 0);
 	private static final String defaultImage = "images/Riptide.jpg";
 	private static final String defaultName = "Riptide";
 	private static final String defaultText = "Deal two damage to target creature.";
 	private static final CardType defaultType = CardType.SPELL;
 
 	public Riptide(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(5, 0, 3, 0, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	@Override

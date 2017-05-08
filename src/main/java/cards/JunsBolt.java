@@ -15,14 +15,13 @@ import templates.TargetsPlayer;
 
 public class JunsBolt extends SpellCard implements TargetsOtherCard, TargetsPlayer {
 
-	private static final ManaPool defaultCost = new ManaPool(10, 0, 0, 0, 1, 0);
 	private static final String defaultImage = "images/JunsBolt.jpg";
 	private static final String defaultName = "Jun's Bolt";
 	private static final String defaultText = "Deal 3 damage to target enemy creature or to your opponent.";
 	private static final CardType defaultType = CardType.SPELL;
 
 	public JunsBolt(Player owner) {
-		super(defaultCost, defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(5, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
 	@Override
