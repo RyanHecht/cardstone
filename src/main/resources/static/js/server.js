@@ -19,7 +19,10 @@ PLAYER_SEND_CHAT: 16,
 RECEIVE_CHAT: 17,
 TURN_START: 18,
 SET_SPECTATOR: 19,
-GAME_END: 20
+GAME_END: 20,
+CARD_ACTIVATED_SELF: 21,
+CARD_ACTIVATED_CARD_TARGET: 22,
+CARD_ACTIVATED_PLAYER_TARGET: 23
 };
 
 class Server{
@@ -52,6 +55,24 @@ class Server{
 		this.sendTargetResponse(id);
         inputState = StateEnum.IDLE;
 	}
+
+  cardActivatedSelf(id) {
+    const payload = {"IID1": id};
+    const obj = {"type": MESSAGE_TYPE.CARD_ACTIVATED_SELF, "payload": payload};
+    this.websocket.send(JSON.stringify(obj));
+  }
+
+  cardActivatedCardTarget(source, target) {
+   const payload = {"IID1": source, "IID2": target};
+ 	 const obj = {"type": MESSAGE_TYPE.CARD_ACTIVATED_CARD_TARGET, "payload": payload};
+ 	 this.websocket.send(JSON.stringify(obj));
+  }
+
+  cardActivatedPlayerTarget(source, isSelf) {
+    const payload = {"IID1": source, "self": isSelf};
+    const obj = {"type": MESSAGE_TYPE.CARD_ACTIVATED_PLAYER_TARGET, "payload": payload};
+    this.websocket.send(JSON.stringify(obj));
+  }
 
 
     //RY GUY WRITE THIS QUIK

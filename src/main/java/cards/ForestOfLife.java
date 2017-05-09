@@ -28,7 +28,7 @@ public class ForestOfLife extends AuraCard{
 	
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
-		if(z == Zone.AURA_BOARD && c.getOwner().equals(getOwner()) && c.getCost().getElement(ElementType.EARTH) >= 1){
+		if(z == Zone.AURA_BOARD && c.getOwner().equals(getOwner()) && c.hasElement(ElementType.EARTH)){
 			return new PlayerHealedEffect(this,getOwner(),3);
 		}
 		return EmptyEffect.create();

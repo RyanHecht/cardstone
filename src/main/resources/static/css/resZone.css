@@ -53,6 +53,38 @@
   width:100px;
 }
 
+#devotionBox1{
+    position:absolute;
+    left:20px;
+    bottom:240px;
+    width:120px;
+}
+
+#devotionBox2{
+    position:absolute;
+    right:0px;
+    top:100px;
+    width:120px;
+}
+
+.devotionEmblem{
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:40px;
+    height:40px;
+    background-image:url("../images/elements/balanceBig.jpg");
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+.devotionLabel{
+    color:lightblue;
+    position:absolute;
+    top:40px;
+    left:0px;
+}
 
 .userIcon{
     height:50px;

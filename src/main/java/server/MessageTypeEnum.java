@@ -86,6 +86,19 @@ public enum MessageTypeEnum {
 
   // Alert player of game end (Server -> Client)
   // 20
-  GAME_END
+  GAME_END,
+
+  // A user activated an activatable (Client -> Server)
+  // 21
+  CARD_ACTIVATED_SELF,
+
+  // A user activated an activatable that took a card target (Client -> Server)
+  // 22
+  CARD_ACTIVATED_CARD_TARGET,
+
+  // A user activated an activatable that took a player target (Client ->
+  // Server)
+  // 23
+  CARD_ACTIVATED_PLAYER_TARGET
 
 }

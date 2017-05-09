@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
+import devotions.NoDevotion;
 
 /**
  * Class to represent a player in the game.
@@ -18,6 +19,7 @@ public class Player implements Serializable {
 	private int life;
 	private ManaPool manaPool;
 	private final int id;
+	private NoDevotion devotion;
 
 	// keeps track of amount of resources to gain at start of a turn.
 	private int maxResources = 0;
