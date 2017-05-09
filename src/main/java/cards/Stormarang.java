@@ -18,7 +18,7 @@ public class Stormarang extends SpellCard{
 	private static final CardType	defaultType		= CardType.SPELL;
 	
 	public Stormarang(Player owner) {
-		super(new ManaPool(10, 0, 0, 1, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(10, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 	
 	public Effect onThisPlayed(Card c, Zone z){
