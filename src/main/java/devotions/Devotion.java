@@ -6,6 +6,7 @@ import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.DevotionType;
 import cardgamelibrary.ElementType;
+import cardgamelibrary.Event;
 import cardgamelibrary.ManaPool;
 import game.Player;
 
@@ -25,6 +26,10 @@ public interface Devotion{
 	}
 	
 	public default void onUserAction(Player p){
+		
+	}
+
+	public default void eventOccurred(Event event){
 		
 	}
 	

@@ -26,6 +26,7 @@ import cardgamelibrary.Creature;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Element;
 import cardgamelibrary.Event;
+import cardgamelibrary.GlobalLogger;
 import cardgamelibrary.Jsonifiable;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
@@ -434,7 +435,6 @@ public class Game implements Jsonifiable, Serializable {
 	protected void act(Event event) {
 
 		String s = board.legalityProcessEvent(event);
-		System.out.println("checkd legality " + s);
 		if (!s.equals("ok")) {
 			sendPlayerActionBad(board.getActivePlayer().getId(), s);
 		} else {
@@ -590,8 +590,10 @@ public class Game implements Jsonifiable, Serializable {
 
 				// targeted card was a valid card.
 				// construct appropriate event.
+				playerOne.getDevotion().onCardPlayed(targetter);
+				playerTwo.getDevotion().onCardPlayed(targetter);
 				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee, targetIn);
-
+				
 				// tell player the action was ok.
 				sendPlayerActionGood(playerId);
 
@@ -677,14 +679,19 @@ public class Game implements Jsonifiable, Serializable {
 
 					// tell player action was good.
 					sendPlayerActionGood(playerId);
-
+					
+					
+					playerOne.getDevotion().onCardPlayed(card);
+					playerTwo.getDevotion().onCardPlayed(card);
 					// execute event.
 					act(event);
-
+					
 					// make card played event.
-					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
-
-					act(cEvent);
+					
+//					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
+//
+//					act(cEvent);
+					GlobalLogger.potentialProblem("Disabled creating card played events");
 
 					// send board.
 					sendWholeBoardToAllAndDb();
@@ -732,6 +739,8 @@ public class Game implements Jsonifiable, Serializable {
 					// tell player action was good.
 					sendPlayerActionGood(playerId);
 
+					playerOne.getDevotion().onCardPlayed(card);
+					playerTwo.getDevotion().onCardPlayed(card);
 					// execute event.
 					act(event);
 
@@ -778,6 +787,9 @@ public class Game implements Jsonifiable, Serializable {
 			// create card played event for the choosing card.
 			CardPlayedEvent cEvent = new CardPlayedEvent(chooserCard, board.getOcc(chooserCard.getOwner(), Zone.GRAVE));
 			act(cEvent);
+			playerOne.getDevotion().onCardPlayed(chooserCard);
+			playerTwo.getDevotion().onCardPlayed(chooserCard);
+			GlobalLogger.potentialProblem("location of the on card played events for devotion");
 			// reset the choosing card.
 			chooserCard = null;
 
@@ -892,6 +904,8 @@ public class Game implements Jsonifiable, Serializable {
 				return;
 			}
 
+			playerOne.getDevotion().onCardPlayed(card);
+			playerTwo.getDevotion().onCardPlayed(card);
 			CardPlayedEvent event = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
 
 			// tell player action was ok.

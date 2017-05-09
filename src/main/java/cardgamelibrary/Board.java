@@ -30,6 +30,7 @@ import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.PlayerTargetedEvent;
+import events.AppliedDevotionEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
 import game.GameManager;
@@ -186,6 +187,8 @@ public class Board implements Jsonifiable, Serializable {
 	// wants to perform an event.
 	public void takeAction(Event event) {
 		eventQueue.add(event);
+		activePlayer.getDevotion().onUserAction(activePlayer);
+		getOpposingPlayer(activePlayer).getDevotion().onUserAction(activePlayer);
 		handleState();
 	}
 
@@ -254,6 +257,8 @@ public class Board implements Jsonifiable, Serializable {
 					turnIndex++;
 					// give player who is starting turn their resources!
 					activePlayer.startTurn();
+					activePlayer.getDevotion().onTurnStart(activePlayer);
+					getOpposingPlayer(activePlayer).getDevotion().onTurnStart(activePlayer);
 					OrderedCardCollection activeDeck = getOcc(activePlayer, Zone.DECK);
 					// add first card from deck to hand.
 					addCardToOcc(activeDeck.getFirstCard(), getOcc(activePlayer, Zone.HAND), activeDeck);
@@ -333,6 +338,8 @@ public class Board implements Jsonifiable, Serializable {
 	}
 
 	private void handleEvent(Event event) {
+		activePlayer.getDevotion().eventOccurred(event);
+		getOpposingPlayer(activePlayer).getDevotion().eventOccurred(event);
 		for (OrderedCardCollection occ : cardsInGame) {
 			if(event.getType() == EventType.CARD_TARGETED){
 				CardTargetedEvent cte = (CardTargetedEvent) event;
@@ -899,5 +906,11 @@ public class Board implements Jsonifiable, Serializable {
 			return true;
 		}
 		return false;
+	}
+
+	public void applyDevotion(Player target, Element src) {
+		target.setDevotion(src);
+		AppliedDevotionEvent e = new AppliedDevotionEvent(target,src);
+		eventQueue.add(e);
 	}
 }

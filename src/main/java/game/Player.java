@@ -4,9 +4,15 @@ import java.io.Serializable;
 
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.DevotionType;
+import cardgamelibrary.Effect;
+import cardgamelibrary.Element;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
+import devotions.Devotion;
 import devotions.NoDevotion;
+import effects.ApplyDevotionEffect;
+import effects.EmptyEffect;
 
 /**
  * Class to represent a player in the game.
@@ -19,7 +25,7 @@ public class Player implements Serializable {
 	private int life;
 	private ManaPool manaPool;
 	private final int id;
-	private NoDevotion devotion;
+	private Devotion devotion;
 
 	// keeps track of amount of resources to gain at start of a turn.
 	private int maxResources = 0;
@@ -32,6 +38,7 @@ public class Player implements Serializable {
 		life = l;
 		manaPool = new ManaPool(0, 0, 0, 0, 0, 0);
 		this.id = id;
+		this.devotion = new NoDevotion(this);
 	}
 
 	public PlayerType getPlayerType() {
@@ -125,6 +132,19 @@ public class Player implements Serializable {
 		assert (validateCost(cost));
 		manaPool.payCost(cost);
 	}
+	
+	public Devotion getDevotion(){
+		return devotion;
+	}
+	
+	
+	
+	public Effect tryApplyDevotion(Element e){
+		if(this.devotion.getDevotionType().equals(DevotionType.NO_DEVOTION)){
+			return new ApplyDevotionEffect(this,e);
+		}
+		return EmptyEffect.create();
+	}
 
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
@@ -139,5 +159,9 @@ public class Player implements Serializable {
 		elementObject.addProperty("balance", manaPool.getElement(ElementType.BALANCE));
 		result.add("element", elementObject);
 		return result;
+	}
+
+	public void setDevotion(Element src) {
+		this.devotion = DevotionType.getDevotion(this,src);
 	}
 }
