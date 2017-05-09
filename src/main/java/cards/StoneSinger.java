@@ -29,7 +29,7 @@ public class StoneSinger extends Creature {
   @Override
   public Effect onOtherCardPlayed(Card c, Zone z) {
     if (z == Zone.CREATURE_BOARD && c.getOwner() == getOwner()) {
-      if (c.getCost().getElement(ElementType.EARTH) >= 1) {
+      if (c.hasElement(ElementType.EARTH)) {
         TauntCreature tc = new TauntCreature(new StoneGolem(this.getOwner()));
         return new SummonEffect(tc, Zone.CREATURE_BOARD, this);
       }

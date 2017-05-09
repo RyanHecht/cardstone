@@ -1,5 +1,7 @@
 package cardgamelibrary;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.JsonObject;
@@ -23,6 +25,7 @@ public class PlayableCard implements Card {
 	private CardType							type;
 	private int										id;
 	private static AtomicInteger	idGenerator	= new AtomicInteger(0);
+	private Set<ElementType> elementTypes;
 
 	public PlayableCard(ManaPool cost, String image, Player owner, String name, String text, CardType type) {
 		this.cost = cost;
@@ -34,8 +37,26 @@ public class PlayableCard implements Card {
 		// should cards be initialized with a changed of true? YEEN ::: )D
 		this.changed = true;
 		this.id = idGenerator.incrementAndGet();
+		setElementTypes(cost);
+	}
+	
+	private void setElementTypes(ManaPool cost){
+		this.elementTypes = new HashSet<ElementType>();
+		for(ElementType e : ElementType.values()){
+			if(cost.getElement(e) > 0){
+				elementTypes.add(e);
+			}
+		}
 	}
 
+	public boolean hasElement(ElementType e){
+		return elementTypes.contains(e);
+	}
+	
+	public void addElementType(ElementType e){
+		elementTypes.add(e);
+	}
+	
 	// tells us if the card has changed since the last time we sent it to the
 	// front end.
 	@Override

@@ -266,4 +266,9 @@ public class CardWrapper implements Card {
 		return c.isInstance(this) || internal.isA(c);
 	}
 
+	@Override
+	public boolean hasElement(ElementType e) {
+		return internal.hasElement(e);
+	}
+
 }

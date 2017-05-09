@@ -4,6 +4,6 @@ import java.io.Serializable;
 
 public enum CardType implements Serializable{
 
-	SPELL, CREATURE, AURA, PLAYER, ELEMENT,
+	SPELL, CREATURE, AURA, PLAYER, ELEMENT, DEVOTION,
 
 }
