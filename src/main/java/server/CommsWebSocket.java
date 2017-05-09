@@ -100,11 +100,19 @@ public class CommsWebSocket {
         } else if (type == MessageTypeEnum.CHOOSE_RESPONSE.ordinal()) {
           GameManager.receiveChooseResponse(id, payload);
         } else if (type == MessageTypeEnum.TARGET_RESPONSE.ordinal()) {
-
+          // Deprecated
         } else if (type == MessageTypeEnum.TURN_END.ordinal()) {
           GameManager.receiveTurnEnd(id);
         } else if (type == MessageTypeEnum.PLAYER_SEND_CHAT.ordinal()) {
           GameManager.receivePlayerChat(id, payload);
+        } else if (type == MessageTypeEnum.CARD_ACTIVATED_SELF.ordinal()) {
+          GameManager.receiveCardActivatedSelf(id, payload);
+        } else if (type == MessageTypeEnum.CARD_ACTIVATED_PLAYER_TARGET
+            .ordinal()) {
+          GameManager.receiveCardActivatedTargetsCard(id, payload);
+        } else if (type == MessageTypeEnum.CARD_ACTIVATED_PLAYER_TARGET
+            .ordinal()) {
+          GameManager.receiveCardActivatedTargetsPlayer(id, payload);
         }
       } else {
         // ID_RESPONSE is the only thing that the client should send it if it
@@ -146,6 +154,11 @@ public class CommsWebSocket {
 
   }
 
+  /**
+   * Query whether a specified userId is a spectator.
+   * @param userId the user in question.
+   * @return Whether they are a spectator.
+   */
   public static boolean isSpectator(Integer userId) {
     for (List<Integer> specList : spectators.values()) {
       if (specList.contains(userId)) {
@@ -155,6 +168,10 @@ public class CommsWebSocket {
     return false;
   }
 
+  /**
+   * Will remove the specified user from the spectate list, if they're there
+   * @param userId the user in question.
+   */
   public static void removeIfSpectator(Integer userId) {
     Iterator<List<Integer>> it = spectators.values().iterator();
     while (it.hasNext()) {
@@ -168,6 +185,11 @@ public class CommsWebSocket {
 
   }
 
+  /**
+   * Get the id of who the user is spectating.
+   * @param userId The user in question.
+   * @return The id of the spectatee, -999 if none (check first please).
+   */
   public static int getSpectatee(Integer userId) {
     for (Integer spectatee : spectators.keySet()) {
       if (spectators.get(spectatee).contains(userId)) {
@@ -197,6 +219,12 @@ public class CommsWebSocket {
     }
   }
 
+  /**
+   * Send a message telling the user they are a spectator.
+   * @param userId The id of the recipient.
+   * @param watching Who they are watching.
+   * @throws IOException thrown by websocket.
+   */
   public static void sendIsSpectator(int userId, int watching)
       throws IOException {
     if (idToSessions.containsKey(userId)) {
@@ -287,6 +315,12 @@ public class CommsWebSocket {
     sendMessage(userId, MessageTypeEnum.ACTION_BAD, obj);
   }
 
+  /**
+   * Send a turn start message.
+   * @param userId The id of the recipient.
+   * @param userIdsTurn true if it's their turn, false otherwise.
+   * @throws IOException thrown by websocket.
+   */
   public static void sendTurnStart(int userId, boolean userIdsTurn)
       throws IOException {
     JsonObject obj = new JsonObject();
@@ -339,6 +373,12 @@ public class CommsWebSocket {
     sendMessage(userId, MessageTypeEnum.GAME_END, obj);
   }
 
+  /**
+   * Tell spectators the game is over!
+   * @param userId
+   * @param message
+   * @throws IOException
+   */
   public static void sendGameEndToSpectators(int userId, String message)
       throws IOException {
     JsonObject payload = new JsonObject();
@@ -362,10 +402,19 @@ public class CommsWebSocket {
     }
   }
 
+  /**
+   * empty.
+   * @param userId
+   */
   public static void closeSession(int userId) {
 
   }
 
+  /**
+   * Add the list of spectators for this user.
+   * @param spectateeId The user being specated.
+   * @param spectatorList The list of spectators.
+   */
   public static void setSpectators(int spectateeId,
       List<Integer> spectatorList) {
     spectators.put(spectateeId, spectatorList);

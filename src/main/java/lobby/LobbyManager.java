@@ -29,6 +29,7 @@ public class LobbyManager {
    */
   public static Lobby addLobby(String name, boolean priv, String password,
       int hostUId) throws IllegalArgumentException {
+    name = name.replace("<", "").replace(">", "");
     if (lobbies.containsKey(name)) {
       throw new IllegalArgumentException(
           "Lobby with name " + name + " already exists");
@@ -66,6 +67,9 @@ public class LobbyManager {
    * @return A Collection containing all lobbies.
    */
   public static Collection<Lobby> getAllLobbies() {
+    for (String name : lobbies.keySet()) {
+      System.out.println(name);
+    }
     return lobbies.values();
   }
 
@@ -93,7 +97,7 @@ public class LobbyManager {
    */
   public static void playerJoinLobby(int playerId, String lobbyName,
       String password)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     try {
       if (LobbyManager.playerIsInLobby(playerId)) {
         throw new IllegalArgumentException("You're already in a lobby!");
@@ -104,6 +108,7 @@ public class LobbyManager {
       System.out.println(String.format("PID: %d, Name: %s, Pw: %s", playerId,
           lobbyName, password));
       Lobby l = lobbies.get(lobbyName);
+
       if (l != null) {
         lobbies.get(lobbyName).join(playerId, password);
         LobbyWebSocket.sendOpponentEnteredLobby(l.getOtherPlayer(playerId),
@@ -125,7 +130,7 @@ public class LobbyManager {
 
   public static void spectatorJoinLobby(int playerId, String lobbyName,
       String password)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     if (LobbyManager.playerIsInLobby(playerId)) {
       throw new IllegalArgumentException(
           "You're already in a lobby!");
