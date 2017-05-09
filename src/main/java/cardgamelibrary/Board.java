@@ -364,7 +364,6 @@ public class Board implements Jsonifiable, Serializable {
 				}
 			}
 			else if(event.getType() == EventType.PLAYER_TARGETED){
-				System.out.println("player targeted");
 				PlayerTargetedEvent cte = (PlayerTargetedEvent) event;
 				CardPlayedEvent cpe = new CardPlayedEvent(cte.getTargetter(),this.getOcc(cte.getTargetter().getOwner(), Zone.HAND));
 				List<Effect> firstEffects = new ArrayList<Effect>();
@@ -377,10 +376,8 @@ public class Board implements Jsonifiable, Serializable {
 				for(Effect e : occ.handleCardBoardEvent(cpe)){
 					ConcatEffect ce = new ConcatEffect(e.getSrc());
 					if(e.getSrc().equals(cte.getTargetter())){
-						System.out.println("gong to yard");
 						ce.setType(EffectType.CARD_PLAYED);
 					}
-					System.out.println("jad");
 					ce.addEffect(e);
 					ce.addEffect(firstEffects.get(x));
 					x++;

@@ -1,8 +1,18 @@
 package devotions;
 
+import cardgamelibrary.Card;
 import cardgamelibrary.DevotionType;
+import cardgamelibrary.Event;
+import cardgamelibrary.EventType;
+import cardgamelibrary.Zone;
+import events.CardHealedEvent;
+import events.CardZoneChangeEvent;
+import events.CreatureAttackEvent;
 import game.Player;
 
+
+//Chaos goes up on playing odd costed cards and choose effects.
+//Order goes up on playing even costed cards and choose effects.
 public class BalanceDevotion implements Devotion{
 
 
@@ -40,6 +50,17 @@ public class BalanceDevotion implements Devotion{
 	@Override
 	public Player getOwner() {
 		return owner;
+	}
+	
+	public void onCardPlayed(Card c){
+		if(c.getOwner().equals(getOwner())){
+			if(c.getCost().getResources() % 2 == 0){
+				order++;
+			}
+			else{
+				chaos++;
+			}
+		}
 	}
 
 }
