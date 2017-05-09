@@ -73,18 +73,22 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
-	default public Card getNewInstanceOf(Player p){
+	default public Effect onCardActivation(Card c, Zone z) {
+		return EmptyEffect.create();
+	}
+
+	default public Card getNewInstanceOf(Player p) {
 		Class[] args = new Class[1];
 		args[0] = Player.class;
-			try {
-				return this.getClass().getDeclaredConstructor(args).newInstance(p);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-			}
+		try {
+			return this.getClass().getDeclaredConstructor(args).newInstance(p);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
-	
+
 	// when something else is damaged. Creatures have a
 	// takeDamage method that specifies that they are the thing taking damage.
 	default public Effect onCreatureDamage(CreatureInterface target, Card src, int dmg, Zone z) {
@@ -119,8 +123,8 @@ public interface Card extends Jsonifiable, Serializable {
 	default public boolean onProposedEffect(Effect e, Zone z) {
 		return false;
 	}
-	
-	default public Effect onGameStart(){
+
+	default public Effect onGameStart() {
 		return EmptyEffect.create();
 	}
 
@@ -261,10 +265,10 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onOtherCardPlayed(Card c, Zone z){
+	default public Effect onOtherCardPlayed(Card c, Zone z) {
 		return EmptyEffect.create();
 	}
-	
+
 	static boolean recursiveIs(Object c, Class goal) {
 		Class curClass = c.getClass();
 		while (curClass != Object.class) {
@@ -275,6 +279,6 @@ public interface Card extends Jsonifiable, Serializable {
 		}
 		return false;
 	}
-	
+
 	JsonObject jsonifySelfBack();
 }

@@ -469,7 +469,8 @@ public class Game implements Jsonifiable, Serializable {
 		if (isTurn(playerId)) {
 
 		} else {
-
+			// player acting out of turn.
+			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
 	}
 
@@ -485,15 +486,25 @@ public class Game implements Jsonifiable, Serializable {
 		if (isTurn(playerId)) {
 
 		} else {
-
+			// player acting out of turn.
+			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
 	}
 
+	/**
+	 * Used to handle the user activating a card that targets a player.
+	 * 
+	 * @param userInput
+	 *          JsonObject representing the user's input.
+	 * @param playerId
+	 *          the id of the player submitting the action.
+	 */
 	public void handleCardActivationTargetsPlayer(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
 
 		} else {
-
+			// player acting out of turn.
+			sendPlayerActionBad(playerId, "Acting out of turn.");
 		}
 	}
 
