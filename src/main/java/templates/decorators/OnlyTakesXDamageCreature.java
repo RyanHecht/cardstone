@@ -25,5 +25,9 @@ public class OnlyTakesXDamageCreature extends CreatureWrapper {
 		}
 		return true;
 	}
+	
+	public Effect getNewProposition(Effect e, Zone z){
+		return e;
+	}
 
 }
