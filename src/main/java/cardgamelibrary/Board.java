@@ -413,7 +413,7 @@ public class Board implements Jsonifiable, Serializable {
 	private boolean hasProcessed(Card processor, Card effectSrc) {
 		Collection<Card> cc = alreadyProcessed.get(processor);
 		if (effectSrc == EmptySrc) {
-			return false;
+			return true;
 		}
 		return cc.contains(effectSrc);
 	}

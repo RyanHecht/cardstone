@@ -29,8 +29,8 @@ public class OnlyTakesXDamageCreature extends CreatureWrapper {
 	public Effect getNewProposition(Effect e, Zone z){
 		if(e.getType() == EffectType.CARD_DAMAGED){
 			CardDamageEffect cde = (CardDamageEffect) e;
-			cde.setDamage(this.allowedDamage);
-			return cde;
+			CardDamageEffect newCde = new CardDamageEffect(cde.getSrc(),cde.getTarget(),2);
+			return newCde;
 		}
 		return e;
 	}
