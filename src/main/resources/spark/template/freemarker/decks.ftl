@@ -29,6 +29,10 @@
 	     $.post("delete_deck", postParams, responseJSON => {
 	     });
 	   };
+	   
+	   function viewDeck(ofName) {
+	     window.location.replace("/deck?name=" + ofName.replace(' ', '_'));
+	   };
  	 </script>
      <script src="js/bootstrapalt.min.js"></script>
      <script src="js/tutorial.js"></script>

@@ -10,11 +10,10 @@
   	<tr> <td> <h5> You have no decks </h4> </td> <td> </td> <td> </td> </tr>
   </#if>
   <#list decks as deck>
-    <#assign editLink =  "/deck?name=" + deck?replace(" ", "_")>
     <tr>
     <td style="vertical-align:middle">${deck}</td>
-    <td><a href=${editLink} class="btn btn-default btn-sm">Edit</a></td>
-    <td><button class="btn btn-default btn-sm" onclick="deleteDeck($(this),'${deck}')">Delete</button></td>
+    <td><button class="btn btn-default btn-sm" onclick="viewDeck("${deck}")">Edit</button></td>
+    <td><button class="btn btn-default btn-sm" onclick="deleteDeck($(this),"${deck?replace(' ', '_')}")">Delete</button></td>
     <tr>
   </#list>
 </table>
