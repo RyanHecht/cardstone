@@ -10,20 +10,22 @@ import events.PlayerAttackEvent;
 
 public class TauntCreature extends CreatureWrapper {
 
-	public TauntCreature(Creature internal) {
+	public TauntCreature(CreatureInterface internal) {
 		super(internal);
 	}
 
 	@Override
 	public boolean onProposedLegalityEvent(Event e, Zone z) {
-		if (e.getType() == EventType.CREATURE_ATTACKED) {
-			CreatureAttackEvent eve = (CreatureAttackEvent) e;
-			return getAllowedAttack(eve.getAttacker(), eve.getTarget());
-		} else if (e.getType() == EventType.PLAYER_ATTACKED) {
-			PlayerAttackEvent eve = (PlayerAttackEvent) e;
-			return getAllowedAttack(eve.getAttacker());
+		if(active){
+			if (e.getType() == EventType.CREATURE_ATTACKED) {
+				CreatureAttackEvent eve = (CreatureAttackEvent) e;
+				return getAllowedAttack(eve.getAttacker(), eve.getTarget()) || internal.onProposedLegalityEvent(e, z);
+			} else if (e.getType() == EventType.PLAYER_ATTACKED) {
+				PlayerAttackEvent eve = (PlayerAttackEvent) e;
+				return getAllowedAttack(eve.getAttacker()) || internal.onProposedLegalityEvent(e, z);
+			}
 		}
-		return false;
+		return internal.onProposedLegalityEvent(e, z);
 	}
 
 	public boolean getAllowedAttack(CreatureInterface attacker) {
@@ -35,6 +37,7 @@ public class TauntCreature extends CreatureWrapper {
 	}
 
 	public boolean getAllowedAttack(CreatureInterface attacker, CreatureInterface target) {
+		
 		if (attacker.getOwner() == this.getOwner()) {
 			return false;
 		} else {
@@ -44,7 +47,7 @@ public class TauntCreature extends CreatureWrapper {
 			return true;
 		}
 	}
-
+	
 	@Override
 	public String getComplaint(Event e, Zone z) {
 		if (onProposedLegalityEvent(e, z)) {

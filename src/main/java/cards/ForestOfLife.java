@@ -18,7 +18,7 @@ public class ForestOfLife extends AuraCard{
 
 	private static final String defaultImage = "images/ForestOfLife.jpg";
 	private static final String defaultName = "Forest Of Life";
-	private static final String defaultText = "Aura. Whenever you play a card with earth in its cost, gain 3 life.";
+	private static final String defaultText = "Aura. Whenever you play a card with earth in its cost, gain 2 life.";
 	private static final CardType defaultType = CardType.AURA;
 
 	public ForestOfLife(Player owner) {
@@ -28,7 +28,7 @@ public class ForestOfLife extends AuraCard{
 	
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
-		if(z == Zone.AURA_BOARD && c.getOwner().equals(getOwner()) && c.getCost().getElement(ElementType.EARTH) >= 1){
+		if(z == Zone.AURA_BOARD && c.getOwner().equals(getOwner()) && c.hasElement(ElementType.EARTH)){
 			return new PlayerHealedEffect(this,getOwner(),3);
 		}
 		return EmptyEffect.create();

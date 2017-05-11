@@ -4,8 +4,16 @@ import java.io.Serializable;
 
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.Card;
+import cardgamelibrary.DevotionType;
+import cardgamelibrary.Effect;
+import cardgamelibrary.Element;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
+import devotions.Devotion;
+import devotions.NoDevotion;
+import effects.ApplyDevotionEffect;
+import effects.EmptyEffect;
 
 /**
  * Class to represent a player in the game.
@@ -18,6 +26,7 @@ public class Player implements Serializable {
 	private int life;
 	private ManaPool manaPool;
 	private final int id;
+	private Devotion devotion;
 
 	// keeps track of amount of resources to gain at start of a turn.
 	private int maxResources = 0;
@@ -30,6 +39,7 @@ public class Player implements Serializable {
 		life = l;
 		manaPool = new ManaPool(0, 0, 0, 0, 0, 0);
 		this.id = id;
+		this.devotion = new NoDevotion(this);
 	}
 
 	public PlayerType getPlayerType() {
@@ -61,6 +71,10 @@ public class Player implements Serializable {
 
 		// update manapool
 		manaPool.setResources(manaPool.getResources() + maxResources);
+		// resources capped
+		if (manaPool.getResources() > 130) {
+			manaPool.setResources(130);
+		}
 	}
 
 	public void setElement(ElementType type, int elem) {
@@ -119,6 +133,19 @@ public class Player implements Serializable {
 		assert (validateCost(cost));
 		manaPool.payCost(cost);
 	}
+	
+	public Devotion getDevotion(){
+		return devotion;
+	}
+	
+	
+	
+	public Effect tryApplyDevotion(ElementType type,Card src){
+		if(this.devotion.getDevotionType().equals(DevotionType.NO_DEVOTION)){
+			return new ApplyDevotionEffect(this,type,src);
+		}
+		return EmptyEffect.create();
+	}
 
 	public JsonObject jsonifySelf() {
 		JsonObject result = new JsonObject();
@@ -132,6 +159,11 @@ public class Player implements Serializable {
 		elementObject.addProperty("earth", manaPool.getElement(ElementType.EARTH));
 		elementObject.addProperty("balance", manaPool.getElement(ElementType.BALANCE));
 		result.add("element", elementObject);
+		result.add("devotion", devotion.jsonifySelf());
 		return result;
+	}
+
+	public void setDevotion(ElementType src) {
+		this.devotion = DevotionType.getDevotion(this,src);
 	}
 }

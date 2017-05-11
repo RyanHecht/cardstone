@@ -1,15 +1,14 @@
 html{
     background: radial-gradient(rgba(0,120,160,1.0),rgba(0,52,69,1.0));
 	width:98%;
-	height:100%;   
-    user-select: none;
+	height:100%;
 }
-
-
 
 img{
     -webkit-user-drag: none;
 }
+
+
 
 .no-mouse{
     pointer-events: none;
@@ -41,11 +40,11 @@ body{
 
 .cardQueue{
     position:absolute;
-    bottom:25%;
+    bottom:15%;
     right:2%;
     height:40%;
     border:1px solid grey;
-    width:10%;
+    width:8%;
 }
 
 .queueBox{
@@ -55,6 +54,14 @@ body{
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
+}
+
+.overlayHand1{
+    position:absolute;
+    top:75%;
+    left:20%;
+    width:70%;
+    height:25%;
 }
 
 .boxOuter{
@@ -83,17 +90,6 @@ body{
 	z-index:500;
 }
 
-/* .endTurn{
-	position:absolute;
-	left:0%;
-	top:0%;
-	width:100%;
-	height:50%;
-	background-size:contain;
-	background-repeat:no-repeat;
-	background-position:center;
-	background-image: url("../images/endTurnButton.png");
-} */
 
 .bigModal{
     width:100%;
@@ -245,14 +241,7 @@ body .bigModal .modal-dialog {
     box-shadow: 0 -2px 20px 2px #9ecaed;
 }
 
-.overlayHand1{
-    position:absolute;
-    top:75%;
-    left:20%;
-    width:80%;
-   /*  border: 3px solid yellow; */
-    height:25%;
-}
+
 
 .overlayHand2{
     position:absolute;

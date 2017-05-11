@@ -4,6 +4,7 @@ import cardgamelibrary.Jsonifiable;
 import com.google.gson.JsonObject;
 import game.Game;
 import game.GameManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import server.CommsWebSocket;
@@ -158,7 +159,7 @@ public class Lobby implements Jsonifiable {
         uId1Spectators.remove(Integer.valueOf(spectatorId));
         System.out.println(
             "removing " + spectatorId + " from " + spectateeId
-                + " spectate list");
+            + " spectate list");
       }
     }
   }
@@ -186,8 +187,8 @@ public class Lobby implements Jsonifiable {
       System.out.println("making game...");
       Game game = new Game(p1deck, p2deck, uId1, uId2, false);
       System.out
-          .println(String.format("Game made with id %d and users %d and %d",
-              game.getId(), uId1, uId2));
+      .println(String.format("Game made with id %d and users %d and %d",
+          game.getId(), uId1, uId2));
       GameManager.addGame(game);
       CommsWebSocket.setSpectators(uId1, uId1Spectators);
       CommsWebSocket.setSpectators(uId2, uId2Spectators);

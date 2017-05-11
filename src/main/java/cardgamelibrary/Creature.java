@@ -79,6 +79,10 @@ public class Creature extends PlayableCard implements CreatureInterface {
 		return getHealth() <= 0;
 	}
 
+	public void setAttack(int attack){
+		this.attack = attack;
+	}
+	
 	@Override
 	public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff

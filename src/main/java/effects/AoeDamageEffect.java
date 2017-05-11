@@ -35,24 +35,30 @@ public class AoeDamageEffect implements DamageInterface {
 	public void apply(Board board) {
 		// TODO Auto-generated method stub
 		if (damagesOwner) {
-			board.damagePlayer(getSrc().getOwner(), getSrc(), damageOwner + damageAmp);
+			PlayerDamageEffect od = new PlayerDamageEffect(getSrc().getOwner(), getSrc(), damageOwner + damageAmp);
+			board.handleEffect(od);
 		}
 		if (damagesOpponent) {
 			Player opponent = board.getOpposingPlayer(getSrc().getOwner());
-			board.damagePlayer(opponent, getSrc(), damageOpponent);
+			PlayerDamageEffect opd = new PlayerDamageEffect(opponent, getSrc(), damageOpponent + damageAmp);
+			board.handleEffect(opd);
 		}
 
 		for (Card c : board.getPlayerOneCreatures()) {
 			CreatureInterface cr = (CreatureInterface) c;
 			if (checkCreature(checker, board, cr)) {
-				board.damageCard(cr, getSrc(), getCreatureDamage(determineCreatureDamage, board, cr) + damageAmp);
+				CardDamageEffect cd = new CardDamageEffect(getSrc(), cr,
+						getCreatureDamage(determineCreatureDamage, board, cr) + damageAmp);
+				board.handleEffect(cd);
 			}
 		}
 
 		for (Card c : board.getPlayerTwoCreatures()) {
 			CreatureInterface cr = (CreatureInterface) c;
 			if (checkCreature(checker, board, cr)) {
-				board.damageCard(cr, getSrc(), getCreatureDamage(determineCreatureDamage, board, cr) + damageAmp);
+				CardDamageEffect cd = new CardDamageEffect(getSrc(), cr,
+						getCreatureDamage(determineCreatureDamage, board, cr) + damageAmp);
+				board.handleEffect(cd);
 			}
 		}
 	}

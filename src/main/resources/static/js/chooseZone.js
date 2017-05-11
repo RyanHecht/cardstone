@@ -76,6 +76,17 @@ class chooseZone extends drawableZone{
 	}
 	
 	sizeCards(div){
+        div.children().children('.cardBox').css({
+			'height':function(index, value){
+                let height = $(this).height();
+                if(height > 250){
+                    return 238;
+                }
+                else{
+                    return height - 12;
+                }
+			}
+		});
 		div.children().children('.cardBox').css({
 			'width':function(index, value){
 				return $(this).height() * WIDTH_RATIO;

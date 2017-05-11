@@ -8,8 +8,8 @@ import java.io.Serializable;
  * @author 42jpa
  *
  */
-public enum Zone implements Serializable{
+public enum Zone implements Serializable {
 
-	BOARD, HAND, DECK, CREATURE_BOARD, AURA_BOARD, EXILE, GRAVE;
+	HAND, DECK, CREATURE_BOARD, AURA_BOARD, EXILE, GRAVE;
 
 }

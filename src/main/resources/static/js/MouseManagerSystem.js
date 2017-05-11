@@ -2,22 +2,44 @@ class MouseManagerSystem{
 
     constructor(){
         this.isClicked = false;
+        this.isClickedRight = false;
         this.curTargeter = 0;
         this.curTarget = 0;
         this.redraw();
     }
         
     mousedown(id,event){
+        if(event.which == 1){
+            this.mousedownLeft(id,event);
+        }
+        else if(event.which == 3){
+            this.mousedownRight(id,event);
+        }
+    }
+    
+    mousedownLeft(id,event){
         if(canAct){
             console.log(id);
             this.isClicked = true;
+            this.isClickedRight = false;
             this.curTargeter = id;
             canvasLine.x1 = this.transformX(event.pageX);
             canvasLine.y1 = this.transformY(event.pageY);
             $(".qtip").addClass("tooltipHidden");
             $("#"+id).parent().addClass("cardBoxHighlightedClick");
         }
-        
+    }
+    
+    mousedownRight(id,event){
+        if(canAct){
+            this.isClicked = true;
+            this.isClickedRight = true;
+            this.curTargeter = id;
+            canvasLine.x1 = this.transformX(event.pageX);
+            canvasLine.y1 = this.transformY(event.pageY);
+            $(".qtip").addClass("tooltipHidden");
+            $("#"+id).parent().addClass("cardBoxHighlightedClick");
+        }
     }
     
     mousemoved(event){
@@ -45,6 +67,7 @@ class MouseManagerSystem{
     mouseup(event){
         if(canAct){
        this.isClicked = false;
+       this.isClickedRight = false;
        this.tips.removeClass("tooltipHidden");
        $('div.qtip:visible').qtip('hide');
        event.stopPropagation();
@@ -55,9 +78,18 @@ class MouseManagerSystem{
     mouseupCard(id,event){ 
         if(canAct){
             if(this.isClicked){
-                if(this.curTargeter != id){
-                    console.log(this.curTargeter);
-                    server.cardTargeted(this.curTargeter,id);
+                if(this.isClickedRight){
+                    if(this.curTargeter == id){
+                        server.cardActivatedSelf(id);
+                    }
+                    else{
+                        server.cardActivatedCardTarget(this.curTargeter,id);
+                    }
+                }
+                else{
+                    if(this.curTargeter != id){
+                        server.cardTargeted(this.curTargeter,id);
+                    }
                 }
             }
             this.mouseup(event);
@@ -66,7 +98,7 @@ class MouseManagerSystem{
     
     mouseupDiv(div,event){
         if(canAct){
-        if(this.isClicked){
+        if(this.isClicked && !this.isClickedRight){
             server.cardPlayed(this.curTargeter,div);
         }
         this.mouseup(event);
@@ -76,7 +108,12 @@ class MouseManagerSystem{
     mouseupPlayer(isSelf,event){
         if(canAct){
         if(this.isClicked){
-            server.playerTargeted(this.curTargeter,isSelf);
+            if(this.isClickedRight){
+                server.cardActivatedPlayerTarget(id,isSelf);
+            }
+            else{
+                server.playerTargeted(this.curTargeter,isSelf);
+            }
         }
         this.mouseup(event);
         }

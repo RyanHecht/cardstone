@@ -14,7 +14,7 @@ public class GiveElementEffect implements Effect {
 	
 	@Override
 	public void apply(Board board) {
-		board.givePlayerElement(owner, element, amount);
+		board.givePlayerElement(owner, element, amount,src);
 	}
 
 	public Player getOwner() {

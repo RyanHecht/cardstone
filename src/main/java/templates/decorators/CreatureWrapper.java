@@ -6,7 +6,7 @@ import cardgamelibrary.CreatureInterface;
 
 public class CreatureWrapper extends CardWrapper implements CreatureInterface{
 
-	private CreatureInterface creatureInternal;
+	protected CreatureInterface creatureInternal;
 
 	public CreatureWrapper(CreatureInterface c) {
 		super(c);
