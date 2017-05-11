@@ -43,6 +43,11 @@ public class WaterDevotion implements Devotion{
 	public Player getOwner() {
 		return owner;
 	}
+
+	@Override
+	public String getLevel() {
+		return "Tide level: " + tideLevel.name();
+	}
 	
 
 	

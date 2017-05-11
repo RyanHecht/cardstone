@@ -16,6 +16,10 @@ public class EarthDevotion implements Devotion{
 		this.willGain = false;
 	}
 	
+	public int getSleepingStoneCount(){
+		return level;
+	}
+	
 	public void onTurnStart(Player p){
 		if(p.equals(getOwner())){
 			willGain = true;
@@ -33,8 +37,8 @@ public class EarthDevotion implements Devotion{
 		}
 	}
 	
-	public int getLevel(){
-		return level;
+	public String getLevel(){
+		return "Sleeping Stone: " + level;
 	}
 	
 	@Override
@@ -45,6 +49,14 @@ public class EarthDevotion implements Devotion{
 	@Override
 	public Player getOwner() {
 		return owner;
+	}
+	
+	public static int getLevelOfEarth(Devotion d){
+		if(d.getDevotionType().equals(DevotionType.EARTH)){
+			EarthDevotion ed = (EarthDevotion) d;
+			return ed.getSleepingStoneCount();
+		}
+		return 0;
 	}
 
 }

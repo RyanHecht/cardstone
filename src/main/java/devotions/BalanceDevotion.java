@@ -63,4 +63,9 @@ public class BalanceDevotion implements Devotion{
 		}
 	}
 
+	@Override
+	public String getLevel() {
+		return "Order: "+order + "<br>Chaos: " + chaos;
+	}
+
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.Card;
 import cardgamelibrary.DevotionType;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Element;
@@ -139,9 +140,9 @@ public class Player implements Serializable {
 	
 	
 	
-	public Effect tryApplyDevotion(Element e){
+	public Effect tryApplyDevotion(ElementType type,Card src){
 		if(this.devotion.getDevotionType().equals(DevotionType.NO_DEVOTION)){
-			return new ApplyDevotionEffect(this,e);
+			return new ApplyDevotionEffect(this,type,src);
 		}
 		return EmptyEffect.create();
 	}
@@ -158,10 +159,11 @@ public class Player implements Serializable {
 		elementObject.addProperty("earth", manaPool.getElement(ElementType.EARTH));
 		elementObject.addProperty("balance", manaPool.getElement(ElementType.BALANCE));
 		result.add("element", elementObject);
+		result.add("devotion", devotion.jsonifySelf());
 		return result;
 	}
 
-	public void setDevotion(Element src) {
+	public void setDevotion(ElementType src) {
 		this.devotion = DevotionType.getDevotion(this,src);
 	}
 }

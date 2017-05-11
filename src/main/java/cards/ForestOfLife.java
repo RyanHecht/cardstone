@@ -18,7 +18,7 @@ public class ForestOfLife extends AuraCard{
 
 	private static final String defaultImage = "images/ForestOfLife.jpg";
 	private static final String defaultName = "Forest Of Life";
-	private static final String defaultText = "Aura. Whenever you play a card with earth in its cost, gain 3 life.";
+	private static final String defaultText = "Aura. Whenever you play a card with earth in its cost, gain 2 life.";
 	private static final CardType defaultType = CardType.AURA;
 
 	public ForestOfLife(Player owner) {

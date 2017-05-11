@@ -17,10 +17,12 @@ public class OnlyTakesXDamageCreature extends CreatureWrapper {
 
 	@Override
 	public boolean onProposedEffect(Effect e, Zone z) {
-		if (e.getType().equals(EffectType.CARD_DAMAGED) && z == Zone.CREATURE_BOARD) {
-			CardDamageEffect cd = (CardDamageEffect) e;
-			if (cd.getTarget().equals(this)) {
-				return cd.getDamage() > allowedDamage;
+		if(active){
+			if (e.getType().equals(EffectType.CARD_DAMAGED) && z == Zone.CREATURE_BOARD) {
+				CardDamageEffect cd = (CardDamageEffect) e;
+				if (cd.getTarget().equals(this)) {
+					return cd.getDamage() > allowedDamage;
+				}
 			}
 		}
 		return internal.onProposedEffect(e, z);

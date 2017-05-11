@@ -21,20 +21,20 @@ import game.Player;
 public enum DevotionType implements Serializable{
 	FIRE,WATER,EARTH,AIR,BALANCE,NO_DEVOTION;
 
-	public static Devotion getDevotion(Player p, Element src) {
-		if(src instanceof AirElement){
+	public static Devotion getDevotion(Player p, ElementType src) {
+		if(src.equals(ElementType.AIR)){
 			return new AirDevotion(p);
 		}
-		else if(src instanceof WaterElement){
+		else if(src.equals(ElementType.WATER)){
 			return new WaterDevotion(p);
 		}
-		else if(src instanceof EarthElement){
+		else if(src.equals(ElementType.EARTH)){
 			return new EarthDevotion(p);
 		}
-		else if(src instanceof FireElement){
+		else if(src.equals(ElementType.FIRE)){
 			return new FireDevotion(p);
 		}
-		else if(src instanceof BalanceElement){
+		else if(src.equals(ElementType.BALANCE)){
 			return new BalanceDevotion(p);
 		}
 		else{

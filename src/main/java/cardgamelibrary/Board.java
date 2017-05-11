@@ -187,8 +187,10 @@ public class Board implements Jsonifiable, Serializable {
 	// wants to perform an event.
 	public void takeAction(Event event) {
 		eventQueue.add(event);
-		activePlayer.getDevotion().onUserAction(activePlayer);
-		getOpposingPlayer(activePlayer).getDevotion().onUserAction(activePlayer);
+		if(event.getType() != EventType.TURN_END){
+			activePlayer.getDevotion().onUserAction(activePlayer);
+			getOpposingPlayer(activePlayer).getDevotion().onUserAction(activePlayer);
+		}
 		handleState();
 	}
 
@@ -428,8 +430,6 @@ public class Board implements Jsonifiable, Serializable {
 						preprocessEffect(effect);
 					}
 				} else {
-					System.out.println("it already HAWD" + c.getName() + " " + c.getId());
-					System.out.println("was dere" + alreadyProcessed.get(c));
 				}
 			}
 		}
@@ -695,14 +695,9 @@ public class Board implements Jsonifiable, Serializable {
 	 *          the zone to summon to.
 	 */
 	public void summonCard(Card summon, Zone targetZone) {
-		System.out.println("putting into target zone");
 		CardZoneCreatedEvent event = new CardZoneCreatedEvent(summon, targetZone);
-		System.out.println(summon.getOwner().getId() + "is the ai " + summon.getOwner());
 		for (OrderedCardCollection occ : cardsInGame) {
-			System.out.println(occ.getPlayer());
-			System.out.println(occ.getZone().name() + " is the zone" + targetZone.name());
 			if (occ.getZone() == targetZone && occ.getPlayer() == summon.getOwner()) {
-				System.out.println("found the zone");
 				occ.add(summon);
 			}
 			this.effectQueue.addAll(occ.handleCardBoardEvent(event));
@@ -839,12 +834,16 @@ public class Board implements Jsonifiable, Serializable {
 		eventQueue.add(event);
 	}
 
-	public void givePlayerElement(Player p, ElementType type, int amount) {
+	public void givePlayerElement(Player p, ElementType type, int amount, Card src) {
 		GainElementEvent event = new GainElementEvent(p, type, amount);
 		// increase element for player p.
 		int curElem = p.getElem(type);
 		p.setElement(type, curElem + amount);
 		eventQueue.add(event);
+		if(src.getType().equals(CardType.ELEMENT)){
+			Effect e = p.tryApplyDevotion(type,src);
+			effectQueue.add(e);
+		}
 	}
 
 	public void applyToCard(Card toApply, Card newCard) {
@@ -905,9 +904,9 @@ public class Board implements Jsonifiable, Serializable {
 		return false;
 	}
 
-	public void applyDevotion(Player target, Element src) {
-		target.setDevotion(src);
-		AppliedDevotionEvent e = new AppliedDevotionEvent(target,src);
+	public void applyDevotion(Player target, ElementType type, Card src) {
+		target.setDevotion(type);
+		AppliedDevotionEvent e = new AppliedDevotionEvent(target,type,src);
 		eventQueue.add(e);
 	}
 }

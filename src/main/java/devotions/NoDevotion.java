@@ -33,6 +33,12 @@ public class NoDevotion implements Devotion{
 		return player;
 	}
 
+
+	@Override
+	public String getLevel() {
+		return "";
+	}
+
 	
 
 }

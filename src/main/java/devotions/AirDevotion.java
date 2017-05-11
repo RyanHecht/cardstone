@@ -1,5 +1,7 @@
 package devotions;
 
+import com.google.gson.JsonObject;
+
 import cardgamelibrary.Card;
 import cardgamelibrary.DevotionType;
 import cardgamelibrary.ElementType;
@@ -36,8 +38,8 @@ public class AirDevotion implements Devotion{
 		return owner;
 	}
 	
-	public int getLevel(){
-		return level;
+	public String getLevel(){
+		return "Storm Charge: " + level;
 	}
 	
 	public void setLevel(int level){
@@ -55,4 +57,20 @@ public class AirDevotion implements Devotion{
 			}
 		}
 	}
+	
+	public int getChargeLevel(){
+		return level;
+	}
+	
+	public static int getLevelOfAir(Devotion d){
+		if(d.getDevotionType().equals(DevotionType.AIR)){
+			AirDevotion ad = (AirDevotion) d;
+			return ad.getChargeLevel();
+		}
+		return 0;
+	}
+	
+
+
+
 }

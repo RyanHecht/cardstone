@@ -7,6 +7,7 @@ import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.Zone;
+import devotions.EarthDevotion;
 import effects.AddToOccEffect;
 import effects.CancelledEffect;
 import effects.EffectType;
@@ -24,7 +25,7 @@ public class ProtectedBySand extends AuraCard {
 
 	private static final String defaultImage = "images/ProtectedBySand.png";
 	private static final String defaultName = "Protected By Sand";
-	private static final String defaultText = "Aura. Prevent the next two instances of damage you would take.";
+	private static final String defaultText = "Aura. Prevent the next (sleeping stone) instances of damage you would take.";
 	private static final CardType defaultType = CardType.SPELL;
 
 	public boolean onProposedEffect(Effect e, Zone z) {
@@ -56,7 +57,7 @@ public class ProtectedBySand extends AuraCard {
 	}
 
 	public Effect onThisPlayed(Card c, Zone z) {
-		instancesToPrevent = 2;
+		instancesToPrevent = EarthDevotion.getLevelOfEarth(getOwner().getDevotion());
 		return EmptyEffect.create();
 	}
 
