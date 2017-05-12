@@ -9,12 +9,18 @@ public interface ActivatableCard extends Card {
 
 	// checks to see if a card can be activated
 	// at a given moment.
-	public boolean canBeActivated();
+	default public boolean canBeActivated() {
+		return getOwner().validateCost(getActivationCost());
+	}
 
 	@Override
-	public default Effect onCardActivation(Card c, Zone z) {
-		if (c.equals(this) && (z == Zone.CREATURE_BOARD || z == Zone.AURA_BOARD)) {
+	public default Effect onCardActivation(ActivatableCard c, Zone activatedIn, Zone z) {
+		if (c.equals(this) && activatedIn == z && (z == Zone.CREATURE_BOARD || z == Zone.AURA_BOARD)) {
 			assert (this.canBeActivated());
+
+			// pay activation cost of card.
+			getOwner().payCost(getActivationCost());
+
 			return onThisActivated();
 		}
 		return EmptyEffect.create();

@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
-import cardgamelibrary.Creature;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ElementType;
@@ -12,8 +11,8 @@ import cardgamelibrary.Event;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
-import effects.EmptyEffect;
 import game.Player;
+import templates.ActivatableCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -135,8 +134,8 @@ public class CardWrapper implements Card {
 	public boolean onProposedEffect(Effect e, Zone z) {
 		return internal.onProposedEffect(e, z);
 	}
-	
-	public Card getNewInstanceOf(Player p){
+
+	public Card getNewInstanceOf(Player p) {
 		return internal.getNewInstanceOf(p);
 	}
 
@@ -244,23 +243,24 @@ public class CardWrapper implements Card {
 		return internal.onCardZoneCreated(card, location, zone);
 	}
 
-	public boolean equals(Object other){
-		if(!(other instanceof Card)){
+	public boolean equals(Object other) {
+		if (!(other instanceof Card)) {
 			return false;
 		}
 		Card c = (Card) other;
 		return this.getId() == c.getId() || internal.equals(other);
 	}
-	
+
 	@Override
 	public JsonObject jsonifySelfBack() {
 		return internal.jsonifySelfBack();
 	}
 
-	public Effect onOtherCardPlayed(Card c, Zone z){
+	@Override
+	public Effect onOtherCardPlayed(Card c, Zone z) {
 		return internal.onOtherCardPlayed(c, z);
 	}
-	
+
 	@Override
 	public boolean isA(Class<?> c) {
 		return c.isInstance(this) || internal.isA(c);
@@ -269,6 +269,16 @@ public class CardWrapper implements Card {
 	@Override
 	public boolean hasElement(ElementType e) {
 		return internal.hasElement(e);
+	}
+
+	@Override
+	public Effect onCardActivation(ActivatableCard c, Zone activatedIn, Zone z) {
+		return internal.onCardActivation(c, activatedIn, z);
+	}
+
+	@Override
+	public ManaPool getActivationCost() {
+		return ManaPool.emptyPool();
 	}
 
 }

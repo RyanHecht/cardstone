@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cards.FireElement;
+import events.CardActivatedEvent;
 import events.CardChosenEvent;
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
@@ -157,6 +158,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case PLAYER_TARGETED:
 			results = handlePlayerTargeted((PlayerTargetedEvent) event);
 			break;
+		case CARD_ACTIVATED:
+			results = handleCardActivated((CardActivatedEvent) event);
+			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
 		}
@@ -166,6 +170,14 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	public boolean getChanged() {
 		return changed;
+	}
+
+	private List<Effect> handleCardActivated(CardActivatedEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onCardActivation(event.getActivated(), event.getActivatedIn(), getZone()));
+		}
+		return results;
 	}
 
 	private List<Effect> handleCardTargeted(CardTargetedEvent event) {

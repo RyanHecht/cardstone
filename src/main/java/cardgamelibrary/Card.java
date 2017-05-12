@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 
 import effects.EmptyEffect;
 import game.Player;
+import templates.ActivatableCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -73,8 +74,12 @@ public interface Card extends Jsonifiable, Serializable {
 		return EmptyEffect.create();
 	}
 
-	default public Effect onCardActivation(Card c, Zone z) {
+	default public Effect onCardActivation(ActivatableCard c, Zone activatedIn, Zone z) {
 		return EmptyEffect.create();
+	}
+
+	default public ManaPool getActivationCost() {
+		return ManaPool.emptyPool();
 	}
 
 	default public Card getNewInstanceOf(Player p) {
