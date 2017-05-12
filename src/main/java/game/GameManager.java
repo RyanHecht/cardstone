@@ -263,13 +263,9 @@ public class GameManager {
     System.out.println("About to get starting id");
     try (ResultSet finished = Db.query("select max(id) from finished_game;")) {
       ret = finished.getInt(1);
-      System.out.println("Got max " + ret + " from finished_game");
       try (ResultSet in_prog = Db.query("select max(id) from in_progress;")) {
         // return largest id of 2 tables
-        System.out
-            .println("Got max " + in_prog.getInt(1) + " from in_progress");
         ret = Math.max(ret, in_prog.getInt(1));
-        System.out.println("Will return " + ret);
       }
     } catch (SQLException | NullPointerException e) {
       ret = 1;
@@ -296,7 +292,6 @@ public class GameManager {
       String timestamp = DateFormat.getInstance().format(new Date());
       Db.update("delete from in_progress where id = ?;", gId);
 
-      System.out.println("Am gonna insert with winner " + winner);
       Db.update("insert into finished_game values (?, ?, ?, ?, ?, ?);", gId,
           winner, p1, p2, turns, timestamp);
     } catch (NullPointerException | SQLException e) {

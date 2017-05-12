@@ -335,7 +335,9 @@ class Server{
 		wholeBoard.changeFeature("p2Health",player2.health);
 		wholeBoard.changeFeature("p2RegRes",player2.resources);
 		wholeBoard.changeFeature("p2Mana",manaPool.buildPool(1,'',player2.element));
-	}
+        wholeBoard.changeFeature("devotion1",player1.devotion);
+        wholeBoard.changeFeature("devotion2",player2.devotion);
+   }
 
     boardGotten(data){
         this.recentestBoard = data;

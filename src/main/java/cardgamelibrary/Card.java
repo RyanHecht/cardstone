@@ -288,4 +288,8 @@ public interface Card extends Jsonifiable, Serializable {
 	}
 
 	JsonObject jsonifySelfBack();
+
+	default Effect onDevotionSet(Player target, EventType type, Card src){
+		return EmptyEffect.create();
+	}
 }

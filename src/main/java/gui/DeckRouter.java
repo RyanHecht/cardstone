@@ -116,7 +116,7 @@ public class DeckRouter implements RouteGroup {
     @Override
     public String handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
-      String deckName = qm.value("deck");
+      String deckName = qm.value("deck").replace("_", " ");
       String uid = qm.value("userId");
 
       String deckDelete = "delete from deck where user=? and name=?;";

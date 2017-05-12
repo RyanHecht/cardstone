@@ -20,6 +20,7 @@ import templates.TargetsPlayer;
 public class CardWrapper implements Card {
 
 	protected Card internal;
+	protected boolean active;
 
 	public CardWrapper(Card c) {
 		this.internal = c;
@@ -178,6 +179,14 @@ public class CardWrapper implements Card {
 		return internal.onZoneChange(c, dest, start, z);
 	}
 
+	public boolean stillActive(){
+		return active;
+	}
+	
+	public void deactivate(){
+		active = false;
+	}
+	
 	// when a card targets another card
 	@Override
 	public Effect onCardTarget(TargetsOtherCard targetter, Card target, Zone z, Zone targetIn) {

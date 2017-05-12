@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cards.FireElement;
+import events.AppliedDevotionEvent;
 import events.CardActivatedEvent;
 import events.CardChosenEvent;
 import events.CardDamagedEvent;
@@ -160,11 +161,21 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			break;
 		case CARD_ACTIVATED:
 			results = handleCardActivated((CardActivatedEvent) event);
+		case SET_DEVOTION:
+			results = handleDevotionSet((AppliedDevotionEvent) event);
 			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
 		}
 
+		return results;
+	}
+
+	private List<Effect> handleDevotionSet(AppliedDevotionEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onDevotionSet(event.getTarget(), event.getType(), event.getSrc()));
+		}
 		return results;
 	}
 

@@ -12,6 +12,8 @@ const EXPAND_1_DIV = $("#onTop1");
 const EXPAND_2_DIV = $("#onTop2");
 const HUD_1_DIV = $(".overlayHUD1");
 const HUD_2_DIV = $(".overlayHUD2");
+const DEVOTION_1_DIV = $("#devotionBox1");
+const DEVOTION_2_DIV = $("#devotionBox2");
 
 
 
@@ -39,6 +41,12 @@ class board{
 		this.features.set("p1Mana",p1Mana);
 		this.features.set("p1RegRes",p1RegRes);
 		this.features.set("p2RegRes",p2RegRes);
+        const devObj = {
+            type:"NO_DEVOTION",
+            level:0
+        }
+        this.features.set("devotion1",devObj);
+        this.features.set("devotion2",devObj);
 		this.buildResZones();
 		this.setZones();
         this.isFlipped = false;
@@ -75,6 +83,9 @@ class board{
         featTrans = this.features.get("p1RegRes");
         this.features.set("p1RegRes",this.features.get("p2RegRes"));
         this.features.set("p2RegRes",featTrans);
+        featTrans = this.features.get("devotion1");
+        this.features.set("devotion1",this.features.get("devotion2"));
+        this.features.set("devotion2",featTrans);
     }
     
     flipZones(){
@@ -91,7 +102,6 @@ class board{
 
 	setZones(){
 		for(let zone of this.allZones.values()){
-			//So dirty bos
 			if(zone instanceof cardCollection){
 				zone.setZones();
 			}
@@ -109,7 +119,10 @@ class board{
 		this.allZones.set("p2Mana",new manaZone(MANA_2_DIV,this.features.get("p2Mana")));
         this.allZones.set("p1HUD", new hudZone(HUD_1_DIV,this.features.get("p1Health"),this.features.get("p1RegRes")));
         this.allZones.set("p2HUD", new hudZone(HUD_2_DIV,this.features.get("p2Health"),this.features.get("p2RegRes")));
-	}
+        this.allZones.set("devotion1",new DevotionZone(DEVOTION_1_DIV,this.features.get("devotion1")));
+        this.allZones.set("devotion2",new DevotionZone(DEVOTION_2_DIV,this.features.get("devotion2")));
+    
+    }
 	
 	changeFeature(key,val){
 		this.features.set(key,val);

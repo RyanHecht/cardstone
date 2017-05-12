@@ -19,7 +19,7 @@
 		<script src="js/tether.min.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/cardCacher.js"></script>
-
+        
 		<script src="js/drawable.js"></script>
 
 		<script src="js/radialAnimation.js"></script>
@@ -30,6 +30,7 @@
 		<script src="js/card.js"></script>
 
 		<script src="js/drawableZone.js"></script>
+        <script src="js/DevotionZone.js"></script>
         <script src="js/hudZone.js"></script>
 		<script src="js/healthResZone.js"></script>
 		<script src="js/chooseZone.js"></script>

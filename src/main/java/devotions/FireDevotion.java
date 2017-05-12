@@ -13,8 +13,8 @@ public class FireDevotion implements Devotion{
 		this.level = 10;
 	}
 	
-	public int getLevel(){
-		return level;
+	public String getLevel(){
+		return "Heat: " + level;
 	}
 	
 	public void useFire(){
