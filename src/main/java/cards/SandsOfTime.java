@@ -24,7 +24,7 @@ public class SandsOfTime extends SpellCard{
 
 	
 	public SandsOfTime(Player owner) {
-		super(new ManaPool(50, 0, 0, 0, 3, 0), defaultImage, owner, defaultName, defaultText, defaultType);
+		super(new ManaPool(50, 0, 0, 3, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		aurasPlayed = new LinkedList<Card>();
 	}
 	

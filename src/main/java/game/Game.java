@@ -38,6 +38,8 @@ import events.CardTargetedEvent;
 import events.CreatureAttackEvent;
 import events.PlayerAttackEvent;
 import events.PlayerTargetedEvent;
+import events.PreliminaryCreatureAttackEvent;
+import events.PreliminaryPlayerAttackEvent;
 import events.TurnEndEvent;
 import events.TurnStartEvent;
 import server.CommsWebSocket;
@@ -573,7 +575,7 @@ public class Game implements Jsonifiable, Serializable {
 				}
 
 				// at this point we know the event is valid.
-				CreatureAttackEvent event = new CreatureAttackEvent(attacker, target);
+				PreliminaryCreatureAttackEvent event = new PreliminaryCreatureAttackEvent(attacker, target);
 
 				// tell player their action was valid.
 				sendPlayerActionGood(playerId);
@@ -722,7 +724,7 @@ public class Game implements Jsonifiable, Serializable {
 
 					// creature can attack, so let's attack!
 
-					PlayerAttackEvent event = new PlayerAttackEvent(board.getInactivePlayer(), attacker);
+					PreliminaryPlayerAttackEvent event = new PreliminaryPlayerAttackEvent(board.getInactivePlayer(), attacker);
 
 					// tell player their action is valid.
 					sendPlayerActionGood(playerId);

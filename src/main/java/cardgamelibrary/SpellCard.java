@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import effects.AddToOccEffect;
 import effects.EffectType;
 import effects.EmptyEffect;
+import effects.PayCostEffect;
 import game.Player;
 
 public class SpellCard extends PlayableCard implements SpellInterface {
@@ -32,7 +33,7 @@ public class SpellCard extends PlayableCard implements SpellInterface {
 			System.out.println("SPELL NAME: " + getName());
 
 			// pay cost of the card.
-			getOwner().payCost(getCost());
+			effect.addEffect(new PayCostEffect(this,getCost(),getOwner()));
 
 			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.GRAVE,Zone.HAND,this));
 			// add any specific effects for this spell being played.

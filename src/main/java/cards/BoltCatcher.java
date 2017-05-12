@@ -85,7 +85,7 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 	}
 	
 	public Effect onTurnStart(Player p, Zone z){
-		if(turnsLeft == 1 && p == getOwner() && z == Zone.GRAVE && should){
+		if(turnsLeft == 1 && p == getOwner()  && should){
 			turnsLeft = 0;
 			return getCard();
 		}

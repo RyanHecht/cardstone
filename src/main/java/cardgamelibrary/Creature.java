@@ -1,13 +1,20 @@
 package cardgamelibrary;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
 import com.google.gson.JsonObject;
 
 import effects.AddToOccEffect;
 import effects.CardDamageEffect;
+import effects.DeathNonPersistEffect;
 import effects.EffectType;
 import effects.EmptyEffect;
+import effects.PayCostEffect;
 import effects.PlayerDamageEffect;
 import game.Player;
+import templates.DeathPersistent;
 
 public class Creature extends PlayableCard implements CreatureInterface {
 
@@ -15,6 +22,7 @@ public class Creature extends PlayableCard implements CreatureInterface {
 	private int health;
 	private int attack;
 	private int attacks;
+	protected Set<Allegiance> allegianceTypes;
 
 	public Creature(int maxHealth, int attack, ManaPool cost, String image, Player owner, String name, String text,
 			CardType type) {
@@ -24,8 +32,24 @@ public class Creature extends PlayableCard implements CreatureInterface {
 		this.health = maxHealth;
 		this.attack = attack;
 		this.attacks = 0;
+		allegianceTypes = new HashSet<Allegiance>();
 	}
 
+	public boolean hasAllegiance(Allegiance a){
+		return allegianceTypes.contains(a);
+	}
+	
+	public Effect onZoneChange(Card c, OrderedCardCollection dest, OrderedCardCollection start, Zone z) {
+		if(!this.isA(DeathPersistent.class)){
+			if(c.equals(this)){
+				if(dest.getZone()!=Zone.CREATURE_BOARD){
+					return new DeathNonPersistEffect(this);
+				}
+			}
+		}
+		return EmptyEffect.create();
+	}
+	
 	public int getHealth() {
 		return health;
 	}
@@ -90,7 +114,7 @@ public class Creature extends PlayableCard implements CreatureInterface {
 		ConcatEffect effect = new ConcatEffect(this);
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
-			getOwner().payCost(getCost());
+			effect.addEffect(new PayCostEffect(this,getCost(),getOwner()));
 			effect.addEffect(new AddToOccEffect(this,getOwner(),Zone.CREATURE_BOARD,Zone.HAND,this));
 
 			// add any specific effects for this creature being played.

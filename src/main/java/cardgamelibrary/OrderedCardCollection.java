@@ -22,6 +22,7 @@ import events.CardPlayedEvent;
 import events.CardTargetedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
+import events.CostPaidEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
@@ -161,10 +162,21 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case SET_DEVOTION:
 			results = handleDevotionSet((AppliedDevotionEvent) event);
 			break;
+		case COST_PAID:
+			results = handleCostPaid((CostPaidEvent) event);
+			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
 		}
 
+		return results;
+	}
+
+	private List<Effect> handleCostPaid(CostPaidEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for(Card c : cards){
+			results.add(c.onCostPaid(event.getTarget(),event.getCost()));
+		}
 		return results;
 	}
 

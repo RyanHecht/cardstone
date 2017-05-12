@@ -6,6 +6,7 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import devotions.AirDevotion;
 import effects.CardDamageEffect;
 import effects.DamageInterface;
 import effects.EffectType;
@@ -17,7 +18,7 @@ public class StaticBuildup extends SpellCard{
 
 	private static final String defaultImage = "images/StaticBuildup.jpg";
 	private static final String defaultName = "Static Buildup";
-	private static final String defaultText = "For the rest of the turn, every damaging spell does 1 more damage for each spell you previously played that turn.";
+	private static final String defaultText = "For the rest of the turn, every damaging spell does 1 more damage for every 2 storm charge you have.";
 	private static final CardType defaultType = CardType.SPELL;
 	private int turnsLeft;
 	private int buildup;
@@ -25,7 +26,6 @@ public class StaticBuildup extends SpellCard{
 	public StaticBuildup(Player owner) {
 		super(new ManaPool(50, 0, 0, 0, 4, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		turnsLeft = 0;
-		buildup = 0;
 	}
 	
 	public Effect onThisPlayed(Card c, Zone z){
@@ -35,13 +35,6 @@ public class StaticBuildup extends SpellCard{
 	
 	public Effect onTurnStart(Player p, Zone z){
 		turnsLeft--;
-		return EmptyEffect.create();
-	}
-	
-	public Effect onOtherCardPlayed(Card c, Zone z){
-		if(c.getType() == CardType.SPELL && turnsLeft == 1){
-			buildup++;
-		}
 		return EmptyEffect.create();
 	}
 	
@@ -59,7 +52,7 @@ public class StaticBuildup extends SpellCard{
 	public Effect getNewProposition(Effect e, Zone z){
 		if(e instanceof DamageInterface){
 			DamageInterface di = (DamageInterface) e;
-			di.setDamage(di.getDamage() + buildup);
+			di.setDamage(di.getDamage() + AirDevotion.getLevelOfAir(getOwner().getDevotion()) / 2);
 			return di;
 		}
 		return e;

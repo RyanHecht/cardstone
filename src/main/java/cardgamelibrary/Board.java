@@ -14,6 +14,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 
+import effects.AddToOccEffect;
+import effects.CreatureAttackCreatureEffect;
+import effects.CreatureAttackPlayerEffect;
 import effects.EffectMaker;
 import effects.EffectType;
 import effects.EmptyEffect;
@@ -23,6 +26,7 @@ import events.CardPlayedEvent;
 import events.CardTargetedEvent;
 import events.CardZoneChangeEvent;
 import events.CardZoneCreatedEvent;
+import events.CostPaidEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
@@ -30,6 +34,8 @@ import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
 import events.PlayerTargetedEvent;
+import events.PreliminaryCreatureAttackEvent;
+import events.PreliminaryPlayerAttackEvent;
 import events.AppliedDevotionEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
@@ -215,6 +221,16 @@ public class Board implements Jsonifiable, Serializable {
 				// used to send animations off to front end!
 				JsonObject animation = new JsonObject();
 
+				if(e.getType() == EventType.PRELIMINARY_CREATURE_ATTACK){
+					PreliminaryCreatureAttackEvent pcae = (PreliminaryCreatureAttackEvent)e;
+					effectQueue.add(new CreatureAttackCreatureEffect(pcae.getAttacker(),pcae.getTarget()));
+				}
+				
+				if(e.getType().equals(EventType.PRELIMINARY_PLAYER_ATTACK)){
+					PreliminaryPlayerAttackEvent pcae = (PreliminaryPlayerAttackEvent)e;
+					effectQueue.add(new CreatureAttackPlayerEffect(pcae.getAttacker(),pcae.getTarget()));
+				}
+				
 				// send animation for creature combat.
 				if (e.getType() == EventType.CREATURE_ATTACKED) {
 					CreatureAttackEvent event = (CreatureAttackEvent) e;
@@ -585,7 +601,7 @@ public class Board implements Jsonifiable, Serializable {
 	 * @param c
 	 *          the creature that died.
 	 */
-	private void creatureDies(CreatureInterface c) {
+	public void creatureDies(CreatureInterface c) {
 		// construct creature died event.
 		CreatureDiedEvent cd = new CreatureDiedEvent(c);
 		// add to event queue.
@@ -828,7 +844,7 @@ public class Board implements Jsonifiable, Serializable {
 	 * @param z
 	 *          the zone the card is in.
 	 */
-	public void changeCreatureAttack(CreatureInterface target, int amount, Zone z) {
+	public void changeCreatureAttack(CreatureInterface target, int amount) {
 		StatChangeEvent event = new StatChangeEvent(EventType.ATTACK_CHANGE, target, amount);
 		target.changeAttackBy(amount);
 		eventQueue.add(event);
@@ -908,5 +924,18 @@ public class Board implements Jsonifiable, Serializable {
 		target.setDevotion(type);
 		AppliedDevotionEvent e = new AppliedDevotionEvent(target,type,src);
 		eventQueue.add(e);
+	}
+
+	public void playerPayCost(Player target, ManaPool cost) {
+		target.payCost(cost);
+		eventQueue.add(new CostPaidEvent(target,cost));
+	}
+
+	public void deathNonPersist(CreatureInterface target) {
+		for (OrderedCardCollection occ : cardsInGame) {
+			if(occ.remove(target)){
+				occ.add(target.getNewInstanceOf(target.getOwner()));
+			}
+		}
 	}
 }

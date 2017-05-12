@@ -24,7 +24,7 @@ public class EffectMaker implements Effect{
 	}
 	
 	public void apply(Board board){
-
+		
 	}
 	
 	public Effect getEffect(Board board){

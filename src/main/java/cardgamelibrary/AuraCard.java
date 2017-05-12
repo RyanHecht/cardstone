@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import effects.AddToOccEffect;
 import effects.EffectType;
 import effects.EmptyEffect;
+import effects.PayCostEffect;
 import game.Player;
 
 public class AuraCard extends PlayableCard implements AuraInterface {
@@ -27,7 +28,7 @@ public class AuraCard extends PlayableCard implements AuraInterface {
 		ConcatEffect effect = new ConcatEffect(this);
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
-			getOwner().payCost(getCost());
+			effect.addEffect(new PayCostEffect(this,getCost(),getOwner()));
 			effect.addEffect(new AddToOccEffect(this, getOwner(), Zone.AURA_BOARD, Zone.HAND,this));
 
 			// add any specific effects for this aura being played.

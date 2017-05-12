@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import effects.EmptyEffect;
+import effects.PayCostEffect;
 import game.Player;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
@@ -105,11 +106,12 @@ public interface Card extends Jsonifiable, Serializable {
 	default public Effect onCardPlayed(Card c, Zone z) {
 		// cards that have effects that trigger when THEY are played activate stuff
 		// via this.
+		ConcatEffect effect = new ConcatEffect(this);
 		if (c.equals(this) && z == Zone.HAND) {
 			// pay cost of the card.
-			getOwner().payCost(getCost());
+			effect.addEffect(new PayCostEffect(this,getCost(),getOwner()));
 			// return effect specific to this card being played!
-			return onThisPlayed(c, z);
+			effect.addEffect(onThisPlayed(c, z));
 		}
 		return EmptyEffect.create();
 	}
@@ -250,6 +252,10 @@ public interface Card extends Jsonifiable, Serializable {
 
 		return result;
 	}
+	
+	public default boolean hasAllegiance(Allegiance a){
+		return false;
+	}
 
 	/**
 	 * Checks to see if a given card is another class (will be used to check
@@ -285,6 +291,10 @@ public interface Card extends Jsonifiable, Serializable {
 	JsonObject jsonifySelfBack();
 
 	default Effect onDevotionSet(Player target, EventType type, Card src){
+		return EmptyEffect.create();
+	}
+
+	default Effect onCostPaid(Player target, ManaPool cost){
 		return EmptyEffect.create();
 	}
 }
