@@ -143,4 +143,14 @@ public class PlayableCard implements Card {
 		result.addProperty("type", "back");
 		return result;
 	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public void setCost(ManaPool cost) {
+		this.cost = cost;
+	}
 }

@@ -3,16 +3,17 @@ package events;
 import cardgamelibrary.Card;
 import cardgamelibrary.Event;
 import cardgamelibrary.EventType;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 
 public class CardChosenEvent extends Event {
 
-	private PlayerChoosesCards	chooser;
+	private ChooseResponderCard	chooser;
 	private Card								chosen;
 
-	public CardChosenEvent(PlayerChoosesCards chooser, Card chosen) {
+	public CardChosenEvent(ChooseResponderCard chooserCard, Card chosen) {
 		super();
-		this.chooser = chooser;
+		this.chooser = chooserCard;
 		this.chosen = chosen;
 	}
 
@@ -21,7 +22,7 @@ public class CardChosenEvent extends Event {
 	 *
 	 * @return the card that prompted the choice.
 	 */
-	public PlayerChoosesCards getChooser() {
+	public ChooseResponderCard getChooser() {
 		return chooser;
 	}
 

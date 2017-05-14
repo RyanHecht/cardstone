@@ -1,5 +1,6 @@
 package templates.decorators;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.CreatureInterface;
 import cardgamelibrary.Effect;
 import cardgamelibrary.Zone;
@@ -16,7 +17,7 @@ public class OnlyTakesXDamageCreature extends CreatureWrapper {
 	}
 
 	@Override
-	public boolean onProposedEffect(Effect e, Zone z) {
+	public boolean onProposedEffect(Effect e, Zone z, Board b) {
 		if(active){
 			if (e.getType().equals(EffectType.CARD_DAMAGED) && z == Zone.CREATURE_BOARD) {
 				CardDamageEffect cd = (CardDamageEffect) e;
@@ -25,7 +26,7 @@ public class OnlyTakesXDamageCreature extends CreatureWrapper {
 				}
 			}
 		}
-		return internal.onProposedEffect(e, z);
+		return internal.onProposedEffect(e, z,b);
 	}
 	
 	public Effect getNewProposition(Effect e, Zone z){

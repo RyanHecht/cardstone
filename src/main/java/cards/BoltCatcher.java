@@ -17,6 +17,7 @@ import effects.EmptyEffect;
 import effects.GateEffect;
 import effects.SummonEffect;
 import game.Player;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 
 public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
@@ -94,7 +95,7 @@ public class BoltCatcher extends SpellCard implements PlayerChoosesCards{
 	}
 	
 	@Override
-	public Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosen) {
+	public Effect getChooseEffect(ChooseResponderCard thisCard, Card chosen) {
 		this.chosen = chosen;
 		if(chosen == chooseNo){
 			should = true;

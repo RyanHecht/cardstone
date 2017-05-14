@@ -3,6 +3,7 @@ package effects;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Effect;
+import cardgamelibrary.PlayableCard;
 import game.Player;
 
 public class CardDrawEffect implements Effect{
@@ -29,6 +30,10 @@ public class CardDrawEffect implements Effect{
 	@Override
 	public Card getSrc() {
 		return src;
+	}
+
+	public Player getTarget() {
+		return target;
 	}
 
 }

@@ -16,12 +16,13 @@ import effects.CardDrawEffect;
 import effects.EmptyEffect;
 import effects.SummonEffect;
 import game.Player;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 
 public class StormWatcher extends SpellCard implements PlayerChoosesCards{
 
 	private static final String		defaultImage	= "images/StormWatcher.jpg";
-	private static final String		defaultName		= "Storm Watcer";
+	private static final String		defaultName		= "Storm Watcher";
 	private static final String		defaultText		= "Draw a card. Predict whether your opponent will play at least 3 cards next turn for draw 2 cards.";
 	private static final CardType	defaultType		= CardType.SPELL;
 	private final SpellCard chooseYes; 
@@ -94,7 +95,7 @@ public class StormWatcher extends SpellCard implements PlayerChoosesCards{
 	}
 
 	@Override
-	public Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosen) {
+	public Effect getChooseEffect(ChooseResponderCard thisCard, Card chosen) {
 		this.chosen = chosen;
 		return EmptyEffect.create();
 	}

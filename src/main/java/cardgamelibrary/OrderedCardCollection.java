@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -51,6 +52,8 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	// keeps track of change.
 	private boolean changed = true;
+	
+	private static Random rand = new Random();
 
 	public OrderedCardCollection(Zone zone, Player p) {
 		this.zone = zone;
@@ -542,5 +545,9 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 			return true;
 		}
 		return false;
+	}
+
+	public Card getRandomCard() {
+		return cards.get(rand.nextInt(cards.size()));
 	}
 }

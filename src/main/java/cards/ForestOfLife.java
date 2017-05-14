@@ -29,7 +29,7 @@ public class ForestOfLife extends AuraCard{
 	
 	public Effect onOtherCardPlayed(Card c, Zone z){
 		if(z == Zone.AURA_BOARD && c.getOwner().equals(getOwner()) && c.hasElement(ElementType.EARTH)){
-			return new PlayerHealedEffect(this,getOwner(),3);
+			return new PlayerHealedEffect(this,getOwner(),2);
 		}
 		return EmptyEffect.create();
 	}

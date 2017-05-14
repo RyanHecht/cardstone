@@ -13,6 +13,7 @@ import cardgamelibrary.Zone;
 import effects.AddToOccEffect;
 import effects.GateEffect;
 import game.Player;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 
 public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
@@ -34,7 +35,7 @@ public class DelveTheDepths extends SpellCard implements PlayerChoosesCards {
 	}
 
 	@Override
-	public Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosen) {
+	public Effect getChooseEffect(ChooseResponderCard thisCard, Card chosen) {
 		ConcatEffect cE = new ConcatEffect(this);
 		cE.addEffect(new GateEffect((Board board) ->{
 			return board.getOcc(getOwner(),Zone.DECK).size() > 0;

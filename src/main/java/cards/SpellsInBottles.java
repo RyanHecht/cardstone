@@ -1,5 +1,6 @@
 package cards;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.ConcatEffect;
@@ -37,7 +38,7 @@ public class SpellsInBottles extends SpellCard{
 		return EmptyEffect.create();
 	}
 	
-	public boolean onProposedEffect(Effect e, Zone z){
+	public boolean onProposedEffect(Effect e, Zone z, Board b){
 		if(active){
 			if(e.getType() != EffectType.CARD_PLAYED){
 				System.out.println("it wasn't" + e.getType().name());

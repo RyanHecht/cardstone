@@ -1,6 +1,7 @@
 package cards;
 
 import cardgamelibrary.AuraCard;
+import cardgamelibrary.Board;
 import cardgamelibrary.CardType;
 import cardgamelibrary.DevotionType;
 import cardgamelibrary.Effect;
@@ -28,7 +29,7 @@ public class StoneHide extends AuraCard {
 		return (EarthDevotion.getLevelOfEarth(d) + 1) / 2;
 	}
 	
-	public boolean onProposedEffect(Effect e, Zone z) {
+	public boolean onProposedEffect(Effect e, Zone z, Board b) {
 		if (z != Zone.AURA_BOARD) {
 			return false;
 		}

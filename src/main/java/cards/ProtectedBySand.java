@@ -1,6 +1,7 @@
 package cards;
 
 import cardgamelibrary.AuraCard;
+import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.ConcatEffect;
@@ -28,7 +29,7 @@ public class ProtectedBySand extends AuraCard {
 	private static final String defaultText = "Aura. Prevent the next (sleeping stone) instances of damage you would take.";
 	private static final CardType defaultType = CardType.SPELL;
 
-	public boolean onProposedEffect(Effect e, Zone z) {
+	public boolean onProposedEffect(Effect e, Zone z, Board b) {
 		if (z == Zone.AURA_BOARD) {
 			if (this.instancesToPrevent > 0) {
 				if (e.getType() == EffectType.PLAYER_DAMAGED) {
@@ -44,7 +45,6 @@ public class ProtectedBySand extends AuraCard {
 
 	@Override
 	public Effect getNewProposition(Effect e, Zone z) {
-		if (onProposedEffect(e, z)) {
 			instancesToPrevent--;
 			ConcatEffect ce = new ConcatEffect(this);
 			ce.addEffect(new CancelledEffect(this));
@@ -52,8 +52,6 @@ public class ProtectedBySand extends AuraCard {
 				ce.addEffect(new AddToOccEffect(this, getOwner(), Zone.GRAVE, Zone.AURA_BOARD, this));
 			}
 			return ce;
-		}
-		return EmptyEffect.create();
 	}
 
 	public Effect onThisPlayed(Card c, Zone z) {

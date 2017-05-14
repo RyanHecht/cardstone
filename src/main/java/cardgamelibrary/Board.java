@@ -39,6 +39,7 @@ import events.PreliminaryPlayerAttackEvent;
 import events.AppliedDevotionEvent;
 import events.StatChangeEvent;
 import events.TurnStartEvent;
+import game.Game;
 import game.GameManager;
 import game.Player;
 import game.PlayerType;
@@ -65,6 +66,8 @@ public class Board implements Jsonifiable, Serializable {
 	private static Card EmptySrc = EmptyEffect.create().getSrc();
 
 	private final int gameId;
+	
+	private final Game game;
 
 	// player one stuff;
 	private OrderedCardCollection deckOne;
@@ -91,7 +94,7 @@ public class Board implements Jsonifiable, Serializable {
 	// keeps track of turn counter.
 	private int turnIndex = 0;
 
-	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo, int gameId) {
+	public Board(OrderedCardCollection deckOne, OrderedCardCollection deckTwo, int gameId, Game game) {
 		// using LinkedLists but declaring using queue interface.
 		// Seems like the best way to handle the queues.
 		eventQueue = new LinkedList<Event>();
@@ -135,8 +138,13 @@ public class Board implements Jsonifiable, Serializable {
 		// set up starting hands.
 		assignStartingHands();
 		alreadyProcessed = HashMultimap.create();
+		this.game = game;
 	}
 
+	public void requestChoose(List<Card> options, Player player, Card chooser){
+		game.requestUserChoise(options, player, chooser);
+	}
+	
 	/**
 	 * Gets the active player.
 	 *
@@ -440,7 +448,7 @@ public class Board implements Jsonifiable, Serializable {
 		for (OrderedCardCollection occ : cardsInGame) {
 			for (Card c : occ) {
 				if (!hasProcessed(c, effect.getSrc())) {
-					if (c.onProposedEffect(effect, occ.getZone())) {
+					if (c.onProposedEffect(effect, occ.getZone(),this)) {
 						alreadyProcessed.put(c, effect.getSrc());
 						effect = c.getNewProposition(effect, occ.getZone());
 						preprocessEffect(effect);
@@ -833,6 +841,8 @@ public class Board implements Jsonifiable, Serializable {
 		}
 		eventQueue.add(event);
 	}
+	
+	
 
 	/**
 	 * Changes a creature's attack.

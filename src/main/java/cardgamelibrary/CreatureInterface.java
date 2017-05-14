@@ -56,4 +56,8 @@ public interface CreatureInterface extends Card {
 	public void changeMaxHealthBy(int amount);
 
 	public void changeAttackBy(int amount);
+
+	public default void allowAttack(){
+		setAttacks(1);
+	}
 }

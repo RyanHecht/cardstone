@@ -9,7 +9,7 @@ import cardgamelibrary.Effect;
 import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 
-public interface PlayerChoosesCards extends Card {
+public interface PlayerChoosesCards extends ChooseResponderCard {
 
 	/**
 	 * Gets the options the person who played this card must choose from.
@@ -28,26 +28,4 @@ public interface PlayerChoosesCards extends Card {
 	 * @return the number of choices the player will make.
 	 */
 	public int getNumChoices();
-
-	@Override
-	default public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
-		if (this.equals(chooser)) {
-			return getChooseEffect(chooser, chosen);
-		}
-		return EmptyEffect.create();
-	}
-
-	/**
-	 * Gets some effect associated with the card the player has chosen.
-	 *
-	 * @param thisCard
-	 *          this card.
-	 * @param chosenCard
-	 *          the card the user chose.
-	 * @return an effect describing how the game state should be changed based on
-	 *         the user's choice of card.
-	 */
-	public default Effect getChooseEffect(PlayerChoosesCards thisCard, Card chosenCard) {
-		return EmptyEffect.create();
-	}
 }

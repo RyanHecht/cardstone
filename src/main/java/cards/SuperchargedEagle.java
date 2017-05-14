@@ -27,6 +27,7 @@ public class SuperchargedEagle extends Creature{
 	
 	
 	public Effect onThisPlayed(Card c, Zone z){
+		this.allowAttack();
 		return new CreatureAttackChangeEffect(AirDevotion.getLevelOfAir(getOwner().getDevotion())
 				, this,this);
 	}

@@ -2,6 +2,7 @@ package templates.decorators;
 
 import com.google.gson.JsonObject;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
@@ -14,6 +15,7 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 import game.Player;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -133,8 +135,8 @@ public class CardWrapper implements Card {
 	}
 
 	@Override
-	public boolean onProposedEffect(Effect e, Zone z) {
-		return internal.onProposedEffect(e, z);
+	public boolean onProposedEffect(Effect e, Zone z, Board b) {
+		return internal.onProposedEffect(e, z, b);
 	}
 	
 	public Card getNewInstanceOf(Player p){
@@ -234,7 +236,7 @@ public class CardWrapper implements Card {
 
 	// when cards are chosen by the player through a PlayerChoosesCard situation.
 	@Override
-	public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
+	public Effect onCardChosen(ChooseResponderCard chooser, Card chosen, Zone z) {
 		return internal.onCardChosen(chooser, chosen, z);
 	}
 
@@ -278,6 +280,16 @@ public class CardWrapper implements Card {
 	@Override
 	public boolean hasElement(ElementType e) {
 		return internal.hasElement(e);
+	}
+
+	@Override
+	public void setName(String name) {
+		internal.setName(name);
+	}
+
+	@Override
+	public void setCost(ManaPool cost) {
+		internal.setCost(cost);
 	}
 
 }

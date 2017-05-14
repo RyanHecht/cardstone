@@ -52,7 +52,7 @@ class animationsMaker{
         box.show();
         //$(".chat").hide();
         $("#" + card.id).first().attr("id",-180);
-        let abt = new animBoxTimer(500);
+        let abt = new animBoxTimer(1500);
         return abt;
     }
     
@@ -65,7 +65,7 @@ class animationsMaker{
 		anim.setShape("circle");
 		anim.setRadius(1);
 		anim.setCount(150);
-		anim.setSpeed(.7);
+		anim.setSpeed(.9);
 		anim.setRandom(true);
 		anim.setStartDivById(attacker);
 		anim.setEndDivById(defender);
@@ -77,7 +77,7 @@ class animationsMaker{
 		anim.setColor("red");
 		anim.setShape("circle");
 		anim.setRadius(150);
-		anim.setSpeed(.7);
+		anim.setSpeed(.9);
 		anim.setCenterDivById(damaged);
 		anim.setCount(3);
 		return anim;
@@ -88,7 +88,7 @@ class animationsMaker{
 		anim.setColor("black");
 		anim.setShape("circle");
 		anim.setRadius(150);
-		anim.setSpeed(.35);
+		anim.setSpeed(.5);
 		anim.setCenterDivById(damaged);
 		anim.setCount(3);
 		return anim;
@@ -99,7 +99,7 @@ class animationsMaker{
 		anim.setColor("red");
 		anim.setShape("circle");
 		anim.setRadius(150);
-		anim.setSpeed(.7);
+		anim.setSpeed(.9);
         if(isMe){
             anim.setCenterDiv($(".overlayHUD1"));
         }
@@ -117,7 +117,7 @@ class animationsMaker{
 		anim.setShape("circle");
 		anim.setRadius(1);
 		anim.setCount(150);
-		anim.setSpeed(.5);
+		anim.setSpeed(.9);
 		anim.setRandom(true);
 		anim.setStartDivById(attacker);
 		if(isMe){

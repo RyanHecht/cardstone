@@ -43,6 +43,7 @@ import events.PreliminaryPlayerAttackEvent;
 import events.TurnEndEvent;
 import events.TurnStartEvent;
 import server.CommsWebSocket;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -68,7 +69,8 @@ public class Game implements Jsonifiable, Serializable {
 	// used to keep track of the card that spawns a choose request so we can
 	// handle
 	// specific behavior once we get a response from the user.
-	private PlayerChoosesCards chooserCard = null;
+	private ChooseResponderCard chooserCard = null;
+	private List<Card> chooseOptions;
 
 	public Game(List<String> firstPlayerCards, List<String> secondPlayerCards, int playerOneId, int playerTwoId,
 			boolean noShuffle) {
@@ -178,7 +180,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 
 		// Some sort of board constructor goes here.
-		board = new Board(deckOne, deckTwo, id);
+		board = new Board(deckOne, deckTwo, id,this);
 
 		// if we are a DemoGame we want to ensure that player one goes first.
 		board.setActivePlayer(playerOne);
@@ -805,7 +807,7 @@ public class Game implements Jsonifiable, Serializable {
 			GlobalLogger.potentialProblem("location of the on card played events for devotion");
 			// reset the choosing card.
 			chooserCard = null;
-
+			chooseOptions = null;
 			// done responding to choose request so change game state again.
 
 			unlockState();
@@ -817,6 +819,39 @@ public class Game implements Jsonifiable, Serializable {
 		}
 	}
 
+	public void requestUserChoise(List<Card> options,Player player, Card chooser){
+
+		// create JsonObject to send to front end for user to make a
+		// choice.
+		JsonObject result = new JsonObject();
+		result.addProperty("size", options.size());
+		List<JsonObject> cardObjects = new ArrayList<>();
+		System.out.println("Number of Options: " + options.size());
+		for (Card c : options) {
+			System.out.println("card checked");
+			cardObjects.add(c.jsonifySelf());
+		}
+		Gson gson = new Gson();
+		result.add("cards", gson.toJsonTree(cardObjects));
+
+		// send to front end.
+		try {
+			CommsWebSocket.sendChooseRequest(player.getId(), result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// make sure no other choosing cnard is saved.
+		assert (chooserCard == null);
+
+		// save the choosing card into the variable.
+		chooserCard = (ChooseResponderCard) chooser;
+		chooseOptions = options;
+		// state should now set to awaiting response.
+		lockState();
+	}
+	
 	/**
 	 * Handles a card being played.
 	 *
@@ -862,38 +897,8 @@ public class Game implements Jsonifiable, Serializable {
 
 			// the user must make some sort of choice here.
 			if (card.isA(PlayerChoosesCards.class)) {
-				// get possible options.
-				List<Card> options = ((PlayerChoosesCards) card).getOptions(board);
-
-				// create JsonObject to send to front end for user to make a
-				// choice.
-				JsonObject result = new JsonObject();
-				result.addProperty("size", options.size());
-				List<JsonObject> cardObjects = new ArrayList<>();
-				System.out.println("Number of Options: " + options.size());
-				for (Card c : options) {
-					System.out.println("card checked");
-					cardObjects.add(c.jsonifySelf());
-				}
-				Gson gson = new Gson();
-				result.add("cards", gson.toJsonTree(cardObjects));
-
-				// send to front end.
-				try {
-					CommsWebSocket.sendChooseRequest(playerId, result);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				// make sure no other choosing cnard is saved.
-				assert (chooserCard == null);
-
-				// save the choosing card into the variable.
-				chooserCard = (PlayerChoosesCards) card;
-
-				// state should now set to awaiting response.
-				lockState();
+				requestUserChoise(((PlayerChoosesCards) card).getOptions(board),
+						card.getOwner(),card);
 			}
 
 			if (card.isA(TargetsOtherCard.class) || card.isA(TargetsPlayer.class)) {
@@ -949,7 +954,7 @@ public class Game implements Jsonifiable, Serializable {
 		assert (state == GameState.AWAITING_CHOICE);
 
 		// get possible options.
-		List<Card> options = chooserCard.getOptions(board);
+		List<Card> options = chooseOptions;
 
 		// create JsonObject to send to front end for user to make a
 		// choice.

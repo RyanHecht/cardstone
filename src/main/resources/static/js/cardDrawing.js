@@ -172,19 +172,8 @@ function setupKeypress(){
                 $('#endTurnAsk').modal('show');
             }
         }
-		if(e.which == 13) {
-			server.chooseFrom([josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
-			josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,josh, josh, josh,
-			josh, josh, josh]);
-		}
-		else if(e.which == 122){
-			console.log("dong");
-			wholeBoard.pushCard(josh,ZoneEnum.CREATURE,1);
-			redrawChanged();
-		}
 		else if(e.which == 88){
-            quedAnims.push(animationsMaker.getDrawnCardAnimation(true).create());
-			quedAnims.push(animationsMaker.getDrawnCardAnimation(false).create());
+            queudAnims = [];
 		}
         else if(e.which == 27){
             popOptionsMenu();

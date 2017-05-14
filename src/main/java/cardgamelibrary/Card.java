@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import effects.EmptyEffect;
 import effects.PayCostEffect;
 import game.Player;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -124,7 +125,7 @@ public interface Card extends Jsonifiable, Serializable {
 		return "Invalid Event";
 	}
 
-	default public boolean onProposedEffect(Effect e, Zone z) {
+	default public boolean onProposedEffect(Effect e, Zone z, Board b) {
 		return false;
 	}
 
@@ -207,7 +208,7 @@ public interface Card extends Jsonifiable, Serializable {
 	}
 
 	// when cards are chosen by the player through a PlayerChoosesCard situation.
-	default public Effect onCardChosen(PlayerChoosesCards chooser, Card chosen, Zone z) {
+	default public Effect onCardChosen(ChooseResponderCard chooseResponderCard, Card chosen, Zone z) {
 		return EmptyEffect.create();
 	}
 
@@ -297,4 +298,8 @@ public interface Card extends Jsonifiable, Serializable {
 	default Effect onCostPaid(Player target, ManaPool cost){
 		return EmptyEffect.create();
 	}
+
+	void setName(String name);
+
+	void setCost(ManaPool intercost);
 }

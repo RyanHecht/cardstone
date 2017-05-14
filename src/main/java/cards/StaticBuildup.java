@@ -1,5 +1,6 @@
 package cards;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Effect;
@@ -38,7 +39,7 @@ public class StaticBuildup extends SpellCard{
 		return EmptyEffect.create();
 	}
 	
-	public boolean onProposedEffect(Effect e, Zone z){
+	public boolean onProposedEffect(Effect e, Zone z, Board b){
 		if(turnsLeft == 1 && z == Zone.GRAVE){
 			if(e instanceof DamageInterface){
 				if(e.getSrc().getOwner().equals(getOwner())){

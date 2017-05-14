@@ -16,6 +16,9 @@ public interface ActiveOneTurnCard extends Card{
 	
 	public default Effect onTurnEnd(Player p, Zone z){
 		decrementValue();
+		if(isActive()){
+			return activate();
+		}
 		return EmptyEffect.create();
 	}
 	
@@ -28,6 +31,10 @@ public interface ActiveOneTurnCard extends Card{
 	
 	public default boolean isActive(){
 		return getValue() == 1;
+	}
+	
+	public default Effect activate(){
+		return EmptyEffect.create();
 	}
 	
 }

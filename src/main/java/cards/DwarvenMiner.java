@@ -2,6 +2,7 @@ package cards;
 
 import java.util.Iterator;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.CardType;
 import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Creature;
@@ -25,7 +26,7 @@ public class DwarvenMiner extends Creature {
 		super(defaultHealth, defaultAttack, new ManaPool(40, 0, 0, 2, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 	}
 
-	public boolean onProposedEffect(Effect e, Zone z) {
+	public boolean onProposedEffect(Effect e, Zone z, Board b) {
 		if (z == Zone.CREATURE_BOARD && e.getSrc().getType() == CardType.AURA && e.getSrc().getOwner() == getOwner()) {
 			if (e.getType() == EffectType.CONCAT) {
 				ConcatEffect ce = (ConcatEffect) e;

@@ -23,7 +23,7 @@ public class AirDevotion implements Devotion{
 				level = 0;
 			}
 			else{
-				level = level / 3;
+				level = level / 4;
 			}
 		}
 	}

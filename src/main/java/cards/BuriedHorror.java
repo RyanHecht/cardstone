@@ -1,5 +1,6 @@
 package cards;
 
+import cardgamelibrary.Board;
 import cardgamelibrary.CardType;
 import cardgamelibrary.Creature;
 import cardgamelibrary.CreatureInterface;
@@ -34,7 +35,7 @@ public class BuriedHorror extends Creature implements CantAttackWhileCreature{
 		this.buried = true;
 	}
 	  
-	  public boolean onProposedEffect(Effect e, Zone z){
+	  public boolean onProposedEffect(Effect e, Zone z, Board b){
 		  if(buried && z.equals(Zone.CREATURE_BOARD)){
 			  if (e.getType() == EffectType.CREATURE_ATTACK_CREATURE) {
 		        CreatureAttackCreatureEffect eve = (CreatureAttackCreatureEffect) e;
