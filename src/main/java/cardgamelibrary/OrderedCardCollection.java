@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 
 import cards.FireElement;
 import events.AppliedDevotionEvent;
+import events.CardActivatedEvent;
 import events.CardChosenEvent;
 import events.CardDamagedEvent;
 import events.CardDrawnEvent;
@@ -162,6 +163,8 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case PLAYER_TARGETED:
 			results = handlePlayerTargeted((PlayerTargetedEvent) event);
 			break;
+		case CARD_ACTIVATED:
+			results = handleCardActivated((CardActivatedEvent) event);
 		case SET_DEVOTION:
 			results = handleDevotionSet((AppliedDevotionEvent) event);
 			break;
@@ -185,14 +188,22 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 
 	private List<Effect> handleDevotionSet(AppliedDevotionEvent event) {
 		List<Effect> results = new LinkedList<>();
-		for(Card c : cards){
-			results.add(c.onDevotionSet(event.getTarget(),event.getType(),event.getSrc()));
+		for (Card c : cards) {
+			results.add(c.onDevotionSet(event.getTarget(), event.getType(), event.getSrc()));
 		}
 		return results;
 	}
 
 	public boolean getChanged() {
 		return changed;
+	}
+
+	private List<Effect> handleCardActivated(CardActivatedEvent event) {
+		List<Effect> results = new LinkedList<>();
+		for (Card c : cards) {
+			results.add(c.onCardActivation(event.getActivated(), event.getActivatedIn(), getZone()));
+		}
+		return results;
 	}
 
 	private List<Effect> handleCardTargeted(CardTargetedEvent event) {

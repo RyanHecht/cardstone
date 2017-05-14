@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cardgamelibrary.AuraCard;
-import cardgamelibrary.AuraInterface;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.Creature;
@@ -32,6 +31,7 @@ import cardgamelibrary.OrderedCardCollection;
 import cardgamelibrary.PlayableCard;
 import cardgamelibrary.SpellCard;
 import cardgamelibrary.Zone;
+import events.CardActivatedEvent;
 import events.CardChosenEvent;
 import events.CardPlayedEvent;
 import events.CardTargetedEvent;
@@ -44,6 +44,7 @@ import events.TurnEndEvent;
 import events.TurnStartEvent;
 import server.CommsWebSocket;
 import templates.ChooseResponderCard;
+import templates.ActivatableCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -182,8 +183,10 @@ public class Game implements Jsonifiable, Serializable {
 		// Some sort of board constructor goes here.
 		board = new Board(deckOne, deckTwo, id,this);
 
-		// if we are a DemoGame we want to ensure that player one goes first.
-		board.setActivePlayer(playerOne);
+		if (noShuffle) {
+			// if we are not shuffling set starting player to player one.
+			board.setActivePlayer(playerOne);
+		}
 
 		// create turn start event for starting player (active player)
 		TurnStartEvent event = new TurnStartEvent(board.getActivePlayer());
@@ -471,7 +474,99 @@ public class Game implements Jsonifiable, Serializable {
 	 */
 	public void handleCardActivation(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+			if (state == GameState.AWAITING_CHOICE) {
+				System.out.println(state.name());
+				// if the game state is awaiting choice, we are awaiting some other
+				// input from
+				// the user so they can't end their turn.
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
+				return;
+			}
 
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
+				return;
+			}
+
+			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+
+			if (!card.isA(ActivatableCard.class)) {
+				// player trying to activate card that isn't activatable.
+				sendPlayerActionBad(playerId, "You can't activate that card.");
+				return;
+			}
+
+			if (!(card.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't
+				// belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
+				return;
+			}
+
+			ActivatableCard activatable = (ActivatableCard) card;
+
+			if (!activatable.canBeActivated()) {
+				// in this case they can't activate the card.
+				sendPlayerActionBad(playerId, "Card cannot be activated.");
+				return;
+			}
+
+			if (card.isA(TargetsOtherCard.class) || card.isA(TargetsPlayer.class)) {
+				// their card needs a target!
+				sendPlayerActionBad(playerId, "That card needs a target to be activated!");
+				return;
+			}
+
+			// the user must make some sort of choice here.
+			if (card.isA(PlayerChoosesCards.class)) {
+				// get possible options.
+				List<Card> options = ((PlayerChoosesCards) card).getOptions(board);
+
+				// create JsonObject to send to front end for user to make a
+				// choice.
+				JsonObject result = new JsonObject();
+				result.addProperty("size", options.size());
+				List<JsonObject> cardObjects = new ArrayList<>();
+				System.out.println("Number of Options: " + options.size());
+				for (Card c : options) {
+					System.out.println("card checked");
+					cardObjects.add(c.jsonifySelf());
+				}
+				Gson gson = new Gson();
+				result.add("cards", gson.toJsonTree(cardObjects));
+
+				// send to front end.
+				try {
+					CommsWebSocket.sendChooseRequest(playerId, result);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// make sure no other choosing card is saved.
+				assert (chooserCard == null);
+
+				// save the choosing card into the variable.
+				chooserCard = (PlayerChoosesCards) card;
+
+				// state should now set to awaiting response.
+				lockState();
+			}
+
+			// just a card activation here.
+
+			CardActivatedEvent event = new CardActivatedEvent(activatable, board.getZoneOfCard(activatable));
+
+			// tell player their action was valid.
+			sendPlayerActionGood(playerId);
+			playerOne.getDevotion().onCardPlayed(card);
+			playerTwo.getDevotion().onCardPlayed(card);
+			act(event);
+
+			// send board to both players.
+			sendWholeBoardToAllAndDb();
 		} else {
 			// player acting out of turn.
 			sendPlayerActionBad(playerId, "Acting out of turn.");
@@ -488,7 +583,20 @@ public class Game implements Jsonifiable, Serializable {
 	 */
 	public void handleCardActivationTargetsCard(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+			if (state == GameState.AWAITING_CHOICE) {
+				System.out.println(state.name());
+				// if the game state is awaiting choice, we are awaiting some other
+				// input from
+				// the user so they can't end their turn.
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
+				return;
+			}
 
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
+				return;
+			}
 		} else {
 			// player acting out of turn.
 			sendPlayerActionBad(playerId, "Acting out of turn.");
@@ -505,7 +613,20 @@ public class Game implements Jsonifiable, Serializable {
 	 */
 	public void handleCardActivationTargetsPlayer(JsonObject userInput, int playerId) {
 		if (isTurn(playerId)) {
+			if (state == GameState.AWAITING_CHOICE) {
+				System.out.println(state.name());
+				// if the game state is awaiting choice, we are awaiting some other
+				// input from
+				// the user so they can't end their turn.
+				// send choose box back to user.
+				sendPlayerChooseRequest(playerId);
+				return;
+			}
 
+			if (state == GameState.GAME_OVER) {
+				sendGameOver(playerId, "This game is over");
+				return;
+			}
 		} else {
 			// player acting out of turn.
 			sendPlayerActionBad(playerId, "Acting out of turn.");
@@ -608,7 +729,7 @@ public class Game implements Jsonifiable, Serializable {
 				playerOne.getDevotion().onCardPlayed(targetter);
 				playerTwo.getDevotion().onCardPlayed(targetter);
 				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee, targetIn);
-				
+
 				// tell player the action was ok.
 				sendPlayerActionGood(playerId);
 
@@ -694,18 +815,18 @@ public class Game implements Jsonifiable, Serializable {
 
 					// tell player action was good.
 					sendPlayerActionGood(playerId);
-					
-					
+
 					playerOne.getDevotion().onCardPlayed(card);
 					playerTwo.getDevotion().onCardPlayed(card);
 					// execute event.
 					act(event);
-					
+
 					// make card played event.
-					
-//					CardPlayedEvent cEvent = new CardPlayedEvent(card, board.getOcc(board.getActivePlayer(), Zone.HAND));
-//
-//					act(cEvent);
+
+					// CardPlayedEvent cEvent = new CardPlayedEvent(card,
+					// board.getOcc(board.getActivePlayer(), Zone.HAND));
+					//
+					// act(cEvent);
 					GlobalLogger.potentialProblem("Disabled creating card played events");
 
 					// send board.
@@ -799,9 +920,6 @@ public class Game implements Jsonifiable, Serializable {
 			CardChosenEvent event = new CardChosenEvent(chooserCard, chosen);
 			sendPlayerActionGood(playerId);
 			act(event);
-			// create card played event for the choosing card.
-			CardPlayedEvent cEvent = new CardPlayedEvent(chooserCard, board.getOcc(chooserCard.getOwner(), Zone.GRAVE));
-			act(cEvent);
 			playerOne.getDevotion().onCardPlayed(chooserCard);
 			playerTwo.getDevotion().onCardPlayed(chooserCard);
 			GlobalLogger.potentialProblem("location of the on card played events for devotion");
@@ -898,7 +1016,7 @@ public class Game implements Jsonifiable, Serializable {
 			// the user must make some sort of choice here.
 			if (card.isA(PlayerChoosesCards.class)) {
 				requestUserChoise(((PlayerChoosesCards) card).getOptions(board),
-						card.getOwner(),card);
+						card.getOwner(),card);;
 			}
 
 			if (card.isA(TargetsOtherCard.class) || card.isA(TargetsPlayer.class)) {
@@ -908,15 +1026,6 @@ public class Game implements Jsonifiable, Serializable {
 				return;
 			}
 
-			Zone z;
-			if (card.isA(CreatureInterface.class)) {
-				z = Zone.CREATURE_BOARD;
-			} else if (card.isA(AuraInterface.class)) {
-				z = Zone.AURA_BOARD;
-			} else {
-				// spell or element.
-				z = Zone.GRAVE;
-			}
 			if (board.getZoneOfCard(card) != Zone.HAND) {
 				sendPlayerActionBad(playerId, "You need to pick a target to attack!");
 				return;

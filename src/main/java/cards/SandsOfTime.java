@@ -14,7 +14,7 @@ import effects.EmptyEffect;
 import effects.SummonEffect;
 import game.Player;
 
-public class SandsOfTime extends SpellCard{
+public class SandsOfTime extends SpellCard {
 
 	private static final String defaultImage = "images/SandsOfTime.jpg";
 	private static final String defaultName = "Sands Of Time";
@@ -22,32 +22,30 @@ public class SandsOfTime extends SpellCard{
 	private static final CardType defaultType = CardType.SPELL;
 	private List<Card> aurasPlayed;
 
-	
 	public SandsOfTime(Player owner) {
 		super(new ManaPool(50, 0, 0, 3, 0, 0), defaultImage, owner, defaultName, defaultText, defaultType);
 		aurasPlayed = new LinkedList<Card>();
 	}
-	
-	public Effect onOtherCardPlayed(Card c, Zone z){
-		if(c.getType() == CardType.AURA){
+
+	public Effect onOtherCardPlayed(Card c, Zone z) {
+		if (c.getType() == CardType.AURA) {
 			aurasPlayed.add(c);
 		}
 		return EmptyEffect.create();
 	}
-	
-	public Effect onThisPlayed(Card c, Zone z){
+
+	public Effect onThisPlayed(Card c, Zone z) {
 		ConcatEffect ce = new ConcatEffect(this);
-		for(Card aura : aurasPlayed){
+		for (Card aura : aurasPlayed) {
 			Card newAura = aura.getNewInstanceOf(getOwner());
-			if(newAura.getCost().getResources() <= 10){
+			if (newAura.getCost().getResources() <= 10) {
 				newAura.getCost().setResources(0);
-			}
-			else{
+			} else {
 				newAura.getCost().setResources(newAura.getCost().getResources() - 10);
 			}
-			ce.addEffect(new SummonEffect(aura,Zone.HAND,this));
+			ce.addEffect(new SummonEffect(aura, Zone.HAND, this));
 		}
 		return ce;
 	}
-	
+
 }

@@ -104,6 +104,7 @@ public class LobbyRouter implements RouteGroup {
       Lobby l = LobbyManager.getLobbyByName(lname);
 
       if (l == null) {
+        System.out.println("Lobby is null");
         res.redirect("/lobbies");
       }
 

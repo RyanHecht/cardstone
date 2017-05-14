@@ -87,7 +87,7 @@ function next_stage() {
 
 function formSubmit() {
 	const form = $("<form action='/spectate' method='POST'>" +
-				   " <input type='text' name='lobby' value=" +
+				   " <input type='hidden' name='lobby' value=" +
 				   selectedName + " /> />");
 	$('body').append(form);
 	form.submit();
