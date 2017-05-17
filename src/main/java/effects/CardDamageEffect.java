@@ -10,8 +10,8 @@ public class CardDamageEffect implements DamageInterface {
 	private CreatureInterface cardDamaged;
 	private int dmg;
 
-	public CardDamageEffect(Card c, CreatureInterface target, int dmg) {
-		source = c;
+	public CardDamageEffect(Card src, CreatureInterface target, int dmg) {
+		source = src;
 		cardDamaged = target;
 		this.dmg = dmg;
 	}

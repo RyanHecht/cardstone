@@ -3,6 +3,7 @@ package watercards;
 import cardgamelibrary.Board;
 import cardgamelibrary.Card;
 import cardgamelibrary.CardType;
+import cardgamelibrary.ConcatEffect;
 import cardgamelibrary.Effect;
 import cardgamelibrary.ManaPool;
 import cardgamelibrary.OrderedCardCollection;
@@ -12,8 +13,11 @@ import effects.AddToOccCrossPlayerEffect;
 import effects.EffectMaker;
 import effects.EmptyEffect;
 import game.Player;
+import templates.TargetsOtherCard;
+import templates.TargetsPlayer;
+import templates.decorators.CantAttackForTurnsCreature;
 
-public class CallOfTheSeaKing extends SpellCard{
+public class CallOfTheSeaKing extends SpellCard {
 
 	private static final String defaultImage = "images/CallOfTheSeaKing.jpg";
 	private static final String defaultName = "Call of the Sea King";
@@ -37,5 +41,7 @@ public class CallOfTheSeaKing extends SpellCard{
 			
 		},this);
 	}
+
+	
 	
 }
