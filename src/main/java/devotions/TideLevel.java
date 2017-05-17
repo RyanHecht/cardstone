@@ -2,7 +2,7 @@ package devotions;
 
 public enum TideLevel {
 
-	LOW,HIGH,RISING,FALLING;
+	LOW,HIGH,RISING,FALLING, NOT_TIDAL;
 	
 	
 	public TideLevel next(){

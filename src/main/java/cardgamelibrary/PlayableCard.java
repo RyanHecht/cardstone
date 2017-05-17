@@ -153,4 +153,9 @@ public class PlayableCard implements Card {
 	public void setCost(ManaPool cost) {
 		this.cost = cost;
 	}
+
+	@Override
+	public void setOwner(Player target) {
+		this.owner = target;
+	}
 }

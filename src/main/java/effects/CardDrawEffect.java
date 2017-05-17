@@ -8,7 +8,7 @@ import game.Player;
 
 public class CardDrawEffect implements Effect{
 
-	private Player target;
+	protected Player target;
 	private Card src;
 
 	public CardDrawEffect(Player target, Card src){

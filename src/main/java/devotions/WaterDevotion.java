@@ -8,6 +8,15 @@ public class WaterDevotion implements Devotion{
 
 	
 	
+	public static TideLevel getLevelOfWater(Devotion d){
+		if(!(d instanceof WaterDevotion)){
+			return TideLevel.NOT_TIDAL;
+		}
+		else{
+			return ((WaterDevotion)d).getTideLevel();
+		}
+	}
+	
 	private TideLevel tideLevel;
 	private Player owner;
 

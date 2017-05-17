@@ -200,6 +200,10 @@ public interface Card extends Jsonifiable, Serializable {
 	default public Effect onAttackChange(CreatureInterface changed, int amtChange, Zone z) {
 		return EmptyEffect.create();
 	}
+	
+	default public Effect onResourceGain(Player player, int amt){
+		return EmptyEffect.create();
+	}
 
 	// when a creature's health is changed.
 	// note that amtChange can be negative or positive.
@@ -307,4 +311,6 @@ public interface Card extends Jsonifiable, Serializable {
 	void setName(String name);
 
 	void setCost(ManaPool intercost);
+
+	void setOwner(Player target);
 }

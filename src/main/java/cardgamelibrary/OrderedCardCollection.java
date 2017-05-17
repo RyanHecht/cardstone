@@ -28,6 +28,7 @@ import events.CostPaidEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
+import events.GainResourceEvent;
 import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
@@ -171,11 +172,19 @@ public class OrderedCardCollection implements CardCollection, Jsonifiable {
 		case COST_PAID:
 			results = handleCostPaid((CostPaidEvent) event);
 			break;
+		case RESOURCE_GAINED:
+			results = handleResGained((GainResourceEvent) event);
+			break;
 		default:
 			throw new RuntimeException("ERROR: Invalid event type: " + event.getType());
 		}
 
 		return results;
+	}
+
+	private List<Effect> handleResGained(GainResourceEvent event) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private List<Effect> handleCostPaid(CostPaidEvent event) {

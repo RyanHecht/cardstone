@@ -15,8 +15,8 @@ public class AddToOccCrossPlayerEffect extends AddToOccEffect{
 	}
 
 	public void apply(Board board){
+		card.setOwner(target);
 		board.addCardToOcc(card, board.getOcc(owner, end), board.getOcc(target, start));
-
 	}
 
 }

@@ -17,7 +17,7 @@ import game.Player;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
 
-public class AirSlash extends SpellCard implements TargetsOtherCard, TargetsPlayer{
+public class AirSlash extends SpellCard implements TargetsOtherCard{
 
 	private static final String defaultImage = "images/AirSlash.png";
 	private static final String defaultName = "Air Slash";
@@ -26,11 +26,6 @@ public class AirSlash extends SpellCard implements TargetsOtherCard, TargetsPlay
 
 	public AirSlash(Player owner) {
 		super(new ManaPool(40, 0, 0, 0, 1, 0), defaultImage, owner, defaultName, defaultText, defaultType);
-	}
-
-	@Override
-	public boolean playerValidTarget(Player p) {
-		return false;
 	}
 
 	@Override

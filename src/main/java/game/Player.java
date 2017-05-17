@@ -11,6 +11,7 @@ import cardgamelibrary.Element;
 import cardgamelibrary.ElementType;
 import cardgamelibrary.ManaPool;
 import devotions.Devotion;
+import devotions.LockedWaterDevotion;
 import devotions.NoDevotion;
 import effects.ApplyDevotionEffect;
 import effects.EmptyEffect;
@@ -165,5 +166,9 @@ public class Player implements Serializable {
 
 	public void setDevotion(ElementType src) {
 		this.devotion = DevotionType.getDevotion(this,src);
+	}
+
+	public void setDevotion(Devotion devotion) {
+		this.devotion = devotion;
 	}
 }

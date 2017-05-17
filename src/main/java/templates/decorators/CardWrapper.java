@@ -300,4 +300,9 @@ public class CardWrapper implements Card {
 		return ManaPool.emptyPool();
 	}
 
+	@Override
+	public void setOwner(Player target) {
+		internal.setOwner(target);
+	}
+
 }

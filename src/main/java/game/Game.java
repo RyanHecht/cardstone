@@ -501,7 +501,7 @@ public class Game implements Jsonifiable, Serializable {
 				// in this case the player is trying to play a card that doesn't
 				// belong
 				// to them.
-				sendPlayerActionBad(playerId, "You can't play your opponent's cards!");
+				sendPlayerActionBad(playerId, "You can't activate your opponent's cards!");
 				return;
 			}
 

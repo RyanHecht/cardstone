@@ -30,6 +30,7 @@ import events.CostPaidEvent;
 import events.CreatureAttackEvent;
 import events.CreatureDiedEvent;
 import events.GainElementEvent;
+import events.GainResourceEvent;
 import events.PlayerAttackEvent;
 import events.PlayerDamagedEvent;
 import events.PlayerHealedEvent;
@@ -947,5 +948,13 @@ public class Board implements Jsonifiable, Serializable {
 				occ.add(target.getNewInstanceOf(target.getOwner()));
 			}
 		}
+	}
+
+	public void givePlayerRes(Player owner, int amount, Card src) {
+		GainResourceEvent event = new GainResourceEvent(owner, amount);
+		// increase element for player p.
+		int curRes = owner.getResources();
+		owner.changeResources(curRes);
+		eventQueue.add(event);
 	}
 }
