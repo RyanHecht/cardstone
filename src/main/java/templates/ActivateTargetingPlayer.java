@@ -5,7 +5,7 @@ import cardgamelibrary.Zone;
 import effects.EmptyEffect;
 import game.Player;
 
-public interface ActivateTargetingPlayer extends ActivatableCard {
+public interface ActivateTargetingPlayer extends ActivatableCard, TargetsPlayer {
 	// validates player target selection.
 	public boolean playerValidTarget(Player p);
 

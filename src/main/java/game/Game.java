@@ -35,16 +35,14 @@ import events.CardActivatedEvent;
 import events.CardChosenEvent;
 import events.CardPlayedEvent;
 import events.CardTargetedEvent;
-import events.CreatureAttackEvent;
-import events.PlayerAttackEvent;
 import events.PlayerTargetedEvent;
 import events.PreliminaryCreatureAttackEvent;
 import events.PreliminaryPlayerAttackEvent;
 import events.TurnEndEvent;
 import events.TurnStartEvent;
 import server.CommsWebSocket;
-import templates.ChooseResponderCard;
 import templates.ActivatableCard;
+import templates.ChooseResponderCard;
 import templates.PlayerChoosesCards;
 import templates.TargetsOtherCard;
 import templates.TargetsPlayer;
@@ -181,7 +179,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 
 		// Some sort of board constructor goes here.
-		board = new Board(deckOne, deckTwo, id,this);
+		board = new Board(deckOne, deckTwo, id, this);
 
 		if (noShuffle) {
 			// if we are not shuffling set starting player to player one.
@@ -553,6 +551,8 @@ public class Game implements Jsonifiable, Serializable {
 
 				// state should now set to awaiting response.
 				lockState();
+
+				// note that the card activation event will be created below.
 			}
 
 			// just a card activation here.
@@ -597,6 +597,61 @@ public class Game implements Jsonifiable, Serializable {
 				sendGameOver(playerId, "This game is over");
 				return;
 			}
+
+			Card targetter = board.getCardById(userInput.get("IID1").getAsInt());
+			Card targetee = board.getCardById(userInput.get("IID2").getAsInt());
+
+			if (!targetter.isA(ActivatableCard.class)) {
+				// player trying to activate card that isn't activatable.
+				sendPlayerActionBad(playerId, "You can't activate that card.");
+				return;
+			}
+
+			if (!(targetter.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't
+				// belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't activate your opponent's cards!");
+				return;
+			}
+			if (targetter.isA(TargetsOtherCard.class)) {
+				// we have some sort of card on card action here son.
+
+				// check to see if we can pay the card's cost.
+				if (!(board.getActivePlayer().validateCost(targetter.getActivationCost()))) {
+					sendPlayerActionBad(playerId, "Cannot play card, insufficient resources.");
+					return;
+				}
+
+				Zone targetIn = board.getZoneOfCard(targetee);
+
+				// the targeted card wasn't a valid target.
+				if (!(((TargetsOtherCard) targetter).cardValidTarget(targetee, targetIn))) {
+					sendPlayerActionBad(playerId, "Invalid target!");
+					return;
+				}
+
+				// targeted card was a valid card.
+				// construct appropriate event.
+				playerOne.getDevotion().onCardPlayed(targetter);
+				playerTwo.getDevotion().onCardPlayed(targetter);
+				CardTargetedEvent event = new CardTargetedEvent((TargetsOtherCard) targetter, targetee, targetIn);
+
+				// tell player the action was ok.
+				sendPlayerActionGood(playerId);
+
+				// make card activated event.
+				CardActivatedEvent activeEvent = new CardActivatedEvent((ActivatableCard) targetter,
+						board.getZoneOfCard(targetter));
+				// execute activation
+				act(activeEvent);
+
+				// execute action on board.
+				act(event);
+
+				// send board to both players.
+				sendWholeBoardToAllAndDb();
+			}
 		} else {
 			// player acting out of turn.
 			sendPlayerActionBad(playerId, "Acting out of turn.");
@@ -612,6 +667,7 @@ public class Game implements Jsonifiable, Serializable {
 	 *          the id of the player submitting the action.
 	 */
 	public void handleCardActivationTargetsPlayer(JsonObject userInput, int playerId) {
+
 		if (isTurn(playerId)) {
 			if (state == GameState.AWAITING_CHOICE) {
 				System.out.println(state.name());
@@ -626,6 +682,93 @@ public class Game implements Jsonifiable, Serializable {
 			if (state == GameState.GAME_OVER) {
 				sendGameOver(playerId, "This game is over");
 				return;
+			}
+
+			Card card = board.getCardById(userInput.get("IID1").getAsInt());
+			boolean self = userInput.get("self").getAsBoolean();
+
+			if (!card.isA(ActivatableCard.class)) {
+				// player trying to activate card that isn't activatable.
+				sendPlayerActionBad(playerId, "You can't activate that card.");
+				return;
+			}
+
+			if (!(card.getOwner().getId() == playerId)) {
+				// in this case the player is trying to play a card that doesn't
+				// belong
+				// to them.
+				sendPlayerActionBad(playerId, "You can't activate your opponent's cards!");
+				return;
+			}
+
+			if (self) {
+				if (card.isA(TargetsPlayer.class)) {
+					if (!(board.getActivePlayer().validateCost(card.getActivationCost()))) {
+						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
+						return;
+					}
+
+					if (!(((TargetsPlayer) card).playerValidTarget(board.getActivePlayer()))) {
+						sendPlayerActionBad(playerId, "You can't target yourself with that card.");
+						return;
+					}
+
+					// construct event.
+					PlayerTargetedEvent event = new PlayerTargetedEvent((TargetsPlayer) card, board.getActivePlayer());
+
+					// tell player action was good.
+					sendPlayerActionGood(playerId);
+
+					playerOne.getDevotion().onCardPlayed(card);
+					playerTwo.getDevotion().onCardPlayed(card);
+
+					// make card activation event.
+
+					CardActivatedEvent cEvent = new CardActivatedEvent((ActivatableCard) card, board.getZoneOfCard(card));
+
+					// execute events.
+					act(cEvent);
+					act(event);
+
+					// send board.
+					sendWholeBoardToAllAndDb();
+				} else {
+					sendPlayerActionBad(playerId, "You can't target yourself with that card.");
+				}
+			} else {
+				if (card.isA(TargetsPlayer.class)) {
+					if (!(board.getActivePlayer().validateCost(card.getActivationCost()))) {
+						sendPlayerActionBad(playerId, "You can't pay that card's cost.");
+						return;
+					}
+
+					if (!(((TargetsPlayer) card).playerValidTarget(board.getActivePlayer()))) {
+						sendPlayerActionBad(playerId, "You can't target your opponent with that card.");
+						return;
+					}
+
+					// construct event.
+					PlayerTargetedEvent event = new PlayerTargetedEvent((TargetsPlayer) card, board.getInactivePlayer());
+
+					// tell player action was good.
+					sendPlayerActionGood(playerId);
+
+					playerOne.getDevotion().onCardPlayed(card);
+					playerTwo.getDevotion().onCardPlayed(card);
+
+					// make card activation event.
+
+					CardActivatedEvent cEvent = new CardActivatedEvent((ActivatableCard) card, board.getZoneOfCard(card));
+
+					// execute events.
+					act(cEvent);
+					act(event);
+
+					// send board.
+					sendWholeBoardToAllAndDb();
+				} else {
+					sendPlayerActionBad(playerId, "You can't target opponents with that card.");
+				}
 			}
 		} else {
 			// player acting out of turn.
@@ -937,7 +1080,7 @@ public class Game implements Jsonifiable, Serializable {
 		}
 	}
 
-	public void requestUserChoise(List<Card> options,Player player, Card chooser){
+	public void requestUserChoise(List<Card> options, Player player, Card chooser) {
 
 		// create JsonObject to send to front end for user to make a
 		// choice.
@@ -969,7 +1112,7 @@ public class Game implements Jsonifiable, Serializable {
 		// state should now set to awaiting response.
 		lockState();
 	}
-	
+
 	/**
 	 * Handles a card being played.
 	 *
@@ -1015,8 +1158,8 @@ public class Game implements Jsonifiable, Serializable {
 
 			// the user must make some sort of choice here.
 			if (card.isA(PlayerChoosesCards.class)) {
-				requestUserChoise(((PlayerChoosesCards) card).getOptions(board),
-						card.getOwner(),card);;
+				requestUserChoise(((PlayerChoosesCards) card).getOptions(board), card.getOwner(), card);
+				;
 			}
 
 			if (card.isA(TargetsOtherCard.class) || card.isA(TargetsPlayer.class)) {
